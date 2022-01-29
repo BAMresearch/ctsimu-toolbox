@@ -46,14 +46,28 @@ def inRad(jsonVal):
         raise Exception("\"value\" or \"unit\" missing.")
 
 class Matrix:
-    def __init__(self, rows, cols):
-        self._rows  = rows
-        self._cols  = cols
+    def __init__(self, rows=None, cols=None, values=None):
+        self._rows  = None
+        self._cols  = None
+        self._value = None
 
-        clist = cols*[0]
-        self._value = []
-        for i in range(rows):
-            self._value.append(clist.copy())
+        if values is None:
+            if not((rows is None) or (cols is None)):
+                self._rows  = rows
+                self._cols  = cols
+
+                clist = cols*[0]
+                self._value = []
+                for i in range(rows):
+                    self._value.append(clist.copy())
+            else:
+                raise Exception("Cannot initialize matrix.")
+        else:
+            self._value = values
+            if len(values) > 0:
+                self._rows = len(self._value)
+                if len(self._value[0]) > 0:
+                    self._cols = len(self._value[0])
 
     def __str__(self):
         string = ""
@@ -80,6 +94,37 @@ class Matrix:
                 return result
             else:
                 raise Exception("Error: Cannot multiply matrix of size ({rows} rows x {cols} columns) with a 3-vector.".format(rows=self._rows, cols=self._cols))
+        elif isinstance(other, Matrix):
+            result_rows = self._rows
+            result_cols = other._cols
+            result = Matrix(rows=result_rows, cols=result_cols)
+
+            for row in range(result_rows):
+                for col in range(result_cols):
+                    s = 0
+                    for idx in range(min(self._cols, other._rows)):
+                        s += self.get(col=idx, row=row) * other.get(col=col, row=idx)
+
+                    result.set(row=row, col=col, value=s)
+
+            return result
+        else:
+            raise Exception("Matrix multiplication failed.")
+
+    def set(self, col, row, value):
+        self._value[row][col] = value
+
+    def get(self, col, row):
+        if len(self._value) > row:
+            if len(self._value[row]) > col:
+                return self._value[row][col]
+
+        raise Exception("Matrix.get(col={}, row={}): requested index does not exist.".format(col, row))
+
+    def scale(self, factor):
+        for row in range(self._rows):
+            for col in range(self._cols):
+                self.set(col=col, row=row, value=self.get(col=col, row=row)*factor)
 
 class Vector:
     """ A 3D vector in space. """
@@ -211,6 +256,10 @@ class Vector:
         self._x *= factor
         self._y *= factor
         self._z *= factor
+
+    def scaled(self, factor):
+        """ Return a copy of this vector, scaled by a certain factor. """
+        return Vector(self._x*factor, self._y*factor, self._z*factor)
 
     def add(self, vec):
         """ Add another vector to this vector. """

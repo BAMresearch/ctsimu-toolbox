@@ -6,6 +6,7 @@ import json
 import math
 import copy
 import pkgutil
+from datetime import datetime
 
 from .geoprimitives import *
 from .image import Image  # To create detector flat field
@@ -290,17 +291,20 @@ class Geometry:
         """ Initialize using the provided JSON geometry specification. """
         self._detector    = Detector()
         self._source      = GeometryObject()
+        self._stage       = GeometryObject()
 
         self._detectorTotalTilt = None
         self._SDD = None
+        self._SOD = None
+        self._ODD = None
         self._brightestSpotWorld = None
         self._brightestSpotDetector = None
 
         jsonText = None
-        if jsonFileFromPkg != None:  # from package
+        if jsonFileFromPkg is not None:  # from package
             jsonFile = jsonFileFromPkg
             jsonText = pkgutil.get_data(__name__, jsonFileFromPkg).decode()
-        elif jsonFile != None:  # from file
+        elif jsonFile is not None:  # from file
             if os.path.isfile(jsonFile):
                 log("JSON File: {}".format(jsonFile))
                 jsonFilePtr = open(jsonFile, "r")
@@ -309,9 +313,9 @@ class Geometry:
             else:
                 raise Exception("Can't find " + jsonFile)
         else:
-            raise Exception("Please provide a valid JSON file.")
+            return
 
-        if(jsonText != None):
+        if(jsonText is not None):
             try:
                 jsonDict = json.loads(jsonText)
             except:
@@ -344,35 +348,49 @@ class Geometry:
                 log("Something went wrong when setting up the source geometry using the JSON file description.")
                 raise Exception(e)
 
-            # Calculate additional parameters:
+            try:
+                stageGeometry = getFieldOrNone(jsonDict, "geometry", "stage")
+                if stageGeometry != None:
+                    self._stage.setupFromGeometryDefinition(stageGeometry)
+                else:
+                    raise Exception("JSON file does not contain a valid \"stage\" section in \"geometry\".")
+            except Exception as e:
+                log("Something went wrong when setting up the stage geometry using the JSON file description.")
+                raise Exception(e)
 
-            ## Detector Tilt Angle:
-            sourceDetectorCentreConnection = copy.deepcopy(self._detector._centre)
-            sourceDetectorCentreConnection.subtract(self._source._centre)
-
-            self._detectorTotalTilt = self._detector._vectorW.angle(sourceDetectorCentreConnection)
-
-            ## Distance between source centre and detector centre:
-            dist = self._detector._centre.distance(self._source._centre)
-
-            self._SDD = dist * math.cos(self._detectorTotalTilt)
-
-            ## Brightest Spot in World Coordinate System:
-            self._brightestSpotWorld = copy.deepcopy(self._detector._vectorW)
-            self._brightestSpotWorld.scale(self._SDD)
-            self._brightestSpotWorld.add(self._source._centre)
-
-            ## Brightest Spot in Detector Coordinate System:
-            self._brightestSpotDetector = copy.deepcopy(self._brightestSpotWorld)
-            self._brightestSpotDetector.subtract(self._detector._centre)
-            
-            pxU = self._brightestSpotDetector.dot(self._detector._vectorU) / self._detector.pitchU() + self._detector.cols()/2.0
-            pxV = self._brightestSpotDetector.dot(self._detector._vectorV) / self._detector.pitchV() + self._detector.rows()/2.0
-
-            self._brightestSpotDetector = Vector(pxU, pxV, 0)
+            self.update()            
         else:
             raise Exception("JSON scenario file not available.")
         
+    def update(self):
+        # Calculate additional parameters:
+
+        # SOD, SDD, ODD
+        world = GeometryObject()
+        source_from_detector = copy.deepcopy(self._source)
+        stage_from_detector  = copy.deepcopy(self._stage)
+
+        source_from_detector.changeReferenceFrame(world, self._detector)
+        stage_from_detector.changeReferenceFrame(world, self._detector)
+
+        self._SDD = abs(source_from_detector._centre.z())
+        self._ODD = abs(stage_from_detector._centre.z())
+        self._SOD = self._source._centre.distance(self._stage._centre)
+
+        ## Brightest Spot in World Coordinate System:
+        self._brightestSpotWorld = copy.deepcopy(self._detector._vectorW)
+        self._brightestSpotWorld.scale(self._SDD)
+        self._brightestSpotWorld.add(self._source._centre)
+
+        ## Brightest Spot in Detector Coordinate System:
+        self._brightestSpotDetector = copy.deepcopy(self._brightestSpotWorld)
+        self._brightestSpotDetector.subtract(self._detector._centre)
+        
+        pxU = self._brightestSpotDetector.dot(self._detector._vectorU) / self._detector.pitchU() + self._detector.cols()/2.0
+        pxV = self._brightestSpotDetector.dot(self._detector._vectorV) / self._detector.pitchV() + self._detector.rows()/2.0
+
+        self._brightestSpotDetector = Vector(pxU, pxV, 0)
+
 
     def info(self):
         txt  = "Detector\n"
@@ -402,6 +420,95 @@ class Geometry:
         txt += "w:               {}\n".format(self._source._vectorW)
 
         return txt
+
+    def projectionMatrix(self, mode="openCT"):
+        validModes = ["openCT", "CERA"]
+        if mode in validModes:
+            world    = GeometryObject()
+            detector = copy.deepcopy(self._detector)
+            source   = copy.deepcopy(self._source)
+            stage    = copy.deepcopy(self._stage)
+
+            # Scale of the detector CS in units of the world CS: (e.g. mm->px)
+            scale_u =  1.0
+            scale_v =  1.0
+            scale_w = -1.0
+
+            if mode == "CERA":
+                # CERA's detector CS has its origin in the lower left corner instead of the centre.
+                # Let's move there.
+
+                # Move the detector by half its width and half its height.
+                halfWidth  = detector.physWidth()  / 2.0
+                halfHeight = detector.physHeight() / 2.0
+
+                detector._centre -= detector._vectorU.scaled(halfWidth)
+                detector._centre += detector._vectorV.scaled(halfHeight)
+
+                # The v axis points up instead of down, this also turns the (irrelevant) w normal axis:
+                detector._vectorV.scale(-1)
+                detector._vectorW.scale(-1)
+
+                # The CERA detector also has a pixel CS instead of a mm CS:
+                scale_u = 1.0 / detector.pitchU()
+                scale_v = 1.0 / detector.pitchV()
+                scale_w = 1.0
+
+            # Save a source CS as seen from the detector CS. This is convenient to
+            # later get the SDD, ufoc and vfoc:
+            source_from_detector = copy.deepcopy(source)
+            source_from_detector.changeReferenceFrame(world, detector)
+
+            # Make the stage CS the new world CS:
+            source.changeReferenceFrame(world, stage)
+            detector.changeReferenceFrame(world, stage)
+            stage.changeReferenceFrame(world, stage)
+
+            # Translation vector from stage to source:
+            rfoc = source._centre - stage._centre
+            xfoc = rfoc.x()
+            yfoc = rfoc.y()
+            zfoc = rfoc.z()
+
+            # Focus point on detector: principal, perpendicular ray.
+            # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
+            # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
+            ufoc = source_from_detector._centre.x()
+            vfoc = source_from_detector._centre.y()
+            wfoc = source_from_detector._centre.z()
+            SDD  = abs(wfoc)
+
+            if mode == "CERA":
+                # mm -> px
+                ufoc = ufoc*scale_u - 0.5
+                vfoc = vfoc*scale_v - 0.5
+
+            # Mirror volume:
+            M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+
+            # Translation matrix: stage -> source:
+            F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
+
+            # Rotations:
+            R = basisTransformMatrix(stage, detector)
+
+            # Projection onto detector:
+            D = Matrix(values=[[-SDD*scale_u, 0, 0], [0, -SDD*scale_v, 0], [0, 0, scale_w]])
+
+            # Shift in detector CS: (ufoc and vfoc must be in scaled units)
+            V = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
+
+            # Multiply all together:
+            P = V * (D * (R * (F*M)))
+
+            # Renormalize:
+            lower_right = P.get(col=3, row=2)
+            if lower_right != 0:
+                P.scale(1.0/lower_right)
+
+            return P
+        else:
+            raise Exception("{} is not a valid mode for the projection matrix computation. Valid modes are: {}".format(mode, validModes))
 
     def createDetectorFlatField_rays(self):
         """ Calculate an analytical free beam intensity distribution
@@ -949,3 +1056,293 @@ class Geometry:
 
     def createDetectorFlatField(self):
         return createDetectorFlatField_analytical()
+
+def writeCERAconfig(geo, totalAngle, projectionFilePattern, matrices, basename, voxelsX, voxelsY, voxelsZ, i0max=60000):
+    now = datetime.now()
+
+    nProjections = len(matrices)
+    projTableString = """projtable.txt version 3
+{timestring}
+
+# format: angle / entries of projection matrices
+{nProjections}
+""".format(
+    nProjections=nProjections,
+    timestring=now.strftime("%a %b %d %H:%M:%S %Y")
+    )
+
+    for i in range(nProjections):
+        m=matrices[i]
+        projTableString += """@{nr}
+0.0 0.0
+{c00} {c01} {c02} {c03}
+{c10} {c11} {c12} {c13}
+{c20} {c21} {c22} {c23}
+
+""".format(
+        nr=(i+1),
+        c00=m.get(col=0, row=0),
+        c01=m.get(col=1, row=0),
+        c02=m.get(col=2, row=0),
+        c03=m.get(col=3, row=0),
+        c10=m.get(col=0, row=1),
+        c11=m.get(col=1, row=1),
+        c12=m.get(col=2, row=1),
+        c13=m.get(col=3, row=1),
+        c20=m.get(col=0, row=2),
+        c21=m.get(col=1, row=2),
+        c22=m.get(col=2, row=2),
+        c23=m.get(col=3, row=2)
+    )
+
+    with open("{}_projtable.txt".format(basename), 'w') as f:
+        f.write(projTableString)
+        f.close()
+
+    voxelSizeXY = geo._detector.pitchU() * geo._SOD / geo._SDD
+    voxelSizeZ  = geo._detector.pitchV() * geo._SOD / geo._SDD
+
+    configFileString = """#CERACONFIG
+
+[Projections]
+NumChannelsPerRow = {nCols}
+NumRows = {nRows}
+PixelSizeU = {psu}
+PixelSizeV = {psv}
+Rotation = None
+FlipU = false
+FlipV = true
+Padding = 0
+BigEndian = false
+CropBorderRight = 0
+CropBorderLeft = 0
+CropBorderTop = 0
+CropBorderBottom = 0
+BinningFactor = None
+SkipProjectionInterval = 1
+ProjectionDataDomain = Intensity
+RawHeaderSize = 0
+
+[Volume]
+SizeX = {volx}
+SizeY = {voly}
+SizeZ = {volz}
+# Midpoints are only necessary for reconstructions
+# without projection matrices.
+MidpointX = {midpointx}
+MidpointY = {midpointy}
+MidpointZ = {midpointz}
+VoxelSizeX = {vsx}
+VoxelSizeY = {vsy}
+VoxelSizeZ = {vsz}
+Datatype = float
+
+[CustomKeys]
+NumProjections = {nProjections}    
+ProjectionFileType = tiff
+VolumeOutputPath = {basename}.raw
+ProjectionStartNum = 0
+ProjectionFilenameMask = {projFilePattern}
+
+[CustomKeys.ProjectionMatrices]
+SourceObjectDistance = {SOD}
+SourceImageDistance = {SDD}
+DetectorOffsetU = {offu}
+DetectorOffsetV = {offv}
+StartAngle = {startAngle}
+ScanAngle = {scanAngle}
+AquisitionDirection = CW
+a = {a}
+b = {b}
+c = {c}
+ProjectionMatrixFilename = {basename}_projtable.txt
+
+[Backprojection]
+ClearOutOfRegionVoxels = false
+InterpolationMode = bilinear
+FloatingPointPrecision = half
+Enabled = true
+
+[Filtering]
+Enabled = true
+Kernel = shepp
+
+[I0Log]
+Enabled = true
+Epsilon = 1.0E-5
+GlobalI0Value = {i0max}
+""".format(
+    basename=basename,
+    nCols=int(geo._detector.cols()),
+    nRows=int(geo._detector.rows()),
+    psu=geo._detector.pitchU(),
+    psv=geo._detector.pitchV(),
+    volx=int(voxelsX),
+    voly=int(voxelsY),
+    volz=int(voxelsZ),
+    midpointx=0, #!
+    midpointy=0, #!
+    midpointz=0, #!
+    vsx=voxelSizeXY,
+    vsy=voxelSizeXY,
+    vsz=voxelSizeZ,
+    nProjections=int(nProjections),
+    projFilePattern=projectionFilePattern,
+    SOD=geo._SOD,
+    SDD=geo._SDD,
+    offu=0, #!
+    offv=0, #!
+    startAngle=0, #!
+    scanAngle=totalAngle,
+    a=0, #!
+    b=0, #!
+    c=0, #!
+    i0max=i0max
+    )
+
+    with open("{}.config".format(basename), 'w') as f:
+        f.write(configFileString)
+        f.close()
+
+
+def writeOpenCTFile(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, matrices, filename, volumename, projectionFilenames):
+    nProjections = len(matrices)
+    matrixString = ""
+
+    i = 0
+    for m in matrices:
+        if i>0:
+            matrixString += ",\n\n            "
+
+        matrixString += "[ "
+        for row in range(m._rows):
+            if row > 0:
+                matrixString += ",\n              "
+            matrixString += "["
+            for col in range(m._cols):
+                if col > 0:
+                    matrixString += ", "
+
+                matrixString += "{}".format(m.get(col=col, row=row))
+            matrixString += "]"
+        matrixString += " ]"
+        i += 1
+
+    filesString = ""
+    if len(matrices) == len(projectionFilenames):
+        for i in range(len(matrices)):
+            if i > 0:
+                filesString += ",\n                "
+            #filesString += '"{:05d}.tif"'.format(i)
+            filesString += '"{}"'.format(projectionFilenames[i])
+    else:
+        raise Exception("The number of projection matrices ({}) does not match the number of projection file names ({}).".format(len(matrices), len(projectionFilenames)))
+
+
+    content = """{{
+    "version": {{"major":1, "minor":0}},
+    "openCTJSON":     {{
+        "versionMajor": 1,
+        "versionMinor": 0,
+        "revisionNumber": 0,
+        "variant": "FreeTrajectoryCBCTScan"
+    }},
+    "units": {{
+        "length": "Millimeter"
+    }},
+    "volumeName":  "{volumeName}",
+    "projections": {{
+        "numProjections":  {nProjections},
+        "intensityDomain": true,
+        "images":          {{
+            "directory": ".",
+            "dataType":  "UInt16",
+            "fileType":  "TIFF",
+            "files":     [
+                {filesString}
+            ]
+        }},
+        "matrices": [
+            {matrixString}
+        ]
+    }},
+    "geometry":    {{
+        "totalAngle":           {totalAngle},
+        "skipAngle":            0,
+        "detectorPixel":        [
+            {nPixelsX},
+            {nPixelsY}
+        ],
+        "detectorSize":         [
+            {detectorSizeX},
+            {detectorSizeY}
+        ],
+        "mirrorDetectorAxis":   "",
+        "distanceSourceObject": {SOD},
+        "distanceObjectDetector": {ODD},
+        "objectBoundingBox":    [
+            [
+                {bbx},
+                0.0,
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                {bby},
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                {bbz},
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        ]
+    }},
+    "corrections": {{
+        "brightImages": {{
+            "directory": "",
+            "dataType":  "",
+            "fileType":  "",
+            "files":     []
+        }},
+        "darkImage":    {{
+            "file":     "",
+            "dataType": "",
+            "fileType": ""
+        }},
+        "badPixelMask": {{
+            "file":     "",
+            "dataType": "",
+            "fileType": ""
+        }},
+        "intensities":  []
+    }}
+}}""".format(
+    nProjections=nProjections,
+    matrixString=matrixString,
+    nPixelsX=int(geo._detector.cols()),
+    nPixelsY=int(geo._detector.rows()),
+    detectorSizeX=geo._detector.physWidth(),
+    detectorSizeY=geo._detector.physHeight(),
+    SOD=geo._SOD,
+    ODD=geo._ODD,
+    totalAngle=totalAngle,
+    bbx=boundingBoxX,
+    bby=boundingBoxY,
+    bbz=boundingBoxZ,
+    filesString=filesString,
+    volumeName=volumename
+    )
+
+    with open(filename, 'w') as f:
+        f.write(content)
+        f.close()

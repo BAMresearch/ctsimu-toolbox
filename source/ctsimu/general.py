@@ -224,7 +224,13 @@ def MTFfreq(MTFpos, MTF, modulation=0.2):
     return mtf_freq
 
 
-def divideAndError(muA, muB, sigmaA, sigmaB):
+def divideAndError(muA, muB, errA, errB):
+    """ Error propagation upon division; estimation of largest error. """
+    value = muA / muB
+    err = errA/abs(muB) + errB*abs(muA/(muB**2))
+    return value, err
+
+def divideAndGaussianError(muA, muB, sigmaA, sigmaB):
     """ Gaussian error propagation upon division. """
     value = muA / muB
     uncertainty = math.sqrt((sigmaA**2)/(muB**2) + (sigmaB**2)*(muA**2)/(muB**4))

@@ -374,11 +374,11 @@ class Test2D_WE_1(generalTest):
 
         summaryText += "\nMTF 20% frequency\n"
         summaryText += "-------------------------------------------------------\n"
-        summaryText += "MTF20 measured:   [cycles/px] = {:.3f}\n".format(results._MTF20freq_measured)
-        summaryText += "                  [cycles/mm] = {:.3f}\n\n".format(results._MTF20freq_measured / results._pixelSize)
+        summaryText += "MTF20 measured:   [cycles/px] = {:.5f}\n".format(results._MTF20freq_measured)
+        summaryText += "                  [cycles/mm] = {:.5f}\n\n".format(results._MTF20freq_measured / results._pixelSize)
 
-        summaryText += "MTF20 analytical: [cycles/px] = {:.3f}\n".format(results._MTF20freq_ideal)
-        summaryText += "                  [cycles/mm] = {:.3f}\n\n".format(results._MTF20freq_ideal / results._pixelSize)
+        summaryText += "MTF20 analytical: [cycles/px] = {:.5f}\n".format(results._MTF20freq_ideal)
+        summaryText += "                  [cycles/mm] = {:.5f}\n\n".format(results._MTF20freq_ideal / results._pixelSize)
 
         summaryText += "MTF20: abs. deviation (measured-analytical) [cycles/px] = {:.5f}\n".format(results.MTF20freq_absDev())
         summaryText += "MTF20: abs. deviation (measured-analytical) [cycles/mm] = {:.5f}\n".format(results.MTF20freq_absDev() / results._pixelSize)

@@ -72,7 +72,7 @@ class Test2D_SW_4(generalTest):
     def writeProfiles(self, title, filename, pos, profiles):
         profilesText  = "# {}\n".format(title)
         profilesText += "# Mean vertical grey value profiles\n"
-        profilesText += "# pos [px]\tcentral [GV]\tright [GV]\n"
+        profilesText += "# pos [px]\tcentral [GV]\tmargin_right [GV]\n"
 
         for i in range(len(pos)):
             profilesText += "{}".format(int(pos[i]))
@@ -125,32 +125,36 @@ class Test2D_SW_4(generalTest):
 
             matplotlib.use("agg")
 
-            fig, ((ax1, ax2)) = matplotlib.pyplot.subplots(nrows=2, ncols=1, figsize=(8, 8))
+            fig, ((ax1, ax2)) = matplotlib.pyplot.subplots(nrows=2, ncols=1, figsize=(6, 6))
           
             # Grey Value Profiles:
             #ax1.fill_between(xValues, self._results._profiles_nominalfit[0]+tolerance, self._results._profiles_nominalfit[0]-tolerance, facecolor='#ffcc00')
-            ax1.plot(xValues, self._results._profiles_nominalfit[0], linewidth=5.0, linestyle="dotted", label="", color='#c18100')
-            ax1.plot(xValues, self._results._profiles[0], linewidth=2.0, label="", color='#1f77b4')
-            ax1.set_xlabel("Vertical distance in px")
+            ax1.plot(xValues, self._results._profiles_nominal[0], linewidth=1.0, label="Monte-Carlo", color='#a0a0a0')
+            ax1.plot(xValues, self._results._profiles_nominalfit[0], linewidth=5.0, linestyle="dotted", label="Reference profile", color='#c18100')
+            ax1.plot(xValues, self._results._profiles[0], linewidth=2.0, label="Measurement", color='#1f77b4')
+            ax1.set_xlabel("Vertical position in px")
             ax1.set_ylabel("Grey value")
-            ax1.set_title("Central profile")
+            ax1.set_title("Central Profile")
             ax1.xaxis.set_major_locator(MultipleLocator(20))
             ax1.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             ax1.xaxis.set_minor_locator(MultipleLocator(10))
             ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
             ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax1.legend(loc='best')
 
             #ax2.fill_between(xValues, self._results._profiles_nominalfit[1]+tolerance, self._results._profiles_nominalfit[1]-tolerance, facecolor='#ffcc00')
-            ax2.plot(xValues, self._results._profiles_nominalfit[1], linewidth=5.0, linestyle="dotted", label="", color='#c18100')
-            ax2.plot(xValues, self._results._profiles[1], linewidth=2.0, label="", color='#1f77b4')
-            ax2.set_xlabel("Vertical distance in px")
+            ax2.plot(xValues, self._results._profiles_nominal[1], linewidth=1.0, label="Monte-Carlo", color='#a0a0a0')
+            ax2.plot(xValues, self._results._profiles_nominalfit[1], linewidth=5.0, linestyle="dotted", label="Reference profile", color='#c18100')
+            ax2.plot(xValues, self._results._profiles[1], linewidth=2.0, label="Measurement", color='#1f77b4')
+            ax2.set_xlabel("Vertical position in px")
             ax2.set_ylabel("Grey value")
-            ax2.set_title("Right border profile")
+            ax2.set_title("Fringe Profile")
             ax2.xaxis.set_major_locator(MultipleLocator(20))
             ax2.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             ax2.xaxis.set_minor_locator(MultipleLocator(10))
             ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
             ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax2.legend(loc='best')
 
             fig.tight_layout()
 

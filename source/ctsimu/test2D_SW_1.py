@@ -13,26 +13,37 @@ class Test2D_SW_1_results:
         self._longName = ""
 
         # Grey value means and ratios (per wedge step):
-        self._means             = []     # Mean value for each step
-        self._ratios_to_D1      = None   # grey value ratios to ideal detector
+        self._means             = []     # Mean value for each step (measured for simulation software)
+        self._ratios_to_D1      = None   # grey value ratios to ideal detector (measured for simulation software)
 
-        # reference values from Monte-Carlo simulation
+        # Grey values from Monte-Carlo simuation:
+        self._means_rosi_total    = None   # accounting for scatter radiation
+        self._means_rosi_primary  = None   # accounting only for primary radiation
+        self._means_mcray_total    = None   # accounting for scatter radiation
+        self._means_mcray_primary  = None   # accounting only for primary radiation
+
+
+        # Reference values for Monte-Carlo simulation (calculated in loadReference())
         self._means_mc_total    = None   # accounting for scatter radiation
         self._means_mc_primary  = None   # accounting only for primary radiation
-        self._stddev_mc_total   = None   # standard deviations from Monte-Carlo simulations
-        self._stddev_mc_primary = None   # standard deviations from Monte-Carlo simulations
+        self._error_mc_total_upper   = None
+        self._error_mc_total_lower   = None
+        self._error_mc_primary_upper = None
+        self._error_mc_primary_lower = None
 
-        self._ratios_to_D1 = None
         self._ratios_to_D1_mc_total = None
         self._ratios_to_D1_mc_primary = None
-        self._stddev_ratios_to_D1_mc_total = None
-        self._stddev_ratios_to_D1_mc_primary = None
+        self._error_ratios_to_D1_mc_total_upper = None
+        self._error_ratios_to_D1_mc_total_lower = None
+        self._error_ratios_to_D1_mc_primary_upper = None
+        self._error_ratios_to_D1_mc_primary_lower = None
 
     def loadReference(self, name):
         dataText = pkgutil.get_data(__name__, "data/2D-SW-1_scenario{name}.txt".format(name=name)).decode()
         dataIO = io.StringIO(dataText)
         allData = numpy.loadtxt(dataIO, delimiter='\t')  # ignore free beam
 
+        # --- total radiation
         means_rosi_total  = allData[:,1]
         means_mcray_total = allData[:,4]
         means_total = (means_rosi_total + means_mcray_total) * 0.5
@@ -41,9 +52,21 @@ class Test2D_SW_1_results:
         stddev_rosi_total  = allData[:,2]
         stddev_mcray_total = allData[:,5]
 
-        err_total = 0.5*(delta_total + numpy.sqrt(numpy.square(stddev_rosi_total) + numpy.square(stddev_mcray_total)))
+        #err_total = 0.5*(delta_total + numpy.sqrt(numpy.square(stddev_rosi_total) + numpy.square(stddev_mcray_total)))
+        err_total_rosi  = numpy.fmax(stddev_rosi_total,  stddev_mcray_total-delta_total) + 0.5*delta_total
+        err_total_mcray = numpy.fmax(stddev_mcray_total, stddev_rosi_total-delta_total)  + 0.5*delta_total
+        err_total_upper = numpy.zeros_like(err_total_rosi)
+        err_total_lower = numpy.zeros_like(err_total_rosi)
+        for i in range(len(err_total_upper)):
+            if means_rosi_total[i] > means_total[i]:  # ROSI is upper bound
+                err_total_upper[i] = err_total_rosi[i]
+                err_total_lower[i] = err_total_mcray[i]
+            else:   # McRay is upper bound
+                err_total_upper[i] = err_total_mcray[i]
+                err_total_lower[i] = err_total_rosi[i]
 
 
+        # --- primary radiation
         means_rosi_primary  = allData[:,9]
         means_mcray_primary = allData[:,12]
         means_primary = (means_rosi_primary + means_mcray_primary) * 0.5
@@ -52,12 +75,31 @@ class Test2D_SW_1_results:
         stddev_rosi_primary  = allData[:,10]
         stddev_mcray_primary = allData[:,13]
 
-        err_primary = 0.5*(delta_primary + numpy.sqrt(numpy.square(stddev_rosi_primary) + numpy.square(stddev_mcray_primary)))
+        #err_primary = 0.5*(delta_primary + numpy.sqrt(numpy.square(stddev_rosi_primary) + numpy.square(stddev_mcray_primary)))
+        err_primary_rosi  = numpy.fmax(stddev_rosi_primary,  stddev_mcray_primary-delta_primary) + 0.5*delta_primary
+        err_primary_mcray = numpy.fmax(stddev_mcray_primary, stddev_rosi_primary-delta_primary)  + 0.5*delta_primary
+        err_primary_upper = numpy.zeros_like(err_primary_rosi)
+        err_primary_lower = numpy.zeros_like(err_primary_rosi)
+        for i in range(len(err_primary_upper)):
+            if means_rosi_primary[i] > means_primary[i]:  # ROSI is upper bound
+                err_primary_upper[i] = err_primary_rosi[i]
+                err_primary_lower[i] = err_primary_mcray[i]
+            else:   # McRay is upper bound
+                err_primary_upper[i] = err_primary_mcray[i]
+                err_primary_lower[i] = err_primary_rosi[i]
+
+
+        self._means_rosi_total    = means_rosi_total
+        self._means_rosi_primary  = means_rosi_primary
+        self._means_mcray_total    = means_mcray_total
+        self._means_mcray_primary  = means_mcray_primary 
         
-        self._means_mc_total = means_total
-        self._means_mc_primary = means_primary
-        self._stddev_mc_total = err_total
-        self._stddev_mc_primary = err_primary
+        self._means_mc_total         = means_total
+        self._means_mc_primary       = means_primary
+        self._error_mc_total_upper   = err_total_upper
+        self._error_mc_total_lower   = err_total_lower
+        self._error_mc_primary_upper = err_primary_upper
+        self._error_mc_primary_lower = err_primary_lower
 
         dataIO.close()
 
@@ -237,27 +279,44 @@ class Test2D_SW_1(generalTest):
                     result._ratios_to_D1 = len(self._steps)*[None]
                     result._ratios_to_D1_mc_primary = len(self._steps)*[None]
                     result._ratios_to_D1_mc_total = len(self._steps)*[None]
-                    result._stddev_ratios_to_D1_mc_primary = len(self._steps)*[None]
-                    result._stddev_ratios_to_D1_mc_total = len(self._steps)*[None]
+                    result._error_ratios_to_D1_mc_primary_lower = len(self._steps)*[None]
+                    result._error_ratios_to_D1_mc_primary_upper = len(self._steps)*[None]
+                    result._error_ratios_to_D1_mc_total_lower = len(self._steps)*[None]
+                    result._error_ratios_to_D1_mc_total_upper = len(self._steps)*[None]
 
                     for step in range(len(self._steps)):
                         result._ratios_to_D1[step] = result._means[step] / D1result._means[step]
-                        result._ratios_to_D1_mc_primary[step], result._stddev_ratios_to_D1_mc_primary[step] = divideAndError(
+                        result._ratios_to_D1_mc_primary[step], result._error_ratios_to_D1_mc_primary_upper[step] = divideAndError(
                                 muA = result._means_mc_primary[step],
                                 muB = D1result._means_mc_primary[step],
-                                sigmaA = result._stddev_mc_primary[step],
-                                sigmaB = D1result._stddev_mc_primary[step]
+                                errA = result._error_mc_primary_upper[step],
+                                errB = D1result._error_mc_primary_upper[step]
                             )
-                        result._ratios_to_D1_mc_total[step], result._stddev_ratios_to_D1_mc_total[step] = divideAndError(
+                        result._ratios_to_D1_mc_primary[step], result._error_ratios_to_D1_mc_primary_lower[step] = divideAndError(
+                                muA = result._means_mc_primary[step],
+                                muB = D1result._means_mc_primary[step],
+                                errA = result._error_mc_primary_lower[step],
+                                errB = D1result._error_mc_primary_lower[step]
+                            )
+
+                        result._ratios_to_D1_mc_total[step], result._error_ratios_to_D1_mc_total_upper[step] = divideAndError(
                                 muA = result._means_mc_total[step],
                                 muB = D1result._means_mc_total[step],
-                                sigmaA = result._stddev_mc_total[step],
-                                sigmaB = D1result._stddev_mc_total[step]
+                                errA = result._error_mc_total_upper[step],
+                                errB = D1result._error_mc_total_upper[step]
+                            )
+                        result._ratios_to_D1_mc_total[step], result._error_ratios_to_D1_mc_total_lower[step] = divideAndError(
+                                muA = result._means_mc_total[step],
+                                muB = D1result._means_mc_total[step],
+                                errA = result._error_mc_total_lower[step],
+                                errB = D1result._error_mc_total_lower[step]
                             )
 
                         if r < 4: # this is an ideal detector, set ratio uncertainty to zero
-                            result._stddev_ratios_to_D1_mc_primary[step] = 0
-                            result._stddev_ratios_to_D1_mc_total[step] = 0
+                            result._error_ratios_to_D1_mc_primary_upper[step] = 0
+                            result._error_ratios_to_D1_mc_primary_lower[step] = 0
+                            result._error_ratios_to_D1_mc_total_upper[step] = 0
+                            result._error_ratios_to_D1_mc_total_lower[step] = 0
 
         # Measured ratios
         ratiosText = "# step"
@@ -280,7 +339,7 @@ class Test2D_SW_1(generalTest):
 
             ratiosText += "\n"
 
-        ratiosFileName = "{dir}/{name}_all_GV_ratios_to_D1.txt".format(dir=self._resultFileDirectory, name=self._name)
+        ratiosFileName = "{dir}/{name}_all_GV_ratios_to_Det1.txt".format(dir=self._resultFileDirectory, name=self._name)
         with open(ratiosFileName, 'w') as ratiosFile:
             ratiosFile.write(ratiosText)
             ratiosFile.close()
@@ -289,7 +348,7 @@ class Test2D_SW_1(generalTest):
         # Monte-Carlo reference results (only primary radiation accounted for)
         ratiosText = "# step"
         for i in range(len(self._results)):
-            ratiosText += "\t{name}\tuncertainty({name})".format(name=self._validSubtests[i])
+            ratiosText += "\t{name}\tu_lower({name})\tu_upper({name})".format(name=self._validSubtests[i])
 
         ratiosText += "\n"
         for step in range(len(self._steps)):
@@ -300,7 +359,8 @@ class Test2D_SW_1(generalTest):
                 if result is not None:
                     if D1result is not None:
                         ratiosText += "\t{:.5f}".format(result._ratios_to_D1_mc_primary[step])
-                        ratiosText += "\t{:.5f}".format(result._stddev_ratios_to_D1_mc_primary[step])
+                        ratiosText += "\t{:.5f}".format(result._error_ratios_to_D1_mc_primary_lower[step])
+                        ratiosText += "\t{:.5f}".format(result._error_ratios_to_D1_mc_primary_upper[step])
                     else:
                         ratiosText += "\t-"
                         ratiosText += "\t-"
@@ -319,7 +379,7 @@ class Test2D_SW_1(generalTest):
         # Monte-Carlo reference results (scatter radiation accounted for)
         ratiosText = "# step"
         for i in range(len(self._results)):
-            ratiosText += "\t{name}\tuncertainty({name})".format(name=self._validSubtests[i])
+            ratiosText += "\t{name}\tu_lower({name})\tu_upper({name})".format(name=self._validSubtests[i])
 
         ratiosText += "\n"
         for step in range(len(self._steps)):
@@ -330,7 +390,8 @@ class Test2D_SW_1(generalTest):
                 if result is not None:
                     if D1result is not None:
                         ratiosText += "\t{:.5f}".format(result._ratios_to_D1_mc_total[step])
-                        ratiosText += "\t{:.5f}".format(result._stddev_ratios_to_D1_mc_total[step])
+                        ratiosText += "\t{:.5f}".format(result._error_ratios_to_D1_mc_total_lower[step])
+                        ratiosText += "\t{:.5f}".format(result._error_ratios_to_D1_mc_total_upper[step])
                     else:
                         ratiosText += "\t-"
                         ratiosText += "\t-"
@@ -351,6 +412,9 @@ class Test2D_SW_1(generalTest):
         xValues = numpy.linspace(0, len(self._steps), len(self._steps), endpoint=False)
         xLabels = ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
 
+        # minor x ticks:
+        mxValues = numpy.linspace(0.5, len(self._steps)-0.5, len(self._steps)-1, endpoint=False)
+
         try:
             import matplotlib
             import matplotlib.pyplot
@@ -363,13 +427,16 @@ class Test2D_SW_1(generalTest):
             colors = ['#ffb000', '#fe6100', '#dc267f', '#648fff']
 
             d = 0
-            for detector in ["D2", "D3", "D4"]:
+            epsilon = numpy.array([-1.5, -0.5, 0.5, 1.5]) * 0.18   # data point spacing
+            markers = ["x", "x", "x", "x"]
+
+            for detector in ["Det2", "Det3", "Det4"]:
                 d += 1
                 subDetector = subDetectors[d]
                 dOffset = 4*d
 
                 for mode in ("primary", "total"):
-                    fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(9, 7))
+                    fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 6))
 
                     for t in range(0, 4):  # 4 sub tests per detector
                         subDetail = subDetails[t]
@@ -379,24 +446,48 @@ class Test2D_SW_1(generalTest):
 
                         # Grey value ratios:
                         if mode == "primary":
-                            modeDescription = "primary (without scatter radiation)"
-                            ax.errorbar(xValues, self._results[r]._ratios_to_D1_mc_primary, xerr=None, yerr=self._results[r]._stddev_ratios_to_D1_mc_primary, linewidth=0, elinewidth=2.0, ecolor=colors[t])
-                            ax.plot(xValues, self._results[r]._ratios_to_D1_mc_primary, 'x', markersize=7.0, label="{detail}, MC ± 1u".format(detail=subDetail), color=colors[t])
+                            modeDescription = "primary radiation"
+                            ax.errorbar(xValues+epsilon[t], self._results[r]._ratios_to_D1_mc_primary, xerr=None, yerr=[self._results[r]._error_ratios_to_D1_mc_primary_lower, self._results[r]._error_ratios_to_D1_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._ratios_to_D1_mc_primary, '_', markersize=11.0, label="{detail}, Monte-Carlo".format(detail=subDetail), color=colors[t])
                         else:
-                            modeDescription = "total (accounting for scatter radiation)"
-                            ax.errorbar(xValues, self._results[r]._ratios_to_D1_mc_total, xerr=None, yerr=self._results[r]._stddev_ratios_to_D1_mc_total, linewidth=0, elinewidth=2.0, ecolor=colors[t])
-                            ax.plot(xValues, self._results[r]._ratios_to_D1_mc_total, 'x', markersize=7.0, label="{detail}, MC ± 1u".format(detail=subDetail), color=colors[t])
+                            modeDescription = "total radiation (scatter+primary)"
+                            ax.errorbar(xValues+epsilon[t], self._results[r]._ratios_to_D1_mc_total, xerr=None, yerr=[self._results[r]._error_ratios_to_D1_mc_total_lower, self._results[r]._error_ratios_to_D1_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._ratios_to_D1_mc_total, '_', markersize=11.0, label="{detail}, Monte-Carlo".format(detail=subDetail), color=colors[t])
 
-                        ax.plot(xValues, self._results[r]._ratios_to_D1, 'o', markersize=4.0, label="{detail}, measured".format(detail=subDetail), color=colors[t])
+                        ax.plot(xValues+epsilon[t], self._results[r]._ratios_to_D1, markers[t], markersize=6.0, label="{detail}, measured".format(detail=subDetail), color=colors[t])
 
+                        """
+                        # Grey values:
+                        if mode == "primary":
+                            modeDescription = "primary radiation"
+                            ax.errorbar(xValues+epsilon[t], self._results[r]._means_mc_primary, xerr=None, yerr=[self._results[r]._error_mc_primary_lower, self._results[r]._error_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._means_mc_primary, '_', markersize=7.0, label="{detail}, MC ± 1u".format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._means_mcray_primary, 'o', markersize=4.0, label="{detail}, McRay".format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._means_rosi_primary,  'v', markersize=4.0, label="{detail}, ROSI".format(detail=subDetail), color=colors[t])
+                        else:
+                            modeDescription = "total radiation (scatter+primary)"
+                            ax.errorbar(xValues+epsilon[t], self._results[r]._means_mc_total, xerr=None, yerr=[self._results[r]._error_mc_total_lower, self._results[r]._error_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._means_mc_total, '_', markersize=7.0, label="{detail}, MC ± 1u".format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._means_mcray_total, 'o', markersize=4.0, label="{detail}, McRay".format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self._results[r]._means_rosi_total,  'v', markersize=4.0, label="{detail}, ROSI".format(detail=subDetail), color=colors[t])
+                        """
+
+
+                    ax.set_xlim([-0.5, 9.5])
                     ax.set_xlabel("step")
                     ax.set_ylabel("grey value ratio")
-                    ax.set_title("2D-SW-1, ratio {detector}/D1 ({subDet} to ideal, {details})".format(detector=detector, subDet=subDetector, details=modeDescription))
-                    ax.set_xticks(xValues)
+                    ax.set_title(label="2D-SW-1, ratio {detector}/Det1 ({subDet} to ideal), {details}".format(detector=detector, subDet=subDetector, details=modeDescription), loc='left', fontsize=10)
+
+                    ax.set_xticks(xValues, minor=False)
+                    ax.set_xticks(mxValues, minor=True)
                     ax.xaxis.set_ticklabels(xLabels)
-                    ax.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-                    ax.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
-                    ax.legend(loc='lower right')
+                    ax.grid(b=True, which='major', axis='y', color='#d9d9d9', linestyle='dashed')
+                    ax.grid(b=True, which='minor', axis='x', color='#d9d9d9', linestyle='dashed')
+                    ax.grid(b=False, which='major', axis='x')
+                    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
+
+                    ax.tick_params(axis="x", which="major", length=0, color="#ffffff")
+                    ax.tick_params(axis="x", which="minor", length=5)
 
                     fig.tight_layout(pad=2.5)
 
