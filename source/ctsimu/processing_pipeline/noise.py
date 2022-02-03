@@ -20,46 +20,46 @@ class ProcessingStep_Noise(ProcessingStep):
 
     def __init__(self, sigma=None, greyValues=None, SNR=None):
         ProcessingStep.__init__(self, "Noise")
-        self._sigma = None
-        self._greyValues = None
-        self._SNR = None
+        self.sigma = None
+        self.greyValues = None
+        self.SNR = None
 
         self.setSigma(sigma)
         self.setNoiseCharacteristics(greyValues, SNR)
 
     def setSigma(self, sigma=None):
         if sigma is None:
-            self._sigma = 0
+            self.sigma = 0
         else:
-            self._sigma = sigma
+            self.sigma = sigma
 
     def setNoiseCharacteristics(self, greyValues=None, SNR=None):
-        self._greyValues = greyValues
-        self._SNR = SNR
+        self.greyValues = greyValues
+        self.SNR = SNR
 
     def prepare(self):
         """ Nothing to prepare for this module. """
-        if isinstance(self._pipe, ProcessingPipeline):
-            self._prepared = True
+        if isinstance(self.pipe, ProcessingPipeline):
+            self.prepared = True
             return
 
-        self._prepared = False
+        self.prepared = False
         raise Exception("Step must be part of a processing pipeline before it can prepare.")
 
     def run(self, image):
         """ Transform given image. """
         sigma = copy.deepcopy(image)
 
-        if self._greyValues is None or self._SNR is None:
+        if self.greyValues is None or self.SNR is None:
             # Assign constant sigma to each pixel:
-            sigma.erase(self._sigma)
+            sigma.erase(self.sigma)
         else:
             # Map grey values to SNR:
-            sigma.map(gv_from=self._greyValues, gv_to=self._SNR, bins=1000)
+            sigma.map(gv_from=self.greyValues, gv_to=self.SNR, bins=1000)
 
             # Calculate sigma from sigma = I / SNR where SNR>0:
-            sigma._px = numpy.where(sigma._px > 0, image._px / sigma._px, 0)
+            sigma.px = numpy.where(sigma.px > 0, image.px / sigma.px, 0)
         
-        image.noise(sigma._px)
+        image.noise(sigma.px)
 
         return image

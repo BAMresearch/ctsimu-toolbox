@@ -12,34 +12,34 @@ class ProcessingStep_Smoothing(ProcessingStep):
 
     def __init__(self, mode="gaussian", sigma=0):
         ProcessingStep.__init__(self, "Smoothing")
-        self._sigma = None
-        self._mode  = None
+        self.sigma = None
+        self.mode  = None
 
         self.setSigma(sigma)
         self.setMode(mode)
 
     def setSigma(self, sigma=None):
         if sigma is None:
-            self._sigma = 0
+            self.sigma = 0
         else:
-            self._sigma = sigma
+            self.sigma = sigma
 
     def setMode(self, mode):
-        self._mode = mode
+        self.mode = mode
 
     def prepare(self):
         """ Nothing to prepare for this module. """
-        if isinstance(self._pipe, ProcessingPipeline):
-            self._prepared = True
+        if isinstance(self.pipe, ProcessingPipeline):
+            self.prepared = True
             return
 
-        self._prepared = False
+        self.prepared = False
         raise Exception("Step must be part of a processing pipeline before it can prepare.")
 
     def run(self, image):
         """ Transform given image. """
-        if self._mode is not None:
-            if self._mode == "gaussian":
-                image.smooth_gaussian(sigma=self._sigma)
+        if self.mode is not None:
+            if self.mode == "gaussian":
+                image.smooth_gaussian(sigma=self.sigma)
 
         return image

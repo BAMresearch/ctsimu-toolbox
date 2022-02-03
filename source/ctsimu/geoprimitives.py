@@ -6,75 +6,36 @@ import copy
 
 from .general import *
 
-# Unit conversions
-def inMM(jsonVal):
-    """ Convert value/unit pair to mm. """
-    if ("value" in jsonVal) and ("unit" in jsonVal):
-        value = jsonVal["value"]
-        unit  = jsonVal["unit"]
-
-        if(unit == "mm"):
-            return value
-        elif(unit == "nm"):
-            return (value * 1e-6)
-        elif(unit == "um"):
-            return (value * 1e-3)
-        elif(unit == "cm"):
-            return (value * 10)
-        elif(unit == "dm"):
-            return (value * 100)
-        elif(unit == "m"):
-            return (value * 1000)
-
-        raise Exception(unit + " is not a valid unit of length.")
-    else:
-        raise Exception("\"value\" or \"unit\" missing.")
-
-def inRad(jsonVal):
-    """ Convert value/unit pair to radians. """
-    if ("value" in jsonVal) and ("unit" in jsonVal):
-        value = jsonVal["value"]
-        unit  = jsonVal["unit"]
-
-        if(unit == "rad"):
-            return value
-        elif(unit == "deg"):
-            return ((value * math.pi) / 180.0)
-
-        raise Exception(unit + " is not a valid angular unit.")
-    else:
-        raise Exception("\"value\" or \"unit\" missing.")
-
 class Matrix:
     def __init__(self, rows=None, cols=None, values=None):
-        self._rows  = None
-        self._cols  = None
-        self._value = None
+        self.rows  = None
+        self.cols  = None
+        self.value = None
 
         if values is None:
             if not((rows is None) or (cols is None)):
-                self._rows  = rows
-                self._cols  = cols
+                self.rows  = rows
+                self.cols  = cols
 
                 clist = cols*[0]
-                self._value = []
+                self.value = []
                 for i in range(rows):
-                    self._value.append(clist.copy())
+                    self.value.append(clist.copy())
             else:
                 raise Exception("Cannot initialize matrix.")
         else:
-            self._value = values
+            self.value = values
             if len(values) > 0:
-                self._rows = len(self._value)
-                if len(self._value[0]) > 0:
-                    self._cols = len(self._value[0])
+                self.rows = len(self.value)
+                if len(self.value[0]) > 0:
+                    self.cols = len(self.value[0])
 
     def __str__(self):
         string = ""
-        for r in range(self._rows):
+        for r in range(self.rows):
             string += "["
-            for c in range(self._cols):
-                string += "{space}{x:.7f}  ".format(x=self._value[r][c], space=" "*(self._value[r][c]>=0))
+            for c in range(self.cols):
+                string += "{space}{x:.7f}  ".format(x=self.value[r][c], space=" "*(self.value[r][c]>=0))
 
             string += "]\n"
 
@@ -82,27 +43,27 @@ class Matrix:
 
     def __mul__(self, other):
         if isinstance(other, Vector):
-            if self._cols >= 3 and self._rows >= 3:
+            if self.cols >= 3 and self.rows >= 3:
                 result = Vector()
                 for r in range(3):
                     s = 0
                     for c in range(3):
-                        s += self._value[r][c] * other.get(c)
+                        s += self.value[r][c] * other.get(c)
 
                     result.setIdx(i=r, value=s)
 
                 return result
             else:
-                raise Exception("Error: Cannot multiply matrix of size ({rows} rows x {cols} columns) with a 3-vector.".format(rows=self._rows, cols=self._cols))
+                raise Exception("Error: Cannot multiply matrix of size ({rows} rows x {cols} columns) with a 3-vector.".format(rows=self.rows, cols=self.cols))
         elif isinstance(other, Matrix):
-            result_rows = self._rows
-            result_cols = other._cols
+            result_rows = self.rows
+            result_cols = other.cols
             result = Matrix(rows=result_rows, cols=result_cols)
 
             for row in range(result_rows):
                 for col in range(result_cols):
                     s = 0
-                    for idx in range(min(self._cols, other._rows)):
+                    for idx in range(min(self.cols, other.rows)):
                         s += self.get(col=idx, row=row) * other.get(col=col, row=idx)
 
                     result.set(row=row, col=col, value=s)
@@ -112,93 +73,93 @@ class Matrix:
             raise Exception("Matrix multiplication failed.")
 
     def set(self, col, row, value):
-        self._value[row][col] = value
+        self.value[row][col] = value
 
     def get(self, col, row):
-        if len(self._value) > row:
-            if len(self._value[row]) > col:
-                return self._value[row][col]
+        if len(self.value) > row:
+            if len(self.value[row]) > col:
+                return self.value[row][col]
 
         raise Exception("Matrix.get(col={}, row={}): requested index does not exist.".format(col, row))
 
     def scale(self, factor):
-        for row in range(self._rows):
-            for col in range(self._cols):
+        for row in range(self.rows):
+            for col in range(self.cols):
                 self.set(col=col, row=row, value=self.get(col=col, row=row)*factor)
 
 class Vector:
     """ A 3D vector in space. """
 
     def __init__(self, x=0, y=0, z=0):
-        self._x = x
-        self._y = y
-        self._z = z
+        self.x = x
+        self.y = y
+        self.z = z
 
     def __str__(self):
-        return "({spaceX}{x:.7f}, {spaceY}{y:.7f}, {spaceZ}{z:.7f})".format(x=self._x, y=self._y, z=self._z, spaceX=" "*(self._x>=0), spaceY=" "*(self._y>=0), spaceZ=" "*(self._z>=0))
+        return "({spaceX}{x:.7f}, {spaceY}{y:.7f}, {spaceZ}{z:.7f})".format(x=self.x, y=self.y, z=self.z, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0), spaceZ=" "*(self.z>=0))
 
     def __add__(self, other):
-        x = self._x + other._x
-        y = self._y + other._y
-        z = self._z + other._z
+        x = self.x + other.x
+        y = self.y + other.y
+        z = self.z + other.z
         return Vector(x, y, z)
 
     def __sub__(self, other):
-        x = self._x - other._x
-        y = self._y - other._y
-        z = self._z - other._z
+        x = self.x - other.x
+        y = self.y - other.y
+        z = self.z - other.z
         return Vector(x, y, z)
 
     def __mul__(self, other):
-        x = self._x * other._x
-        y = self._y * other._y
-        z = self._z * other._z
+        x = self.x * other.x
+        y = self.y * other.y
+        z = self.z * other.z
         return Vector(x, y, z)
 
     def __truediv__(self, other):
-        x = self._x / other._x
-        y = self._y / other._y
-        z = self._z / other._z
+        x = self.x / other.x
+        y = self.y / other.y
+        z = self.z / other.z
         return Vector(x, y, z)
 
     def __floordiv__(self, other):
-        x = self._x // other._x
-        y = self._y // other._y
-        z = self._z // other._z
+        x = self.x // other.x
+        y = self.y // other.y
+        z = self.z // other.z
         return Vector(x, y, z)
 
     def get(self, i):
         if i == 0:
-            return self._x
+            return self.x
         elif i == 1:
-            return self._y
+            return self.y
         elif i == 2:
-            return self._z
+            return self.z
 
         return 0
 
     def x(self):
-        return self._x
+        return self.x
 
     def setx(self, value):
-        self._x = value
+        self.x = value
 
     def y(self):
-        return self._y
+        return self.y
 
     def sety(self, value):
-        self._y = value
+        self.y = value
 
     def z(self):
-        return self._z
+        return self.z
 
     def setz(self, value):
-        self._z = value
+        self.z = value
 
     def setxy(self, x=0, y=0):
         """ Set x and y component (relevant for 2D computations) """
-        self._x = x
-        self._y = y
+        self.x = x
+        self.y = y
 
     def set(self, x=0, y=0, z=0):
         """ Set all vector components. """
@@ -208,15 +169,15 @@ class Vector:
 
     def setIdx(self, i, value):
         if i == 0:
-            self._x = value
+            self.x = value
         elif i == 1:
-            self._y = value
+            self.y = value
         elif i == 2:
-            self._z = value
+            self.z = value
 
     def length(self):
         """ Calculate length of vector. """
-        return math.sqrt(self._x**2 + self._y**2 + self._z**2)
+        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
 
     def angle(self, other):
         """ Calculate angle between this vector and another vector. """
@@ -245,67 +206,67 @@ class Vector:
         """ Normalize vector lenth to 1. """
         vectorLength = self.length()
         if vectorLength != 0:
-            self._x /= float(vectorLength)
-            self._y /= float(vectorLength)
-            self._z /= float(vectorLength)
+            self.x /= float(vectorLength)
+            self.y /= float(vectorLength)
+            self.z /= float(vectorLength)
         else:
             raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
 
     def scale(self, factor):
         """ Scale vector length by a certain factor. """
-        self._x *= factor
-        self._y *= factor
-        self._z *= factor
+        self.x *= factor
+        self.y *= factor
+        self.z *= factor
 
     def scaled(self, factor):
         """ Return a copy of this vector, scaled by a certain factor. """
-        return Vector(self._x*factor, self._y*factor, self._z*factor)
+        return Vector(self.x*factor, self.y*factor, self.z*factor)
 
     def add(self, vec):
         """ Add another vector to this vector. """
-        self._x += vec._x
-        self._y += vec._y
-        self._z += vec._z
+        self.x += vec.x
+        self.y += vec.y
+        self.z += vec.z
 
     def subtract(self, vec):
         """ Subtract another vector from this vector. """
-        self._x -= vec._x
-        self._y -= vec._y
-        self._z -= vec._z
+        self.x -= vec.x
+        self.y -= vec.y
+        self.z -= vec.z
 
     def square(self):
-        self._x *= self._x
-        self._y *= self._y
-        self._z *= self._z
+        self.x *= self.x
+        self.y *= self.y
+        self.z *= self.z
 
     def sqrt(self):
-        self._x = math.sqrt(self._x)
-        self._y = math.sqrt(self._y)
-        self._z = math.sqrt(self._z)
+        self.x = math.sqrt(self.x)
+        self.y = math.sqrt(self.y)
+        self.z = math.sqrt(self.z)
 
     def distance(self, vec):
         """ Distance between target points of this and another vector. """
-        return math.sqrt(math.pow(self._x-vec._x, 2) + math.pow(self._y-vec._y, 2) + math.pow(self._z-vec._z, 2))
+        return math.sqrt(math.pow(self.x-vec.x, 2) + math.pow(self.y-vec.y, 2) + math.pow(self.z-vec.z, 2))
 
     def dot(self, other):
         """ Calculate vector dot product. """
-        return (self._x*other._x + self._y*other._y + self._z*other._z)
+        return (self.x*other.x + self.y*other.y + self.z*other.z)
 
     def cross_z(self, other):
         """ Calculate the z component of the cross product. """
-        return self._x*other._y - self._y*other._x
+        return self.x*other.y - self.y*other.x
 
     def cross(self, other):
         """ Calculate vector cross product. """
-        cx = self._y*other._z - self._z*other._y
-        cy = self._z*other._x - self._x*other._z
-        cz = self._x*other._y - self._y*other._x
+        cx = self.y*other.z - self.z*other.y
+        cy = self.z*other.x - self.x*other.z
+        cz = self.x*other.y - self.y*other.x
 
         c = Vector(cx, cy, cz)
         return c
 
     def inverse(self):
-        return Vector(-self._x, -self._y, -self._z)
+        return Vector(-self.x, -self.y, -self.z)
 
     def rotate(self, axis, angleInRad):
         """ Rotate vector around given axis by given angle [rad]. """
@@ -315,13 +276,13 @@ class Vector:
         cs = math.cos(angleInRad)
         sn = math.sin(angleInRad)
 
-        vx = self._x
-        vy = self._y
-        vz = self._z
+        vx = self.x
+        vy = self.y
+        vz = self.z
 
-        nx = axis._x
-        ny = axis._y
-        nz = axis._z
+        nx = axis.x
+        ny = axis.y
+        nz = axis.z
 
         rx = vx*(nx*nx*(1-cs) + cs)    + vy*(nx*ny*(1-cs) - nz*sn) + vz*(nx*nz*(1-cs) + ny*sn)
         ry = vx*(ny*nx*(1-cs) + nz*sn) + vy*(ny*ny*(1-cs) + cs)    + vz*(ny*nz*(1-cs) - nx*sn)
@@ -331,54 +292,54 @@ class Vector:
 
     @staticmethod
     def connection(vecFrom, vecTo):
-        return Vector(vecTo._x-vecFrom._x, vecTo._y-vecFrom._y, vecTo._z-vecFrom._z)
+        return Vector(vecTo.x-vecFrom.x, vecTo.y-vecFrom.y, vecTo.z-vecFrom.z)
 
 class Vector2D:
     """ A 2D vector in a plane. """
 
     def __init__(self, x=0, y=0):
-        self._x = x
-        self._y = y
+        self.x = x
+        self.y = y
 
     def __str__(self):
-        return "({spaceX}{x:.7f}, {spaceY}{y:.7f})".format(x=self._x, y=self._y, spaceX=" "*(self._x>=0), spaceY=" "*(self._y>=0))
+        return "({spaceX}{x:.7f}, {spaceY}{y:.7f})".format(x=self.x, y=self.y, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0))
 
     def __add__(self, other):
-        x = self._x + other._x
-        y = self._y + other._y
+        x = self.x + other.x
+        y = self.y + other.y
         return Vector2D(x, y)
 
     def __sub__(self, other):
-        x = self._x - other._x
-        y = self._y - other._y
+        x = self.x - other.x
+        y = self.y - other.y
         return Vector2D(x, y)
 
     def __mul__(self, other):
-        x = self._x * other._x
-        y = self._y * other._y
+        x = self.x * other.x
+        y = self.y * other.y
         return Vector2D(x, y)
 
     def __truediv__(self, other):
-        x = self._x / other._x
-        y = self._y / other._y
+        x = self.x / other.x
+        y = self.y / other.y
         return Vector2D(x, y)
 
     def __floordiv__(self, other):
-        x = self._x // other._x
-        y = self._y // other._y
+        x = self.x // other.x
+        y = self.y // other.y
         return Vector2D(x, y)
 
     def x(self):
-        return self._x
+        return self.x
 
     def setx(self, value):
-        self._x = value
+        self.x = value
 
     def y(self):
-        return self._y
+        return self.y
 
     def sety(self, value):
-        self._y = value
+        self.y = value
 
     def set(self, x=0, y=0):
         """ Set all vector components. """
@@ -387,7 +348,7 @@ class Vector2D:
 
     def length(self):
         """ Calculate length of vector. """
-        return math.sqrt(self._x**2 + self._y**2)
+        return math.sqrt(self.x**2 + self.y**2)
 
     def angle(self, other):
         """ Calculate angle between this vector and another vector. """
@@ -416,45 +377,45 @@ class Vector2D:
         """ Normalize vector lenth to 1. """
         vectorLength = self.length()
         if vectorLength != 0:
-            self._x /= float(vectorLength)
-            self._y /= float(vectorLength)
+            self.x /= float(vectorLength)
+            self.y /= float(vectorLength)
         else:
             raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
 
     def scale(self, factor):
         """ Scale vector length by a certain factor. """
-        self._x *= factor
-        self._y *= factor
+        self.x *= factor
+        self.y *= factor
 
     def add(self, vec):
         """ Add another vector to this vector. """
-        self._x += vec._x
-        self._y += vec._y
+        self.x += vec.x
+        self.y += vec.y
 
     def subtract(self, vec):
         """ Subtract another vector from this vector. """
-        self._x -= vec._x
-        self._y -= vec._y
+        self.x -= vec.x
+        self.y -= vec.y
 
     def square(self):
-        self._x *= self._x
-        self._y *= self._y
+        self.x *= self.x
+        self.y *= self.y
 
     def sqrt(self):
-        self._x = math.sqrt(self._x)
-        self._y = math.sqrt(self._y)
+        self.x = math.sqrt(self.x)
+        self.y = math.sqrt(self.y)
 
     def distance(self, vec):
         """ Distance between target points of this and another vector. """
-        return math.sqrt(math.pow(self._x-vec._x, 2) + math.pow(self._y-vec._y, 2))
+        return math.sqrt(math.pow(self.x-vec.x, 2) + math.pow(self.y-vec.y, 2))
 
     def dot(self, other):
         """ Calculate vector dot product. """
-        return (self._x*other._x + self._y*other._y)
+        return (self.x*other.x + self.y*other.y)
 
     def cross_z(self, other):
         """ Calculate the z component of the cross product. """
-        return self._x*other._y - self._y*other._x
+        return self.x*other.y - self.y*other.x
 
     def cross(self, other):
         """ Calculate vector cross product. """
@@ -462,7 +423,7 @@ class Vector2D:
         return c
 
     def inverse(self):
-        return Vector(-self._x, -self._y)
+        return Vector(-self.x, -self.y)
 
     def rotate(self, angleInRad):
         """ Rotate vector in plane by given angle [rad]. """
@@ -471,46 +432,46 @@ class Vector2D:
         cs = math.cos(angleInRad)
         sn = math.sin(angleInRad)
 
-        self.set(self._x*cs - self._y*sn, self._x*sn + self._y*cs)
+        self.set(self.x*cs - self.y*sn, self.x*sn + self.y*cs)
 
     @staticmethod
     def connection(vecFrom, vecTo):
-        return Vector2D(vecTo._x-vecFrom._x, vecTo._y-vecFrom._y)
+        return Vector2D(vecTo.x-vecFrom.x, vecTo.y-vecFrom.y)
 
 class Line2D:
     def __init__(self):
         # y = mx + n
-        self._m = None
-        self._n = None
+        self.m = None
+        self.n = None
 
     def __str__(self):
-        return "m={}, n={}".format(self._m, self._n)
+        return "m={}, n={}".format(self.m, self.n)
 
     def set(self, m, n):
-        self._m = m
-        self._n = n
+        self.m = m
+        self.n = n
 
     def setFromPoints(self, point0, point1):
         # points are defined by 2D vectors
-        x0 = point0._x
-        y0 = point0._y
-        x1 = point1._x
-        y1 = point1._y
+        x0 = point0.x
+        y0 = point0.y
+        x1 = point1.x
+        y1 = point1.y
 
         if x0 != x1:
-            self._m = (y1-y0) / (x1-x0)
-            self._n = y0 - self._m*x0
+            self.m = (y1-y0) / (x1-x0)
+            self.n = y0 - self.m*x0
         else:
             # Vertical line
-            self._m = math.inf
-            self._n = x0  # Store x intersection in n if line is vertical
+            self.m = math.inf
+            self.n = x0  # Store x intersection in n if line is vertical
 
     def intersection(self, otherLine):
-        m0 = self._m
-        n0 = self._n
+        m0 = self.m
+        n0 = self.n
 
-        m1 = otherLine._m
-        n1 = otherLine._n
+        m1 = otherLine.m
+        n1 = otherLine.n
 
         if m0 == m1:
             # Lines are parallel
@@ -535,15 +496,15 @@ class Polygon:
 
     def __init__(self, *points):
         """ Points should be defined in counter-clockwise direction. They are of class Vector. """
-        self._points = []
-        self._area = None
-        self._vertexOrderCCW = True  # Vertices defined in counter-clockwise order. Should be False for clockwise.
+        self.points = []
+        self.area = None
+        self.vertexOrderCCW = True  # Vertices defined in counter-clockwise order. Should be False for clockwise.
         self.set(*points)
     
     def __str__(self):
         s = ""
-        for i in range(len(self._points)):
-            s += "P{i}: ({x}, {y})\n".format(i=i, x=self._points[i]._x, y=self._points[i]._y)
+        for i in range(len(self.points)):
+            s += "P{i}: ({x}, {y})\n".format(i=i, x=self.points[i].x, y=self.points[i].y)
 
         return s
 
@@ -551,85 +512,85 @@ class Polygon:
         """ Convert all points in xy-plane from 2D vectors to 3D vectors,
             using the provided zComponent. """
 
-        for i in range(len(self._points)):
-            p = self._points[i]
-            newPoint = Vector(p._x, p._y, zComponent)
-            self._points[i] = newPoint
+        for i in range(len(self.points)):
+            p = self.points[i]
+            newPoint = Vector(p.x, p.y, zComponent)
+            self.points[i] = newPoint
 
     def set(self, *points):
         """ Points should be defined in counter-clockwise direction. They are of class Vector. """
         #print("Setting: {}".format(points))
         #print("points has a length of {}".format(len(points)))
 
-        self._points = []
-        self._points.extend(points)
+        self.points = []
+        self.points.extend(points)
 
-        self._area = None
+        self.area = None
 
     def area(self):
-        if self._area == None:
+        if self.area == None:
             self.calculateArea()
 
-        return self._area
+        return self.area
 
     def calculateArea(self):
-        self._area = 0
+        self.area = 0
 
         # Split polygon into triangles and calculate area of each
         # triangle using the trapezoid method.
 
-        if len(self._points) >= 3:
+        if len(self.points) >= 3:
             # Start at first point
-            p1 = self._points[0]
-            x1 = p1._x
-            y1 = p1._y
+            p1 = self.points[0]
+            x1 = p1.x
+            y1 = p1.y
 
-            for i in range(1, len(self._points)-1):
-                p2 = self._points[i]
-                p3 = self._points[i+1]                
-                x2 = p2._x
-                y2 = p2._y
-                x3 = p3._x
-                y3 = p3._y
-                self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
+            for i in range(1, len(self.points)-1):
+                p2 = self.points[i]
+                p3 = self.points[i+1]                
+                x2 = p2.x
+                y2 = p2.y
+                x3 = p3.x
+                y3 = p3.y
+                self.area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
 
     def getBoundingBox(self):
-        leftMost  = self._points[0]._x
+        leftMost  = self.points[0].x
         rightMost = -1
-        upMost    = self._points[0]._y
+        upMost    = self.points[0].y
         downMost  = -1
 
-        for p in self._points:
-            if p._x < leftMost:
-                leftMost = math.floor(p._x)
-            if p._x > rightMost:
-                rightMost = math.ceil(p._x)
+        for p in self.points:
+            if p.x < leftMost:
+                leftMost = math.floor(p.x)
+            if p.x > rightMost:
+                rightMost = math.ceil(p.x)
 
-            if p._y < upMost:
-                upMost = math.floor(p._y)
-            if p._y > downMost:
-                downMost = math.ceil(p._y)
+            if p.y < upMost:
+                upMost = math.floor(p.y)
+            if p.y > downMost:
+                downMost = math.ceil(p.y)
 
         return int(leftMost), int(upMost), int(rightMost), int(downMost)
 
     def isInside2D(self, point):
         """ Check if the given point is inside the polygon or on an edge. """
-        x = point._x
-        y = point._y
+        x = point.x
+        y = point.y
 
-        if len(self._points) >= 3:
-            p1 = self._points[0]
-            x1 = p1._x
-            y1 = p1._y
+        if len(self.points) >= 3:
+            p1 = self.points[0]
+            x1 = p1.x
+            y1 = p1.y
 
             # Set up sub-triangles and check if point is in any of those:
-            for i in range(1, len(self._points)-1):
-                p2 = self._points[i]
-                p3 = self._points[i+1]                
-                x2 = p2._x
-                y2 = p2._y
-                x3 = p3._x
-                y3 = p3._y
+            for i in range(1, len(self.points)-1):
+                p2 = self.points[i]
+                p3 = self.points[i+1]                
+                x2 = p2.x
+                y2 = p2.y
+                x3 = p3.x
+                y3 = p3.y
 
                 # Calculate the barycentric coordinates of the point with respect to the triangle:
                 D = (y2-y3)*(x1-x3) + (x3-x2)*(y1-y3)
@@ -667,12 +628,12 @@ class Polygon:
             clipPolygon must be convex. """
 
         # Make a list of edges (lines) of the clip polygon:
-        outputVertices = self._points # copy.deepcopy(self._points)
+        outputVertices = self.points # copy.deepcopy(self.points)
 
-        nPoints = len(clipPolygon._points)
+        nPoints = len(clipPolygon.points)
         for i in range(nPoints):
-            edgePoint0 = clipPolygon._points[i]
-            edgePoint1 = clipPolygon._points[((i+1)%nPoints)]
+            edgePoint0 = clipPolygon.points[i]
+            edgePoint1 = clipPolygon.points[((i+1)%nPoints)]
 
             edgeLine = Line2D()
             edgeLine.setFromPoints(point0=edgePoint0, point1=edgePoint1)

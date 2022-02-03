@@ -11,42 +11,42 @@ class ProcessingStep_Transform(ProcessingStep):
 
     def __init__(self, rotate=0, flipX=False, flipY=False):
         ProcessingStep.__init__(self, "Transform")
-        self._rotate = 0
-        self._flipX  = False
-        self._flipY  = False
+        self.rotate = 0
+        self.flipX  = False
+        self.flipY  = False
 
         self.setRotation(rotate)
         self.setFlip(flipX, flipY)
 
     def setRotation(self, rotate=0):
         if rotate is None:
-            self._rotate = 0
+            self.rotate = 0
         else:
             if rotate in [0, 90, 180, 270]:
-                self._rotate = rotate
+                self.rotate = rotate
             else:
                 raise Exception("Image rotation must be one of the following integers: 0, 90, 180, 270.")
 
     def setFlip(self, flipX=False, flipY=False):
-        self._flipX = flipX
-        self._flipY = flipY
+        self.flipX = flipX
+        self.flipY = flipY
 
     def prepare(self):
         """ Nothing to prepare for the transform module. """
-        if isinstance(self._pipe, ProcessingPipeline):
-            self._prepared = True
+        if isinstance(self.pipe, ProcessingPipeline):
+            self.prepared = True
             return
 
-        self._prepared = False
+        self.prepared = False
         raise Exception("Step must be part of a processing pipeline before it can prepare.")
 
     def run(self, image):
         """ Transform given image. """
         self.prepare()
 
-        if self._rotate != 0:
-            image.rotate("{}".format(self._rotate))
+        if self.rotate != 0:
+            image.rotate("{}".format(self.rotate))
 
-        image.flip(horizontal=self._flipX, vertical=self._flipY)
+        image.flip(horizontal=self.flipX, vertical=self.flipY)
 
         return image

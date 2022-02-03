@@ -224,7 +224,7 @@ class Interpolation(object):
                 phi = np.arccos((stop[0]-start[0])/rho)
             
             # minimization
-            sol = minimize(self._bivariance, phi, method='Powell', args=(rho, start, def_kwargs.copy()))
+            sol = minimize(self.bivariance, phi, method='Powell', args=(rho, start, def_kwargs.copy()))
             phi = sol['x']
             print('optimizing done in {:.6f}ms \n'.format((time()-t)*1000))
             print('phi = {:.6f}, bivar = {:.6f}, rho = {:.6f} \n'.format(-np.rad2deg(phi), sol['fun'], rho))

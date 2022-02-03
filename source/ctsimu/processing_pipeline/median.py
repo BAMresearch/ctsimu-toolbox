@@ -11,28 +11,28 @@ class ProcessingStep_Median(ProcessingStep):
 
     def __init__(self, medianSize=3):
         ProcessingStep.__init__(self, "Median")
-        self._size = medianSize
+        self.size = medianSize
 
     def setSize(self, medianSize=3):
         self.setPrepared(False)
-        self._size = medianSize
+        self.size = medianSize
 
     def getSize(self):
-        return self._size
+        return self.size
 
     def prepare(self):
         """ Nothing to prepare for the binning module. """
-        if isinstance(self._pipe, ProcessingPipeline):
-            self._prepared = True
+        if isinstance(self.pipe, ProcessingPipeline):
+            self.prepared = True
             return
 
-        self._prepared = False
+        self.prepared = False
         raise Exception("Step must be part of a processing pipeline before it can prepare.")
 
     def run(self, image):
         """ Bin given image. """
         self.prepare()
 
-        image.applyMedian(kernelSize=self._size)
+        image.applyMedian(kernelSize=self.size)
 
         return image

@@ -21,12 +21,13 @@ from .tiffy import tiff
 # while still touching the line with a corner point:
 pixelHalfDiagonal = 1.0/math.sqrt(2.0)
 
-def isTIFF(filename):
+def isTIFF(filename: str) -> bool:
     """Check if file name signifies a TIFF image."""
-    if(filename.casefold().endswith('.tif') or filename.casefold().endswith('.tiff')):
-        return True
-    else:
-        return False
+    if filename is not None:
+        if(filename.casefold().endswith('.tif') or filename.casefold().endswith('.tiff')):
+            return True
+    
+    return False
 
 def createImageStack(stack):
     """ Return an ImageStack object, if string is given. """
@@ -43,10 +44,10 @@ class ImageFile:
     """Fundamental image file properties used for input and output."""
 
     def __init__(self, filename=None, dataType=None, byteOrder=None, flipByteOrder=False):
-        self._filename  = None
-        self._dataType  = None
-        self._byteOrder = None   # 'little' or 'big' endian
-        self._flipByteOrder = False
+        self.filename  = None
+        self.dataType  = None
+        self.byteOrder = None   # 'little' or 'big' endian
+        self.flipByteOrder = False
 
         self.setFilename(filename)
         self.setDataType(dataType)
@@ -54,65 +55,65 @@ class ImageFile:
         self.setFlipByteOrder(flipByteOrder)
 
     def setFilename(self, filename):
-        self._filename = filename
+        self.filename = filename
 
-    def getFilename(self):
-        return self._filename
+    def getFilename(self) -> str:
+        return self.filename
 
-    def getFileBasename(self):
-        return os.path.basename(self._filename)
+    def getFileBasename(self) -> str:
+        return os.path.basename(self.filename)
 
-    def getDataType(self):
-        return self._dataType
+    def getDataType(self) -> str:
+        return self.dataType
 
-    def getByteOrder(self):
-        return self._byteOrder
+    def getByteOrder(self) -> str:
+        return self.byteOrder
 
-    def doFlipByteOrder(self):
-        return self._flipByteOrder
+    def doFlipByteOrder(self) -> bool:
+        return self.flipByteOrder
 
-    def setDataType(self, dataType):
+    def setDataType(self, dataType: str):
         """ Set data type, either from numpy.dtype object or string. """
         if isinstance(dataType, numpy.dtype):
-            self._dataType = dataType
+            self.dataType = dataType
         elif dataType == None:
-            self._dataType = None
+            self.dataType = None
         elif isinstance(dataType, str):  # from string
             dt = numpy.dtype(dataType)
             self.setDataType(dt)
         else:
             raise Exception("{} is generally not a valid data type.".format(dataType))
 
-    def setByteOrder(self, byteOrder):
+    def setByteOrder(self, byteOrder: str):
         """ Set endianness, do sanity check before. """
         if byteOrder=='little' or byteOrder=='big' or byteOrder==None:
-            self._byteOrder = byteOrder
+            self.byteOrder = byteOrder
         else:
             raise Exception("{} is not a valid byte order. Must be 'little' or 'big'.".format(byteOrder))
 
-    def setFlipByteOrder(self, flipByteOrder):
-        self._flipByteOrder = flipByteOrder
+    def setFlipByteOrder(self, flipByteOrder: bool):
+        self.flipByteOrder = flipByteOrder
 
-    def isInt(self):
+    def isInt(self) -> bool:
         """ True if data type is supported int data type. """
-        return numpy.issubdtype(self._dataType, numpy.integer)
+        return numpy.issubdtype(self.dataType, numpy.integer)
 
-    def isFloat(self):
+    def isFloat(self) -> bool:
         """ True if data type is supported float data type. """
-        return numpy.issubdtype(self._dataType, numpy.floating)
+        return numpy.issubdtype(self.dataType, numpy.floating)
 
 class ImageROI:
     """ Defines a region of interest: upper left and lower right corner. """
 
     def __init__(self, x0, y0, x1, y1):
-        self._x0 = 0
-        self._y0 = 0
-        self._x1 = 0
-        self._y1 = 0
+        self.x0 = 0
+        self.y0 = 0
+        self.x1 = 0
+        self.y1 = 0
         self.set(x0, y0, x1, y1)
 
     def __str__(self):
-        return "({x0}, {y0}) -- ({x1}, {y1})".format(x0=self._x0, y0=self._y0, x1=self._x1, y1=self._y1)
+        return "({x0}, {y0}) -- ({x1}, {y1})".format(x0=self.x0, y0=self.y0, x1=self.x1, y1=self.y1)
 
     def set(self, x0, y0, x1, y1):
         if x1 < x0:
@@ -121,56 +122,56 @@ class ImageROI:
         if y1 < y0:
             y0, y1 = y1, y0
 
-        self._x0 = int(x0)
-        self._y0 = int(y0)
-        self._x1 = int(x1)
-        self._y1 = int(y1)
+        self.x0 = int(x0)
+        self.y0 = int(y0)
+        self.x1 = int(x1)
+        self.y1 = int(y1)
 
     def x0(self):
-        return self._x0
+        return self.x0
 
     def y0(self):
-        return self._y0
+        return self.y0
 
     def x1(self):
-        return self._x1
+        return self.x1
 
     def y1(self):
-        return self._y1
+        return self.y1
 
     def width(self):
-        return self._x1 - self._x0
+        return self.x1 - self.x0
 
     def height(self):
-        return self._y1 - self._y0
+        return self.y1 - self.y0
 
     def area(self):
         return self.width()*self.height()
 
     def grow(self, amount):
         amount = int(amount)
-        self.set(self._x0-amount, self._y0-amount, self._x1+amount, self._y1+amount)
+        self.set(self.x0-amount, self.y0-amount, self.x1+amount, self.y1+amount)
 
 
 class Image:
     """ Stores pixel data, provides image processing routines. """
 
     def __init__(self, inputFile=None, outputFile=None):
-        self._inputFile  = None   # type ImageFile or string
-        self._outputFile = None   # type ImageFile or string
-        self._px         = 0  # 2D numpy array that contains the pixel values.
-        self._height     = 0  # Image height in px.
-        self._width      = 0  # Image width in px.
-        self._index      = 0  # Slice number in a 3D volume.
+        self.inputFile  = None   # type ImageFile or string
+        self.outputFile = None   # type ImageFile or string
+        self.px         = 0  # 2D numpy array that contains the pixel values.
+        self.height     = 0  # Image height in px.
+        self.width      = 0  # Image width in px.
+        self.index      = 0  # Slice number in a 3D volume.
 
-        self._rotation     = None
-        self._flipHorz     = False
-        self._flipVert     = False
+        self.rotation     = None
+        self.flipHorz     = False
+        self.flipVert     = False
 
-        self._n_accumulations = 0   # Counts number of accumulated pictures for averaging (mean)
-        self._boundingBoxX0   = 0   # After cropping: bounding box offset relative to original image.
-        self._boundingBoxY0   = 0
-        self._resolution      = 1   # After binning: new resolution relative to original image.
+        self.n_accumulations = 0   # Counts number of accumulated pictures for averaging (mean)
+        self.boundingBoxX0   = 0   # After cropping: bounding box offset relative to original image.
+        self.boundingBoxY0   = 0
+        self.resolution      = 1   # After binning: new resolution relative to original image.
 
         self.setInputFile(inputFile)
         self.setOutputFile(outputFile)
@@ -178,7 +179,7 @@ class Image:
     def __add__(self, other):
         if self.dimensionsMatch(other):
             result = copy.deepcopy(self)
-            result._px += other._px
+            result.px += other.px
             return result
         else:
             raise Exception("Cannot add images of different dimensions.")
@@ -186,7 +187,7 @@ class Image:
     def __sub__(self, other):
         if self.dimensionsMatch(other):
             result = copy.deepcopy(self)
-            result._px -= other._px
+            result.px -= other.px
             return result
         else:
             raise Exception("Cannot subtract images of different dimensions.")
@@ -194,7 +195,7 @@ class Image:
     def __mul__(self, other):
         if self.dimensionsMatch(other):
             result = copy.deepcopy(self)
-            result._px *= other._px
+            result.px *= other.px
             return result
         else:
             raise Exception("Cannot multiply images of different dimensions.")
@@ -202,8 +203,8 @@ class Image:
     def __truediv__(self, other):
         if self.dimensionsMatch(other):
             result = copy.deepcopy(self)
-            result._px[numpy.nonzero(other._px)] /= other._px[numpy.nonzero(other._px)]
-            result._px = numpy.where(other._px==0, 0, result._px)
+            result.px[numpy.nonzero(other.px)] /= other.px[numpy.nonzero(other.px)]
+            result.px = numpy.where(other.px==0, 0, result.px)
             return result
         else:
             raise Exception("Cannot divide images of different dimensions.")
@@ -211,45 +212,45 @@ class Image:
     def __floordiv__(self, other):
         if self.dimensionsMatch(other):
             result = copy.deepcopy(self)
-            result._px[numpy.nonzero(other._px)] //= other._px[numpy.nonzero(other._px)]
-            result = numpy.where(other._px==0, 0, result._px)
+            result.px[numpy.nonzero(other.px)] //= other.px[numpy.nonzero(other.px)]
+            result = numpy.where(other.px==0, 0, result.px)
             return result
         else:
             raise Exception("Cannot divide images of different dimensions.")
 
     def __del__(self):
         """ Delete pixel map upon object destruction. """
-        self._px =0
+        self.px =0
 
     def setInputFile(self, inputFile):
         """ Set input file properties from ImageFile object or string. """
         if isinstance(inputFile, ImageFile) or (inputFile == None):
-            self._inputFile = inputFile
+            self.inputFile = inputFile
         elif isinstance(inputFile, str):  # string given
-            self._inputFile = ImageFile(inputFile)
+            self.inputFile = ImageFile(inputFile)
         else:
             raise Exception("{} is not a valid file identifier.")
 
     def setOutputFile(self, outputFile):
         """ Set output file properties from ImageFile object or string. """
         if isinstance(outputFile, ImageFile) or (outputFile == None):
-            self._outputFile = outputFile
+            self.outputFile = outputFile
         elif isinstance(outputFile, str):  # string given
-            self._outputFile = ImageFile(outputFile)
+            self.outputFile = ImageFile(outputFile)
         else:
             raise Exception("{} is not a valid file identifier.")
 
     def setHeight(self, height):
         """ Set image height in px. """
-        self._height = height
+        self.height = height
 
     def setWidth(self, width):
         """ Set image width in px. """
-        self._width = width
+        self.width = width
 
     def setIndex(self, index):
         """ Set image index position in 3D stack (in px). """
-        self._index = index
+        self.index = index
 
     def shape(self, width, height, index=0, dataType=None, value=0):
         """ Re-format image to given dimensions and data type. """
@@ -280,20 +281,20 @@ class Image:
         if dataType == None:
             dataType = self.getInternalDataType()
 
-        self._px = 0
-        self._px = numpy.full((h, w), fill_value=value, dtype=dataType)
+        self.px = 0
+        self.px = numpy.full((h, w), fill_value=value, dtype=dataType)
    
     def getPixelMap(self):
-        return self._px
+        return self.px
 
     def setPixelMap(self, px):
-        self._px = px
+        self.px = px
 
     def setPixel(self, x, y, value):
-        self._px[y][x] = value
+        self.px[y][x] = value
 
     def getPixel(self, x, y):
-        return self._px[y][x]
+        return self.px[y][x]
 
     def isSet(self):
         """ Check if image has a valid width and height. """
@@ -314,92 +315,92 @@ class Image:
         return False
 
     def getWidth(self):
-        return self._width
+        return self.width
 
     def getHeight(self):
-        return self._height
+        return self.height
 
     def getNPixels(self):
         """ Calculate number of pixels in image. """
         return (self.getWidth() * self.getHeight())
 
     def getIndex(self):
-        return self._index
+        return self.index
 
     def getBoundingBoxX0(self):
-        return self._boundingBoxX0
+        return self.boundingBoxX0
 
     def getBoundingBoxY0(self):
-        return self._boundingBoxY0
+        return self.boundingBoxY0
 
     def getResolution(self):
-        return self._resolution
+        return self.resolution
 
     def getFileByteOrder(self):
-        return self._fileByteOrder
+        return self.fileByteOrder
 
     def max(self, ROI=None):
         """ Return maximum intensity in image. """
 
         # Take full image if no ROI is given
         if ROI==None:
-            return numpy.amax(self._px)
+            return numpy.amax(self.px)
 
-        return numpy.amax(self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.amax(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
 
     def min(self, ROI=None):
         """ Return minimum intensity in image. """
 
         # Take full image if no ROI is given
         if ROI==None:
-            return numpy.amin(self._px)
+            return numpy.amin(self.px)
 
-        return numpy.amin(self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.amin(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
 
     def mean(self, ROI=None):
         """ Return arithmetic mean of the image grey values. """
         
         # Take full image if no ROI is given
         if ROI==None:
-            return numpy.mean(self._px)
+            return numpy.mean(self.px)
 
-        return numpy.mean(self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.mean(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
 
     def stdDev(self, ROI=None):
         """ Return the standard deviation of the image grey values. """
 
         # Take full image if no ROI is given
         if ROI==None:
-            return numpy.std(self._px)
+            return numpy.std(self.px)
 
-        return numpy.std(self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.std(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
 
     def centerOfMass(self):
-        return ndimage.center_of_mass(self._px)
+        return ndimage.center_of_mass(self.px)
 
     def setRotation(self, rotation):
-        self._rotation = rotation
+        self.rotation = rotation
 
     def getRotation(self):
-        return self._rotation
+        return self.rotation
 
     def rot90(self):
         if self.isSet():
-            self._px = numpy.require(numpy.rot90(self._px, k=1), requirements=['C_CONTIGUOUS'])
-            self._width, self._height = self._height, self._width
+            self.px = numpy.require(numpy.rot90(self.px, k=1), requirements=['C_CONTIGUOUS'])
+            self.width, self.height = self.height, self.width
 
     def rot180(self):
         if self.isSet():
-            self._px = numpy.require(numpy.rot90(self._px, k=2), requirements=['C_CONTIGUOUS'])
+            self.px = numpy.require(numpy.rot90(self.px, k=2), requirements=['C_CONTIGUOUS'])
 
     def rot270(self):
         if self.isSet():
-            self._px = numpy.require(numpy.rot90(self._px, k=-1), requirements=['C_CONTIGUOUS'])
-            self._width, self._height = self._height, self._width
+            self.px = numpy.require(numpy.rot90(self.px, k=-1), requirements=['C_CONTIGUOUS'])
+            self.width, self.height = self.height, self.width
 
     def rotate(self, rotation):
         if rotation == None:
-            rotation = self._rotation
+            rotation = self.rotation
         else:
             self.setRotation(rotation)
 
@@ -411,24 +412,24 @@ class Image:
             self.rot270()
 
     def flipHorizontal(self):
-        self._flipHorz = not self._flipHorz
+        self.flipHorz = not self.flipHorz
         if self.isSet():
-            self._px = numpy.require(numpy.fliplr(self._px), requirements=['C_CONTIGUOUS'])
+            self.px = numpy.require(numpy.fliplr(self.px), requirements=['C_CONTIGUOUS'])
 
     def flipVertical(self):
-        self._flipVert = not self._flipVert
+        self.flipVert = not self.flipVert
         if self.isSet():
-            self._px = numpy.require(numpy.flipud(self._px), requirements=['C_CONTIGUOUS'])
+            self.px = numpy.require(numpy.flipud(self.px), requirements=['C_CONTIGUOUS'])
 
     def setFlip(self, horz=False, vert=False):
-        self._flipHorz = horz
-        self._flipVert = vert
+        self.flipHorz = horz
+        self.flipVert = vert
 
     def getHorizontalFlip(self):
-        return self._flipHorz
+        return self.flipHorz
 
     def getVerticalFlip(self):
-        return self._flipVert
+        return self.flipVert
 
     def flip(self, horizontal=False, vertical=False):
         if horizontal:
@@ -442,7 +443,7 @@ class Image:
 
     def containsPixelValue(self, value):
         """ Check if image contains a certain grey value. """
-        return numpy.any(self._px == value)
+        return numpy.any(self.px == value)
 
     def dimensionsMatch(self, img):
         """ Check if image dimensions match with another image. """
@@ -458,7 +459,7 @@ class Image:
     def read(self, filename=None):
         """ Read TIFF or RAW, decide by file name. """
         if filename == None:
-            filename = self._inputFile.getFilename()
+            filename = self.inputFile.getFilename()
         else:
             self.setInputFile(filename)
 
@@ -466,90 +467,90 @@ class Image:
         if filename == None:
             return
 
-        if isTIFF(self._inputFile.getFilename()):
-            self.readTIFF(self._inputFile.doFlipByteOrder())
+        if isTIFF(self.inputFile.getFilename()):
+            self.readTIFF(self.inputFile.doFlipByteOrder())
         else:
-            self.readRAW(self.getWidth(), self.getHeight(), self.getIndex(), self._inputFile.getDataType(), self._inputFile.getByteOrder())
+            self.readRAW(self.getWidth(), self.getHeight(), self.getIndex(), self.inputFile.getDataType(), self.inputFile.getByteOrder())
 
     def readTIFF(self, flipByteOrder=False, obeyOrientation=True):
         """ Import TIFF file. """
-        if os.path.isfile(self._inputFile.getFilename()):
-            basename = self._inputFile.getFileBasename()
+        if os.path.isfile(self.inputFile.getFilename()):
+            basename = self.inputFile.getFileBasename()
             
             tiffimg = tiff()
-            tiffimg.read(self._inputFile.getFilename())
+            tiffimg.read(self.inputFile.getFilename())
             img = tiffimg.imageData(subfile=0, channel=0, obeyOrientation=obeyOrientation)  # get a greyscale image from TIFF subfile 0
             width = tiffimg.getWidth(subfile=0)
             height = tiffimg.getHeight(subfile=0)
 
-            self._inputFile.setDataType(img.dtype) 
+            self.inputFile.setDataType(img.dtype) 
 
             if flipByteOrder:
                 img.byteswap(inplace=True)
 
             # Convert to internal data type for either int or float:
-            self._px = img.astype(self.getInternalDataType())
+            self.px = img.astype(self.getInternalDataType())
 
             # Check if array in memory has the dimensions stated in the TIFF file:
-            if((height == len(self._px)) and (width == len(self._px[0]))):
+            if((height == len(self.px)) and (width == len(self.px[0]))):
                 self.setHeight(height)
                 self.setWidth(width)
             else:
-                raise Exception("Width ({}px) and height ({}px) from the TIFF header do not match the data width ({}px) and height ({}px) that has been read.".format(width, height, len(self._px[0]), len(self._px)))
+                raise Exception("Width ({}px) and height ({}px) from the TIFF header do not match the data width ({}px) and height ({}px) that has been read.".format(width, height, len(self.px[0]), len(self.px)))
         else:
-            raise Exception("Can't find " + self._inputFile.getFilename())
+            raise Exception("Can't find " + self.inputFile.getFilename())
 
     def readRAW(self, width, height, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0):
         """ Import RAW image file. """
-        if not isinstance(self._inputFile, ImageFile):
+        if not isinstance(self.inputFile, ImageFile):
             raise Exception("No valid input file defined.")
 
         if dataType == None:
-            dataType = self._inputFile.getDataType()
+            dataType = self.inputFile.getDataType()
         else:
-            self._inputFile.setDataType(dataType)
+            self.inputFile.setDataType(dataType)
 
         if byteOrder == None:
-            byteOrder = self._inputFile.getByteOrder()
+            byteOrder = self.inputFile.getByteOrder()
             if byteOrder == None:
                 byteOrder = sys.byteorder
 
-        self._inputFile.setByteOrder(byteOrder)
+        self.inputFile.setByteOrder(byteOrder)
 
-        if os.path.isfile(self._inputFile.getFilename()):
-            self.shape(width, height, index, self._inputFile.getDataType())
+        if os.path.isfile(self.inputFile.getFilename()):
+            self.shape(width, height, index, self.inputFile.getDataType())
 
-            basename = self._inputFile.getFileBasename()
+            basename = self.inputFile.getFileBasename()
             #log("Reading RAW file {}...".format(basename))
 
-            byteOffset = fileHeaderSize + (index+1)*imageHeaderSize + index*(self.getNPixels() * self._inputFile.getDataType().itemsize)
+            byteOffset = fileHeaderSize + (index+1)*imageHeaderSize + index*(self.getNPixels() * self.inputFile.getDataType().itemsize)
 
-            with open(self._inputFile.getFilename(), 'rb') as f:
+            with open(self.inputFile.getFilename(), 'rb') as f:
                 f.seek(byteOffset)
-                self._px = numpy.fromfile(f, dtype=self._inputFile.getDataType(), count=self.getNPixels(), sep="")
+                self.px = numpy.fromfile(f, dtype=self.inputFile.getDataType(), count=self.getNPixels(), sep="")
 
-            if len(self._px) > 0:
+            if len(self.px) > 0:
                 # Treat endianness. If the native byte order of the system is different
                 # than the given file byte order, the bytes are swapped in memory
                 # so that it matches the native byte order.
                 nativeEndian = sys.byteorder
                 if nativeEndian == 'little':
                     if byteOrder == 'big':
-                        self._px.byteswap(inplace=True)
+                        self.px.byteswap(inplace=True)
                 elif nativeEndian == 'big':
                     if byteOrder == 'little':
-                        self._px.byteswap(inplace=True)
+                        self.px.byteswap(inplace=True)
 
                 # Convert to internal data type:
-                self._px = self._px.astype(self.getInternalDataType())
+                self.px = self.px.astype(self.getInternalDataType())
 
                 # Reshape to 2D array:
-                self._px = numpy.reshape(self._px, (height, width))
+                self.px = numpy.reshape(self.px, (height, width))
             else:
-                raise Exception("Error reading RAW file {f}.\nGot no data for index {idx}.".format(f=self._inputFile.getFilename(), idx=index))
+                raise Exception("Error reading RAW file {f}.\nGot no data for index {idx}.".format(f=self.inputFile.getFilename(), idx=index))
 
         else:
-            raise Exception("Can't find " + self._inputFile.getFilename())
+            raise Exception("Can't find " + self.inputFile.getFilename())
 
     def getDataTypeClippingBoundaries(self, dataType):
         # Get clipping boundaries if grey values have to be
@@ -577,41 +578,41 @@ class Image:
 
     def save(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True):
         """ Save image as TIFF or RAW. """
-        if not isinstance(self._outputFile, ImageFile):
-            self._outputFile = ImageFile()
+        if not isinstance(self.outputFile, ImageFile):
+            self.outputFile = ImageFile()
 
         if (filename == None) or (filename == ""):
-            filename = self._outputFile.getFilename()
+            filename = self.outputFile.getFilename()
             if (filename == None) or (filename == ""):
                 raise Exception("No output file name specified.")
         else:
-            self._outputFile.setFilename(filename)
+            self.outputFile.setFilename(filename)
 
         if dataType == None:
-            dataType = self._outputFile.getDataType()
+            dataType = self.outputFile.getDataType()
             if dataType == None:
-                if isinstance(self._inputFile, ImageFile):
-                    dataType = self._inputFile.getDataType()
+                if isinstance(self.inputFile, ImageFile):
+                    dataType = self.inputFile.getDataType()
                     if(dataType != None):
-                        self._outputFile.setDataType(dataType)
+                        self.outputFile.setDataType(dataType)
                     else:
                         raise Exception("Please specify a data type for the output file: {filename}".format(filename=filename))
                 else:
                     raise Exception("Please specify a data type for the output file: {filename}".format(filename=filename))
         else:
-            self._outputFile.setDataType(dataType)
+            self.outputFile.setDataType(dataType)
 
         if byteOrder == None:
-            byteOrder = self._outputFile.getByteOrder()
+            byteOrder = self.outputFile.getByteOrder()
             if byteOrder == None:
-                if isinstance(self._inputFile, ImageFile):
-                    byteOrder = self._inputFile.getByteOrder()
-                    self._outputFile.setByteOrder(byteOrder)
+                if isinstance(self.inputFile, ImageFile):
+                    byteOrder = self.inputFile.getByteOrder()
+                    self.outputFile.setByteOrder(byteOrder)
 
             if byteOrder == None:
                 byteOrder = "little"
 
-        self._outputFile.setByteOrder(byteOrder)
+        self.outputFile.setByteOrder(byteOrder)
 
         if isTIFF(filename):
             self.saveTIFF(filename, dataType, clipValues)
@@ -633,9 +634,9 @@ class Image:
                 tiffdata = None
                 if clipValues:  # Clipping
                     clipMin, clipMax = self.getDataTypeClippingBoundaries(dataType)
-                    tiffdata = numpy.clip(self._px, clipMin, clipMax).astype(dataType)
+                    tiffdata = numpy.clip(self.px, clipMin, clipMax).astype(dataType)
                 else:  # No clipping or float
-                    tiffdata = self._px.astype(dataType)
+                    tiffdata = self.px.astype(dataType)
 
                 tiffimg = tiff()
                 tiffimg.set(tiffdata)
@@ -656,7 +657,7 @@ class Image:
                     byteOrder = "little"
 
                 # Reshape to 1D array and convert to file data type (from internal 64bit data type)
-                outBytes = numpy.reshape(self._px, int(self._width)*int(self._height))
+                outBytes = numpy.reshape(self.px, int(self.width)*int(self.height))
 
                 if clipValues:  # Clipping
                     clipMin, clipMax = self.getDataTypeClippingBoundaries(dataType)
@@ -680,7 +681,7 @@ class Image:
                     if byteOrder == "big":
                         shortEndian = "BE"
 
-                    infoString = "_{width}x{height}_{dataType}_{endian}".format(width=self._width, height=self._height, dataType=dataType, endian=shortEndian)
+                    infoString = "_{width}x{height}_{dataType}_{endian}".format(width=self.width, height=self.height, dataType=dataType, endian=shortEndian)
 
                     basename, extension = os.path.splitext(filename)
                     filename = basename + infoString + extension
@@ -703,7 +704,7 @@ class Image:
     def calcRelativeShift(self, referenceImage):
         if self.dimensionsMatch(referenceImage):
             # Convolution of this pixmap with the vertically and horizontally mirrored reference pixmap
-            img1 = self._px - int(numpy.mean(self._px))
+            img1 = self.px - int(numpy.mean(self.px))
             img2 = referenceImage.getPixelMap() - numpy.mean(referenceImage.getPixelMap())
 
             convolution = signal.fftconvolve(img1, img2[::-1,::-1], mode='same')
@@ -715,10 +716,10 @@ class Image:
             raise Exception("Dimensions of image ({}, {}) and reference image ({}, {}) must match for convolution.".format(self.getWidth(), self.getHeight(), referenceImage.getWidth(), referenceImage.getHeight()))
 
     def getShiftedPixmap(self, xShift, yShift):
-        return ndimage.interpolation.shift(self._px, (int(xShift), int(yShift)), mode='nearest')
+        return ndimage.interpolation.shift(self.px, (int(xShift), int(yShift)), mode='nearest')
 
     def accumulate(self, addImg, compensateShift=False, roiX0=None, roiY0=None, roiX1=None, roiY1=None):
-        if (compensateShift == True) and (self._n_accumulations > 0):
+        if (compensateShift == True) and (self.n_accumulations > 0):
             shift = (0, 0)
 
             if (roiX0 == None) or (roiY0 == None) or (roiX1 == None) or (roiY1 == None):
@@ -737,29 +738,29 @@ class Image:
             shiftedPixMap = addImg.getShiftedPixmap(shift[1], shift[0])
             addImg.setPixelMap(shiftedPixMap)
 
-        if self._n_accumulations == 0:
+        if self.n_accumulations == 0:
             self.setPixelMap(addImg.getPixelMap())
         else:
             if (self.dimensionsMatch(addImg)):
-                self._px += addImg.getPixelMap()
+                self.px += addImg.getPixelMap()
             else:
-                raise Exception("Current pixel dimensions ({currentX}x{currentY}) don't match dimensions of new file ({newX}x{newY}): {filename}".format(currentX=self.getWidth(), currentY=self.getHeight(), newX=addImg.getWidth(), newY=addImg.getHeight(), filename=addImg._inputFile.getFilename()))
+                raise Exception("Current pixel dimensions ({currentX}x{currentY}) don't match dimensions of new file ({newX}x{newY}): {filename}".format(currentX=self.getWidth(), currentY=self.getHeight(), newX=addImg.getWidth(), newY=addImg.getHeight(), filename=addImg.inputFile.getFilename()))
 
-        self._n_accumulations += 1
+        self.n_accumulations += 1
 
     def resetAccumulations(self):
-        self._n_accumulations = 0
+        self.n_accumulations = 0
 
     def averageAccumulations(self):
-        if self._n_accumulations > 1:
-            self._px = self._px / self._n_accumulations
-            log("Accumulated and averaged {} images.".format(self._n_accumulations))
-            self._n_accumulations = 1
+        if self.n_accumulations > 1:
+            self.px = self.px / self.n_accumulations
+            log("Accumulated and averaged {} images.".format(self.n_accumulations))
+            self.n_accumulations = 1
 
     def applyDark(self, dark):
         """ Apply dark image correction (offset). """
         if self.dimensionsMatch(dark):
-            self._px = self._px - dark.getPixelMap()
+            self.px = self.px - dark.getPixelMap()
         else:
             raise Exception("The dimensions of the image do not match the dimensions of the dark image for offset correction.")
 
@@ -767,15 +768,15 @@ class Image:
         """ Apply flat field correction (free beam white image / gain correction). """
         if self.dimensionsMatch(ref):
             if(not ref.containsPixelValue(0)):  # avoid division by zero
-                self._px = (self._px / ref.getPixelMap()) * float(rescaleFactor)
+                self.px = (self.px / ref.getPixelMap()) * float(rescaleFactor)
             else: # avoid division by zero
-                self._px = (self._px / numpy.clip(ref.getPixelMap(), 0.1, None)) * float(rescaleFactor)
+                self.px = (self.px / numpy.clip(ref.getPixelMap(), 0.1, None)) * float(rescaleFactor)
         else:
             raise Exception("The dimensions of the image do not match the dimensions of the flat image for flat field correction.")
 
     def verticalProfile(self, xPos):
         if xPos < self.getWidth():
-            return numpy.ravel(self._px[:,xPos])
+            return numpy.ravel(self.px[:,xPos])
         else:
             raise Exception("Requested position for vertical profile is out of bounds: x={} in an image that has {} rows.".format(xPos, self.getWidth()))
 
@@ -784,14 +785,14 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
 
         profile = slc.mean(axis=1)
         return numpy.ravel(profile)
 
     def horizontalProfile(self, yPos):
         if yPos < self.getHeight():
-            return self._px[yPos]
+            return self.px[yPos]
         else:
             raise Exception("Requested position for horizontal profile is out of bounds: y={} in an image that has {} rows.".format(yPos, self.getHeight()))
 
@@ -800,7 +801,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
 
         profile = slc.mean(axis=0)
         return profile
@@ -819,15 +820,15 @@ class Image:
         """
 
         if seedPoint != None:
-            seedX = int(round(seedPoint._x))
-            seedY = int(round(seedPoint._y))
+            seedX = int(round(seedPoint.x))
+            seedY = int(round(seedPoint.y))
         else:
             # Start at point p1 of shape:
-            seedX = int(shape._points[0]._x)
-            seedY = int(shape._points[0]._y)
+            seedX = int(shape.points[0].x)
+            seedY = int(shape.points[0].y)
 
         # Make a map of visited pixels. A visited pixel will get value 1:
-        visited = numpy.zeros_like(a=self._px, dtype=numpy.dtype('uint8'))
+        visited = numpy.zeros_like(a=self.px, dtype=numpy.dtype('uint8'))
 
         # Collect all points that belong to the shape in a list:
         contributions = []
@@ -941,12 +942,12 @@ class Image:
         # Shift by half a pixel, because they must represent
         # pixel centers in shape coordinate system. Also,
         # origin should be the bin center:
-        roi_gridx = roi_gridx + 0.5 - binCenter._x
-        roi_gridy = roi_gridy + 0.5 - binCenter._y
+        roi_gridx = roi_gridx + 0.5 - binCenter.x
+        roi_gridy = roi_gridy + 0.5 - binCenter.y
 
         # Transform coordinates into bin coordinate system (s and t axes):
-        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit._x + roi_gridy*sUnit._y)
-        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit._x + roi_gridy*tUnit._y)
+        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x + roi_gridy*sUnit.y)
+        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x + roi_gridy*tUnit.y)
 
         # Set those that are too far from bin center in s and t direction to zero:
         bin_grid_dist_s = numpy.where(bin_grid_dist_s < sBoundary, bin_grid_dist_s, 0)
@@ -959,7 +960,7 @@ class Image:
 
         weights = weightFunction(pixels_x, pixels_y, binShape)   # vectorized getPixelWeight()
 
-        gvWeighted = self._px[pixels_y,pixels_x] * weights
+        gvWeighted = self.px[pixels_y,pixels_x] * weights
         weightSum = numpy.sum(weights)
         meanGV = 0
         if weightSum > 0:
@@ -990,12 +991,12 @@ class Image:
         # Shift by half a pixel, because they must represent
         # pixel centers in shape coordinate system. Also,
         # origin should be the bin center:
-        roi_gridx = roi_gridx + 0.5 - binCenter._x
-        roi_gridy = roi_gridy + 0.5 - binCenter._y
+        roi_gridx = roi_gridx + 0.5 - binCenter.x
+        roi_gridy = roi_gridy + 0.5 - binCenter.y
 
         # Transform coordinates into bin coordinate system (s and t axes):
-        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit._x + roi_gridy*sUnit._y)
-        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit._x + roi_gridy*tUnit._y)
+        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x + roi_gridy*sUnit.y)
+        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x + roi_gridy*tUnit.y)
 
         # Set those that are too far from bin center in s and t direction to zero:
         #bin_grid_dist_s = numpy.where(bin_grid_dist_s < sBoundary, bin_grid_dist_s, 0)
@@ -1010,7 +1011,7 @@ class Image:
 
         weights = weightFunction(pixels_x, pixels_y, binShape)   # vectorized getPixelWeight()
 
-        gvWeighted = self._px[pixels_y,pixels_x] * weights
+        gvWeighted = self.px[pixels_y,pixels_x] * weights
         weightSum = numpy.sum(weights)
         meanGV = 0
         if weightSum > 0:
@@ -1116,8 +1117,8 @@ class Image:
         t.makeUnitVector()
 
         # Convert to 2D vectors:
-        s = Vector2D(s._x, s._y)
-        t = Vector2D(t._x, t._y)
+        s = Vector2D(s.x, s.y)
+        t = Vector2D(t.x, t.y)
 
         tUnit = copy.deepcopy(t)
 
@@ -1163,8 +1164,8 @@ class Image:
             sPos = resolution*b
 
             # Construct a vector to the left point of the bin on the s axis:
-            rectPos.setx(sUnit._x)
-            rectPos.sety(sUnit._y)
+            rectPos.setx(sUnit.x)
+            rectPos.sety(sUnit.y)
             rectPos.scale(sPos)
             rectPos.add(origin)
 
@@ -1193,7 +1194,7 @@ class Image:
                 
     def clip(self, lower, upper):
         """ Clip grey values to given boundary interval. """
-        self._px = numpy.clip(self._px, lower, upper)
+        self.px = numpy.clip(self.px, lower, upper)
 
     def crop(self, x0, y0, x1, y1):
         """ Crop to given box (x0, y0)--(x1, y1). """
@@ -1206,12 +1207,12 @@ class Image:
         if y1 > self.getHeight()  or  x1 > self.getWidth():
             raise Exception("Trying to crop beyond image boundaries.")
 
-        self._boundingBoxX0 += x0
-        self._boundingBoxY0 += y0
+        self.boundingBoxX0 += x0
+        self.boundingBoxY0 += y0
 
-        self._px = self._px[int(y0):int(y1),int(x0):int(x1)]   # Array has shape [y][x]
-        self._width  = int(x1 - x0)
-        self._height = int(y1 - y0)
+        self.px = self.px[int(y0):int(y1),int(x0):int(x1)]   # Array has shape [y][x]
+        self.width  = int(x1 - x0)
+        self.height = int(y1 - y0)
 
     def cropBorder(self, top=0, bottom=0, left=0, right=0):
         """ Crop away given border around image. """
@@ -1283,24 +1284,24 @@ class Image:
                 #log("Cropping before binning because of nonzero overhang: (" + str(overhangX) + ", " + str(overhangY) + ")")
                 self.crop(0, 0, self.getWidth()-int(overhangX), self.getHeight()-int(overhangY))
 
-            newWidth  = self._width // binSizeX
-            newHeight = self._height // binSizeY
+            newWidth  = self.width // binSizeX
+            newHeight = self.height // binSizeY
 
             # Shift pixel values that need to be binned together into additional axes:
             binshape = (newHeight, binSizeY, newWidth, binSizeX)
-            self._px = self._px.reshape(binshape)
+            self.px = self.px.reshape(binshape)
             
             # Perform binning operation along binning axes (axis #3 and #1).
             # These axes will be collapsed to contain only the result
             # of the binning operation.
             if operation == "mean":
-                self._px = self._px.mean(axis=(3, 1))
+                self.px = self.px.mean(axis=(3, 1))
             elif operation == "sum":
-                self._px = self._px.sum(axis=(3, 1))
+                self.px = self.px.sum(axis=(3, 1))
             elif operation == "max":
-                self._px = self._px.max(axis=(3, 1))
+                self.px = self.px.max(axis=(3, 1))
             elif operation == "min":
-                self._px = self._px.min(axis=(3, 1))
+                self.px = self.px.min(axis=(3, 1))
             elif operation == None:
                 raise Exception("No binning operation specified.")
             else:
@@ -1310,49 +1311,49 @@ class Image:
             self.setHeight(newHeight)
 
             # Resolution assumes isotropic pixels...
-            self._resolution *= binSizeX
+            self.resolution *= binSizeX
 
     def addImage(self, other):
         """ Add pixel values from another image to this image. """
         if self.dimensionsMatch(other):
-            self._px = self._px + other.getPixelMap()
+            self.px = self.px + other.getPixelMap()
 
     def subtractImage(self, other):
         """ Subtract pixel values of another image from this image. """
         if self.dimensionsMatch(other):
-            self._px = self._px - other.getPixelMap()
+            self.px = self.px - other.getPixelMap()
 
     def multiplyImage(self, other):
         """ Multiply pixel values from another image to this image. """
         if self.dimensionsMatch(other):
-            self._px = self._px * other.getPixelMap()
+            self.px = self.px * other.getPixelMap()
 
     def divideImage(self, other):
         """ Multiply pixel values by another image. """
         if self.dimensionsMatch(other):
-            self._px = self._px / other.getPixelMap()
+            self.px = self.px / other.getPixelMap()
 
     def square(self):
-        self._px *= self._px
+        self.px *= self.px
 
     def sqrt(self):
-        self._px = numpy.sqrt(self._px)
+        self.px = numpy.sqrt(self.px)
 
     def add(self, value):
-        self._px += value
+        self.px += value
 
     def subtract(self, value):
-        self._px -= value
+        self.px -= value
 
     def multiply(self, value):
-        self._px *= value
+        self.px *= value
 
     def divide(self, value):
         """ Divide all pixels values by given scalar value. """
-        self._px = self._px / float(value)
+        self.px = self.px / float(value)
 
     def invert(self, min=0, maximum=65535):
-        self._px = maximum - self._px
+        self.px = maximum - self.px
 
     def renormalize(self, newMin=0, newMax=1, currentMin=None, currentMax=None, ROI=None):
         """Renormalization of grey values from (currentMin, Max) to (newMin, Max) """
@@ -1361,7 +1362,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
 
         if currentMin == None:
             currentMin = slc.min()
@@ -1371,10 +1372,10 @@ class Image:
 
         if(currentMax != currentMin):
             slc = (slc-currentMin)*(newMax-newMin)/(currentMax-currentMin)+newMin
-            self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+            self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
         else:
             slc = slc*0
-            self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+            self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
             #raise Exception("Division by zero upon renormalization: currentMax=currentMin={}".format(currentMax))
 
     def map_lookup(self, gv, gv_from, gv_to):
@@ -1451,13 +1452,13 @@ class Image:
 
                 inverse_stepsize = 1.0 / gvStepsize
 
-                maxIndices = numpy.full(shape=numpy.shape(self._px), fill_value=bins-1, dtype=numpy.uint32)
-                bin_indices = numpy.minimum(maxIndices, numpy.floor((self._px - gvMin) * inverse_stepsize).astype(numpy.uint32))
+                maxIndices = numpy.full(shape=numpy.shape(self.px), fill_value=bins-1, dtype=numpy.uint32)
+                bin_indices = numpy.minimum(maxIndices, numpy.floor((self.px - gvMin) * inverse_stepsize).astype(numpy.uint32))
 
                 m_px = slopes[bin_indices]
                 n_px = offsets[bin_indices]
 
-                self._px = m_px*self._px + n_px
+                self.px = m_px*self.px + n_px
             else:
                 raise Exception("image.map(): At least two mappings are required in the grey value assignment lists.")
         else:
@@ -1470,7 +1471,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
 
         mean  = numpy.mean(slc)
         sigma = numpy.std(slc)
@@ -1488,17 +1489,17 @@ class Image:
         """
 
         rng = default_rng()
-        self._px += rng.normal(loc=0, scale=sigma, size=numpy.shape(self._px))
+        self.px += rng.normal(loc=0, scale=sigma, size=numpy.shape(self.px))
 
     def smooth_gaussian(self, sigma):
-        self._px = ndimage.gaussian_filter(input=self._px, sigma=sigma, order=0, )
+        self.px = ndimage.gaussian_filter(input=self.px, sigma=sigma, order=0, )
 
     def applyMedian(self, kernelSize=1):
         if kernelSize > 1:
-            self._px = ndimage.median_filter(self._px, int(kernelSize))
+            self.px = ndimage.median_filter(self.px, int(kernelSize))
 
     def applyThreshold(self, threshold, lower=0, upper=65535):
-        self._px = numpy.where(self._px > threshold, upper, lower).astype(self.getInternalDataType())
+        self.px = numpy.where(self.px > threshold, upper, lower).astype(self.getInternalDataType())
 
     def renormalizeToMeanAndStdDev(self, mean, stdDev, ROI=None):
         """ Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000 """
@@ -1507,12 +1508,12 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = ((self._px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] - mean)/stdDev)*30000 + 30000
+        self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = ((self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] - mean)/stdDev)*30000 + 30000
 
     def edges_sobel(self):
         # Sobel edge detection:
-        edgesX = ndimage.sobel(self._px, axis=0, mode='nearest')
-        edgesY = ndimage.sobel(self._px, axis=1, mode='nearest')
+        edgesX = ndimage.sobel(self.px, axis=0, mode='nearest')
+        edgesY = ndimage.sobel(self.px, axis=1, mode='nearest')
         return numpy.sqrt(edgesX**2 + edgesY**2)
 
     def edges_canny(self):
@@ -1521,24 +1522,24 @@ class Image:
         from skimage.feature import canny   # Canny edge detection
 
         # Canny edge detection. Needs 'scikit-image' package.  from skimage import feature
-        return canny(self._px)
+        return canny(self.px)
 
     def filter_edges(self, mode='sobel'):
         if(mode == 'sobel'):
-            self._px = self.edges_sobel()
+            self.px = self.edges_sobel()
         elif(mode == 'canny'):
-            self._px = self.edges_canny()
+            self.px = self.edges_canny()
         else:
             raise Exception("Valid edge detection modes: 'sobel'")
         
         # Rescale:
-        self._px = self._px.astype(self.getInternalDataType())
+        self.px = self.px.astype(self.getInternalDataType())
         #self.thresholding(0)    # black=0, white=65535
 
     def cleanPatches(self, min_patch_area=None, max_patch_area=None, remove_border_patches=False, aspect_ratio_tolerance=None):
         iterationStructure = ndimage.generate_binary_structure(rank=2, connectivity=2)  # apply to rank=2D array, only nearest neihbours (connectivity=1) or next nearest neighbours as well (connectivity=2)
 
-        labelField, nPatches = ndimage.label(self._px, iterationStructure)
+        labelField, nPatches = ndimage.label(self.px, iterationStructure)
         nCleaned   = 0
         nRemaining = 0
         patchGeometry = []
@@ -1595,7 +1596,7 @@ class Image:
                 # Add patch center as its coordinate:
                 patchGeometry.append(((right+left)/2.0, (bottom+top)/2.0, right-left, bottom-top))
 
-                self._px[patchCoordinates] = 1
+                self.px[patchCoordinates] = 1
                 nRemaining += 1
 
         return nPatches, nCleaned, nRemaining, patchGeometry
@@ -1607,7 +1608,7 @@ class Image:
         # Journal of Optimization Theory and Applications, 1993, Volume 76, Issue 2, pp 381-388
         # https://doi.org/10.1007/BF00939613
 
-        coordinates = numpy.nonzero(self._px)
+        coordinates = numpy.nonzero(self.px)
         circlePixelsX = coordinates[1]
         circlePixelsY = coordinates[0]
         nPoints = len(circlePixelsX)
@@ -1696,7 +1697,7 @@ class Image:
             # Accumulate intensity profile along 'avgLines' lines around the center line:
             yData = numpy.zeros(self.getWidth(), dtype=self.getInternalDataType())
             for l in range(startLine, stopLine+1):
-                yData += self._px[l,:]
+                yData += self.px[l,:]
 
             xData = numpy.linspace(0, self.getWidth()-1, self.getWidth())
 
@@ -1710,7 +1711,7 @@ class Image:
             # Accumulate intensity profile along 'avgLines' lines around the center line:
             yData = numpy.zeros(self.getHeight(), dtype=self.getInternalDataType())
             for l in range(startLine, stopLine+1):
-                yData += self._px[:,l]
+                yData += self.px[:,l]
 
             xData = numpy.linspace(0, self.getHeight()-1, self.getHeight())
 
@@ -1738,60 +1739,60 @@ class ImageStack:
         a collection of single 2D RAW or TIFF files. """
 
     def __init__(self, filePattern=None, width=None, height=None, dataType=None, byteOrder=None, rawFileHeaderSize=0, rawImageHeaderSize=0, slices=None, startNumber=0, flipByteOrder=False):
-        self._files = ImageFile(filePattern, dataType, byteOrder, flipByteOrder)
+        self.files = ImageFile(filePattern, dataType, byteOrder, flipByteOrder)
 
         # Has this stack already been built?
-        self._built = False
+        self.built = False
 
-        self._width       = width
-        self._height      = height
-        self._nSlices     = slices   # number of slices in stack
-        self._startNumber = startNumber
+        self.width       = width
+        self.height      = height
+        self.nSlices     = slices   # number of slices in stack
+        self.startNumber = startNumber
 
         # A RAW chunk can contain an overall file header, and
         # each image in the stack can contain an image header.
-        self._rawFileHeaderSize = rawFileHeaderSize
-        self._rawImageHeaderSize = rawImageHeaderSize
+        self.rawFileHeaderSize = rawFileHeaderSize
+        self.rawImageHeaderSize = rawImageHeaderSize
 
-        self._isVolumeChunk = False    # Is this a volume chunk or is a file list provided?
+        self.isVolumeChunk = False    # Is this a volume chunk or is a file list provided?
 
-        self._fileList = []
-        self._fileNumbers = []   # store original stack number in file name
+        self.fileList = []
+        self.fileNumbers = []   # store original stack number in file name
 
     def addStack(self, other):
-        if (self._width == other._width) and (self._height == other._height):
-            self._nSlices += other._nSlices
-            self._fileList.extend(other._fileList)
-            self._fileNumbers.extend(other._fileNumbers)
+        if (self.width == other.width) and (self.height == other.height):
+            self.nSlices += other.nSlices
+            self.fileList.extend(other.fileList)
+            self.fileNumbers.extend(other.fileNumbers)
         else:
             raise Exception("Error adding stack: image dimensions don't match.")
 
     def nSlices(self):
-        return self._nSlices
+        return self.nSlices
 
     def isVolumeChunk(self):
-        return self._isVolumeChunk
+        return self.isVolumeChunk
 
     def setVolumeChunk(self, isVolumeChunk):
-        self._isVolumeChunk = isVolumeChunk
+        self.isVolumeChunk = isVolumeChunk
 
     def getFileByteOrder(self):
-        return self._files.getByteOrder()
+        return self.files.getByteOrder()
 
     def setFileByteOrder(self, byteOrder):
-        self._files.setByteOrder(byteOrder)
+        self.files.setByteOrder(byteOrder)
 
     def getFileDataType(self):
-        return self._files.getDataType()
+        return self.files.getDataType()
 
     def setFileDataType(self, dataType):
-        self._files.setDataType(dataType)
+        self.files.setDataType(dataType)
 
     def doFlipByteOrder(self):
-        return self._files.doFlipByteOrder()
+        return self.files.doFlipByteOrder()
 
     def setFlipByteOrder(self, flipByteOrder):
-        self._files.setFlipByteOrder(flipByteOrder)
+        self.files.setFlipByteOrder(flipByteOrder)
 
     def fileStackInfo(self, filenameString):
         """ Split file pattern into lead & trail text, number of expected digits. """
@@ -1824,11 +1825,11 @@ class ImageStack:
 
     def buildStack(self):
         """ Build list of files that match given file name pattern. """
-        self._fileList = []
-        self._fileNumbers = []
+        self.fileList = []
+        self.fileNumbers = []
 
         # Treat projection files
-        inFilePattern = self._files.getFilename()
+        inFilePattern = self.files.getFilename()
         inputFolder  = os.path.dirname(inFilePattern)
         projBasename = os.path.basename(inFilePattern)
 
@@ -1837,32 +1838,32 @@ class ImageStack:
 
         # Check if an image stack is provided:
         if('%' not in inFilePattern):
-            self._fileList.append(inFilePattern)
+            self.fileList.append(inFilePattern)
 
             if(isTIFF(inFilePattern)):  # treat as single TIFF projection            
-                self._isVolumeChunk = False
+                self.isVolumeChunk = False
                 testImage = Image(inFilePattern)
                 testImage.read()
-                self._width    = testImage.getWidth()
-                self._height   = testImage.getHeight()
-                self._nSlices  = 1
-                self._files.setDataType(testImage._inputFile.getDataType())
+                self.width    = testImage.getWidth()
+                self.height   = testImage.getHeight()
+                self.nSlices  = 1
+                self.files.setDataType(testImage.inputFile.getDataType())
             else:  # treat as raw chunk
-                if (self._width != None) and (self._height != None):
-                    if (self._files.getDataType() != None):
+                if (self.width != None) and (self.height != None):
+                    if (self.files.getDataType() != None):
                         if os.path.isfile(inFilePattern):
-                            self._isVolumeChunk = True
+                            self.isVolumeChunk = True
 
-                            if (self._nSlices == None):
+                            if (self.nSlices == None):
                                 # Determine number of slices.
                                 fileSizeInBytes = os.path.getsize(inFilePattern)
-                                dataSizeInBytes = fileSizeInBytes - self._rawFileHeaderSize
-                                bytesPerImage = self._rawImageHeaderSize + self._width * self._height * self._files.getDataType().itemsize
+                                dataSizeInBytes = fileSizeInBytes - self.rawFileHeaderSize
+                                bytesPerImage = self.rawImageHeaderSize + self.width * self.height * self.files.getDataType().itemsize
 
                                 if (dataSizeInBytes >= bytesPerImage):
                                     if (dataSizeInBytes % bytesPerImage) == 0:
-                                        self._nSlices = int(dataSizeInBytes / bytesPerImage)
-                                        log("{} slices found in raw chunk.".format(self._nSlices))
+                                        self.nSlices = int(dataSizeInBytes / bytesPerImage)
+                                        log("{} slices found in raw chunk.".format(self.nSlices))
                                     else:
                                         raise Exception("The raw chunk data size ({} bytes, without general file header) is not divisible by the calculated size of a single image ({} bytes, including image header). Therefore, the number of slices cannot be determined. {}".format(dataSizeInBytes, bytesPerImage, inFilePattern))
                                 else:
@@ -1892,89 +1893,89 @@ class ImageStack:
                         if digitText.isdigit(): # and len(digitText)==nDigitsExpected:
                             # Pattern matches.
                             n = int(digitText)
-                            if n >= self._startNumber:
-                                self._fileList.append(file)
-                                self._fileNumbers.append(n)
+                            if n >= self.startNumber:
+                                self.fileList.append(file)
+                                self.fileNumbers.append(n)
 
                                 nImported += 1
-                                if nImported == self._nSlices:
+                                if nImported == self.nSlices:
                                     break
                         else:
                             continue
                     else:
                         continue
 
-            self._nSlices = len(self._fileList)
+            self.nSlices = len(self.fileList)
 
-            if self._nSlices > 0:
-                if isTIFF(self._fileList[0]):
-                    testImage = Image(self._fileList[0])
+            if self.nSlices > 0:
+                if isTIFF(self.fileList[0]):
+                    testImage = Image(self.fileList[0])
                     testImage.read()
-                    self._width    = testImage.getWidth()
-                    self._height   = testImage.getHeight()
-                    self._files.setDataType(testImage._inputFile.getDataType())
+                    self.width    = testImage.getWidth()
+                    self.height   = testImage.getHeight()
+                    self.files.setDataType(testImage.inputFile.getDataType())
 
-        self._built = True
+        self.built = True
                 
 
     def getFilename(self, index=None):
         if index != None:
-            if self._isVolumeChunk:
-                if len(self._fileList) > 0:
-                    return self._fileList[0]
+            if self.isVolumeChunk:
+                if len(self.fileList) > 0:
+                    return self.fileList[0]
                 else:
                     return None
             else:
-                if len(self._fileList) > index:
-                    return self._fileList[index]
+                if len(self.fileList) > index:
+                    return self.fileList[index]
                 else:
                     return None
         else:
-            return self._files.getFilename()
+            return self.files.getFilename()
 
     def getFileBasename(self, index=None):
         if index != None:
-            if self._isVolumeChunk:
-                if len(self._fileList) > 0:
-                    return os.path.basename(self._fileList[0])
+            if self.isVolumeChunk:
+                if len(self.fileList) > 0:
+                    return os.path.basename(self.fileList[0])
                 else:
                     return None
             else:
-                if len(self._fileList) > index:
-                    return os.path.basename(self._fileList[index])
+                if len(self.fileList) > index:
+                    return os.path.basename(self.fileList[index])
                 else:
                     return None
         else:
-            return self._files.getFileBasename()
+            return self.files.getFileBasename()
 
     def setFilename(self, filename):
-        self._files.setFilename(filename)
+        self.files.setFilename(filename)
 
     def getImage(self, index, outputFile=None):
         """ Read and return image at position 'index' within the stack. """
         if index >= 0:
-            if not self._isVolumeChunk:  # read single image file from stack:
-                if len(self._fileList) > index:
-                    filename = self._fileList[index]
+            if not self.isVolumeChunk:  # read single image file from stack:
+                if len(self.fileList) > index:
+                    filename = self.fileList[index]
                     file = ImageFile(filename=filename, dataType=self.getFileDataType(), byteOrder=self.getFileByteOrder(), flipByteOrder=self.doFlipByteOrder())
 
                     img = Image(file, outputFile)
                     if isTIFF(filename):
                         img.read()
                     else:
-                        img.readRAW(self._width, self._height, 0, self.getFileDataType(), self.getFileByteOrder(), self._rawFileHeaderSize, self._rawImageHeaderSize)
+                        img.readRAW(self.width, self.height, 0, self.getFileDataType(), self.getFileByteOrder(), self.rawFileHeaderSize, self.rawImageHeaderSize)
                     return img
                 else:
-                    raise Exception("The requested slice nr. {} is out of bounds, because only {} image files were found.".format(index, len(self._fileList)))
+                    raise Exception("The requested slice nr. {} is out of bounds, because only {} image files were found.".format(index, len(self.fileList)))
             else:  # read slice from volume chunk, obeying start number
-                if len(self._fileList) > 0:
-                    file = self._fileList[0]
+                if len(self.fileList) > 0:
+                    file = self.fileList[0]
                     img = Image(file, outputFile)
-                    chunkIndex = index + self._startNumber
+                    chunkIndex = index + self.startNumber
                     if isTIFF(file):
                         raise Exception("Cannot treat 3D TIFFs.")
                     else:
-                        img.readRAW(self._width, self._height, chunkIndex, self.getFileDataType(), self.getFileByteOrder(), self._rawFileHeaderSize, self._rawImageHeaderSize)
+                        img.readRAW(self.width, self.height, chunkIndex, self.getFileDataType(), self.getFileByteOrder(), self.rawFileHeaderSize, self.rawImageHeaderSize)
                         return img
                 else:
                     raise Exception("No image file specified to be loaded.")

@@ -11,11 +11,11 @@ class ProcessingStep_Binning(ProcessingStep):
 
     def __init__(self, binSizeX=1, binSizeY=1, binningOperation="mean"):
         ProcessingStep.__init__(self, "Binning")
-        self._binSizeX = 1
-        self._binSizeY = 1
-        self._binningOperation = "mean"
+        self.binSizeX = 1
+        self.binSizeY = 1
+        self.binningOperation = "mean"
 
-        self._validBinningOperations = ["mean", "min", "max", "sum", None]
+        self.validBinningOperations = ["mean", "min", "max", "sum", None]
 
         self.setBinning(binSizeX, binSizeY, binningOperation)
 
@@ -34,32 +34,32 @@ class ProcessingStep_Binning(ProcessingStep):
             if y == 0:
                 y = 1
 
-            self._binSizeX = int(x)
-            self._binSizeY = int(y)
+            self.binSizeX = int(x)
+            self.binSizeY = int(y)
         else:
             raise Exception("The bin size must be >= 1.")
 
-        if operation in self._validBinningOperations:
-            self._binningOperation = operation
+        if operation in self.validBinningOperations:
+            self.binningOperation = operation
         else:
-            raise Exception("'{}' is not a valid binning operation. Options are: {}".format(operation, self._validBinningOperations))
+            raise Exception("'{}' is not a valid binning operation. Options are: {}".format(operation, self.validBinningOperations))
 
     def getBinSizeX(self):
-        return self._binSizeX
+        return self.binSizeX
 
     def getBinSizeY(self):
-        return self._binSizeY
+        return self.binSizeY
 
     def getBinningOperation(self):
-        return self._binningOperation
+        return self.binningOperation
 
     def prepare(self):
         """ Nothing to prepare for the binning module. """
-        if isinstance(self._pipe, ProcessingPipeline):
-            self._prepared = True
+        if isinstance(self.pipe, ProcessingPipeline):
+            self.prepared = True
             return
 
-        self._prepared = False
+        self.prepared = False
         raise Exception("Step must be part of a processing pipeline before it can prepare.")
 
     def run(self, image):

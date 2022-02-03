@@ -10,35 +10,35 @@ class ballCollector():
 
     def __init__(self):
         # Prepare a list to contain the circle vectors:
-        self._n_circles_expected = 10
-        self._circlesUnordered = []
-        self._circlesInOrder = [None] * self._n_circles_expected
-        #self._distancesToCorners = [None] * self._n_circles_expected
+        self.n_circles_expected = 10
+        self.circlesUnordered = []
+        self.circlesInOrder = [None] * self.n_circles_expected
+        #self.distancesToCorners = [None] * self.n_circles_expected
 
-        self._greatCircleIndex = 0
-        self._maxCircleRadius = 0
+        self.greatCircleIndex = 0
+        self.maxCircleRadius = 0
 
 
     def addCircle(self, coords, R):  # tuple: coords = (cx, cy)
-        if self._maxCircleRadius < R:  # Remember the biggest circle
-            self._maxCircleRadius = R
-            self._greatCircleIndex = len(self._circlesUnordered)
+        if self.maxCircleRadius < R:  # Remember the biggest circle
+            self.maxCircleRadius = R
+            self.greatCircleIndex = len(self.circlesUnordered)
 
         circle2Dpos = Vector(coords[0], coords[1], 0)
-        self._circlesUnordered.append(circle2Dpos)
+        self.circlesUnordered.append(circle2Dpos)
 
     def sortCircles(self):
-        if len(self._circlesUnordered) == self._n_circles_expected:
+        if len(self.circlesUnordered) == self.n_circles_expected:
             # Find all connection vectors from the great hole to the other holes:
-            greatCircle = self._circlesUnordered.pop(self._greatCircleIndex)
-            self._circlesInOrder[0] = greatCircle
+            greatCircle = self.circlesUnordered.pop(self.greatCircleIndex)
+            self.circlesInOrder[0] = greatCircle
 
             # circlesUnordered now only contains the 9 small circles, and must remain so (not to mess up indices).
 
             ## Create list of connection vectors:
             connectionVectors = []
-            for i in range(len(self._circlesUnordered)):
-                connectionVectors.append(Vector.connection(vecFrom=greatCircle, vecTo=self._circlesUnordered[i]))
+            for i in range(len(self.circlesUnordered)):
+                connectionVectors.append(Vector.connection(vecFrom=greatCircle, vecTo=self.circlesUnordered[i]))
 
             ## Find vector pair with smallest and biggest angle:
             small = None
@@ -66,18 +66,18 @@ class ballCollector():
             # Hole 5 is the one that is closer to the great circle.
             connection0to1 = None
 
-            if self._circlesUnordered[small[0]].distance(greatCircle) > self._circlesUnordered[small[1]].distance(greatCircle):
-                self._circlesInOrder[1] = self._circlesUnordered[small[0]]
-                self._circlesInOrder[5] = self._circlesUnordered[small[1]]
+            if self.circlesUnordered[small[0]].distance(greatCircle) > self.circlesUnordered[small[1]].distance(greatCircle):
+                self.circlesInOrder[1] = self.circlesUnordered[small[0]]
+                self.circlesInOrder[5] = self.circlesUnordered[small[1]]
             else:
-                self._circlesInOrder[5] = self._circlesUnordered[small[0]]
-                self._circlesInOrder[1] = self._circlesUnordered[small[1]]
+                self.circlesInOrder[5] = self.circlesUnordered[small[0]]
+                self.circlesInOrder[1] = self.circlesUnordered[small[1]]
 
             # Hole 9 is one of the circles with the smallest distance to the big hole:
-            self._circlesInOrder[9] = self._circlesUnordered[hole9idx]
+            self.circlesInOrder[9] = self.circlesUnordered[hole9idx]
 
             # Diagonal from hole 9 to hole 1:
-            diagonal91 = Vector.connection(self._circlesInOrder[9], self._circlesInOrder[1])
+            diagonal91 = Vector.connection(self.circlesInOrder[9], self.circlesInOrder[1])
 
             remainingCirclesAndDiagonalAngles = []
             for i in range(len(connectionVectors)):
@@ -98,31 +98,31 @@ class ballCollector():
 
                 if i < 2: # First vector pair with smallest angle towards diagonal
                     if cross.z() > 0:  # To the "right"
-                        self._circlesInOrder[2] = self._circlesUnordered[idx]
+                        self.circlesInOrder[2] = self.circlesUnordered[idx]
                     else:  # To the "left"
-                        self._circlesInOrder[4] = self._circlesUnordered[idx]
+                        self.circlesInOrder[4] = self.circlesUnordered[idx]
                 elif i < 4: # Second vector pair with medium-sized angle towards diagonal
                     if cross.z() > 0:  # To the "right"
-                        self._circlesInOrder[3] = self._circlesUnordered[idx]
+                        self.circlesInOrder[3] = self.circlesUnordered[idx]
                     else:  # To the "left"
-                        self._circlesInOrder[7] = self._circlesUnordered[idx]
+                        self.circlesInOrder[7] = self.circlesUnordered[idx]
                 elif i < 6: # Second vector pair with medium-sized angle towards diagonal
                     if cross.z() > 0:  # To the "right"
-                        self._circlesInOrder[6] = self._circlesUnordered[idx]
+                        self.circlesInOrder[6] = self.circlesUnordered[idx]
                     else:  # To the "left"
-                        self._circlesInOrder[8] = self._circlesUnordered[idx]
+                        self.circlesInOrder[8] = self.circlesUnordered[idx]
 
                 i += 1
         else:
-            raise Exception("A total of {} holes is needed. Found: {} holes.".format(self._n_circles_expected, len(self._circlesUnordered)))
+            raise Exception("A total of {} holes is needed. Found: {} holes.".format(self.n_circles_expected, len(self.circlesUnordered)))
     
 
     def nCircles(self):
-        return len(self._circlesInOrder)
+        return len(self.circlesInOrder)
 
     def nCirclesFound(self):
         n = 0
-        for c in self._circlesInOrder:
+        for c in self.circlesInOrder:
             if c != None:
                 n = n+1
 
@@ -130,34 +130,34 @@ class ballCollector():
 
     def getCircle(self, i):
         if i >= 0 and i < self.nCircles():
-            return self._circlesInOrder[i]
+            return self.circlesInOrder[i]
         else:
             raise Exception("Circle with index {i} does not exist.".format(i=i))
 
     def scale(self, factor, aroundHole):
-        for i in range(len(self._circlesInOrder)):
+        for i in range(len(self.circlesInOrder)):
             if i != aroundHole:
-                connection = Vector.connection(self._circlesInOrder[aroundHole], self._circlesInOrder[i])
+                connection = Vector.connection(self.circlesInOrder[aroundHole], self.circlesInOrder[i])
                 connection.scale(factor)
-                connection.add(self._circlesInOrder[aroundHole])
-                self._circlesInOrder[i] = connection
+                connection.add(self.circlesInOrder[aroundHole])
+                self.circlesInOrder[i] = connection
 
     def rotate(self, angle, aroundHole):
         axis = Vector(0, 0, -1)
-        for i in range(len(self._circlesInOrder)):
+        for i in range(len(self.circlesInOrder)):
             if i != aroundHole:
-                connection = Vector.connection(self._circlesInOrder[aroundHole], self._circlesInOrder[i])
+                connection = Vector.connection(self.circlesInOrder[aroundHole], self.circlesInOrder[i])
                 connection.rotate(axis, angle)
-                connection.add(self._circlesInOrder[aroundHole])
-                self._circlesInOrder[i] = connection
+                connection.add(self.circlesInOrder[aroundHole])
+                self.circlesInOrder[i] = connection
 
     def distance(self, a, b):
         if (a != None) and (b != None):
             if (a >= 0) and (a < self.nCircles()):
                 if (b >= 0) and (b < self.nCircles()):
-                    if self._circlesInOrder[a] != None:
-                        if self._circlesInOrder[b] != None:
-                            return self._circlesInOrder[a].distance(self._circlesInOrder[b])
+                    if self.circlesInOrder[a] != None:
+                        if self.circlesInOrder[b] != None:
+                            return self.circlesInOrder[a].distance(self.circlesInOrder[b])
                         else:
                             raise Exception("Error: Circle {} not found. Cannot continue with test.".format(b))
                     else:
@@ -169,10 +169,10 @@ class ballCollector():
         text = ""
         for i in range(self.nCircles()):
             text += "Hole {:02d}: ".format(i)
-            if self._circlesInOrder[i] == None:
+            if self.circlesInOrder[i] == None:
                 text += "Not found!"
             else:
-                text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self._circlesInOrder[i].x(), self._circlesInOrder[i].y())
+                text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
 
             text += "\n"
 
@@ -182,10 +182,10 @@ class ballCollector():
         text = "Hole\tcenter_x [px]\tcenter_y [px]\n"
         for i in range(self.nCircles()):
             text += "{:02d}\t".format(i)
-            if self._circlesInOrder[i] == None:
+            if self.circlesInOrder[i] == None:
                 text += "Not found!"
             else:
-                text += "{:.3f}\t{:.3f}".format(self._circlesInOrder[i].x(), self._circlesInOrder[i].y())
+                text += "{:.3f}\t{:.3f}".format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
 
             text += "\n"
 
@@ -205,78 +205,78 @@ class Test2D_HS_1(generalTest):
             resultFileDirectory=resultFileDirectory,
             rawOutput=rawOutput)
 
-        self._success = False
+        self.success = False
 
         # Future circle collector (class ballCollector):
-        self._circleCollection = None
+        self.circleCollection = None
 
-        self._nominalCircles = ballCollector()
+        self.nominalCircles = ballCollector()
 
         # Detector parameters:
-        self._pixelSizeX = None
-        self._pixelSizeY = None
-        self._detectorWidthPx  = None
-        self._detectorHeightPx = None
-        self._detectorWidthMM  = None
-        self._detectorHeightMM = None
+        self.pixelSizeX = None
+        self.pixelSizeY = None
+        self.detectorWidthPx  = None
+        self.detectorHeightPx = None
+        self.detectorWidthMM  = None
+        self.detectorHeightMM = None
 
         # Results of the evaluation:
-        self._meanTranslationVector = None
-        self._inPlaneRotation = None
-        self._scaleFactor = None
+        self.meanTranslationVector = None
+        self.inPlaneRotation = None
+        self.scaleFactor = None
 
     def worldToDetector(self, yWorld, zWorld):
         # mirror x and y:
         x = -yWorld
         y = -zWorld
 
-        x += self._detectorWidthMM/2
-        y += self._detectorHeightMM/2
+        x += self.detectorWidthMM/2
+        y += self.detectorHeightMM/2
 
-        x /= self._pixelSizeX
-        y /= self._pixelSizeY
+        x /= self.pixelSizeX
+        y /= self.pixelSizeY
 
         return (x, y)
 
     def prepare(self):
         """ Preparations before the test will be run with the images from the pipeline. """
-        self._jsonScenarioFile = "scenarios/2D-HS-1_2021-03-24v02r00dp.json"
-        self._prepared = True
+        self.jsonScenarioFile = "scenarios/2D-HS-1_2021-03-24v02r00dp.json"
+        self.prepared = True
 
         # Get Imax and the SNRmax from the JSON file:
-        jsonText = pkgutil.get_data(__name__, self._jsonScenarioFile).decode()
+        jsonText = pkgutil.get_data(__name__, self.jsonScenarioFile).decode()
 
         if jsonText != None:
             jsonDict = json.loads(jsonText)
 
-            self._pixelSizeX = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
-            self._pixelSizeY = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
-            self._detectorWidthPx  = getFieldOrNone(jsonDict, "detector", "columns", "value")
-            self._detectorHeightPx = getFieldOrNone(jsonDict, "detector", "rows", "value")
+            self.pixelSizeX = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+            self.pixelSizeY = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
+            self.detectorWidthPx  = getFieldOrNone(jsonDict, "detector", "columns", "value")
+            self.detectorHeightPx = getFieldOrNone(jsonDict, "detector", "rows", "value")
 
-            self._detectorWidthMM  = self._detectorWidthPx  * self._pixelSizeX
-            self._detectorHeightMM = self._detectorHeightPx * self._pixelSizeY
+            self.detectorWidthMM  = self.detectorWidthPx  * self.pixelSizeX
+            self.detectorHeightMM = self.detectorHeightPx * self.pixelSizeY
 
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=-160, zWorld=-140), R=133)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld= 205), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld= 205), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld= 205), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=   0), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=   0), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=   0), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=-205), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=-205), R=66)
-            self._nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=-205), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=-160, zWorld=-140), R=133)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld= 205), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld= 205), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld= 205), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=   0), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=   0), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=   0), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=-205), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=-205), R=66)
+            self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=-205), R=66)
             
-            self._nominalCircles.sortCircles()
+            self.nominalCircles.sortCircles()
 
     def run(self, image):
         self.prepare()
-        self._currentRun += 1
+        self.currentRun += 1
 
-        self._success = False
+        self.success = False
 
-        log("Running test {}".format(self._testName))
+        log("Running test {}".format(self.testName))
         n_circles_expected = 10
 
         holeImg = copy.deepcopy(image)
@@ -286,18 +286,18 @@ class Test2D_HS_1(generalTest):
         log("Binarization threshold: {:.3f}".format(thresh))
         holeImg.applyThreshold(threshold=thresh, lower=0, upper=60000)
 
-        if self._rawOutput:
-            holeImg.saveRAW("{dir}/{name}_01_binarized.raw".format(dir=self._resultFileDirectory, name=self._name), dataType="uint16", addInfo=True)
+        if self.rawOutput:
+            holeImg.saveRAW("{dir}/{name}_01_binarized.raw".format(dir=self.resultFileDirectory, name=self.name), dataType="uint16", addInfo=True)
         else: # TIFF
-            holeImg.save("{dir}/{name}_01_binarized.tif".format(dir=self._resultFileDirectory, name=self._name), dataType="uint16")
+            holeImg.save("{dir}/{name}_01_binarized.tif".format(dir=self.resultFileDirectory, name=self.name), dataType="uint16")
 
         # Clean big patch(es) that are not circles:
         nPatches, nCleaned, nRemaining, patchGeometry = holeImg.cleanPatches(min_patch_area=(5*5), max_patch_area=None, remove_border_patches=True)
 
-        if self._rawOutput:
-            holeImg.saveRAW("{dir}/{name}_02_cleaned.raw".format(dir=self._resultFileDirectory, name=self._name), dataType="uint16", addInfo=True)
+        if self.rawOutput:
+            holeImg.saveRAW("{dir}/{name}_02_cleaned.raw".format(dir=self.resultFileDirectory, name=self.name), dataType="uint16", addInfo=True)
         else: # TIFF
-            holeImg.save("{dir}/{name}_02_cleaned.tif".format(dir=self._resultFileDirectory, name=self._name), dataType="uint16")
+            holeImg.save("{dir}/{name}_02_cleaned.tif".format(dir=self.resultFileDirectory, name=self.name), dataType="uint16")
 
         log("Looking for {} circles, found {} structures.".format(n_circles_expected, nRemaining))
 
@@ -311,10 +311,10 @@ class Test2D_HS_1(generalTest):
             thresh = (holeImg.max()+holeImg.min())/2.0
             log("Binarization threshold: {:.3f}".format(thresh))
             holeImg.applyThreshold(threshold=thresh, lower=0, upper=60000)
-            if self._rawOutput:
-                holeImg.saveRAW("{dir}/{name}_03_edges.raw".format(dir=self._resultFileDirectory, name=self._name), dataType="uint16", addInfo=True)
+            if self.rawOutput:
+                holeImg.saveRAW("{dir}/{name}_03_edges.raw".format(dir=self.resultFileDirectory, name=self.name), dataType="uint16", addInfo=True)
             else:
-                holeImg.save("{dir}/{name}_03_edges.tif".format(dir=self._resultFileDirectory, name=self._name), dataType="uint16")
+                holeImg.save("{dir}/{name}_03_edges.tif".format(dir=self.resultFileDirectory, name=self.name), dataType="uint16")
 
             i=0
             greatRadius = 0
@@ -334,10 +334,10 @@ class Test2D_HS_1(generalTest):
 
                 # Crop circle:
                 left, right, top, bottom = circleImg.cropROIaroundPoint(x, y, w, h)
-                if self._rawOutput:
-                    circleImg.saveRAW("{dir}/{name}_04_circle_{n:02d}.raw".format(dir=self._resultFileDirectory, name=self._name, n=i), dataType="uint16", addInfo=True)
+                if self.rawOutput:
+                    circleImg.saveRAW("{dir}/{name}_04_circle_{n:02d}.raw".format(dir=self.resultFileDirectory, name=self.name, n=i), dataType="uint16", addInfo=True)
                 else:
-                    circleImg.save("{dir}/{name}_04_circle_{n:02d}.tif".format(dir=self._resultFileDirectory, name=self._name, n=i), dataType="uint16")
+                    circleImg.save("{dir}/{name}_04_circle_{n:02d}.tif".format(dir=self.resultFileDirectory, name=self.name, n=i), dataType="uint16")
 
                 # Fit circle:
                 #log("    Fitting circle...")
@@ -358,13 +358,13 @@ class Test2D_HS_1(generalTest):
 
             if greatCircle >= 0:
                 greatX, greatY, greatR = circles[greatCircle]
-                self._circleCollection = ballCollector()
+                self.circleCollection = ballCollector()
 
                 for i in range(len(circles)):
                     cx, cy, R = circles[i]
-                    self._circleCollection.addCircle((cx, cy), R)
+                    self.circleCollection.addCircle((cx, cy), R)
 
-                self._success = True
+                self.success = True
 
             else:
                 log("No circles found. Cannot continue with test.")
@@ -372,22 +372,22 @@ class Test2D_HS_1(generalTest):
         return image
 
     def followUp(self):
-        if self._success:
+        if self.success:
             log("Writing evaluation results...")
-            self._circleCollection.sortCircles()
+            self.circleCollection.sortCircles()
 
-            summaryText = "# Evaluation of test {}\n".format(self._testName)
+            summaryText = "# Evaluation of test {}\n".format(self.testName)
 
             summaryText += "#\n"
             summaryText += "# Hole Coordinates:\n"
 
             log("Hole locations found:")
-            log(self._circleCollection.printResults())
+            log(self.circleCollection.printResults())
 
-            summaryText += self._circleCollection.printResults_tabular()
+            summaryText += self.circleCollection.printResults_tabular()
 
-            if self._circleCollection.nCirclesFound() < self._circleCollection._n_circles_expected:
-                log("Only {n} of the expected {N} holes were correctly identified. Test cannot continue.".format(n=self._circleCollection.nCirclesFound(), N=self._circleCollection._n_circles_expected))
+            if self.circleCollection.nCirclesFound() < self.circleCollection.n_circles_expected:
+                log("Only {n} of the expected {N} holes were correctly identified. Test cannot continue.".format(n=self.circleCollection.nCirclesFound(), N=self.circleCollection.n_circles_expected))
                 return
             else:
                 log("Okay, all circles identified.")
@@ -399,10 +399,10 @@ class Test2D_HS_1(generalTest):
             summaryText += "from hole distances: scale = 1 - dist(ideal)/dist(real)\n"
             summaryText += "===============================================================\n"
             scaleDevList = []
-            for i in range(self._nominalCircles.nCircles()-1):
-                for j in range(i+1, self._nominalCircles.nCircles()):
-                    length_ideal = self._nominalCircles.getCircle(i).distance(self._nominalCircles.getCircle(j))
-                    length_real = self._circleCollection.getCircle(i).distance(self._circleCollection.getCircle(j))
+            for i in range(self.nominalCircles.nCircles()-1):
+                for j in range(i+1, self.nominalCircles.nCircles()):
+                    length_ideal = self.nominalCircles.getCircle(i).distance(self.nominalCircles.getCircle(j))
+                    length_real = self.circleCollection.getCircle(i).distance(self.circleCollection.getCircle(j))
                     scale = 1.0 - length_ideal / length_real
 
                     summaryText += "Scale dev. ({i}, {j}): {space}{scale:.7f}\n".format(i=i, j=j, space=" "*(scale>=0), scale=scale)
@@ -416,7 +416,7 @@ class Test2D_HS_1(generalTest):
             summaryText += "StdDev scale deviation: {space}{value:.7f}\n".format(space=" "*(stdDevScaleDeviation>=0), value=stdDevScaleDeviation)
 
             ## Scale the real circle collection back by that scale factor...
-            self._circleCollection.scale(factor=1-meanScaleDeviation, aroundHole=scaleAgainstCircle)
+            self.circleCollection.scale(factor=1-meanScaleDeviation, aroundHole=scaleAgainstCircle)
 
 
             # Mean rotation angle:
@@ -428,10 +428,10 @@ class Test2D_HS_1(generalTest):
             stdDevAngle = 0
             angleList = []
 
-            for i in range(self._nominalCircles.nCircles()-1):
-                for j in range(i+1, self._nominalCircles.nCircles()):
-                    connection_ideal = Vector.connection(self._nominalCircles.getCircle(i), self._nominalCircles.getCircle(j))
-                    connection_real  = Vector.connection(self._circleCollection.getCircle(i), self._circleCollection.getCircle(j))
+            for i in range(self.nominalCircles.nCircles()-1):
+                for j in range(i+1, self.nominalCircles.nCircles()):
+                    connection_ideal = Vector.connection(self.nominalCircles.getCircle(i), self.nominalCircles.getCircle(j))
+                    connection_real  = Vector.connection(self.circleCollection.getCircle(i), self.circleCollection.getCircle(j))
                     angle = connection_ideal.angle(connection_real)
                     
                     # angular orientation:
@@ -453,7 +453,7 @@ class Test2D_HS_1(generalTest):
             summaryText += "\n"
 
             ## Rotate the real circle collection back by that angle...
-            self._circleCollection.rotate(meanAngle, rotateAroundCircle)
+            self.circleCollection.rotate(meanAngle, rotateAroundCircle)
 
 
             # Mean translation vector:
@@ -462,8 +462,8 @@ class Test2D_HS_1(generalTest):
             translationsX = []
             translationsY = []
 
-            for i in range(self._nominalCircles.nCircles()):
-                translation = Vector.connection(self._nominalCircles.getCircle(i), self._circleCollection.getCircle(i))
+            for i in range(self.nominalCircles.nCircles()):
+                translation = Vector.connection(self.nominalCircles.getCircle(i), self.circleCollection.getCircle(i))
                 summaryText += "Translation hole {i:02d} [px]: {vec}\n".format(i=i, vec=translation)
                 
                 translationsX.append(translation.x())
@@ -485,7 +485,7 @@ class Test2D_HS_1(generalTest):
             #summaryText += "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(meanScaleDeviation, stdDevScaleDeviation, meanAngle, stdDevAngle, meanTranslation.x(), stdDevTranslation.x(), meanTranslation.y(), stdDevTranslation.y())
 
 
-            resultFileName = "{}/{}_summary.txt".format(self._resultFileDirectory, self._name)
+            resultFileName = "{}/{}_summary.txt".format(self.resultFileDirectory, self.name)
             with open(resultFileName, 'w') as resultFile:
                 resultFile.write(summaryText)
                 resultFile.close()

@@ -2,25 +2,25 @@ class ProcessingStep:
     """ An image processing step to be run in the pipeline. """
 
     def __init__(self, stepIdentifier):
-        self._identifier = None   # General description of operation
-        self._prepared   = False  # Is step prepared to process first image?
-        self._pipe       = None   # Pointer to the processing pipeline to which this step belongs.
+        self.identifier = None   # General description of operation
+        self.prepared   = False  # Is step prepared to process first image?
+        self.pipe       = None   # Pointer to the processing pipeline to which this step belongs.
         self.setIdentifier(stepIdentifier)
 
     def setIdentifier(self, identifier):
-        self._identifier = identifier
+        self.identifier = identifier
 
     def setPipeline(self, pipePtr):
-        self._pipe = pipePtr
+        self.pipe = pipePtr
 
     def getIdentifier(self):
-        return self._identifier
+        return self.identifier
 
     def setPrepared(self, prepared):
-        self._prepared = prepared
+        self.prepared = prepared
 
     def isPrepared(self):
-        return self._prepared
+        return self.prepared
 
     # Virtual methods, implemented in children:
     def prepare(self):

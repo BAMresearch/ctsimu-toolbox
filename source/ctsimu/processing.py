@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+"""Make all processing modules from .processing_pipeline available under ctsimu.processing."""
 
 # Processing pipeline skeleton:
 from .processing_pipeline.pipeline        import *

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 # Version 0.1 (2020-09-29)
@@ -130,11 +129,11 @@ def TIFFtypeStructCharacter(tp):
 
 class bits:
     def __init__(self):
-        self._data = bytearray()
+        self.data = bytearray()
 
     def set(self, n):
-        """ Takes a number n and stores it in self._data in bitwise manner. """
-        self._data = bytearray()
+        """ Takes a number n and stores it in self.data in bitwise manner. """
+        self.data = bytearray()
 
         pos = 0
         while pos>0:
@@ -144,7 +143,7 @@ class bits:
 
     def __str__(self):
         """ Print in binary representation. """
-        maxPos = len(self._data)*8
+        maxPos = len(self.data)*8
         binString = ""
 
         pos = 0
@@ -165,18 +164,18 @@ class bits:
         return binString
 
     def setBytes(self, b):
-        """ Takes a bytes object b and stores it in self._data. """
-        self._data = bytearray()
-        self._data += b
+        """ Takes a bytes object b and stores it in self.data. """
+        self.data = bytearray()
+        self.data += b
 
     def reverseBitsInBytes(self):
-        for i in range(len(self._data)):
+        for i in range(len(self.data)):
             newByte = 0
             for b in range(8):
                 newByte = newByte << 1
-                newByte += ((self._data[i] >> b) & 1)
+                newByte += ((self.data[i] >> b) & 1)
                 
-            self._data[i] = newByte
+            self.data[i] = newByte
 
     """
     def reverseBits(self, start, stop):
@@ -227,7 +226,7 @@ class bits:
         #print("StartByte: {}, StartBit: {}, nBits: {}".format(startByte, startBit, nBits))
         while i<nBits:  # MSB to LSB
             s = s << 1  # Shift left by 1
-            s += ((self._data[startByte] >> (7-startBit)) & 1)
+            s += ((self.data[startByte] >> (7-startBit)) & 1)
 
             startBit += 1
             if startBit > 7:
@@ -245,7 +244,7 @@ class bits:
         return s, startByte+1, startBit+nBits
 
     def getIntMSBtoLSB_faster(self, startByte, rightZeros, mask0, mask1, mask2):
-        s = ((self._data[startByte]&mask0)<<16) + ((self._data[startByte+1]&mask1)<<8) + (self._data[startByte+2]&mask2)
+        s = ((self.data[startByte]&mask0)<<16) + ((self.data[startByte+1]&mask1)<<8) + (self.data[startByte+2]&mask2)
 
         s = s >> rightZeros
         #newByte = 0
@@ -260,54 +259,54 @@ class bits:
     def getBit(self, pos):
         byteIdx, inByte = self.byteAndBit(pos)
 
-        if(byteIdx >= len(self._data)):
+        if(byteIdx >= len(self.data)):
             return 0
 
-        return ((self._data[byteIdx] >> inByte) & 1)
+        return ((self.data[byteIdx] >> inByte) & 1)
 
     def getBitInByte(self, byteIdx, bitPos):
-        return ((self._data[byteIdx] >> bitPos) & 1)
+        return ((self.data[byteIdx] >> bitPos) & 1)
 
     def setBit(self, pos, value=1):
         byteIdx, inByte = self.byteAndBit(pos)
 
-        while(byteIdx > len(self._data)):
-            self._data += bytes(1)
+        while(byteIdx > len(self.data)):
+            self.data += bytes(1)
 
         mask = 1 << inByte
         if value == 1:   # set bit
-            self._data[byteIdx] = self._data[byteIdx] | mask
+            self.data[byteIdx] = self.data[byteIdx] | mask
         else:  # clear bit
-            self._data[byteIdx] = self._data[byteIdx] & ~mask
+            self.data[byteIdx] = self.data[byteIdx] & ~mask
 
     def setBitInByte(self, byteIdx, bitPos, value=1):
-        while(byteIdx > len(self._data)):
-            self._data += bytes(1)
+        while(byteIdx > len(self.data)):
+            self.data += bytes(1)
 
         mask = 1 << bitPos
         if value == 1:   # set bit
-            self._data[byteIdx] = self._data[byteIdx] | mask
+            self.data[byteIdx] = self.data[byteIdx] | mask
         else:  # clear bit
-            self._data[byteIdx] = self._data[byteIdx] & ~mask       
+            self.data[byteIdx] = self.data[byteIdx] & ~mask       
 
 class lzwStringTable:
     def __init__(self):
-        self._byteStrings = []
+        self.byteStrings = []
         self.init()
 
     def init(self):
-        self._byteStrings = []
+        self.byteStrings = []
 
         # Create all bytes:
         for i in range(256):
-            self._byteStrings.append(bytearray(struct.pack("B", i)))
+            self.byteStrings.append(bytearray(struct.pack("B", i)))
 
-        self._byteStrings.append(bytearray())  # ClearCode: 256
-        self._byteStrings.append(bytearray())  # EndOfInformation code: 257
+        self.byteStrings.append(bytearray())  # ClearCode: 256
+        self.byteStrings.append(bytearray())  # EndOfInformation code: 257
 
     def currentCodeBitWidth(self):
         """
-        l = len(self._byteStrings) + 1
+        l = len(self.byteStrings) + 1
         bitWidth = 0
         while l != 0:
             l = l >> 1
@@ -316,31 +315,31 @@ class lzwStringTable:
         return bitWidth
         """
 
-        if len(self._byteStrings) < 255:
+        if len(self.byteStrings) < 255:
             return 8
-        elif len(self._byteStrings) < 511:
+        elif len(self.byteStrings) < 511:
             return 9
-        elif len(self._byteStrings) < 1023:
+        elif len(self.byteStrings) < 1023:
             return 10
-        elif len(self._byteStrings) < 2047:
+        elif len(self.byteStrings) < 2047:
             return 11
-        elif len(self._byteStrings) < 4095:
+        elif len(self.byteStrings) < 4095:
             return 12
-        elif len(self._byteStrings) < 8191:
+        elif len(self.byteStrings) < 8191:
             return 13
-        elif len(self._byteStrings) < 16383:
+        elif len(self.byteStrings) < 16383:
             return 14
         else:
             raise Exception("LZW: Dictionary is too big.")
 
     def contains(self, code):
-        if code < len(self._byteStrings):
+        if code < len(self.byteStrings):
             return True
 
         return False
 
     def add(self, b):
-        self._byteStrings.append(b)
+        self.byteStrings.append(b)
 
     def isClearCode(self, code):
         if code == 256:
@@ -358,32 +357,32 @@ class lzwStringTable:
         #if code < 0:
         #    return bytearray()
 
-        return self._byteStrings[code]
+        return self.byteStrings[code]
 
         """
-        if code < len(self._byteStrings):
-            #print("String from code {}: {}".format(code, self._byteStrings[code]))
-            return self._byteStrings[code]
+        if code < len(self.byteStrings):
+            #print("String from code {}: {}".format(code, self.byteStrings[code]))
+            return self.byteStrings[code]
         else:
-            raise Exception("LZW: Requested code #{} not in current string table. Current string table size: {}. Current bit width: {}".format(code, len(self._byteStrings), codeWidth))
+            raise Exception("LZW: Requested code #{} not in current string table. Current string table size: {}. Current bit width: {}".format(code, len(self.byteStrings), codeWidth))
         """
 
 class lzwData:
     def __init__(self):
-        self._compressed = None
-        self._umcompressed = None
-        self._stringTable = lzwStringTable()
+        self.compressed = None
+        self.umcompressed = None
+        self.stringTable = lzwStringTable()
 
-        self._currentBitPos = 0
+        self.currentBitPos = 0
 
-        self._currentByteIdx = 0
-        self._currentBitPosInByte  = 0  # in byte
+        self.currentByteIdx = 0
+        self.currentBitPosInByte  = 0  # in byte
 
-        self._codeWidth = 9  # Starting with 9 bit wide codes
+        self.codeWidth = 9  # Starting with 9 bit wide codes
 
-        self._masks = {} #[[[0]*3]*8]*14
-        self._byteSkips = {} # [[0]*8]*14
-        self._leftAlignOffsets = {}
+        self.masks = {} #[[[0]*3]*8]*14
+        self.byteSkips = {} # [[0]*8]*14
+        self.leftAlignOffsets = {}
 
         for codeWidth in range(9, 14):
             fundMask = 2**codeWidth - 1
@@ -396,90 +395,90 @@ class lzwData:
                 mask1 = (mask >> 8) & 255   # 00000000 11111111 00000000
                 mask2 = (mask) & 255        # 11111111 00000000 00000000
 
-                self._masks[codeWidth,shift,0] = mask0
-                self._masks[codeWidth,shift,1] = mask1
-                self._masks[codeWidth,shift,2] = mask2
+                self.masks[codeWidth,shift,0] = mask0
+                self.masks[codeWidth,shift,1] = mask1
+                self.masks[codeWidth,shift,2] = mask2
 
-                self._byteSkips[codeWidth,shift] = int(math.ceil((codeWidth+shift+1)/8))-1
-                self._leftAlignOffsets[codeWidth,shift] = leftAlignOffset
+                self.byteSkips[codeWidth,shift] = int(math.ceil((codeWidth+shift+1)/8))-1
+                self.leftAlignOffsets[codeWidth,shift] = leftAlignOffset
 
     def resetStringtable(self):
-        self._stringTable.init()
-        self._codeWidth = 9
+        self.stringTable.init()
+        self.codeWidth = 9
 
     def setCompressed(self, compressed):
-        self._compressed = bits()
-        self._compressed.setBytes(compressed)
-        self._compressed._data += bytes(3)   # for integer conversion
+        self.compressed = bits()
+        self.compressed.setBytes(compressed)
+        self.compressed.data += bytes(3)   # for integer conversion
 
     def getNextCode(self):
-        #s1 = self._currentBitPos
-        #s2 = s1 + self._codeWidth
+        #s1 = self.currentBitPos
+        #s2 = s1 + self.codeWidth
 
-        #code = self._compressed.getIntMSBtoLSB(startBit=s1, stopBit=s2)
-        #code, self._currentByteIdx, self._currentBitPosInByte = self._compressed.getIntMSBtoLSB_inBytes(startByte=self._currentByteIdx, startBit=self._currentBitPosInByte, nBits=self._codeWidth)
+        #code = self.compressed.getIntMSBtoLSB(startBit=s1, stopBit=s2)
+        #code, self.currentByteIdx, self.currentBitPosInByte = self.compressed.getIntMSBtoLSB_inBytes(startByte=self.currentByteIdx, startBit=self.currentBitPosInByte, nBits=self.codeWidth)
 
-        startByte = self._currentByteIdx
-        mask0=self._masks[self._codeWidth,self._currentBitPosInByte,0]
-        mask1=self._masks[self._codeWidth,self._currentBitPosInByte,1]
-        mask2=self._masks[self._codeWidth,self._currentBitPosInByte,2]
+        startByte = self.currentByteIdx
+        mask0=self.masks[self.codeWidth,self.currentBitPosInByte,0]
+        mask1=self.masks[self.codeWidth,self.currentBitPosInByte,1]
+        mask2=self.masks[self.codeWidth,self.currentBitPosInByte,2]
 
-        code = self._compressed.getIntMSBtoLSB_faster(startByte=startByte, rightZeros=self._leftAlignOffsets[self._codeWidth,self._currentBitPosInByte], mask0=mask0, mask1=mask1, mask2=mask2)
+        code = self.compressed.getIntMSBtoLSB_faster(startByte=startByte, rightZeros=self.leftAlignOffsets[self.codeWidth,self.currentBitPosInByte], mask0=mask0, mask1=mask1, mask2=mask2)
 
-        tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Requesting {}({}). Skip: {} CodeWidth: {} Offset: {}  Masks: {:08b}.{:08b}.{:08b} -> {}".format(startByte, self._currentBitPosInByte, self._byteSkips[self._codeWidth,self._currentBitPosInByte], self._codeWidth, self._currentBitPosInByte, mask0, mask1, mask2, code))
+        tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Requesting {}({}). Skip: {} CodeWidth: {} Offset: {}  Masks: {:08b}.{:08b}.{:08b} -> {}".format(startByte, self.currentBitPosInByte, self.byteSkips[self.codeWidth,self.currentBitPosInByte], self.codeWidth, self.currentBitPosInByte, mask0, mask1, mask2, code))
 
-        self._currentByteIdx += self._byteSkips[self._codeWidth,self._currentBitPosInByte]
-        self._currentBitPosInByte += self._codeWidth
-        self._currentBitPosInByte = self._currentBitPosInByte % 8
+        self.currentByteIdx += self.byteSkips[self.codeWidth,self.currentBitPosInByte]
+        self.currentBitPosInByte += self.codeWidth
+        self.currentBitPosInByte = self.currentBitPosInByte % 8
 
         return code
 
     def decompress(self):
-        self._uncompressed = bytearray()
+        self.uncompressed = bytearray()
 
-        self._currentBitPos = 0
+        self.currentBitPos = 0
         oldCode = -1
         code = self.getNextCode()
 
-        self._stringTable.init()  # If compressed data doesn't start with ClearCode
+        self.stringTable.init()  # If compressed data doesn't start with ClearCode
 
-        while not self._stringTable.isEndOfInformation(code):
-            if(self._stringTable.isClearCode(code)):
+        while not self.stringTable.isEndOfInformation(code):
+            if(self.stringTable.isClearCode(code)):
                 self.resetStringtable()                
 
                 code = self.getNextCode()
-                if(self._stringTable.isEndOfInformation(code)):
+                if(self.stringTable.isEndOfInformation(code)):
                     break
 
-                self._uncompressed += self._stringTable.stringFromCode(code, self._codeWidth)
+                self.uncompressed += self.stringTable.stringFromCode(code, self.codeWidth)
                 oldCode = code
             else:
-                if self._stringTable.contains(code):
-                    s = self._stringTable.stringFromCode(code, self._codeWidth)
-                    self._uncompressed += s
-                    self._stringTable.add(self._stringTable.stringFromCode(oldCode, self._codeWidth) + bytes([s[0]]))
+                if self.stringTable.contains(code):
+                    s = self.stringTable.stringFromCode(code, self.codeWidth)
+                    self.uncompressed += s
+                    self.stringTable.add(self.stringTable.stringFromCode(oldCode, self.codeWidth) + bytes([s[0]]))
                 else:
-                    s = self._stringTable.stringFromCode(oldCode, self._codeWidth)
+                    s = self.stringTable.stringFromCode(oldCode, self.codeWidth)
                     outString = s + bytes([s[0]])
-                    self._uncompressed += outString
-                    self._stringTable.add(outString)
+                    self.uncompressed += outString
+                    self.stringTable.add(outString)
 
                 oldCode = code
 
-                self._codeWidth = self._stringTable.currentCodeBitWidth()
+                self.codeWidth = self.stringTable.currentCodeBitWidth()
 
             code = self.getNextCode()
 
 
 class ifdEntry:
     def __init__(self):
-        self._tag      = 0  # TIFF Tag ID
-        self._type     = 0  # Field Type
-        self._count    = 0  # Number of values (NOT bytes)
-        self._ifdEntryPos = 0
+        self.tag      = 0  # TIFF Tag ID
+        self.type     = 0  # Field Type
+        self.count    = 0  # Number of values (NOT bytes)
+        self.ifdEntryPos = 0
 
-        self._values = []
-        self._extraValuesOffset = 0   # storage offset (in byte) for any extra values that don't fit in the 4 values bytes of this IFD entry
+        self.values = []
+        self.extraValuesOffset = 0   # storage offset (in byte) for any extra values that don't fit in the 4 values bytes of this IFD entry
 
     def set(self, tag, typ, values):
         self.setTagID(tag)
@@ -487,83 +486,83 @@ class ifdEntry:
         self.setValues(values)
 
     def setTagID(self, tagid):
-        self._tag = tagid
+        self.tag = tagid
 
     def setType(self, typ):
-        self._type = typ
+        self.type = typ
 
     def setValue(self, value):
-        if self._type in TIFF_INTTYPES:
+        if self.type in TIFF_INTTYPES:
             value = int(value)
 
-        self._values = [value, ]
-        self._count = 1
+        self.values = [value, ]
+        self.count = 1
 
     def setValues(self, values):
-        self._values = [0] * len(values)
+        self.values = [0] * len(values)
      
-        for i in range(len(self._values)):
-            if self._type in TIFF_INTTYPES:
-                self._values[i] = int(values[i])
+        for i in range(len(self.values)):
+            if self.type in TIFF_INTTYPES:
+                self.values[i] = int(values[i])
             else:
-                self._values[i] = values[i]
+                self.values[i] = values[i]
 
-        self._count = len(values)
+        self.count = len(values)
 
     def nValueBytes(self):
-        return self._count * bytesPerTIFFtype(self._type)
+        return self.count * bytesPerTIFFtype(self.type)
 
     def read(self, offset, f, byteOrder):
         f.seek(offset)
         buff = f.read(8)
-        (self._tag, self._type, self._count) = struct.unpack("{endian}HHL".format(endian=byteOrder), buff)
+        (self.tag, self.type, self.count) = struct.unpack("{endian}HHL".format(endian=byteOrder), buff)
 
         # Calculate amount of bytes necessary for value(s):
-        self._nValueBytes = self.nValueBytes()
+        self.nValueBytes = self.nValueBytes()
 
         # Read value(s):
         f.seek(offset+8)
         buff = f.read(4)
 
-        if self._nValueBytes > 4:  # The field's actual value bytes must be read from the provided pointer.
+        if self.nValueBytes > 4:  # The field's actual value bytes must be read from the provided pointer.
             (valueOffset,) = struct.unpack("{endian}L".format(endian=byteOrder), buff)
             f.seek(valueOffset)
-            buff = f.read(self._nValueBytes)
+            buff = f.read(self.nValueBytes)
       
         # Prepare a struct pattern:
         structPattern = ""
-        structCharacter = TIFFtypeStructCharacter(self._type)
-        for i in range(self._count):
+        structCharacter = TIFFtypeStructCharacter(self.type)
+        for i in range(self.count):
             structPattern += structCharacter
 
         # Fill rest of pattern with pad bytes:
-        if self._nValueBytes < 4:
-            for j in range(4 - self._nValueBytes):
+        if self.nValueBytes < 4:
+            for j in range(4 - self.nValueBytes):
                 structPattern += "x"
 
         tup = struct.unpack("{endian}{pattern}".format(endian=byteOrder, pattern=structPattern), buff)
 
-        if self._type == TIFF_RATIONAL or self._type == TIFF_SRATIONAL:
+        if self.type == TIFF_RATIONAL or self.type == TIFF_SRATIONAL:
             for numerator, denominator in zip(tup, tup[1:]):
                 val = 0
                 if denominator != 0:
                     val = numerator / denominator
 
-                self._values.append(val)
+                self.values.append(val)
         else:
             for val in tup:
-                self._values.append(val)
+                self.values.append(val)
 
-        if len(self._values) < 5:
-            tiffyLog(TIFFY_LOGLEVEL_INFO, " -- Tag {tag} ({tagname}): {n} value(s) {val}".format(tag=self._tag, tagname=tagName(self._tag), n=len(self._values), val=self._values))
+        if len(self.values) < 5:
+            tiffyLog(TIFFY_LOGLEVEL_INFO, " -- Tag {tag} ({tagname}): {n} value(s) {val}".format(tag=self.tag, tagname=tagName(self.tag), n=len(self.values), val=self.values))
         else:
-            tiffyLog(TIFFY_LOGLEVEL_INFO, " -- Tag {tag} ({tagname}): {n} value(s)".format(tag=self._tag, tagname=tagName(self._tag), n=len(self._values)))
+            tiffyLog(TIFFY_LOGLEVEL_INFO, " -- Tag {tag} ({tagname}): {n} value(s)".format(tag=self.tag, tagname=tagName(self.tag), n=len(self.values)))
 
     def getValue(self):
-        if len(self._values) > 0:
-            return self._values[0]
+        if len(self.values) > 0:
+            return self.values[0]
         else:
-            raise Exception("TIFF field with tag {tag} does not come with any value.".format(tag=self._tag))
+            raise Exception("TIFF field with tag {tag} does not come with any value.".format(tag=self.tag))
 
     def sizeInBytes(self):
         size = 12
@@ -575,160 +574,160 @@ class ifdEntry:
         size = 0
 
         # If the values don't fit in the IFD entry, they are stored somewhere else:
-        if (bytesPerTIFFtype(self._type)*len(self._values)) > 4:
-            size += bytesPerTIFFtype(self._type)*len(self._values)
+        if (bytesPerTIFFtype(self.type)*len(self.values)) > 4:
+            size += bytesPerTIFFtype(self.type)*len(self.values)
 
         return size
 
     def printOffset(self):
-        tiffyLog(TIFFY_LOGLEVEL_INFO, "    IFD entry, tag {t}  {offset}".format(t=self._tag, offset=self._ifdEntryPos))
+        tiffyLog(TIFFY_LOGLEVEL_INFO, "    IFD entry, tag {t}  {offset}".format(t=self.tag, offset=self.ifdEntryPos))
 
     def printExtraDataOffset(self):
         if self.nValueBytes() > 4:
-            tiffyLog(TIFFY_LOGLEVEL_INFO, "    IFD entry, tag {t}  {offset}  Extra Data".format(t=self._tag, offset=self._extraValuesOffset))
+            tiffyLog(TIFFY_LOGLEVEL_INFO, "    IFD entry, tag {t}  {offset}  Extra Data".format(t=self.tag, offset=self.extraValuesOffset))
 
     def prepareDataOffsets(self, offset, extraDataOffset):
-        self._ifdEntryPos = offset
-        self._extraValuesOffset = extraDataOffset
+        self.ifdEntryPos = offset
+        self.extraValuesOffset = extraDataOffset
         return (offset+12), (extraDataOffset + self.sizeOfExtraValues())
 
     def write(self, f, byteOrder):
         tiffyLog(TIFFY_LOGLEVEL_INFO, "IDF Entry at pos {}".format(f.tell()))
-        buff = struct.pack("{endian}HHL".format(endian=byteOrder), self._tag, self._type, self._count)
+        buff = struct.pack("{endian}HHL".format(endian=byteOrder), self.tag, self.type, self.count)
         f.write(buff)
 
         if self.nValueBytes() > 4:  # point to value storage offset
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}): Pointing to {offset}".format(tag=self._tag, typ=self._type, cnt=self._count, endian=byteOrder, offset=self._extraValuesOffset))
-            buff = struct.pack("{endian}L".format(endian=byteOrder), self._extraValuesOffset)
+            tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}): Pointing to {offset}".format(tag=self.tag, typ=self.type, cnt=self.count, endian=byteOrder, offset=self.extraValuesOffset))
+            buff = struct.pack("{endian}L".format(endian=byteOrder), self.extraValuesOffset)
             f.write(buff)
         else:
-            structChar = TIFFtypeStructCharacter(self._type)
+            structChar = TIFFtypeStructCharacter(self.type)
 
             padding = 4 - self.nValueBytes()
             if padding > 0:
-                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar}{padding}x {vals}".format(tag=self._tag, typ=self._type, cnt=self._count, pos=f.tell(), endian=byteOrder, count=self._count, structchar=structChar, padding=padding, vals=self._values))
-                buff = struct.pack("{endian}{count}{structchar}{padding}x".format(endian=byteOrder, count=self._count, structchar=structChar, padding=padding), *self._values)
+                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar}{padding}x {vals}".format(tag=self.tag, typ=self.type, cnt=self.count, pos=f.tell(), endian=byteOrder, count=self.count, structchar=structChar, padding=padding, vals=self.values))
+                buff = struct.pack("{endian}{count}{structchar}{padding}x".format(endian=byteOrder, count=self.count, structchar=structChar, padding=padding), *self.values)
                 f.write(buff)
             else:
-                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar} {vals}".format(tag=self._tag, typ=self._type, cnt=self._count, pos=f.tell(), endian=byteOrder, count=self._count, structchar=structChar, vals=self._values))
-                buff = struct.pack("{endian}{count}{structchar}".format(endian=byteOrder, count=self._count, structchar=structChar), *self._values)
+                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar} {vals}".format(tag=self.tag, typ=self.type, cnt=self.count, pos=f.tell(), endian=byteOrder, count=self.count, structchar=structChar, vals=self.values))
+                buff = struct.pack("{endian}{count}{structchar}".format(endian=byteOrder, count=self.count, structchar=structChar), *self.values)
                 f.write(buff)
 
     def writeExtraValues(self, f, byteOrder):
-        structChar = TIFFtypeStructCharacter(self._type)
+        structChar = TIFFtypeStructCharacter(self.type)
         if self.nValueBytes() > 4:
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar} {vals}".format(tag=self._tag, typ=self._type, cnt=self._count, pos=f.tell(), endian=byteOrder, count=self._count, structchar=structChar, vals=self._values))
+            tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar} {vals}".format(tag=self.tag, typ=self.type, cnt=self.count, pos=f.tell(), endian=byteOrder, count=self.count, structchar=structChar, vals=self.values))
 
-            buff = struct.pack("{endian}{count}{structchar}".format(endian=byteOrder, count=self._count, structchar=structChar), *self._values)
+            buff = struct.pack("{endian}{count}{structchar}".format(endian=byteOrder, count=self.count, structchar=structChar), *self.values)
             f.write(buff)
 
 
 class ifd:
     def __init__(self):
-        self._ifdPos = None
-        self._fieldBytes = []
-        self._fields = []
-        self._fieldCount = 0
-        self._nextIfdPos = 0
+        self.ifdPos = None
+        self.fieldBytes = []
+        self.fields = []
+        self.fieldCount = 0
+        self.nextIfdPos = 0
 
     def addEntry(self, entry):
-        self._fields.append(entry)
+        self.fields.append(entry)
 
     def read(self, ifdPos, f, byteOrder):
-        self._ifdPos = ifdPos
+        self.ifdPos = ifdPos
 
         tiffyLog(TIFFY_LOGLEVEL_INFO, " -- new IFD.")
 
         f.seek(ifdPos)
         buff = f.read(2)
         offset = ifdPos + 2
-        (self._fieldCount,) = struct.unpack("{endian}H".format(endian=byteOrder), buff)
+        (self.fieldCount,) = struct.unpack("{endian}H".format(endian=byteOrder), buff)
         
-        for i in range(self._fieldCount):
+        for i in range(self.fieldCount):
             entry = ifdEntry()
             entry.read(offset, f, byteOrder)
-            self._fields.append(entry)
+            self.fields.append(entry)
             offset += 12
 
         f.seek(offset)
         buff = f.read(4)
-        (self._nextIfdPos,) = struct.unpack("{endian}L".format(endian=byteOrder), buff)
+        (self.nextIfdPos,) = struct.unpack("{endian}L".format(endian=byteOrder), buff)
 
     def sizeInBytes(self):
         size = 2 + 4  # Number of entries (2 bytes) + offset to next IFD (4 bytes)
-        for field in self._fields:
+        for field in self.fields:
             size += field.sizeInBytes()
 
         return size
 
     def prepareDataOffsets(self, offset):
-        self._ifdPos = offset
+        self.ifdPos = offset
 
         offset += 2  # number of entries (2 bytes)
-        extraDataOffset = offset + 12*len(self._fields) + 4  # offset for each entry (12 bytes) + pointer to next IFD (4 bytes)
+        extraDataOffset = offset + 12*len(self.fields) + 4  # offset for each entry (12 bytes) + pointer to next IFD (4 bytes)
 
-        for field in self._fields:
+        for field in self.fields:
             offset, extraDataOffset = field.prepareDataOffsets(offset, extraDataOffset)
 
         return offset
 
     def printOffset(self):
-        tiffyLog(TIFFY_LOGLEVEL_INFO, "+ IFD                   {offset} -> {nextIFD}".format(offset=self._ifdPos, nextIFD=self._nextIfdPos))
+        tiffyLog(TIFFY_LOGLEVEL_INFO, "+ IFD                   {offset} -> {nextIFD}".format(offset=self.ifdPos, nextIFD=self.nextIfdPos))
 
-        for entry in self._fields:
+        for entry in self.fields:
             entry.printOffset()
 
-        for entry in self._fields:
+        for entry in self.fields:
             entry.printExtraDataOffset()
 
     def write(self, f, byteOrder):
-        buff = struct.pack("{endian}H".format(endian=byteOrder), len(self._fields))
+        buff = struct.pack("{endian}H".format(endian=byteOrder), len(self.fields))
         f.write(buff)
 
         tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Written IFD. Now at position {}".format(f.tell()))
 
         # IFD entries:
-        for entry in self._fields:
+        for entry in self.fields:
             entry.write(f, byteOrder)
 
-        buff = struct.pack("{endian}L".format(endian=byteOrder), self._nextIfdPos)
+        buff = struct.pack("{endian}L".format(endian=byteOrder), self.nextIfdPos)
         f.write(buff)
 
         # extra data
-        for entry in self._fields:
+        for entry in self.fields:
             entry.writeExtraValues(f, byteOrder)
 
 
 class tiffSubfile:
     def __init__(self):
-        self._px = []      # Array of numpy arrays to store image data (i.e. pixel values). One for each component/channel. Shape: (nChannel, nRows, nCols)
-        self._imageDataOffset = 0  # Location of beginning of image data
-        self._sampleFormat = [TIFF_SAMPLEFORMAT_UINT]  # Standard: uint
+        self.px = []      # Array of numpy arrays to store image data (i.e. pixel values). One for each component/channel. Shape: (nChannel, nRows, nCols)
+        self.imageDataOffset = 0  # Location of beginning of image data
+        self.sampleFormat = [TIFF_SAMPLEFORMAT_UINT]  # Standard: uint
 
-        self._filename = None
-        self._byteOrder = "<"  # little endian
-        self._ifd = None
+        self.filename = None
+        self.byteOrder = "<"  # little endian
+        self.ifd = None
 
-        self._photometricInterpretation = TIFF_BLACK_IS_ZERO
-        self._compression = TIFF_NO_COMPRESSION
-        self._predictor = TIFF_NO_PREDICTOR
+        self.photometricInterpretation = TIFF_BLACK_IS_ZERO
+        self.compression = TIFF_NO_COMPRESSION
+        self.predictor = TIFF_NO_PREDICTOR
 
-        self._rows = 0
-        self._cols = 0
+        self.rows = 0
+        self.cols = 0
 
-        self._resolutionUnit = TIFF_RES_INCH
-        self._resX = 0
-        self._resY = 0
+        self.resolutionUnit = TIFF_RES_INCH
+        self.resX = 0
+        self.resY = 0
 
-        self._rowsPerStrip = 0
-        self._stripOffsets = []
-        self._stripByteCounts = []
+        self.rowsPerStrip = 0
+        self.stripOffsets = []
+        self.stripByteCounts = []
 
-        self._bitsPerSample = (1,)        # Bilevel images do not define this, so make 1 bit/sample the default.
-        self._samplesPerPixel = 1
-        self._planarConfig = TIFF_CHUNKY  # Chunky (RGBRGBRGB...)
-        self._orientation = 1
-        self._colorMap = None             # For palette-color images
+        self.bitsPerSample = (1,)        # Bilevel images do not define this, so make 1 bit/sample the default.
+        self.samplesPerPixel = 1
+        self.planarConfig = TIFF_CHUNKY  # Chunky (RGBRGBRGB...)
+        self.orientation = 1
+        self.colorMap = None             # For palette-color images
 
     def reset(self):
         self.__init__()
@@ -736,50 +735,50 @@ class tiffSubfile:
     def set(self, imageData, resX=0, resY=0):
         if len(imageData) > 0:
             self.reset()
-            self._px = imageData
+            self.px = imageData
 
-            shp = numpy.shape(self._px)  # Shape must be 3-component tuple: (nChannels, height, width)
+            shp = numpy.shape(self.px)  # Shape must be 3-component tuple: (nChannels, height, width)
             if len(shp) == 3:
-                self._samplesPerPixel = shp[0]
-                self._rows = shp[1]
-                self._cols = shp[2]
+                self.samplesPerPixel = shp[0]
+                self.rows = shp[1]
+                self.cols = shp[2]
 
-                self._rowsPerStrip = self._rows
-                # self._stripByteCounts and self._stripOffsets will be set later by self.prepareDataOffsets()
+                self.rowsPerStrip = self.rows
+                # self.stripByteCounts and self.stripOffsets will be set later by self.prepareDataOffsets()
 
                 # Byte order
-                self._byteOrder = getByteOrder(self._px)
+                self.byteOrder = getByteOrder(self.px)
 
                 # Sample format
-                if numpy.issubdtype(self._px.dtype, numpy.signedinteger):
-                    self._sampleFormat = [TIFF_SAMPLEFORMAT_INT] * self.nChannels()
-                elif numpy.issubdtype(self._px.dtype, numpy.unsignedinteger):
-                    self._sampleFormat = [TIFF_SAMPLEFORMAT_UINT] * self.nChannels()
-                elif numpy.issubdtype(self._px.dtype, numpy.floating):
-                    self._sampleFormat = [TIFF_SAMPLEFORMAT_IEEEFP] * self.nChannels()
+                if numpy.issubdtype(self.px.dtype, numpy.signedinteger):
+                    self.sampleFormat = [TIFF_SAMPLEFORMAT_INT] * self.nChannels()
+                elif numpy.issubdtype(self.px.dtype, numpy.unsignedinteger):
+                    self.sampleFormat = [TIFF_SAMPLEFORMAT_UINT] * self.nChannels()
+                elif numpy.issubdtype(self.px.dtype, numpy.floating):
+                    self.sampleFormat = [TIFF_SAMPLEFORMAT_IEEEFP] * self.nChannels()
                 else:
-                    raise Exception("Unsupported dtype ({}) of provided image data. Must be an integer or floating point type.".format(numpy.dtype(self._px)))
+                    raise Exception("Unsupported dtype ({}) of provided image data. Must be an integer or floating point type.".format(numpy.dtype(self.px)))
 
-                self._bitsPerSample  = [self._px.dtype.itemsize*8] * self._samplesPerPixel
-                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Setting bits per sample: {}".format(self._bitsPerSample))
-                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Setting sample format:   {}".format(self._sampleFormat))
+                self.bitsPerSample  = [self.px.dtype.itemsize*8] * self.samplesPerPixel
+                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Setting bits per sample: {}".format(self.bitsPerSample))
+                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Setting sample format:   {}".format(self.sampleFormat))
 
-                self._resolutionUnit = TIFF_RES_NONE
-                self._resX = resX
-                self._resY = resY
+                self.resolutionUnit = TIFF_RES_NONE
+                self.resX = resX
+                self.resY = resY
 
-                self._compression    = TIFF_NO_COMPRESSION
+                self.compression    = TIFF_NO_COMPRESSION
 
                 
-                self._photometricInterpretation = TIFF_BLACK_IS_ZERO
+                self.photometricInterpretation = TIFF_BLACK_IS_ZERO
                 if self.nChannels() == 3:
-                    self._photometricInterpretation = TIFF_RGB
+                    self.photometricInterpretation = TIFF_RGB
 
-                #if self._samplesPerPixel > 1:
-                #    self._planarConfig   = TIFF_PLANAR
+                #if self.samplesPerPixel > 1:
+                #    self.planarConfig   = TIFF_PLANAR
                 #else:
-                #    self._planarConfig   = TIFF_CHUNKY
-                self._planarConfig   = TIFF_CHUNKY
+                #    self.planarConfig   = TIFF_CHUNKY
+                self.planarConfig   = TIFF_CHUNKY
 
             else:
                 raise Exception("Error setting image data. Please provide a numpy array of shape (nChannels, nRows, nColumns).")
@@ -796,38 +795,38 @@ class tiffSubfile:
     def addIFDentry(self, tag, typ, values):
         entry = ifdEntry()
         entry.set(tag, typ, values)
-        self._ifd.addEntry(entry)
+        self.ifd.addEntry(entry)
 
     def setupIFD(self):
-        self._ifd = None
-        self._ifd = ifd()
+        self.ifd = None
+        self.ifd = ifd()
 
-        self.addIFDentry_shortOrLong(256, (self._cols, ))                        # n columns
-        self.addIFDentry_shortOrLong(257, (self._rows, ))                        # n rows
-        self.addIFDentry(258, TIFF_SHORT, self._bitsPerSample)                   # bits per sample, already an array
+        self.addIFDentry_shortOrLong(256, (self.cols, ))                        # n columns
+        self.addIFDentry_shortOrLong(257, (self.rows, ))                        # n rows
+        self.addIFDentry(258, TIFF_SHORT, self.bitsPerSample)                   # bits per sample, already an array
         self.addIFDentry(259, TIFF_SHORT, (TIFF_NO_COMPRESSION, ))               # compression
-        self.addIFDentry(262, TIFF_SHORT, (self._photometricInterpretation, ))   # photometric interpretation
+        self.addIFDentry(262, TIFF_SHORT, (self.photometricInterpretation, ))   # photometric interpretation
         self.addIFDentry(266, TIFF_SHORT, (TIFF_MSB2LSB, ))                      # fill order 
-        self.addIFDentry_shortOrLong(273, (self._imageDataOffset, ))             # offset location of strip
-        self.addIFDentry(274, TIFF_SHORT, (self._orientation, ))                 # orientation
-        self.addIFDentry(277, TIFF_SHORT, (self._samplesPerPixel, ))             # samples per pixel
-        self.addIFDentry_shortOrLong(278, (self._rowsPerStrip, ))                # rows per strip
+        self.addIFDentry_shortOrLong(273, (self.imageDataOffset, ))             # offset location of strip
+        self.addIFDentry(274, TIFF_SHORT, (self.orientation, ))                 # orientation
+        self.addIFDentry(277, TIFF_SHORT, (self.samplesPerPixel, ))             # samples per pixel
+        self.addIFDentry_shortOrLong(278, (self.rowsPerStrip, ))                # rows per strip
         self.addIFDentry_shortOrLong(279, (self.dataSizeInBytes(), ))            # strip byte counts
         # insert resolution entries here later...
-        self.addIFDentry(284, TIFF_SHORT, (self._planarConfig, ))                # planar configuration
+        self.addIFDentry(284, TIFF_SHORT, (self.planarConfig, ))                # planar configuration
        
-        #self.addIFDentry(296, TIFF_SHORT, (self._resolutionUnit, ))             # resolution unit
+        #self.addIFDentry(296, TIFF_SHORT, (self.resolutionUnit, ))             # resolution unit
         
-        if self._predictor != TIFF_NO_PREDICTOR:
-            self.addIFDentry(317, TIFF_SHORT, (self._predictor, ))                   # predictor
+        if self.predictor != TIFF_NO_PREDICTOR:
+            self.addIFDentry(317, TIFF_SHORT, (self.predictor, ))                   # predictor
         # color map
         
-        self.addIFDentry(339, TIFF_SHORT, self._sampleFormat)                    # sample format, already an array
+        self.addIFDentry(339, TIFF_SHORT, self.sampleFormat)                    # sample format, already an array
 
     def dataSizeInBytes(self):
         """ Size of pixel data (in bytes) """
         size = 0
-        for bitsPerSample in self._bitsPerSample:
+        for bitsPerSample in self.bitsPerSample:
             s = int(bitsPerSample * self.nPixels())
             size += s
 
@@ -835,22 +834,22 @@ class tiffSubfile:
 
     def sizeInBytes(self):
         size = 0
-        if self._ifd != None:
-            size += self._ifd.sizeInBytes()
+        if self.ifd != None:
+            size += self.ifd.sizeInBytes()
 
         size += self.dataSizeInBytes()
 
         return size
 
     def prepareDataOffsets(self, offset):
-        if self._ifd != None:
-            self._ifd.prepareDataOffsets(offset)
+        if self.ifd != None:
+            self.ifd.prepareDataOffsets(offset)
 
-            offset += self._ifd.sizeInBytes()
-            self._imageDataOffset = offset  # image data starts here
+            offset += self.ifd.sizeInBytes()
+            self.imageDataOffset = offset  # image data starts here
 
-            self._stripOffsets    = (self._imageDataOffset, )
-            self._stripByteCounts = self.dataSizeInBytes()
+            self.stripOffsets    = (self.imageDataOffset, )
+            self.stripByteCounts = self.dataSizeInBytes()
 
             offset += self.dataSizeInBytes()
             return offset
@@ -858,70 +857,70 @@ class tiffSubfile:
             return 0
 
     def printOffset(self):
-        if self._ifd != None:
-            self._ifd.printOffset()
+        if self.ifd != None:
+            self.ifd.printOffset()
 
-        tiffyLog(TIFFY_LOGLEVEL_INFO, "  Image Data            {offset}".format(offset=self._imageDataOffset))
+        tiffyLog(TIFFY_LOGLEVEL_INFO, "  Image Data            {offset}".format(offset=self.imageDataOffset))
 
     def readMetaInformation(self, filename, byteOrder, imgFileDirectory):
-        self._filename = filename
-        self._byteOrder = byteOrder
-        self._ifd = imgFileDirectory
+        self.filename = filename
+        self.byteOrder = byteOrder
+        self.ifd = imgFileDirectory
 
         # Interpret IFD fields based on their TIFF tags:
-        for field in self._ifd._fields:
-            if field._tag == 256:  # Number of columns
-                self._cols = field.getValue()
-            elif field._tag == 257:  # Number of rows
-                self._rows = field.getValue()
-            elif field._tag == 258:  # Bits per sample
-                self._bitsPerSample = field._values
-            elif field._tag == 259:  # Compression
-                self._compression = field.getValue()
-                if self._compression == 0:
-                    self._compression = TIFF_NO_COMPRESSION
-            elif field._tag == 262:    # Photometric interpretation
-                self._photometricInterpretation = field.getValue()
-            elif field._tag == 273:  # Strip offsets
-                self._stripOffsets = field._values
-            elif field._tag == 274:  # Orientation
-                self._orientation = field.getValue()
-            elif field._tag == 277:  # Samples per pixel
-                self._samplesPerPixel = field.getValue()
-            elif field._tag == 278:  # Rows per strip
-                self._rowsPerStrip = field.getValue()
-            elif field._tag == 279:  # Strip byte counts
-                self._stripByteCounts = field._values
-            elif field._tag == 282:  # x resolution
-                self._resX = field.getValue()
-            elif field._tag == 283:  # y resolution
-                self._resY = field.getValue()
-            elif field._tag == 284:  # Planar configuration (order of pixel components)
-                self._planarConfig = field.getValue()
-            elif field._tag == 296:  # Resolution unit
-                self._resolutionUnit = field.getValue()
-            elif field._tag == 317:  # Predictor
-                self._predictor = field.getValue()
-            elif field._tag == 320:  # Color map
+        for field in self.ifd.fields:
+            if field.tag == 256:  # Number of columns
+                self.cols = field.getValue()
+            elif field.tag == 257:  # Number of rows
+                self.rows = field.getValue()
+            elif field.tag == 258:  # Bits per sample
+                self.bitsPerSample = field.values
+            elif field.tag == 259:  # Compression
+                self.compression = field.getValue()
+                if self.compression == 0:
+                    self.compression = TIFF_NO_COMPRESSION
+            elif field.tag == 262:    # Photometric interpretation
+                self.photometricInterpretation = field.getValue()
+            elif field.tag == 273:  # Strip offsets
+                self.stripOffsets = field.values
+            elif field.tag == 274:  # Orientation
+                self.orientation = field.getValue()
+            elif field.tag == 277:  # Samples per pixel
+                self.samplesPerPixel = field.getValue()
+            elif field.tag == 278:  # Rows per strip
+                self.rowsPerStrip = field.getValue()
+            elif field.tag == 279:  # Strip byte counts
+                self.stripByteCounts = field.values
+            elif field.tag == 282:  # x resolution
+                self.resX = field.getValue()
+            elif field.tag == 283:  # y resolution
+                self.resY = field.getValue()
+            elif field.tag == 284:  # Planar configuration (order of pixel components)
+                self.planarConfig = field.getValue()
+            elif field.tag == 296:  # Resolution unit
+                self.resolutionUnit = field.getValue()
+            elif field.tag == 317:  # Predictor
+                self.predictor = field.getValue()
+            elif field.tag == 320:  # Color map
                 pass # implement later...
-            elif field._tag == 339:  # Sample format
-                self._sampleFormat = field._values            
+            elif field.tag == 339:  # Sample format
+                self.sampleFormat = field.values            
 
     def nChannels(self):
-        return self._samplesPerPixel
+        return self.samplesPerPixel
 
     def nPixels(self):
-        return self._rows*self._cols
+        return self.rows*self.cols
 
     def bitsPerPixel(self):
         bits = 0
-        for b in self._bitsPerSample:
+        for b in self.bitsPerSample:
             bits += b
 
         return bits
 
     def isPlanar(self):
-        return (self._samplesPerPixel == 1 or self._planarConfig == TIFF_PLANAR)
+        return (self.samplesPerPixel == 1 or self.planarConfig == TIFF_PLANAR)
 
     def isSet(self):
         """ Check if image has a valid width and height. """
@@ -932,24 +931,24 @@ class tiffSubfile:
         return False
 
     def getWidth(self):
-        return self._cols
+        return self.cols
 
     def getHeight(self):
-        return self._rows
+        return self.rows
 
     def rot90(self):
         if self.isSet():
-            self._px = numpy.rot90(self._px, k=1, axes=(1,2))
-            self._cols, self._rows = self._rows, self._cols
+            self.px = numpy.rot90(self.px, k=1, axes=(1,2))
+            self.cols, self.rows = self.rows, self.cols
 
     def rot180(self):
         if self.isSet():
-            self._px = numpy.rot90(self._px, k=2, axes=(1,2))
+            self.px = numpy.rot90(self.px, k=2, axes=(1,2))
 
     def rot270(self):
         if self.isSet():
-            self._px = numpy.rot90(self._px, k=-1, axes=(1,2))
-            self._cols, self._rows = self._rows, self._cols
+            self.px = numpy.rot90(self.px, k=-1, axes=(1,2))
+            self.cols, self.rows = self.rows, self.cols
 
     def rotate(self, rotation):
         if rotation == "90":
@@ -962,22 +961,22 @@ class tiffSubfile:
     def flipHorizontal(self):
         if self.isSet():
             for i in range(self.nChannels()):
-                self._px[i] = numpy.fliplr(self._px[i])
+                self.px[i] = numpy.fliplr(self.px[i])
 
     def flipVertical(self):
         if self.isSet():
             for i in range(self.nChannels()):
-                self._px[i] = numpy.flipud(self._px[i])
+                self.px[i] = numpy.flipud(self.px[i])
 
     def setFlip(self, horz=False, vert=False):
-        self._flipHorz = horz
-        self._flipVert = vert
+        self.flipHorz = horz
+        self.flipVert = vert
 
     def getHorizontalFlip(self):
-        return self._flipHorz
+        return self.flipHorz
 
     def getVerticalFlip(self):
-        return self._flipVert
+        return self.flipVert
 
     def flip(self, horizontal=False, vertical=False):
         if horizontal:
@@ -986,7 +985,7 @@ class tiffSubfile:
             self.flipVertical()
 
     def numpyDatatype(self, sampleFormat, bitsPerSample):
-        formatString = self._byteOrder
+        formatString = self.byteOrder
         if sampleFormat == TIFF_SAMPLEFORMAT_UINT:  # unsigned
             if bitsPerSample == 8:
                 formatString = "u1"   # unsigned char (1 byte)
@@ -1019,7 +1018,7 @@ class tiffSubfile:
         raise Exception("Unsupported data type: {bps} bits per sample for TIFF sample format {sf}.".format(bps=bitsPerSample, sf=sampleFormat))
 
     def structDataTypeString(self, sampleFormat, bitsPerSample):
-        formatString = self._byteOrder
+        formatString = self.byteOrder
         if sampleFormat == TIFF_SAMPLEFORMAT_UINT:  # unsigned
             if bitsPerSample == 8:
                 formatString = "B"   # unsigned char (1 byte)
@@ -1053,15 +1052,15 @@ class tiffSubfile:
 
     def importFromUncompressedBuffer(self, pixelOffset, nPixels, datatype, channel, buff):
         if self.isPlanar():  # Buffer contains data just for one channel.
-            self._px[channel][int(pixelOffset):int(pixelOffset+nPixels)] = numpy.frombuffer(buff, dtype=datatype)
+            self.px[channel][int(pixelOffset):int(pixelOffset+nPixels)] = numpy.frombuffer(buff, dtype=datatype)
         else: # CHUNKY configuration. channel is irrelevant here (and wrong.)
             bitsPerPixel = self.bitsPerPixel()
             bytesPerPixel = int(bitsPerPixel / 8)
 
-            bytesPerSample = [x/8 for x in self._bitsPerSample]
+            bytesPerSample = [x/8 for x in self.bitsPerSample]
 
             buff1d = numpy.frombuffer(buff, dtype=datatype)
-            self._px[int(pixelOffset):int(pixelOffset+nPixels)] = numpy.reshape(buff1d, (nPixels, self.nChannels()))
+            self.px[int(pixelOffset):int(pixelOffset+nPixels)] = numpy.reshape(buff1d, (nPixels, self.nChannels()))
 
             """
             for pixel in range(nPixels):
@@ -1069,76 +1068,76 @@ class tiffSubfile:
 
                 
 
-                for c in range(self._samplesPerPixel):
+                for c in range(self.samplesPerPixel):
                     # Current index in bytes
                     idxStart = int((pixel + pixelOffset)*bytesPerPixel + channelOffset/8)
                     idxStop  = int(idxStart + bytesPerSample[c])
 
                     #print("Start: {}, Stop: {}".format(idxStart, idxStop))
 
-                    self._px[c][pixel] = numpy.frombuffer(buff[idxStart:idxStop], dtype=dt)
+                    self.px[c][pixel] = numpy.frombuffer(buff[idxStart:idxStop], dtype=dt)
 
-                    channelOffset += self._bitsPerSample[c]
+                    channelOffset += self.bitsPerSample[c]
             """
 
     def imageData(self, obeyOrientation=True):
         # Read data into byte buffer:
-        if len(self._stripOffsets) > 0:
-            if len(self._stripOffsets) == len(self._stripByteCounts):
-                if os.path.isfile(self._filename):
-                    with open(self._filename, "rb") as f:
+        if len(self.stripOffsets) > 0:
+            if len(self.stripOffsets) == len(self.stripByteCounts):
+                if os.path.isfile(self.filename):
+                    with open(self.filename, "rb") as f:
                         # Initialize nChannels x nPixels array for each channel:
 
                         # Check if bits per sample is the same for each channel:
-                        if self._bitsPerSample.count(self._bitsPerSample[0]) == len(self._bitsPerSample) and self._sampleFormat.count(self._sampleFormat[0]) == len(self._sampleFormat):
-                            sampleFormat  = self._sampleFormat[0]
-                            bitsPerSample = self._bitsPerSample[0]
+                        if self.bitsPerSample.count(self.bitsPerSample[0]) == len(self.bitsPerSample) and self.sampleFormat.count(self.sampleFormat[0]) == len(self.sampleFormat):
+                            sampleFormat  = self.sampleFormat[0]
+                            bitsPerSample = self.bitsPerSample[0]
 
                             dt = self.numpyDatatype(sampleFormat, bitsPerSample)
 
                             if self.isPlanar():
-                                self._px = numpy.zeros((self.nChannels(), self.nPixels()), dtype=dt)
+                                self.px = numpy.zeros((self.nChannels(), self.nPixels()), dtype=dt)
                             else:
                                 # Make array the shape of a chunky tiff configuration and reshape later...
-                                self._px = numpy.zeros((self.nPixels(), self.nChannels()), dtype=dt)
+                                self.px = numpy.zeros((self.nPixels(), self.nChannels()), dtype=dt)
 
-                            nStrips = len(self._stripOffsets)
+                            nStrips = len(self.stripOffsets)
 
-                            if self._compression == TIFF_NO_COMPRESSION or self._compression == TIFF_LZW_COMPRESSION:
+                            if self.compression == TIFF_NO_COMPRESSION or self.compression == TIFF_LZW_COMPRESSION:
                                 pixel = 0
                                 bitsPerPixel = self.bitsPerPixel()
 
                                 c = 0  # channel id. Only necessary for PLANAR configuration.
-                                nStripsPerChannel = int(nStrips / self._samplesPerPixel)
+                                nStripsPerChannel = int(nStrips / self.samplesPerPixel)
 
                                 for i in range(nStrips):
-                                    if self._samplesPerPixel > 1:
-                                        if self._planarConfig == TIFF_PLANAR:
+                                    if self.samplesPerPixel > 1:
+                                        if self.planarConfig == TIFF_PLANAR:
                                             # Import next channel once all strips for one component channel have been imported.
                                             if (i % nStripsPerChannel) == 0:
                                                 c += 1
 
-                                    offset = self._stripOffsets[i]
-                                    byteCount = self._stripByteCounts[i]  # byte count after compression
+                                    offset = self.stripOffsets[i]
+                                    byteCount = self.stripByteCounts[i]  # byte count after compression
 
                                     #print("Strip #{}/{}, Byte Offset: {}, Byte Count: {}".format(i, nStrips, offset, byteCount))
 
                                     f.seek(offset)
                                     buff = f.read(byteCount)
-                                    if self._compression == TIFF_LZW_COMPRESSION:
+                                    if self.compression == TIFF_LZW_COMPRESSION:
                                         compressed = lzwData()
                                         compressed.setCompressed(buff)
 
                                         #print("Decompressing LZW for strip {i}/{n}...".format(i=i, n=nStrips))
                                         compressed.decompress()
-                                        buff = bytes(compressed._uncompressed)
+                                        buff = bytes(compressed.uncompressed)
 
                                     byteCount = len(buff)
                                     bitCount = 8*byteCount
                                     if not self.isPlanar(): # Standard is chunky, also for only 1 sample/pixel.
                                         pixelsInStrip = int(bitCount / bitsPerPixel)
                                     else:
-                                        pixelsInStrip = int(bitCount / self._bitsPerSample[c])
+                                        pixelsInStrip = int(bitCount / self.bitsPerSample[c])
 
                                     self.importFromUncompressedBuffer(
                                         pixelOffset = pixel,
@@ -1151,157 +1150,157 @@ class tiffSubfile:
 
                                 tiffyLog(TIFFY_LOGLEVEL_INFO, "{} strips imported.".format(nStrips))
                             else:
-                                raise Exception("TIFF: Compression scheme {} not supported.".format(self._compression))
+                                raise Exception("TIFF: Compression scheme {} not supported.".format(self.compression))
 
                             f.close()
 
                             if not(self.isPlanar()):
                                 # Chunky mode. Swap axes from (pixels, channels) to (channels, pixels):
-                                self._px = numpy.swapaxes(self._px, 0, 1)
+                                self.px = numpy.swapaxes(self.px, 0, 1)
 
                             # Reshape components into 2D arrays:
-                            if len(self._px) > 0:
-                                self._px = numpy.reshape(self._px, (self.nChannels(), self._rows, self._cols))
+                            if len(self.px) > 0:
+                                self.px = numpy.reshape(self.px, (self.nChannels(), self.rows, self.cols))
 
                             # Convert horizontal differences to absolute values:
                             tiffyLog(TIFFY_LOGLEVEL_INFO, "Applying horizontal differencing...")
-                            if self._predictor == TIFF_HORIZONTAL_DIFFERENCING:
-                                for col in range(1, self._cols):
-                                    self._px[...,col] = self._px[...,col-1] + self._px[...,col]
+                            if self.predictor == TIFF_HORIZONTAL_DIFFERENCING:
+                                for col in range(1, self.cols):
+                                    self.px[...,col] = self.px[...,col-1] + self.px[...,col]
 
-                            tiffyLog(TIFFY_LOGLEVEL_INFO, "Orientation is: {}".format(self._orientation))
+                            tiffyLog(TIFFY_LOGLEVEL_INFO, "Orientation is: {}".format(self.orientation))
                             if obeyOrientation:
                                 # Rotate back to orientation 1 ((0,0) is upper left)
-                                if self._orientation == 2:     # (col0, row0) is (top, right)
+                                if self.orientation == 2:     # (col0, row0) is (top, right)
                                     self.flip(horizontal=True, vertical=False)
-                                elif self._orientation == 3:   # (col0, row0) is (bottom, right)
+                                elif self.orientation == 3:   # (col0, row0) is (bottom, right)
                                     self.flip(horizontal=True, vertical=True)
-                                elif self._orientation == 4:   # (col0, row0) is bottom left
+                                elif self.orientation == 4:   # (col0, row0) is bottom left
                                     self.flip(horizontal=False, vertical=True)
-                                elif self._orientation == 5:   # (col0, row0) is (left, top)
+                                elif self.orientation == 5:   # (col0, row0) is (left, top)
                                     self.rotate("90")
                                     self.flip(horizontal=False, vertical=True)
-                                elif self._orientation == 6:   # (col0, row0) is (right, top)
+                                elif self.orientation == 6:   # (col0, row0) is (right, top)
                                     self.rotate("270")
-                                elif self._orientation == 7:   # (col0, row0) is (right, bottom)
+                                elif self.orientation == 7:   # (col0, row0) is (right, bottom)
                                     self.rotate("90")
                                     self.flip(horizontal=True, vertical=False)
-                                elif self._orientation == 8:   # (col0, row0) is (left, bottom)
+                                elif self.orientation == 8:   # (col0, row0) is (left, bottom)
                                     self.rotate("90")
 
-                                self._orientation = 1
+                                self.orientation = 1
 
-                            return self._px
+                            return self.px
                         else:
                             f.close()
-                            raise Exception("Unsupported TIFF format: all channels must have the same type and size. Sample format: {}, Bits per sample: {}".format(self._sampleFormat, self._bitsPerSample))                       
+                            raise Exception("Unsupported TIFF format: all channels must have the same type and size. Sample format: {}, Bits per sample: {}".format(self.sampleFormat, self.bitsPerSample))                       
 
-                raise Exception("File not available: {}".format(self._filename))
+                raise Exception("File not available: {}".format(self.filename))
             else:
-                raise Exception("Number of strip offsets ({nOffsets}) does not match number of strip byte counts ({nByteCounts}).".format(nOffsets=len(self._stripOffsets), nByteCounts=len(self._stripByteCounts)))
+                raise Exception("Number of strip offsets ({nOffsets}) does not match number of strip byte counts ({nByteCounts}).".format(nOffsets=len(self.stripOffsets), nByteCounts=len(self.stripByteCounts)))
         else:
-            raise Exception("No data strips found for requested subfile in {filename}.".format(filename=self._filename))
+            raise Exception("No data strips found for requested subfile in {filename}.".format(filename=self.filename))
 
     def write(self, f, byteOrder):
         """ Expects an open, writable file pointer f. """
-        self._ifd.write(f, byteOrder)
+        self.ifd.write(f, byteOrder)
 
-        dataByteOrder = getByteOrder(self._px)
+        dataByteOrder = getByteOrder(self.px)
         if dataByteOrder != byteOrder:
-            self._px.byteswap(inplace=True)
+            self.px.byteswap(inplace=True)
 
         # Write image data:
-        if self._samplesPerPixel == 1:
-            f.write(self._px)
+        if self.samplesPerPixel == 1:
+            f.write(self.px)
         else:
-            chunkyBytes = numpy.swapaxes(self._px, 0, 2)  # channel <-> cols  --> (cols, rows, channel)
+            chunkyBytes = numpy.swapaxes(self.px, 0, 2)  # channel <-> cols  --> (cols, rows, channel)
             chunkyBytes = numpy.swapaxes(chunkyBytes, 0, 1)  # cols <-> rows  --> (rows, cols, channel)
             chunkyBytes.tofile(f, "")
 
             """
             dataString = []
             for c in range(self.nChannels()):
-                dataString.append(self.structDataTypeString(self._sampleFormat[c], self._bitsPerSample[c]))
+                dataString.append(self.structDataTypeString(self.sampleFormat[c], self.bitsPerSample[c]))
 
-            for y in range(self._rows):
-                for x in range(self._cols):
+            for y in range(self.rows):
+                for x in range(self.cols):
                     # Chunky style.
                     for c in range(self.nChannels()):
-                        buff = struct.pack("{endian}{ds}".format(endian=byteOrder, ds=dataString[c]), self._px[c][y][x])
+                        buff = struct.pack("{endian}{ds}".format(endian=byteOrder, ds=dataString[c]), self.px[c][y][x])
                         f.write(buff)
             """
 
 class tiff:
     def __init__(self):
-        self._filename = None
-        self._byteOrder = "<"
-        self._subfiles = []
+        self.filename = None
+        self.byteOrder = "<"
+        self.subfiles = []
 
     def reset(self):
         self.__init__()
 
     def read(self, filename=None):
-        self._filename = filename
+        self.filename = filename
 
-        if self._filename != None:
-            if os.path.isfile(self._filename):
-                filesize = os.path.getsize(self._filename)
-                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Size of {filename}: {size} Bytes.".format(filename=self._filename, size=filesize))
+        if self.filename != None:
+            if os.path.isfile(self.filename):
+                filesize = os.path.getsize(self.filename)
+                tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Size of {filename}: {size} Bytes.".format(filename=self.filename, size=filesize))
 
                 if filesize > 2:
-                    with open(self._filename, "rb") as f:
+                    with open(self.filename, "rb") as f:
                         buff = f.read(2)
                         (tiffformat,) = struct.unpack("<H", buff)  # Just read as little endian. It's symmetric, it doesn't matter.
 
-                        self._byteOrder = "<"   # little endian
+                        self.byteOrder = "<"   # little endian
                         if tiffformat == 0x4949:
                             tiffyLog(TIFFY_LOGLEVEL_DEBUG, "II format. Little endian.")
-                            self._byteOrder = "<"
+                            self.byteOrder = "<"
                         elif tiffformat == 0x4d4d:
                             tiffyLog(TIFFY_LOGLEVEL_DEBUG, "MM format. Big endian.")
-                            self._byteOrder = ">"
+                            self.byteOrder = ">"
                         else:
                             f.close()
                             raise Exception("Invalid byte order for first two bytes in TIFF header. Must be 0x4949 (II) or 0x4d4d (MM).")
 
                         buff = f.read(2)
-                        (magicByte,) = struct.unpack("{endian}H".format(endian=self._byteOrder), buff)
+                        (magicByte,) = struct.unpack("{endian}H".format(endian=self.byteOrder), buff)
                         if magicByte == 42:
                             tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Magic Byte: {}".format(magicByte))
                         else:
-                            raise Exception("TIFF magic byte is not 42: {}".format(self._filename))
+                            raise Exception("TIFF magic byte is not 42: {}".format(self.filename))
 
 
                         # Get location of first image file directory (IFD):
                         buff = f.read(4)
-                        (ifdPos,) = struct.unpack("{endian}L".format(endian=self._byteOrder), buff)
+                        (ifdPos,) = struct.unpack("{endian}L".format(endian=self.byteOrder), buff)
 
                         ifd0 = ifd()
-                        ifd0.read(ifdPos, f, self._byteOrder)
+                        ifd0.read(ifdPos, f, self.byteOrder)
 
-                        self._subfiles = []
+                        self.subfiles = []
                         subfile0 = tiffSubfile()
-                        subfile0.readMetaInformation(self._filename, self._byteOrder, ifd0)
-                        self._subfiles.append(subfile0)
+                        subfile0.readMetaInformation(self.filename, self.byteOrder, ifd0)
+                        self.subfiles.append(subfile0)
 
-                        nextIfdPos = ifd0._nextIfdPos
+                        nextIfdPos = ifd0.nextIfdPos
                         while nextIfdPos != 0:
                             ifdn = ifd()
-                            ifdn.read(nextIfdPos, f, self._byteOrder)
+                            ifdn.read(nextIfdPos, f, self.byteOrder)
                             subfilen = tiffSubfile()
-                            subfilen.readMetaInformation(self._filename, self._byteOrder, ifdn)
-                            self._subfiles.append(subfilen)
-                            nextIfdPos = ifdn._nextIfdPos
+                            subfilen.readMetaInformation(self.filename, self.byteOrder, ifdn)
+                            self.subfiles.append(subfilen)
+                            nextIfdPos = ifdn.nextIfdPos
 
                         f.close()
                 else:
-                    raise Exception("TIFF file does not contain any data: {}".format(self._filename))
+                    raise Exception("TIFF file does not contain any data: {}".format(self.filename))
             else:
-                raise Exception("File not found: {}".format(self._filename))
+                raise Exception("File not found: {}".format(self.filename))
 
     def imageData(self, subfile=0, channel=None, obeyOrientation=True):
-        if subfile < len(self._subfiles):
-            data = self._subfiles[subfile].imageData()
+        if subfile < len(self.subfiles):
+            data = self.subfiles[subfile].imageData()
             if channel == None:
                 return data
             else:
@@ -1311,34 +1310,34 @@ class tiff:
 
     def getNrSubfiles(self):
         """ Return number of subfiles. """
-        return len(self._subfiles)
+        return len(self.subfiles)
 
     def getWidth(self, subfile=0):
-        if subfile < len(self._subfiles):
-            return self._subfiles[subfile].getWidth()
+        if subfile < len(self.subfiles):
+            return self.subfiles[subfile].getWidth()
 
     def getHeight(self, subfile=0):
-        if subfile < len(self._subfiles):
-            return self._subfiles[subfile].getHeight()
+        if subfile < len(self.subfiles):
+            return self.subfiles[subfile].getHeight()
 
     def sizeInBytes(self):
         size = 8  # TIFF header
 
         # Add size for each sub file:
-        for sub in self._subfiles:
+        for sub in self.subfiles:
             size += sub.sizeInBytes()
 
         return size
 
     def prepareDataOffsets(self):
         offset = 8  # TIFF header
-        for sub in self._subfiles:
+        for sub in self.subfiles:
             offset = sub.prepareDataOffsets(offset)
 
     def printOffset(self):
         self.prepareDataOffsets()
         tiffyLog(TIFFY_LOGLEVEL_INFO, "TIFF HEADER             0")
-        for sub in self._subfiles:
+        for sub in self.subfiles:
             sub.printOffset()
 
     def set(self, imageData, resX=0, resY=0):
@@ -1353,13 +1352,13 @@ class tiff:
         if len(numpy.shape(imageData)) == 3:
             img = tiffSubfile()
             img.set(imageData, resX, resY)
-            self._subfiles.append(img)
+            self.subfiles.append(img)
 
             # IFDs must be setup twice to ensure correct data offset pointers.
-            for sub in self._subfiles:
+            for sub in self.subfiles:
                 sub.setupIFD()
             self.prepareDataOffsets()
-            for sub in self._subfiles:
+            for sub in self.subfiles:
                 sub.setupIFD()
         else:
             raise Exception("TIFF: adding image data failed. Image data must be a numpy array of shape (height, width) or (channels, height, width).")
@@ -1387,7 +1386,7 @@ class tiff:
             buff = struct.pack("{endian}L".format(endian=byteOrder), 8)
             f.write(buff)
 
-            for sub in self._subfiles:
+            for sub in self.subfiles:
                 sub.write(f, byteOrder)
            
             f.close()

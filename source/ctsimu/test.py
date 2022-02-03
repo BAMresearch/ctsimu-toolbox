@@ -20,15 +20,15 @@ class generalTest(ProcessingStep):
     def __init__(self, testName="General Test", name=None, nExpectedRuns=1, resultFileDirectory=".", rawOutput=False):
         ProcessingStep.__init__(self, testName)
        
-        self._testName = testName
-        self._subtests = []
+        self.testName = testName
+        self.subtests = []
 
-        self._prepared = False 
-        self._currentRun = 0
-        self._nExpectedRuns = None  # usually, number of projections to evaluate
-        self._resultFileDirectory = None
-        self._name = None
-        self._rawOutput = None
+        self.prepared = False 
+        self.currentRun = 0
+        self.nExpectedRuns = None  # usually, number of projections to evaluate
+        self.resultFileDirectory = None
+        self.name = None
+        self.rawOutput = None
 
         self.setName(name)
         self.setExpectedRuns(nExpectedRuns)
@@ -38,30 +38,30 @@ class generalTest(ProcessingStep):
         self.reset()
 
     def reset(self):
-        self._currentRun = 0
-        self._prepared = False
+        self.currentRun = 0
+        self.prepared = False
 
     def addSubtest(self, subt):
-        self._subtests.append(subt)
+        self.subtests.append(subt)
 
     def setName(self, name=None):
         """ Set an individual name for the (sub) test. """
         if name != None:
-            self._name = name
+            self.name = name
         else:
-            self._name = self._testName
+            self.name = self.testName
 
     def setExpectedRuns(self, n=1):
-        self._nExpectedRuns = n
+        self.nExpectedRuns = n
 
     def setResultFileDirectory(self, resultFileDirectory="."):
         """ Set the location where test results should be saved. """
-        self._resultFileDirectory = resultFileDirectory
-        touchDirectory(self._resultFileDirectory)
+        self.resultFileDirectory = resultFileDirectory
+        touchDirectory(self.resultFileDirectory)
 
     def setRawOutput(self, rawOutput=False):
         """ Save intermediate projections as RAW instead of TIFF? """
-        self._rawOutput = rawOutput
+        self.rawOutput = rawOutput
 
     def plotResults(self):
         """ Plot results of evaluation. """
