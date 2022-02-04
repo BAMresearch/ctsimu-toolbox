@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+
 import numpy
 import os    # File and path handling
 import json
@@ -11,7 +12,27 @@ from datetime import datetime
 from .geoprimitives import *
 from .image import Image  # To create detector flat field
 
-def basisTransformMatrix(fromCS, toCS):
+def basisTransformMatrix(fromCS: GeometryObject, toCS: GeometryObject) -> Matrix:
+    """Calculate a matrix that transforms coordinates from "fromCS" to "toCS".
+
+    Parameters
+    ----------
+    fromCS : GeometryObject
+        The origin coordinate system.
+
+    toCS : GeometryObject
+        The target coordinate system.
+
+    Returns
+    -------
+    T : Matrix
+        The 3x3 basis transformation matrix.
+
+    References
+    ----------
+    .. [1] S. Widnall, "Lecture L3 - Vectors, Matrices and Coordinate Transformations", https://ocw.mit.edu/courses/aeronautics-and-astronautics/16-07-dynamics-fall-2009/lecture-notes/MIT16_07F09_Lec03.pdf
+    """
+
     T = Matrix(3, 3)
 
     # Row 1:
@@ -32,170 +53,319 @@ def basisTransformMatrix(fromCS, toCS):
     return T
 
 class GeometryObject:
-    """ An object according to the CTSimU scenario specification,
-        containing a centre coordinate and an orientation in 3D space. 
-        So far, geometrical objects can be source, stage or detector.
-        Samples would need additional attention due to
-        possible stage coordinate system (instead of world)."""
+    """Coordinate system: centre point and axis vectors.
+
+    An object according to the CTSimU scenario specification,
+    containing a centre coordinate and an orientation in 3D space.
+    
+    The centre and axis vectors are expressed in terms of the
+    object's reference coordinate system, which must be known implicitly
+    when objects of this class are used.
+
+    Geometrical objects could be source, stage or detector.
+    Samples would need additional attention due to possible attachment
+    to stage coordinate system (instead of world).
+
+    Attributes
+    ----------
+    centre : Vector
+        The location of the centre point in a reference
+        coordinate system (usually world or stage).
+
+    vectorU : Vector
+        Basis vector for the u axis, expressed in the
+        reference coordinate system (usually world or stage).
+        Must be a unit vector.
+
+    vectorV : Vector
+        Basis vector for the v axis, see vectorU.
+
+    vectorW : Vector
+        Basis vector for the w axis, see vectorU.
+    """
 
     def __init__(self):
-        """ Initialize all vectors as world CS: """
+        """Initialize as a standard world coordinate system."""
         self.centre  = Vector(0, 0, 0)
         self.vectorU = Vector(1, 0, 0)
         self.vectorV = Vector(0, 1, 0)
         self.vectorW = Vector(0, 0, 1)
 
-    def setupFromGeometryDefinition(self, geometry):
-        """ Set up this geometrical object from a JSON dictionary. """
+    def setupFromGeometryDefinition(self, geometry: dict):
+        """Set up geometry from a JSON dictionary.
+
+        Parameters
+        ----------
+        geometry : dict
+            A parsed JSON dictionary from a CTSimU scenario description file. See [2]_.
+
+        Raises
+        ------
+        KeyError
+            When expected JSON keys for centre and vector x, y, z
+            components are not found in the dictionary.
+
+        References
+        ----------
+        .. [2] CTSimU Scenario Descriptions, https://bamresearch.github.io/ctsimu-scenarios/
+        """
+
+        # Get centre position from JSON dict:
         if "centre" in geometry:
             if "x" in geometry["centre"]:
-                cx = inMM(geometry["centre"]["x"])
+                cx = in_mm(geometry["centre"]["x"])
             else:
-                raise Exception("No \"x\" coordinate found for the center.")
+                raise KeyError("No \"x\" coordinate found for the center.")
 
             if "y" in geometry["centre"]:
-                cy = inMM(geometry["centre"]["y"])
+                cy = in_mm(geometry["centre"]["y"])
             else:
-                raise Exception("No \"y\" coordinate found for the center.")
+                raise KeyError("No \"y\" coordinate found for the center.")
             
             if "z" in geometry["centre"]:
-                cz = inMM(geometry["centre"]["z"])
+                cz = in_mm(geometry["centre"]["z"])
             else:
-                raise Exception("No \"z\" coordinate found for the center.")
+                raise KeyError("No \"z\" coordinate found for the center.")
 
             self.centre.set(cx, cy, cz)
         else:
-            raise Exception("JSON file is missing a geometry \"centre\" section.")
+            raise KeyError("JSON file is missing a geometry \"centre\" section.")
 
-
+        # Get vector u from JSON dict:
         if "vector_u" in geometry:
             if "x" in geometry["vector_u"]:
                 ux = geometry["vector_u"]["x"]
             else:
-                raise Exception("No \"x\" component found for vector u.")
+                raise KeyError("No \"x\" component found for vector u.")
 
             if "y" in geometry["vector_u"]:
                 uy = geometry["vector_u"]["y"]
             else:
-                raise Exception("No \"y\" component found for vector u.")
+                raise KeyError("No \"y\" component found for vector u.")
 
             if "z" in geometry["vector_u"]:
                 uz = geometry["vector_u"]["z"]
             else:
-                raise Exception("No \"z\" component found for vector u.")
+                raise KeyError("No \"z\" component found for vector u.")
         else:
-            raise Exception("JSON file is missing a geometry \"vector_u\" section.")
+            raise KeyError("JSON file is missing a geometry \"vector_u\" section.")
 
-        
+        # Get vector w from JSON dict:
         if "vector_w" in geometry:
             if "x" in geometry["vector_w"]:
                 wx = geometry["vector_w"]["x"]
             else:
-                raise Exception("No \"x\" component found for vector w.")
+                raise KeyError("No \"x\" component found for vector w.")
 
             if "y" in geometry["vector_w"]:
                 wy = geometry["vector_w"]["y"]
             else:
-                raise Exception("No \"y\" component found for vector w.")
+                raise KeyError("No \"y\" component found for vector w.")
 
             if "z" in geometry["vector_w"]:
                 wz = geometry["vector_w"]["z"]
             else:
-                raise Exception("No \"z\" component found for vector w.")
+                raise KeyError("No \"z\" component found for vector w.")
         else:
-            raise Exception("JSON file is missing a geometry \"vector_w\" section.")
+            raise KeyError("JSON file is missing a geometry \"vector_w\" section.")
 
-
+        # Set up the geometry from the information given in the JSON file:
         self.setup(cx, cy, cz, ux, uy, uz, wx, wy, wz)
 
+        # Apply deviations from the now-ideal geometry:
         if "deviation" in geometry:
+            # Positional deviations:
             if "position" in geometry["deviation"]:
                 if "x" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["x"] != None:
-                        translationX = inMM(geometry["deviation"]["position"]["x"])
+                        translationX = in_mm(geometry["deviation"]["position"]["x"])
                         self.translateX(translationX)
     
                 if "y" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["y"] != None:
-                        translationY = inMM(geometry["deviation"]["position"]["y"])
+                        translationY = in_mm(geometry["deviation"]["position"]["y"])
                         self.translateY(translationY)
 
                 if "z" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["z"] != None:
-                        translationZ = inMM(geometry["deviation"]["position"]["z"])
+                        translationZ = in_mm(geometry["deviation"]["position"]["z"])
                         self.translateZ(translationZ)
 
             # Rotations according to w''v'u convention:
             if "rotation" in geometry["deviation"]:
                 if "w" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["w"] != None:
-                        angleAroundW = inRad(geometry["deviation"]["rotation"]["w"])
+                        angleAroundW = in_rad(geometry["deviation"]["rotation"]["w"])
                         self.rotateAroundW(angleAroundW)
 
                 if "v" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["v"] != None:
-                        angleAroundV = inRad(geometry["deviation"]["rotation"]["v"])
+                        angleAroundV = in_rad(geometry["deviation"]["rotation"]["v"])
                         self.rotateAroundV(angleAroundV)
 
                 if "u" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["u"] != None:
-                        angleAroundU = inRad(geometry["deviation"]["rotation"]["u"])
+                        angleAroundU = in_rad(geometry["deviation"]["rotation"]["u"])
                         self.rotateAroundU(angleAroundU)
 
-    def setup(self, centerX=0, centerY=0, centerZ=0, uX=0, uY=0, uZ=0, wX=0, wY=0, wZ=0):
-        """ Set up centre and orientation from JSON geometry components. """
+    def setup(self, centerX: float = 0, centerY: float = 0, centerZ: float = 0, uX: float = 0, uY: float = 0, uZ: float = 0, wX: float = 0, wY: float = 0, wZ: float = 0):
+        """Set up centre and orientation from JSON geometry components.
+
+        Parameters
+        ----------
+        centerX : float
+            x component of the centre point, in reference coordinate system.
+
+        centerY : float
+            y component of the centre point, in reference coordinate system.
+
+        centerZ : float
+            z component of the centre point, in reference coordinate system.
+
+        uX : float
+            x component of the u axis vector, in reference coordinate system.
+
+        uY : float
+            y component of the u axis vector, in reference coordinate system.
+
+        uZ : float
+            z component of the u axis vector, in reference coordinate system.
+
+        wX : float
+            x component of the w axis vector, in reference coordinate system.
+
+        wY : float
+            y component of the w axis vector, in reference coordinate system.
+
+        wZ : float
+            z component of the w axis vector, in reference coordinate system.
+
+        Notes
+        -----
+        The vectors u and w must be orthogonal.
+        The v vector is calculated as the cross product w×u.
+
+        All vectors are automatically scaled to be unit vectors.
+        """
+
+        # Create new vectors from given components:
         self.centre  = Vector(centerX, centerY, centerZ)
         self.vectorU = Vector(uX, uY, uZ)
         self.vectorW = Vector(wX, wY, wZ)
         
+        # Calculate v from cross product:
         self.vectorV = self.vectorW.cross(self.vectorU)
 
+        # Ensure that all basis vectors are unit vectors:
         self.makeUnitCS()
 
     def makeUnitCS(self):
-        """ Make coordinate system base unit vectors. """
+        """Convert all basis vectors to unit vectors."""
         self.vectorU.makeUnitVector()
         self.vectorV.makeUnitVector()
         self.vectorW.makeUnitVector()
 
-    def translate(self, translationVector):
-        """ Move object in space. """
+    def translate(self, translationVector: Vector):
+        """Move object in space.
+
+        Parameters
+        ----------
+        translationVector : Vector
+            Vector by which the object's centre point should be shifted.
+            Its components are added to the centre's components.
+        """
         self.centre.add(translationVector)
 
-    def translateX(self, dx):
-        """ Move object in x direction. """
-        self.centre.setx(self.centre.x() + dx)
+    def translateX(self, dx: float):
+        """Move object in x direction.
 
-    def translateY(self, dy):
-        """ Move object in y direction. """
-        self.centre.sety(self.centre.y() + dy)
+        Parameters
+        ----------
+        dx : float
+            Shift amount in x direction.
+        """
+        self.centre.setx(self.centre.x + float(dx))
 
-    def translateZ(self, dz):
-        """ Move object in z direction. """
-        self.centre.setz(self.centre.z() + dz)
+    def translateY(self, dy: float):
+        """Move object in y direction.
 
-    def rotateAroundU(self, angleInRad):
-        """ Rotate object around its u axis by given angle [rad]. """
-        self.vectorV.rotate(self.vectorU, angleInRad)
-        self.vectorW.rotate(self.vectorU, angleInRad)
+        Parameters
+        ----------
+        dy : float
+            Shift amount in y direction.
+        """
+        self.centre.sety(self.centre.y + float(dy))
 
-    def rotateAroundV(self, angleInRad):
-        """ Rotate object around its v axis by given angle [rad]. """
-        self.vectorU.rotate(self.vectorV, angleInRad)
-        self.vectorW.rotate(self.vectorV, angleInRad)
+    def translateZ(self, dz: float):
+        """Move object in z direction.
 
-    def rotateAroundW(self, angleInRad):
-        """ Rotate object around its w axis by given angle [rad]. """
-        self.vectorU.rotate(self.vectorW, angleInRad)
-        self.vectorV.rotate(self.vectorW, angleInRad)
+        Parameters
+        ----------
+        dz : float
+            Shift amount in z direction.
+        """
+        self.centre.setz(self.centre.z + float(dz))
 
-    def rotate(self, axis, angleInRad):
-        """ Rotate coordinate system around a given axis by angle [rad]. """
-        self.vectorU.rotate(axis, angleInRad)
-        self.vectorV.rotate(axis, angleInRad)
-        self.vectorW.rotate(axis, angleInRad)
+    def rotateAroundU(self, angle: float):
+        """Rotate object around its u axis by given angle [rad].
+        
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad.
+        """
+        self.vectorV.rotate(self.vectorU, angle)
+        self.vectorW.rotate(self.vectorU, angle)
 
-    def changeReferenceFrame(self, fromCS, toCS):
+    def rotateAroundV(self, angle: float):
+        """Rotate object around its v axis by given angle [rad].
+        
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad.
+        """
+        self.vectorU.rotate(self.vectorV, angle)
+        self.vectorW.rotate(self.vectorV, angle)
+
+    def rotateAroundW(self, angle: float):
+        """Rotate object around its w axis by given angle [rad].
+        
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad.
+        """
+        self.vectorU.rotate(self.vectorW, angle)
+        self.vectorV.rotate(self.vectorW, angle)
+
+    def rotate(self, axis: Vector, angle: float):
+        """Rotate coordinate system around a given axis by the given angle [rad].
+        
+        Parameters
+        ----------
+        axis : Vector
+            The axis of rotation, in terms of the object's reference coordinate system (e.g. world).
+        
+        angle : float
+            Rotation angle in rad.
+        """
+        self.vectorU.rotate(axis, angle)
+        self.vectorV.rotate(axis, angle)
+        self.vectorW.rotate(axis, angle)
+
+    def changeReferenceFrame(self, fromCS: GeometryObject, toCS: GeometryObject):
+        """Change the object's reference coordinate system.
+        
+        Parameters
+        ----------
+        fromCS : GeometryObject
+            Current reference coordinate system.
+        
+        toCS : GeometryObject
+            New reference coordinate system.
+        """
+
         # Rotate basis vectors into toCS:
         T = basisTransformMatrix(fromCS, toCS)
         self.vectorU = T * self.vectorU
@@ -209,27 +379,87 @@ class GeometryObject:
 
 
 class Detector(GeometryObject):
-    """ Detector class to get pixel coordinates, etc. """
+    """Detector as geometrical object.
+
+    With additional attributes for the spatial extension and
+    the pixel coordinate system.
+
+    Attributes
+    ----------
+    pixelsU : int
+        Number of pixels in u direction.
+    
+    pixelsV : int
+        Number of pixels in v direction.
+    
+    pixelPitchU : float
+        Size of a pixel in u direction. In units of the reference coordinate system.
+    
+    pixelPitchV : float
+        Size of a pixel in v direction. In units of the reference coordinate system.
+    
+    physWidth : float
+        Physical size in u direction. In units of the reference coordinate system.
+        Computed automatically after calling `setSize()`.
+    
+    physHeight : float
+        Physical size in v direction. In units of the reference coordinate system.
+        Computed automatically after calling `setSize()`.
+    
+    upperLeft : Vector
+        Position of the "upper left" corner in the reference coordinate system,
+        i.e., the outermost position of the (0,0) pixel (referred to the pixel coordinate system).
+        Computed automatically after calling `setSize()`.
+
+    Notes
+    -----
+    Use `setSize()` to set the size of the detector, given its number of pixels
+    and the pitch. This function automatically computes the physical dimensions
+    `physWidth` and `physHeight` and the location of the `upperLeft` corner.
+    """
 
     def __init__(self):
+        """Initialize as a standard GeometryObject.
+
+        Orientation, position and size must be set up manually afterwards.
+        """
+
+        # Call init from parent class:
         GeometryObject.__init__(self)
 
         self.pixelsU     = None  # Detector pixels in u direction
         self.pixelsV     = None  # Detector pixels in v direction
-        self.pixelPitchU = None
-        self.pixelPitchV = None
-        self.physWidth    = 0    # Physical width in units of pitch U
-        self.physHeight   = 0    # Physical height in units of pitch V
+        self.pixelPitchU = None  # Size of a pixel in u direction in units of reference coordinate system
+        self.pixelPitchV = None  # Size of a pixel in v direction in units of reference coordinate system
+        self.physWidth    = 0    # Physical width in units of reference coordinate system
+        self.physHeight   = 0    # Physical height in units of reference coordinate system
 
-        self.upperLeftX = 0
-        self.upperLeftY = 0
-        self.upperLeftZ = 0
+        self.upperLeft  = Vector()  # "upper left" corner, i.e. pixel (0, 0) of pixel coordinate system.
 
-    def setSize(self, nPixelsU=None, nPixelsV=None, pitchU=None, pitchV=None):
-        self.pixelsU = nPixelsU
-        self.pixelsV = nPixelsV
-        self.pixelPitchU = pitchU
-        self.pixelPitchV = pitchV
+    def setSize(self, nPixelsU:int = None, nPixelsV:int = None, pitchU:float = None, pitchV:float = None):
+        """Set the physical size of the detector.
+
+        From the given parameters, the 
+
+        Parameters
+        ----------
+        nPixelsU : int
+            Number of pixels in u direction.
+
+        nPixelsV : int
+            Number of pixels in v direction.
+
+        pitchU : float
+            Pixel pitch in u direction.
+
+        pitchV : float
+            Pixel pitch in v direction.
+        """
+
+        self.pixelsU = int(nPixelsU)
+        self.pixelsV = int(nPixelsV)
+        self.pixelPitchU = float(pitchU)
+        self.pixelPitchV = float(pitchV)
 
         self.computeGeometryParameters()
 
@@ -240,17 +470,17 @@ class Detector(GeometryObject):
             self.physHeight = self.pixelsV * self.pixelPitchV
 
             # Vectors of the detector coordinate system:
-            ux = self.vectorU.x()
-            uy = self.vectorU.y()
-            uz = self.vectorU.z()
-            vx = self.vectorV.x()
-            vy = self.vectorV.y()
-            vz = self.vectorV.z()
+            ux = self.vectorU.x
+            uy = self.vectorU.y
+            uz = self.vectorU.z
+            vx = self.vectorV.x
+            vy = self.vectorV.y
+            vz = self.vectorV.z
 
-            # World coordinates of corner (0, 0) of detector CS:
-            self.upperLeftX = self.centre.x() - 0.5*(ux*self.physWidth + vx*self.physHeight)
-            self.upperLeftY = self.centre.y() - 0.5*(uy*self.physWidth + vy*self.physHeight)
-            self.upperLeftZ = self.centre.z() - 0.5*(uz*self.physWidth + vz*self.physHeight)
+            # World coordinates of corner (0,0) of detector's pixel coordinate system:
+            self.upperLeft.x = self.centre.x - 0.5*(ux*self.physWidth + vx*self.physHeight)
+            self.upperLeft.y = self.centre.y - 0.5*(uy*self.physWidth + vy*self.physHeight)
+            self.upperLeft.z = self.centre.z - 0.5*(uz*self.physWidth + vz*self.physHeight)
 
     def cols(self):
         return self.pixelsU
@@ -272,9 +502,9 @@ class Detector(GeometryObject):
 
     def pixelVectorUpperLeft(self, x, y):
         # x, y are coordinates in pixel coordinates system
-        px = self.upperLeftX + self.vectorU.x()*x*self.pixelPitchU + self.vectorV.x()*y*self.pixelPitchV
-        py = self.upperLeftY + self.vectorU.y()*x*self.pixelPitchU + self.vectorV.y()*y*self.pixelPitchV
-        pz = self.upperLeftZ + self.vectorU.z()*x*self.pixelPitchU + self.vectorV.z()*y*self.pixelPitchV
+        px = self.upperLeft.x + self.vectorU.x*x*self.pixelPitchU + self.vectorV.x*y*self.pixelPitchV
+        py = self.upperLeft.y + self.vectorU.y*x*self.pixelPitchU + self.vectorV.y*y*self.pixelPitchV
+        pz = self.upperLeft.z + self.vectorU.z*x*self.pixelPitchU + self.vectorV.z*y*self.pixelPitchV
         pixelVector = Vector(px, py, pz)
         return pixelVector
 
@@ -373,8 +603,8 @@ class Geometry:
         source_from_detector.changeReferenceFrame(world, self.detector)
         stage_from_detector.changeReferenceFrame(world, self.detector)
 
-        self.SDD = abs(source_from_detector.centre.z())
-        self.ODD = abs(stage_from_detector.centre.z())
+        self.SDD = abs(source_from_detector.centre.z)
+        self.ODD = abs(stage_from_detector.centre.z)
         self.SOD = self.source.centre.distance(self.stage.centre)
 
         ## Brightest Spot in World Coordinate System:
@@ -466,16 +696,16 @@ class Geometry:
 
             # Translation vector from stage to source:
             rfoc = source.centre - stage.centre
-            xfoc = rfoc.x()
-            yfoc = rfoc.y()
-            zfoc = rfoc.z()
+            xfoc = rfoc.x
+            yfoc = rfoc.y
+            zfoc = rfoc.z
 
             # Focus point on detector: principal, perpendicular ray.
             # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
             # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
-            ufoc = source_from_detector.centre.x()
-            vfoc = source_from_detector.centre.y()
-            wfoc = source_from_detector.centre.z()
+            ufoc = source_from_detector.centre.x
+            vfoc = source_from_detector.centre.y
+            wfoc = source_from_detector.centre.z
             SDD  = abs(wfoc)
 
             if mode == "CERA":
@@ -532,26 +762,26 @@ class Geometry:
         flatField.shape(width, height, 0, flatField.getInternalDataType())
 
         # Positions of detector and source center:
-        dx = self.detector.centre.x()
-        dy = self.detector.centre.y()
-        dz = self.detector.centre.z()
+        dx = self.detector.centre.x
+        dy = self.detector.centre.y
+        dz = self.detector.centre.z
 
-        sx = self.source.centre.x()
-        sy = self.source.centre.y()
-        sz = self.source.centre.z()
+        sx = self.source.centre.x
+        sy = self.source.centre.y
+        sz = self.source.centre.z
 
         # Vectors of the detector coordinate system:
-        ux = self.detector.vectorU.x()
-        uy = self.detector.vectorU.y()
-        uz = self.detector.vectorU.z()
+        ux = self.detector.vectorU.x
+        uy = self.detector.vectorU.y
+        uz = self.detector.vectorU.z
 
-        vx = self.detector.vectorV.x()
-        vy = self.detector.vectorV.y()
-        vz = self.detector.vectorV.z()
+        vx = self.detector.vectorV.x
+        vy = self.detector.vectorV.y
+        vz = self.detector.vectorV.z
 
-        wx = self.detector.vectorW.x()
-        wy = self.detector.vectorW.y()
-        wz = self.detector.vectorW.z()
+        wx = self.detector.vectorW.x
+        wy = self.detector.vectorW.y
+        wz = self.detector.vectorW.z
 
 
         # Angle 'alpha' between detector normal and connection line [detector centre -- source]:
@@ -580,7 +810,7 @@ class Geometry:
    Connection Vector: {}, {}, {}\n\
    Detector Vector U: {}, {}, {}\n\
    Detector Vector V: {}, {}, {}\n\
-   Detector Vector W: {}, {}, {}".format(alpha, dist, SDD, width, height, pixelSizeU, pixelSizeV, sx, sy, sz, dx, dy, dz, connectionLine.x(), connectionLine.y(), connectionLine.z(), ux, uy, uz, vx, vy, vz, wx, wy, wz))
+   Detector Vector W: {}, {}, {}".format(alpha, dist, SDD, width, height, pixelSizeU, pixelSizeV, sx, sy, sz, dx, dy, dz, connectionLine.x, connectionLine.y, connectionLine.z, ux, uy, uz, vx, vy, vz, wx, wy, wz))
 
         maxIntensity = 0
         maxX = 0
@@ -611,7 +841,7 @@ class Geometry:
                         distToSource = self.source.centre.distance(pixel)
 
                         # Angle of incident rays:
-                        vecSourceToPixel = Vector(pixel.x()-sx, pixel.y()-sy, pixel.z()-sz)
+                        vecSourceToPixel = Vector(pixel.x-sx, pixel.y-sy, pixel.z-sz)
                         incidenceAngle = abs(self.detector.vectorW.angle(vecSourceToPixel))
                         if incidenceAngle > (math.pi/2):
                             incidenceAngle = math.pi - incidenceAngle
@@ -727,13 +957,13 @@ class Geometry:
     """
     def createDetectorFlatField_sphere_old(self, clippingPolygon=None):
         # Positions of detector and source center:
-        dx = self.detector.centre.x()
-        dy = self.detector.centre.y()
-        dz = self.detector.centre.z()
+        dx = self.detector.centre.x
+        dy = self.detector.centre.y
+        dz = self.detector.centre.z
 
-        sx = self.source.centre.x()
-        sy = self.source.centre.y()
-        sz = self.source.centre.z()
+        sx = self.source.centre.x
+        sy = self.source.centre.y
+        sz = self.source.centre.z
 
         # Angle 'alpha' between detector normal and connection line [detector centre -- source]:
         connectionLine = Vector(dx-sx, dy-sy, dz-sz)
@@ -811,7 +1041,7 @@ class Geometry:
         incidenceAngle = abs(self.detector.vectorW.angle(maxCenter))
 
         #print("Brightest Pixel: {}, {}".format(maxX, maxY))
-        print("  Vector: {}, {}, {}".format(maxCenter.x(), maxCenter.y(), maxCenter.z()))
+        print("  Vector: {}, {}, {}".format(maxCenter.x, maxCenter.y, maxCenter.z))
         print("  Distance to Source: {}".format(distToSource))
         print("  Spherical Area: {}".format(maxArea))
         print("  Angle: {} rad = {} deg".format(incidenceAngle, 180*incidenceAngle/math.pi))
@@ -837,7 +1067,7 @@ class Geometry:
 
         # Source - Detector distance (SDD) defined by shortest distance between source and detector,
         # or distance between source and spot of highest intensity on detector.
-        SDD = abs(S.centre.z())
+        SDD = abs(S.centre.z)
 
         # Calculate the area of the theoretical "brightest pixel" on the unit sphere:
         pu = D.pitchU()
@@ -959,26 +1189,26 @@ class Geometry:
         flatField.shape(width, height, 0, flatField.getInternalDataType())
 
         # Positions of detector and source center:
-        dx = self.detector.centre.x()
-        dy = self.detector.centre.y()
-        dz = self.detector.centre.z()
+        dx = self.detector.centre.x
+        dy = self.detector.centre.y
+        dz = self.detector.centre.z
 
-        sx = self.source.centre.x()
-        sy = self.source.centre.y()
-        sz = self.source.centre.z()
+        sx = self.source.centre.x
+        sy = self.source.centre.y
+        sz = self.source.centre.z
 
         # Vectors of the detector coordinate system:
-        ux = self.detector.vectorU.x()
-        uy = self.detector.vectorU.y()
-        uz = self.detector.vectorU.z()
+        ux = self.detector.vectorU.x
+        uy = self.detector.vectorU.y
+        uz = self.detector.vectorU.z
 
-        vx = self.detector.vectorV.x()
-        vy = self.detector.vectorV.y()
-        vz = self.detector.vectorV.z()
+        vx = self.detector.vectorV.x
+        vy = self.detector.vectorV.y
+        vz = self.detector.vectorV.z
 
-        wx = self.detector.vectorW.x()
-        wy = self.detector.vectorW.y()
-        wz = self.detector.vectorW.z()
+        wx = self.detector.vectorW.x
+        wy = self.detector.vectorW.y
+        wz = self.detector.vectorW.z
 
 
         # Angle 'alpha' between detector normal and connection line [detector centre -- source]:

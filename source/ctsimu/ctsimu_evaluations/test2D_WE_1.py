@@ -244,8 +244,8 @@ class Test2D_WE_1(generalTest):
             if jsonText != None:
                 jsonDict = json.loads(jsonText)
 
-                results.nominalGaussianSigmaMM = inMM(getFieldOrNone(jsonDict, "source", "spot", "sigma", "u"))
-                results.pixelSize = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+                results.nominalGaussianSigmaMM = in_mm(getFieldOrNone(jsonDict, "source", "spot", "sigma", "u"))
+                results.pixelSize = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
 
                 results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
             

@@ -91,9 +91,9 @@ class Vector:
     """ A 3D vector in space. """
 
     def __init__(self, x=0, y=0, z=0):
-        self.x = x
-        self.y = y
-        self.z = z
+        self.x = float(x)
+        self.y = float(y)
+        self.z = float(z)
 
     def __str__(self):
         return "({spaceX}{x:.7f}, {spaceY}{y:.7f}, {spaceZ}{z:.7f})".format(x=self.x, y=self.y, z=self.z, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0), spaceZ=" "*(self.z>=0))
@@ -138,28 +138,19 @@ class Vector:
 
         return 0
 
-    def x(self):
-        return self.x
-
     def setx(self, value):
-        self.x = value
-
-    def y(self):
-        return self.y
+        self.x = float(value)
 
     def sety(self, value):
-        self.y = value
-
-    def z(self):
-        return self.z
+        self.y = float(value)
 
     def setz(self, value):
-        self.z = value
+        self.z = float(value)
 
     def setxy(self, x=0, y=0):
         """ Set x and y component (relevant for 2D computations) """
-        self.x = x
-        self.y = y
+        self.setx(x)
+        self.sety(y)
 
     def set(self, x=0, y=0, z=0):
         """ Set all vector components. """
@@ -268,13 +259,13 @@ class Vector:
     def inverse(self):
         return Vector(-self.x, -self.y, -self.z)
 
-    def rotate(self, axis, angleInRad):
+    def rotate(self, axis, angle):
         """ Rotate vector around given axis by given angle [rad]. """
         axis.makeUnitVector()
 
         # Implementing a general rotation matrix.
-        cs = math.cos(angleInRad)
-        sn = math.sin(angleInRad)
+        cs = math.cos(angle)
+        sn = math.sin(angle)
 
         vx = self.x
         vy = self.y
@@ -425,12 +416,12 @@ class Vector2D:
     def inverse(self):
         return Vector(-self.x, -self.y)
 
-    def rotate(self, angleInRad):
+    def rotate(self, angle):
         """ Rotate vector in plane by given angle [rad]. """
 
         # Implementing a general rotation matrix.
-        cs = math.cos(angleInRad)
-        sn = math.sin(angleInRad)
+        cs = math.cos(angle)
+        sn = math.sin(angle)
 
         self.set(self.x*cs - self.y*sn, self.x*sn + self.y*cs)
 

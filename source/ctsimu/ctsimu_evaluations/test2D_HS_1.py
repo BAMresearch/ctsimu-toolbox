@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 from .test import *
-from .geometry import Vector, inMM
+from .geometry import Vector, in_mm
 from .general import *
 import json
 import pkgutil
@@ -97,17 +97,17 @@ class ballCollector():
                 cross = diagonal91.cross(connectionVectors[idx])
 
                 if i < 2: # First vector pair with smallest angle towards diagonal
-                    if cross.z() > 0:  # To the "right"
+                    if cross.z > 0:  # To the "right"
                         self.circlesInOrder[2] = self.circlesUnordered[idx]
                     else:  # To the "left"
                         self.circlesInOrder[4] = self.circlesUnordered[idx]
                 elif i < 4: # Second vector pair with medium-sized angle towards diagonal
-                    if cross.z() > 0:  # To the "right"
+                    if cross.z > 0:  # To the "right"
                         self.circlesInOrder[3] = self.circlesUnordered[idx]
                     else:  # To the "left"
                         self.circlesInOrder[7] = self.circlesUnordered[idx]
                 elif i < 6: # Second vector pair with medium-sized angle towards diagonal
-                    if cross.z() > 0:  # To the "right"
+                    if cross.z > 0:  # To the "right"
                         self.circlesInOrder[6] = self.circlesUnordered[idx]
                     else:  # To the "left"
                         self.circlesInOrder[8] = self.circlesUnordered[idx]
@@ -172,7 +172,7 @@ class ballCollector():
             if self.circlesInOrder[i] == None:
                 text += "Not found!"
             else:
-                text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
+                text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self.circlesInOrder[i].x, self.circlesInOrder[i].y)
 
             text += "\n"
 
@@ -185,7 +185,7 @@ class ballCollector():
             if self.circlesInOrder[i] == None:
                 text += "Not found!"
             else:
-                text += "{:.3f}\t{:.3f}".format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
+                text += "{:.3f}\t{:.3f}".format(self.circlesInOrder[i].x, self.circlesInOrder[i].y)
 
             text += "\n"
 
@@ -249,8 +249,8 @@ class Test2D_HS_1(generalTest):
         if jsonText != None:
             jsonDict = json.loads(jsonText)
 
-            self.pixelSizeX = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
-            self.pixelSizeY = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
+            self.pixelSizeX = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+            self.pixelSizeY = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
             self.detectorWidthPx  = getFieldOrNone(jsonDict, "detector", "columns", "value")
             self.detectorHeightPx = getFieldOrNone(jsonDict, "detector", "rows", "value")
 
@@ -436,7 +436,7 @@ class Test2D_HS_1(generalTest):
                     
                     # angular orientation:
                     cross = connection_ideal.cross(connection_real)
-                    if (cross.z() < 0) and (abs(angle) < (math.pi - 0.0000001)):
+                    if (cross.z < 0) and (abs(angle) < (math.pi - 0.0000001)):
                         angle = -abs(angle)
                     else:
                         angle = abs(angle)
@@ -466,8 +466,8 @@ class Test2D_HS_1(generalTest):
                 translation = Vector.connection(self.nominalCircles.getCircle(i), self.circleCollection.getCircle(i))
                 summaryText += "Translation hole {i:02d} [px]: {vec}\n".format(i=i, vec=translation)
                 
-                translationsX.append(translation.x())
-                translationsY.append(translation.y())
+                translationsX.append(translation.x)
+                translationsY.append(translation.y)
 
             meanTranslationX, stdDevTranslationX = listMeanAndStdDev(translationsX)
             meanTranslationY, stdDevTranslationY = listMeanAndStdDev(translationsY)
@@ -482,7 +482,7 @@ class Test2D_HS_1(generalTest):
 
             # Special Summary Line:
             #summaryText += "\n\n"
-            #summaryText += "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(meanScaleDeviation, stdDevScaleDeviation, meanAngle, stdDevAngle, meanTranslation.x(), stdDevTranslation.x(), meanTranslation.y(), stdDevTranslation.y())
+            #summaryText += "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(meanScaleDeviation, stdDevScaleDeviation, meanAngle, stdDevAngle, meanTranslation.x, stdDevTranslation.x, meanTranslation.y, stdDevTranslation.y
 
 
             resultFileName = "{}/{}_summary.txt".format(self.resultFileDirectory, self.name)

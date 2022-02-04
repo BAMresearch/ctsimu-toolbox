@@ -1082,10 +1082,10 @@ class Image:
             # Find bin where this grey value should be counted:
             binPos = int(math.floor(sPos / sStepSize))
 
-            #print("({x}, {y}): sPos: {spos}, binPos: {binpos}".format(x=p.x(), y=p.y(), spos=sPos, binpos=binPos))
+            #print("({x}, {y}): sPos: {spos}, binPos: {binpos}".format(x=p.x, y=p.y, spos=sPos, binpos=binPos))
 
             sCounts[binPos] += 1
-            sSum[binPos] += self.getPixel(int(pixel.x()), int(pixel.y()))
+            sSum[binPos] += self.getPixel(int(pixel.x), int(pixel.y))
 
         # Replace zero counts by 1 to avoid div by zero:
         sCounts[sCounts==0] = 1

@@ -89,22 +89,22 @@ class Test2D_DW_1(generalTest):
             if jsonText != None:
                 jsonDict = json.loads(jsonText)
 
-                self.currentNominalSRb = inMM(getFieldOrNone(jsonDict, "detector", "sharpness", "basic_spatial_resolution"))
+                self.currentNominalSRb = in_mm(getFieldOrNone(jsonDict, "detector", "sharpness", "basic_spatial_resolution"))
 
                 if self.currentNominalSRb == None:
                     raise Exception("Test {name}: Cannot find 'basic_spatial_resolution' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentPixelSize = inMM(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+                self.currentPixelSize = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
 
                 if self.currentPixelSize == None:
                     raise Exception("Test {name}: Cannot find 'pixel_pitch/u' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSDD = inMM(getFieldOrNone(jsonDict, "geometry", "detector", "centre", "x"))
+                self.currentSDD = in_mm(getFieldOrNone(jsonDict, "geometry", "detector", "centre", "x"))
 
                 if self.currentSDD == None:
                     raise Exception("Test {name}: Cannot find 'geometry/detector/centre/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSOD = inMM(getFieldOrNone(jsonDict, "geometry", "stage", "centre", "x"))
+                self.currentSOD = in_mm(getFieldOrNone(jsonDict, "geometry", "stage", "centre", "x"))
 
                 if self.currentSOD == None:
                     raise Exception("Test {name}: Cannot find 'geometry/stage/centre/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))

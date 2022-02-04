@@ -55,7 +55,7 @@ class Test2D_FB_2(generalTest):
         self.prepare()
         self.currentRun += 1
 
-        self.lineNr = int(round(self.geometry.brightestSpotDetector.y()))
+        self.lineNr = int(round(self.geometry.brightestSpotDetector.y))
         log("Getting horizontal profile for detector row {l}.".format(l=self.lineNr))
 
         # Horizontal profile of the analytical image along the central line:
