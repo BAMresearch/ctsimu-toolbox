@@ -1224,7 +1224,7 @@ class Image:
         self.crop(x0, y0, x1, y1)
 
     def cropROIaroundPoint(self, centerX, centerY, roiWidth, roiHeight):
-        """ Crop a region of interest, centred around given point. """
+        """ Crop a region of interest, centerd around given point. """
 
         if roiWidth < 0:
             roiWidth = abs(roiWidth)

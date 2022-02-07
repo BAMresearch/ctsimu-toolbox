@@ -94,6 +94,14 @@ class Vector:
         self.x = float(x)
         self.y = float(y)
         self.z = float(z)
+        
+        # The following member variables are private and should not
+        # be accessed from outside. They are invalidated whenever the
+        # vector changes.
+        self._unitVector = None
+        self._length = None
+
+        self.update()
 
     def __str__(self):
         return "({spaceX}{x:.7f}, {spaceY}{y:.7f}, {spaceZ}{z:.7f})".format(x=self.x, y=self.y, z=self.z, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0), spaceZ=" "*(self.z>=0))
@@ -128,6 +136,15 @@ class Vector:
         z = self.z // other.z
         return Vector(x, y, z)
 
+    def update(self):
+        """Called when vector is changed.
+
+        Invalidates private member variables, so they will
+        be re-calculated the next time they are accessed.
+        """
+        self._unitVector = None
+        self._length = None
+
     def get(self, i):
         if i == 0:
             return self.x
@@ -140,35 +157,43 @@ class Vector:
 
     def setx(self, value):
         self.x = float(value)
+        self.update()
 
     def sety(self, value):
         self.y = float(value)
+        self.update()
 
     def setz(self, value):
         self.z = float(value)
+        self.update()
 
     def setxy(self, x=0, y=0):
         """ Set x and y component (relevant for 2D computations) """
-        self.setx(x)
-        self.sety(y)
+        self.x = float(value)
+        self.y = float(value)
+        self.update()
 
     def set(self, x=0, y=0, z=0):
         """ Set all vector components. """
-        self.setx(x)
-        self.sety(y)
-        self.setz(z)
+        self.x = float(value)
+        self.y = float(value)
+        self.z = float(value)
+        self.update()
 
     def setIdx(self, i, value):
         if i == 0:
-            self.x = value
+            self.setx(value)
         elif i == 1:
-            self.y = value
+            self.sety(value)
         elif i == 2:
-            self.z = value
+            self.setz(value)
 
     def length(self):
-        """ Calculate length of vector. """
-        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
+        """Get the length of the vector."""
+        if self._length is None:
+            self._length = math.sqrt(self.x**2 + self.y**2 + self.z**2)
+
+        return self._length
 
     def angle(self, other):
         """ Calculate angle between this vector and another vector. """
@@ -194,20 +219,30 @@ class Vector:
             return 0
 
     def makeUnitVector(self):
-        """ Normalize vector lenth to 1. """
+        """ Normalize vector length to 1. """
         vectorLength = self.length()
         if vectorLength != 0:
-            self.x /= float(vectorLength)
-            self.y /= float(vectorLength)
-            self.z /= float(vectorLength)
+            if vectorLength != 1.0:
+                self.x /= float(vectorLength)
+                self.y /= float(vectorLength)
+                self.z /= float(vectorLength)
+                self.update()
         else:
             raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
+
+    def unitVector(self):
+        if self._unitVector is None:
+            self._unitVector = Vector(self.x, self.y, self.z)
+            self._unitVector.makeUnitVector()
+
+        return self._unitVector
 
     def scale(self, factor):
         """ Scale vector length by a certain factor. """
         self.x *= factor
         self.y *= factor
         self.z *= factor
+        self.update()
 
     def scaled(self, factor):
         """ Return a copy of this vector, scaled by a certain factor. """
@@ -218,22 +253,43 @@ class Vector:
         self.x += vec.x
         self.y += vec.y
         self.z += vec.z
+        self.update()
 
     def subtract(self, vec):
         """ Subtract another vector from this vector. """
         self.x -= vec.x
         self.y -= vec.y
         self.z -= vec.z
+        self.update()
+
+    def multiply(self, vec):
+        """ Multiply another vector element-wise to this vector. """
+        self.x *= vec.x
+        self.y *= vec.y
+        self.z *= vec.z
+        self.update()
+
+    def divide(self, vec):
+        """ Element-wise divide this vector by another vector. """
+        if vec.x != 0 and vec.y != 0 and vec.z != 0:
+            self.x /= vec.x
+            self.y /= vec.y
+            self.z /= vec.z
+            self.update()
+        else:
+            raise ZeroDivisionError("Vector division by zero: one component of divisor is zero: {}".format(vec))
 
     def square(self):
         self.x *= self.x
         self.y *= self.y
         self.z *= self.z
+        self.update()
 
     def sqrt(self):
         self.x = math.sqrt(self.x)
         self.y = math.sqrt(self.y)
         self.z = math.sqrt(self.z)
+        self.update()
 
     def distance(self, vec):
         """ Distance between target points of this and another vector. """
@@ -259,9 +315,14 @@ class Vector:
     def inverse(self):
         return Vector(-self.x, -self.y, -self.z)
 
+    def invert(self):
+        self.x = -self.x
+        self.y = -self.y
+        self.z = -self.z
+        self.update()
+
     def rotate(self, axis, angle):
         """ Rotate vector around given axis by given angle [rad]. """
-        axis.makeUnitVector()
 
         # Implementing a general rotation matrix.
         cs = math.cos(angle)
@@ -271,13 +332,13 @@ class Vector:
         vy = self.y
         vz = self.z
 
-        nx = axis.x
-        ny = axis.y
-        nz = axis.z
+        nx = axis.unitVector().x
+        ny = axis.unitVector().y
+        nz = axis.unitVector().z
 
-        rx = vx*(nx*nx*(1-cs) + cs)    + vy*(nx*ny*(1-cs) - nz*sn) + vz*(nx*nz*(1-cs) + ny*sn)
-        ry = vx*(ny*nx*(1-cs) + nz*sn) + vy*(ny*ny*(1-cs) + cs)    + vz*(ny*nz*(1-cs) - nx*sn)
-        rz = vx*(nz*nx*(1-cs) - ny*sn) + vy*(nz*ny*(1-cs) + nx*sn) + vz*(nz*nz*(1-cs) + cs)
+        rx = vx*(nx*nx*(1.0-cs) + cs)    + vy*(nx*ny*(1.0-cs) - nz*sn) + vz*(nx*nz*(1.0-cs) + ny*sn)
+        ry = vx*(ny*nx*(1.0-cs) + nz*sn) + vy*(ny*ny*(1.0-cs) + cs)    + vz*(ny*nz*(1.0-cs) - nx*sn)
+        rz = vx*(nz*nx*(1.0-cs) - ny*sn) + vy*(nz*ny*(1.0-cs) + nx*sn) + vz*(nz*nz*(1.0-cs) + cs)
 
         self.set(rx, ry, rz)
 
@@ -286,11 +347,22 @@ class Vector:
         return Vector(vecTo.x-vecFrom.x, vecTo.y-vecFrom.y, vecTo.z-vecFrom.z)
 
 class Vector2D:
-    """ A 2D vector in a plane. """
+    """A 2D vector in a plane.
+
+    Separate implementation from 3D vectors to gain speed.
+    """
 
     def __init__(self, x=0, y=0):
-        self.x = x
-        self.y = y
+        self.x = float(x)
+        self.y = float(y)
+
+        # The following member variables are private and should not
+        # be accessed from outside. They are invalidated whenever the
+        # vector changes.
+        self._unitVector = None
+        self._length = None
+
+        self.update()
 
     def __str__(self):
         return "({spaceX}{x:.7f}, {spaceY}{y:.7f})".format(x=self.x, y=self.y, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0))
@@ -320,26 +392,35 @@ class Vector2D:
         y = self.y // other.y
         return Vector2D(x, y)
 
-    def x(self):
-        return self.x
+    def update(self):
+        """Called when vector is changed.
+
+        Invalidates private member variables, so they will
+        be re-calculated the next time they are accessed.
+        """
+        self._unitVector = None
+        self._length = None
 
     def setx(self, value):
         self.x = value
-
-    def y(self):
-        return self.y
+        self.update()
 
     def sety(self, value):
         self.y = value
+        self.update()
 
     def set(self, x=0, y=0):
         """ Set all vector components. """
-        self.setx(x)
-        self.sety(y)
+        self.x = value
+        self.y = value
+        self.update()
 
     def length(self):
-        """ Calculate length of vector. """
-        return math.sqrt(self.x**2 + self.y**2)
+        """Get the length of the vector."""
+        if self._length is None:
+            self._length = math.sqrt(self.x**2 + self.y**2)
+
+        return self._length
 
     def angle(self, other):
         """ Calculate angle between this vector and another vector. """
@@ -365,36 +446,65 @@ class Vector2D:
             return 0
 
     def makeUnitVector(self):
-        """ Normalize vector lenth to 1. """
+        """ Normalize vector length to 1. """
         vectorLength = self.length()
         if vectorLength != 0:
-            self.x /= float(vectorLength)
-            self.y /= float(vectorLength)
+            if vectorLength != 1.0:
+                self.x /= float(vectorLength)
+                self.y /= float(vectorLength)
+                self.update()
         else:
             raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
+
+    def unitVector(self):
+        if self._unitVector is None:
+            self._unitVector = Vector2D(self.x, self.y)
+            self._unitVector.makeUnitVector()
+
+        return self._unitVector
 
     def scale(self, factor):
         """ Scale vector length by a certain factor. """
         self.x *= factor
         self.y *= factor
+        self.update()
 
     def add(self, vec):
         """ Add another vector to this vector. """
         self.x += vec.x
         self.y += vec.y
+        self.update()
 
     def subtract(self, vec):
         """ Subtract another vector from this vector. """
         self.x -= vec.x
         self.y -= vec.y
+        self.update()
+
+    def multiply(self, vec):
+        """ Multiply another vector element-wise to this vector. """
+        self.x *= vec.x
+        self.y *= vec.y
+        self.update()
+
+    def divide(self, vec):
+        """ Element-wise divide this vector by another vector. """
+        if vec.x != 0 and vec.y != 0:
+            self.x /= vec.x
+            self.y /= vec.y
+            self.update()
+        else:
+            raise ZeroDivisionError("Vector division by zero: one component of divisor is zero: {}".format(vec))
 
     def square(self):
         self.x *= self.x
         self.y *= self.y
+        self.update()
 
     def sqrt(self):
         self.x = math.sqrt(self.x)
         self.y = math.sqrt(self.y)
+        self.update()
 
     def distance(self, vec):
         """ Distance between target points of this and another vector. """
@@ -415,6 +525,11 @@ class Vector2D:
 
     def inverse(self):
         return Vector(-self.x, -self.y)
+
+    def invert(self):
+        self.x = -self.x
+        self.y = -self.y
+        self.update()
 
     def rotate(self, angle):
         """ Rotate vector in plane by given angle [rad]. """

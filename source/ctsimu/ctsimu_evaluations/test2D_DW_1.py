@@ -99,15 +99,15 @@ class Test2D_DW_1(generalTest):
                 if self.currentPixelSize == None:
                     raise Exception("Test {name}: Cannot find 'pixel_pitch/u' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSDD = in_mm(getFieldOrNone(jsonDict, "geometry", "detector", "centre", "x"))
+                self.currentSDD = in_mm(getFieldOrNone(jsonDict, "geometry", "detector", "center", "x"))
 
                 if self.currentSDD == None:
-                    raise Exception("Test {name}: Cannot find 'geometry/detector/centre/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
+                    raise Exception("Test {name}: Cannot find 'geometry/detector/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSOD = in_mm(getFieldOrNone(jsonDict, "geometry", "stage", "centre", "x"))
+                self.currentSOD = in_mm(getFieldOrNone(jsonDict, "geometry", "stage", "center", "x"))
 
                 if self.currentSOD == None:
-                    raise Exception("Test {name}: Cannot find 'geometry/stage/centre/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
+                    raise Exception("Test {name}: Cannot find 'geometry/stage/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
             else:
                 raise Exception("Test {name}: Cannot open JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))

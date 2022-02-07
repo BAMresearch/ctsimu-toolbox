@@ -127,7 +127,7 @@ class Test2D_WE_1(generalTest):
         edgeOrigin = Vector2D(0, 1)                          # start with unit vector pointing "down"
         edgeOrigin.rotate(edgeAngle)                         # rotate by edge angle
         edgeOrigin.scale(500.5 / math.cos(edgeAngle) / 2.0)  # scale to half of visible edge length
-        edgeOrigin = edgeOrigin + Vector2D(500.5, 500.5)     # move to detector centre
+        edgeOrigin = edgeOrigin + Vector2D(500.5, 500.5)     # move to detector center
 
         #print("Edge origin:")
         #print(edgeOrigin)
