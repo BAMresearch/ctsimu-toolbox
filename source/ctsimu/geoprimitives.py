@@ -4,7 +4,7 @@ import math
 import numpy
 import copy
 
-from .general import *
+from .helpers import *
 
 class Matrix:
     def __init__(self, rows=None, cols=None, values=None):
@@ -169,15 +169,15 @@ class Vector:
 
     def setxy(self, x=0, y=0):
         """ Set x and y component (relevant for 2D computations) """
-        self.x = float(value)
-        self.y = float(value)
+        self.x = float(x)
+        self.y = float(y)
         self.update()
 
     def set(self, x=0, y=0, z=0):
         """ Set all vector components. """
-        self.x = float(value)
-        self.y = float(value)
-        self.z = float(value)
+        self.x = float(x)
+        self.y = float(y)
+        self.z = float(z)
         self.update()
 
     def setIdx(self, i, value):
@@ -411,8 +411,8 @@ class Vector2D:
 
     def set(self, x=0, y=0):
         """ Set all vector components. """
-        self.x = value
-        self.y = value
+        self.x = x
+        self.y = y
         self.update()
 
     def length(self):

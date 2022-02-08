@@ -13,7 +13,7 @@ from numpy.random import default_rng
 # 'signal' class for drift analysis using FFT Convolution
 from scipy import ndimage, optimize, stats, signal, fft
 
-from .general import *
+from .helpers import *
 from .geoprimitives import *   # Vectors and Polygons
 from .tiffy import tiff
 

@@ -10,7 +10,7 @@ from datetime import datetime
 from .geoprimitives import *
 from .image import Image  # To create detector flat field
 
-def basisTransformMatrix(fromCS: GeometryObject, toCS: GeometryObject) -> Matrix:
+def basisTransformMatrix(fromCS:'GeometryObject', toCS:'GeometryObject') -> Matrix:
     """Calculate a matrix that transforms coordinates from "fromCS" to "toCS".
 
     Parameters
@@ -34,19 +34,19 @@ def basisTransformMatrix(fromCS: GeometryObject, toCS: GeometryObject) -> Matrix
     T = Matrix(3, 3)
 
     # Row 1:
-    T.value[0][0] = toCS.u.dot(fromCS.u)
-    T.value[0][1] = toCS.u.dot(fromCS.v)
-    T.value[0][2] = toCS.u.dot(fromCS.w)
+    T.value[0][0] = toCS.u.unitVector().dot(fromCS.u.unitVector())
+    T.value[0][1] = toCS.u.unitVector().dot(fromCS.v.unitVector())
+    T.value[0][2] = toCS.u.unitVector().dot(fromCS.w.unitVector())
 
     # Row 2:
-    T.value[1][0] = toCS.v.dot(fromCS.u)
-    T.value[1][1] = toCS.v.dot(fromCS.v)
-    T.value[1][2] = toCS.v.dot(fromCS.w)
+    T.value[1][0] = toCS.v.unitVector().dot(fromCS.u.unitVector())
+    T.value[1][1] = toCS.v.unitVector().dot(fromCS.v.unitVector())
+    T.value[1][2] = toCS.v.unitVector().dot(fromCS.w.unitVector())
 
     # Row 3:
-    T.value[2][0] = toCS.w.dot(fromCS.u)
-    T.value[2][1] = toCS.w.dot(fromCS.v)
-    T.value[2][2] = toCS.w.dot(fromCS.w)
+    T.value[2][0] = toCS.w.unitVector().dot(fromCS.u.unitVector())
+    T.value[2][1] = toCS.w.unitVector().dot(fromCS.v.unitVector())
+    T.value[2][2] = toCS.w.unitVector().dot(fromCS.w.unitVector())
 
     return T
 
@@ -124,6 +124,15 @@ class GeometryObject:
         self.u = Vector(1, 0, 0)
         self.v = Vector(0, 1, 0)
         self.w = Vector(0, 0, 1)
+
+    def __str__(self):
+        """Information string for easy printing."""
+
+        txt  = "Center: {}\n".format(self.center)
+        txt += "u:      {}\n".format(self.u)
+        txt += "v:      {}\n".format(self.v)
+        txt += "w:      {}\n".format(self.w)
+        return txt
 
     def setupFromGeometryDefinition(self, geometry: dict):
         """Set up geometry from a JSON dictionary.
@@ -225,7 +234,7 @@ class GeometryObject:
         # Set up the geometry from the information given in the JSON file:
         c = Vector(cx, cy, cz)  # center
         u = Vector(ux, uy, uz)  # u basis vector
-        w = Vector(wx, wy, wz)  # v basis vector
+        w = Vector(wx, wy, wz)  # w basis vector
         v = w.cross(u)
         self.setup(c, u, v, w)
         self.makeUnitCS()
@@ -391,7 +400,7 @@ class GeometryObject:
         self.v.rotate(axis, angle)
         self.w.rotate(axis, angle)
 
-    def changeReferenceFrame(self, fromCS: GeometryObject, toCS: GeometryObject):
+    def changeReferenceFrame(self, fromCS:'GeometryObject', toCS:'GeometryObject'):
         """Change the object's reference coordinate system.
         
         Parameters
@@ -401,6 +410,11 @@ class GeometryObject:
         
         toCS : GeometryObject
             New reference coordinate system.
+
+        Notes
+        -----
+        Both fromCS and toCS must be in the same reference coordinate system
+        (e.g., the world coordinate system).
         """
 
         # Rotate basis vectors into toCS:
@@ -409,11 +423,20 @@ class GeometryObject:
         self.v = T * self.v
         self.w = T * self.w
 
-        # Move center to toCS:
-        centerDiff = fromCS.center - toCS.center
-        newRelativecenterInFrom = self.center + centerDiff
-        self.center = T * newRelativecenterInFrom
+        world = GeometryObject()
 
+        # Move center to toCS:
+        # 1. Translate self.center by difference of toCS and fromCS
+        #    -> Origins are "superimposed".
+        # 2. Rotate self.center from fromCS to toCS.
+
+        # Translation vector in world coordinates:
+        translator = fromCS.center - toCS.center  # in world coordinates
+        # Translation vector in fromCS coordinates:
+        M = basisTransformMatrix(world, fromCS)
+        translator = M*translator
+        relCenter = self.center + translator
+        self.center = T*relCenter
 
 class Detector(GeometryObject):
     """Detector as geometrical object.
@@ -446,11 +469,7 @@ class Detector(GeometryObject):
         Physical size in v direction.
         In units of the reference coordinate system.
         Computed automatically after calling `setSize()`.
-
-    imageCS : GeometryObject
-        Image coordinate system in terms of detector coordinate system.
-        Necessary for computing projection matrices.
-    
+ 
     pixelOrigin : Vector
         Origin of the pixel coordinate system in terms of the reference
         coordinate system. This is the outermost corner of the
@@ -801,13 +820,13 @@ class Geometry:
 
         # SOD, SDD, ODD
         world = GeometryObject()
-        source_from_detector = copy.deepcopy(self.source)
+        source_from_image = copy.deepcopy(self.source)
         stage_from_detector  = copy.deepcopy(self.stage)
 
-        source_from_detector.changeReferenceFrame(world, self.detector)
+        source_from_image.changeReferenceFrame(world, self.detector)
         stage_from_detector.changeReferenceFrame(world, self.detector)
 
-        self.SDD = abs(source_from_detector.center.z)
+        self.SDD = abs(source_from_image.center.z)
         self.ODD = abs(stage_from_detector.center.z)
         self.SOD = self.source.center.distance(self.stage.center)
 
@@ -863,99 +882,148 @@ class Geometry:
         return txt
 
     def projectionMatrix(self,
-                         mode:str="openCT",
-                         scale_u:float=1.0,
-                         scale_v:float=1.0,
-                         scale_w:float=1.0):
+                         imageCS:GeometryObject=None,
+                         mode:str=None):
+        """Calculate a projection matrix for the current geometry.
+
+        Parameters
+        ----------
+        imageCS : GeometryObject
+            Position of the image coordinate system in terms of the
+            detector coordinate system. See notes for details.
+
+        mode : str
+            Pre-defined modes, either "openCT" or "CERA" are supported.
+            They override the `imageCS`, which can be set to `None` when
+            using one of the pre-defined modes.
+
+        Returns
+        -------
+        P : Matrix
+            Projection matrix.
+
+        Notes
+        -----
+        The image coordinate system (`imageCS`) should match the notation
+        used by the reconstruction software, and is expressed in terms of
+        the detector coordinate system.
+
+        The detector coordinate system has its origin at the detector center,
+        the u unit vector points in the row vector direction, and the
+        v unit vector points in column vector direction (they are always assumed
+        to be unit vectors).
+
+        The center (origin) of the `imageCS` should be where the reconstruction
+        software places the origin of its own image or detector coordinate
+        system. For example, CERA places it at the lower-left corner of the
+        projection image. In this case, the `imageCS` center should be set to
+        ()
+        """
 
         validModes = ["openCT", "CERA"]
 
+        if mode is not None:
+            if mode in validModes:  # Override imageCS
+                image = GeometryObject()
+
+                if mode == "openCT":
+                    """openCT places the origin of the image CS at the detector 
+                    center. The constructor places it at (0,0,0) automatically,
+                    so there is nothing to do. Comments for illustration."""
+                    # image.center.x = 0
+                    # image.center.y = 0
+                    # image.center.z = 0
+
+                    """openCT's image CS is in mm units. We assume that all
+                    other coordinate systems are in mm as well here (at least
+                    when imported from JSON file). No scaling of the basis vectors
+                    is necessary, but in openCT we need a w flip."""
+                    # image.u.scale(1.0)
+                    # image.v.scale(1.0)
+                    # image.w.scale(1.0)
+
+                elif mode == "CERA":
+                    """CERA places the origin of the image CS in the center
+                    of the lower left pixel of the projection image."""
+                    image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
+                    image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
+                    # image.center.z = 0
+
+                    """The unit of the image CS is in px, so we need to
+                    scale the image CS basis vectors by the pixel size.
+                    Also, v points up instead of down."""
+                    image.u.scale( self.detector.pitchU)
+                    image.v.scale(-self.detector.pitchV)
+                    # image.w.scale(1.0)
+            else:
+                raise RuntimeError("Unsupported mode for projection matrix: \"{}\"".format(mode))
+        elif imageCS is not None:
+            image = copy.deepcopy(imageCS)
+        else:
+            raise RuntimeError("projectionMatrix: Please provide either a mode or an imageCS.")
+
         world    = GeometryObject()
-        detector = copy.deepcopy(self.detector)
         source   = copy.deepcopy(self.source)
         stage    = copy.deepcopy(self.stage)
 
-        if mode in validModes:
-            if mode == "openCT":
-                scale_u =  1.0
-                scale_v =  1.0
-                scale_w = -1.0
+        # Detach the image CS from the detector CS and
+        # express it in terms of the world CS:
+        image.changeReferenceFrame(self.detector, world)
 
-            if mode == "CERA":
-                # CERA's detector CS has its origin in the lower left corner instead of the center.
-                # Let's move there.
+        """The scale factors are derived from the lengths of the basis
+        vectors of the image CS compared to the detector CS unit vectors."""
+        scale_u = self.detector.u.dot(image.u)
+        scale_v = self.detector.v.dot(image.v)
+        scale_w = self.detector.w.dot(image.w)
 
-                # Move the detector by half its width and half its height.
-                halfWidth  = detector.physWidth  / 2.0
-                halfHeight = detector.physHeight / 2.0
+        # Save a source CS as seen from the detector CS. This is convenient to
+        # later get the SDD, ufoc and vfoc:
+        source_from_image = copy.deepcopy(self.source)
+        source_from_image.changeReferenceFrame(world, image)
 
-                detector.center -= detector.u.scaled(halfWidth)
-                detector.center += detector.v.scaled(halfHeight)
+        # Make the stage CS the new world CS:
+        source.changeReferenceFrame(world, stage)
+        image.changeReferenceFrame(world, stage)
+        stage.changeReferenceFrame(world, stage)
 
-                # The v axis points up instead of down, this also turns the (irrelevant) w normal axis:
-                detector.v.scale(-1)
-                detector.w.scale(-1)
+        # Translation vector from stage to source:
+        rfoc = source.center - stage.center
+        xfoc = rfoc.x
+        yfoc = rfoc.y
+        zfoc = rfoc.z
 
-                # The CERA detector also has a pixel CS instead of a mm CS:
-                scale_u = 1.0 / detector.pitchU
-                scale_v = 1.0 / detector.pitchV
-                scale_w = 1.0
+        # Focus point on detector: principal, perpendicular ray.
+        # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
+        # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
+        ufoc = source_from_image.center.x / scale_u
+        vfoc = source_from_image.center.y / scale_v
+        wfoc = source_from_image.center.z / scale_w
+        SDD  = abs(source_from_image.center.z)
 
-            # Save a source CS as seen from the detector CS. This is convenient to
-            # later get the SDD, ufoc and vfoc:
-            source_from_detector = copy.deepcopy(source)
-            source_from_detector.changeReferenceFrame(world, detector)
+        # Mirror volume:
+        M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 
-            # Make the stage CS the new world CS:
-            source.changeReferenceFrame(world, stage)
-            detector.changeReferenceFrame(world, stage)
-            stage.changeReferenceFrame(world, stage)
+        # Translation matrix: stage -> source:
+        F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
 
-            # Translation vector from stage to source:
-            rfoc = source.center - stage.center
-            xfoc = rfoc.x
-            yfoc = rfoc.y
-            zfoc = rfoc.z
+        # Rotations:
+        R = basisTransformMatrix(stage, image)
 
-            # Focus point on detector: principal, perpendicular ray.
-            # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
-            # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
-            ufoc = source_from_detector.center.x
-            vfoc = source_from_detector.center.y
-            wfoc = source_from_detector.center.z
-            SDD  = abs(wfoc)
+        # Projection onto detector and scaling:
+        D = Matrix(values=[[SDD/scale_u, 0, 0], [0, SDD/scale_v, 0], [0, 0, 1.0/scale_w]])
 
-            if mode == "CERA":
-                # mm -> px
-                ufoc = ufoc*scale_u - 0.5
-                vfoc = vfoc*scale_v - 0.5
+        # Shift in detector CS: (ufoc and vfoc must be in scaled units)
+        V = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
 
-            # Mirror volume:
-            M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+        # Multiply all together:
+        P = V * (D * (R * (F*M)))
 
-            # Translation matrix: stage -> source:
-            F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
+        # Renormalize:
+        lower_right = P.get(col=3, row=2)
+        if lower_right != 0:
+            P.scale(1.0/lower_right)
 
-            # Rotations:
-            R = basisTransformMatrix(stage, detector)
-
-            # Projection onto detector:
-            D = Matrix(values=[[-SDD*scale_u, 0, 0], [0, -SDD*scale_v, 0], [0, 0, scale_w]])
-
-            # Shift in detector CS: (ufoc and vfoc must be in scaled units)
-            V = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
-
-            # Multiply all together:
-            P = V * (D * (R * (F*M)))
-
-            # Renormalize:
-            lower_right = P.get(col=3, row=2)
-            if lower_right != 0:
-                P.scale(1.0/lower_right)
-
-            return P
-        else:
-            raise Exception("{} is not a valid mode for the projection matrix computation. Valid modes are: {}".format(mode, validModes))
+        return P
 
     def createDetectorFlatField_rays(self):
         """ Calculate an analytical free beam intensity distribution
