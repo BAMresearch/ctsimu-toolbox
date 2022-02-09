@@ -1,9 +1,9 @@
-from setuptools import setup
+import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-setup(name='ctsimu',
+setuptools.setup(name='ctsimu',
       version='1.5',
       description='CTSimU Software Toolbox',
       url='https://www.ctsimu.forschung.fau.de',
