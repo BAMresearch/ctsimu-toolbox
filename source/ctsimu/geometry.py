@@ -936,8 +936,7 @@ class Geometry:
 
                     """openCT's image CS is in mm units. We assume that all
                     other coordinate systems are in mm as well here (at least
-                    when imported from JSON file). No scaling of the basis vectors
-                    is necessary, but in openCT we need a w flip."""
+                    when imported from JSON file). No scaling of the basis vectors is necessary."""
                     # image.u.scale(1.0)
                     # image.v.scale(1.0)
                     # image.w.scale(1.0)
@@ -949,12 +948,12 @@ class Geometry:
                     image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
                     # image.center.z = 0
 
-                    """The unit of the image CS is in px, so we need to
+                    """CERA's unit of the image CS is in px, so we need to
                     scale the image CS basis vectors by the pixel size.
                     Also, v points up instead of down."""
                     image.u.scale( self.detector.pitchU)
                     image.v.scale(-self.detector.pitchV)
-                    # image.w.scale(1.0)
+                    image.w.scale(-1.0)
             else:
                 raise RuntimeError("Unsupported mode for projection matrix: \"{}\"".format(mode))
         elif imageCS is not None:
