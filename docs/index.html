@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ctsimu API documentation</title>
+<meta name="description" content="The CTSimU Software Toolbox is a set of Python modules to run several image processing and analysis routines that are common in computed tomography …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>ctsimu</code></h1>
+</header>
+<section id="section-intro">
+<p>The CTSimU Software Toolbox is a set of Python modules to run several image processing and analysis routines that are common in computed tomography (CT).</p>
+<h1 id="features">Features</h1>
+<p>In its current version, the toolbox can be used for the following tasks:</p>
+<h2 id="image-conversion">Image Conversion</h2>
+<p>For image conversion, and "empty" <code><a title="ctsimu.processing.pipeline" href="processing/pipeline.html">ctsimu.processing.pipeline</a></code> can be used. The following properties can be converted:</p>
+<ul>
+<li>Image format conversion (RAW, TIFF),</li>
+<li>Data type conversion (int, float),</li>
+<li>Representation conversion (multi-file slice stacks, single-file RAW volume chunks).</li>
+</ul>
+<p>For details, refer to the documentation of the <code><a title="ctsimu.processing" href="processing/index.html">ctsimu.processing</a></code> module.</p>
+<h2 id="image-processing">Image Processing</h2>
+<p>For image processing, processing steps can be added to the pipeline. Currently, there are processing steps for</p>
+<ul>
+<li>Flat-field and dark-field correction with provided gain/offset files,</li>
+<li>Pixel binning,</li>
+<li>Median filter,</li>
+<li>Transformations: rotations, flipping.</li>
+</ul>
+<p>You can find out more in the documentation of the <code><a title="ctsimu.processing" href="processing/index.html">ctsimu.processing</a></code> module.</p>
+<h2 id="image-quality-assessment">Image Quality Assessment</h2>
+<p>The <code><a title="ctsimu.image_analysis" href="image_analysis/index.html">ctsimu.image_analysis</a></code> module currently provides functions for:</p>
+<ul>
+<li>Line profiles,</li>
+<li><code><a title="ctsimu.image_analysis.mtf" href="image_analysis/mtf.html">ctsimu.image_analysis.mtf</a></code>: Calculation of the modulation transfer function (MTF) from an edge image,</li>
+<li><code><a title="ctsimu.image_analysis.isrb" href="image_analysis/isrb.html">ctsimu.image_analysis.isrb</a></code>: Determination of the interpolated basic spatial resolution (iSRb) from a duplex wire image.</li>
+</ul>
+<h2 id="geometry-tools">Geometry Tools</h2>
+<p>The <code><a title="ctsimu.geometry" href="geometry.html">ctsimu.geometry</a></code> module provides tools for</p>
+<ul>
+<li>Virtual representation and manipulation of a CT scene in Python,</li>
+<li>Importing CT geometries from <a href="https://bamresearch.github.io/ctsimu-scenarios">CTSimU scenario description files</a>,</li>
+<li>Creation of reconstruction configurations for openCT (VGSTUDIO) and CERA,</li>
+<li>Calculation of projection matrices.</li>
+</ul>
+<h1 id="getting-started">Getting started</h1>
+<h2 id="requirements">Requirements</h2>
+<p>A <strong>Python 3</strong> environment (Python 3.9 or higher) is required. The Python distribution that was used to develop and test the toolbox is <em>Anaconda 3</em> (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:</p>
+<ul>
+<li>NumPy,</li>
+<li>SciPy subpackages <em>ndimage, optimize, stats, signal</em> and</li>
+<li>Matplotlib (only required if you want plots of evaluation results).</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>The file :guilabel:<code>ctsimu_1.4.4.zip</code> contains the complete Python package.</p>
+<p>To use it <strong>without installation,</strong> copy the folder <code><a title="ctsimu" href="#ctsimu">ctsimu</a></code> from the zip file to the directory where you want to run the Python scripts that need to import the package modules.</p>
+<p>If you choose to <strong>install</strong> the package in your Python environment, you can use <a href="https://pip.pypa.io">pip</a>. For example, you can run the following command in your <em>Anaconda Prompt</em>:</p>
+<pre><code>pip install ctsimu_1.4.4.zip
+</code></pre>
+<h1 id="about">About</h1>
+<p>The CTSimU toolbox was developed for the <a href="https://www.ctsimu.forschung.fau.de/">CTSimU</a> project for its needs in reproducible image processing and serves as the project's reference software implementation. It provides useful tools for many CT-related tasks, beyond the aims of the CTSimU project.</p>
+<p>The software is released under the <strong>Apache 2.0 license,</strong> its source code is available <a href="https://github.com/BAMresearch/ctsimu-toolbox">on GitHub</a>.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>This work was funded through the project <a href="https://www.ctsimu.forschung.fau.de/">CTSimU</a> (<em>Radiographic Computed Tomography Simulation for Measurement Uncertainty Evaluation</em>, WIPANO project 03TNH026A).</p>
+<p><a href="https://www.innovation-beratung-foerderung.de/INNO/Navigation/DE/WIPANO/wipano.html">WIPANO</a> projects are financed by the German <a href="https://www.bmwi.de/">Federal Ministry for Economic Affairs and Climate Action</a> and managed by <a href="https://www.ptj.de/">Project Management Jülich</a>.</p>
+<h2 id="contributors">Contributors</h2>
+<p>The following people contributed to code and documentation of the toolbox.</p>
+<ul>
+<li>David Plotzki</li>
+<li>Bendix Hartlaub</li>
+<li>Florian Wohlgemuth</li>
+<li>Tamara Reuter</li>
+<li>Fabrício Borges de Oliveira</li>
+<li>Carsten Bellon</li>
+</ul>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;The CTSimU Software Toolbox is a set of Python modules to run several image processing and analysis routines that are common in computed tomography (CT).
+
+.. include:: ./documentation.md
+&#34;&#34;&#34;
+
+# Exclude the CTSimU test evaluations from the online documentation.
+__pdoc__ = {}
+__pdoc__[&#34;ctsimu_evaluations&#34;] = False</code></pre>
+</details>
+</section>
+<section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="ctsimu.geometry" href="geometry.html">ctsimu.geometry</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.helpers" href="helpers.html">ctsimu.helpers</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.image" href="image.html">ctsimu.image</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.image_analysis" href="image_analysis/index.html">ctsimu.image_analysis</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.primitives" href="primitives.html">ctsimu.primitives</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.processing" href="processing/index.html">ctsimu.processing</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.test" href="test.html">ctsimu.test</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.tiffy" href="tiffy.html">ctsimu.tiffy</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="ctsimu.toolbox" href="toolbox.html">ctsimu.toolbox</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#features">Features</a><ul>
+<li><a href="#image-conversion">Image conversion</a></li>
+<li><a href="#image-processing">Image processing</a></li>
+<li><a href="#image-quality-assessment">Image quality assessment</a></li>
+<li><a href="#geometry-tools">Geometry tools</a></li>
+</ul>
+</li>
+<li><a href="#getting-started">Getting started</a><ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+</ul>
+</li>
+<li><a href="#about">About</a><ul>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
+<li><a href="#contributors">Contributors</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="ctsimu.geometry" href="geometry.html">ctsimu.geometry</a></code></li>
+<li><code><a title="ctsimu.helpers" href="helpers.html">ctsimu.helpers</a></code></li>
+<li><code><a title="ctsimu.image" href="image.html">ctsimu.image</a></code></li>
+<li><code><a title="ctsimu.image_analysis" href="image_analysis/index.html">ctsimu.image_analysis</a></code></li>
+<li><code><a title="ctsimu.primitives" href="primitives.html">ctsimu.primitives</a></code></li>
+<li><code><a title="ctsimu.processing" href="processing/index.html">ctsimu.processing</a></code></li>
+<li><code><a title="ctsimu.test" href="test.html">ctsimu.test</a></code></li>
+<li><code><a title="ctsimu.tiffy" href="tiffy.html">ctsimu.tiffy</a></code></li>
+<li><code><a title="ctsimu.toolbox" href="toolbox.html">ctsimu.toolbox</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,306 @@
+{
+	"file":
+	{
+		"name": "Lochfolie",
+		"description": "",
+		
+		"contact": "David Plotzki",
+		"date_created": "2021-03-23",
+		"date_changed": "2021-03-24",
+		"version": {"major": 2, "minor": 0},
+
+		"file_type": "CTSimU Scenario",
+		"file_format_version": {"major": 0, "minor": 7}
+	},
+
+	"environment":
+	{
+		"material_id": "Vacuum",
+		"temperature": null
+	},
+
+	"geometry":
+	{
+		"detector":
+		{
+			"center": {
+				"x": {"value": 399.5257578, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+				"y": {"value":  17.5530267, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+				"z": {"value":   8.4297178, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+			},
+
+			"vector_u": {"x": 0, "y": -1, "z": 0},
+			"vector_w": {"x": 1, "y":  0, "z": 0},
+
+			"deviation": {
+				"position": {
+					"x": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"y": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"z": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+				},
+				"rotation": {
+					"u": {"value":  1.356754174099129, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "rad"},
+					"v": {"value": -2.438461715730154, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "rad"},
+					"w": {"value": -3.451038434719911, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "rad"}
+				},
+				"known_to_reconstruction": true
+			}
+		},
+
+		"source":
+		{
+			"type": "cone",
+			"beam_divergence": {
+				"u": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"},
+				"v": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"}
+			},
+
+			"center": {
+				"x": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+				"y": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+				"z": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+			},
+
+			"vector_u": {"x": 0, "y": -1, "z": 0},
+			"vector_w": {"x": 1, "y":  0, "z": 0},
+
+			"deviation": {
+				"position": {
+					"x": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"y": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"z": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+				},
+				"rotation": {
+					"u": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"},
+					"v": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"},
+					"w": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"}
+				},
+				"known_to_reconstruction": true
+			}
+		},
+
+		"stage":
+		{
+			"center": {
+				"x": {"value": 9.9931380, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+				"y": {"value": 0.4390451, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+				"z": {"value": 0.2108483, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+			},
+
+			"vector_u": {"x": 1, "y": 0, "z": 0},
+			"vector_w": {"x": 0, "y": 0, "z": 1},
+
+			"deviation": {
+				"position": {
+					"x": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"y": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"z": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+				},
+				"rotation": {
+					"u": {"value": 0, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "deg"},
+					"v": {"value": 0, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "deg"},
+					"w": {"value": 0, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "deg"}
+				},
+				"known_to_reconstruction": true
+			}
+		}
+	},
+
+	"detector":
+	{
+		"model":        "",
+		"manufacturer": "",
+		"type":         "ideal",
+		"columns":      {"value": 3000, "unit": "px"},
+		"rows":         {"value": 3000, "unit": "px"},
+		"pixel_pitch": {
+			"u": {"value": 0.15, "unit": "mm", "uncertainty": 0, "uncertainty_unit": "mm"},
+			"v": {"value": 0.15, "unit": "mm", "uncertainty": 0, "uncertainty_unit": "mm"}
+		},
+		"bit_depth":  {"value": 16},
+		"integration_time": {"value": 1, "unit": "s", "uncertainty": 0.0, "uncertainty_unit": "s"},
+		"dead_time":  null,
+		"image_lag":  null,
+		"grey_value":
+		{
+			"imin": {"value": 0},
+			"imax": {"value": 60000},
+
+			"factor": null,
+			"offset": null,
+
+			"intensity_characteristics_file": null,
+
+			"efficiency":   {"value": 1.0, "unit": null, "uncertainty": 0.0, "uncertainty_unit": null},
+			"efficiency_characteristics_file": null
+		},
+		"noise":
+		{
+			"snr_at_imax": null,
+			"fwhm_at_imax": null,
+			"noise_characteristics_file": null
+		},
+		"gain":
+		{
+			"value": 1,
+			"scale_signal_and_noise": false
+		},
+		"sharpness":
+		{
+			"basic_spatial_resolution": null,
+			"mtf10_frequency": null,
+			"mtf": null
+		},		
+		"bad_pixel_map":
+		{
+			"file": null,
+			"type": "uint8"
+		},
+		"scintillator":
+		{
+			"material_id": null,
+			"thickness": {"value": 0.0, "unit": "mm", "uncertainty": 0, "uncertainty_unit": "mm"}
+		},
+		"filters":
+		{
+			"front": null,
+			"rear":  null
+		}
+	},
+
+	"source":
+	{
+		"model":        "",
+		"manufacturer": "",
+		"voltage": {"value": 80, "unit": "kV", "uncertainty": 0, "uncertainty_unit": "kV"},
+		"current": {"value": 100, "unit": "uA", "uncertainty": 0, "uncertainty_unit": "uA"},
+		"target":
+		{
+			"material_id": "W",
+			"type": "reflection",
+			"thickness": null,
+			"angle":
+			{
+				"incidence": {"value": 45, "unit": "deg", "uncertainty": 0, "uncertainty_unit": "deg"},
+				"emission":  {"value": 45, "unit": "deg", "uncertainty": 0, "uncertainty_unit": "deg"}
+			}
+		},
+		"spot":
+		{
+			"size": null,
+			"sigma": null,
+			"intensity_map": null
+		},
+		"spectrum":
+		{
+			"monochromatic": true,
+			"bremsstrahlung": false,
+			"characteristic": false,
+			"file": null
+		},
+		"window":
+		[
+			{
+				"material_id": "Al",
+				"thickness": {"value": 4.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+			}
+		],
+		"filters": []
+	},
+
+	"samples":
+	[
+		{
+			"name": "Lochfolie",
+			"file": "Folie_2020-11-16-v02r02fbomlgom.stl",
+			"unit": "mm",
+			"scaling_factor": {"r": 1, "s": 1, "t": 1},
+			"material_id": "W",
+			"position":
+			{
+				"center": {
+					"u": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"v": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"w": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+				},
+
+				"vector_r": {"u": 1, "v": 0, "w": 0},
+				"vector_t": {"u": 0, "v": 0, "w": 1},
+
+				"deviation": {
+					"position": {
+						"u": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+						"v": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+						"w": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+					},
+					"rotation": {
+						"r": {"value":  30.0, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "deg"},
+						"s": {"value":   8.0, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "deg"},
+						"t": {"value": -14.0, "unit": "deg", "uncertainty": 0.0, "uncertainty_unit": "deg"}
+					}
+				}
+			}
+		}
+	],
+
+	"acquisition":
+	{
+		"start_angle": {"value":  0, "unit": "deg", "uncertainty": 0, "uncertainty_unit": "deg"},
+		"stop_angle":  {"value":  0, "unit": "deg", "uncertainty": 0, "uncertainty_unit": "deg"},
+		"direction": "CCW",
+		"scan_mode": "stop+go",
+		"scan_speed": null,
+		"number_of_projections": 1,
+		"include_final_angle": false,
+		"frame_average": 1,
+		"dark_field":
+		{
+			"number": 0,
+			"frame_average": 1,
+			"ideal": false
+		},
+		"flat_field":
+		{
+			"number": 1,
+			"frame_average": 1,
+			"ideal": false
+		},
+		"pixel_binning": {"u": 1, "v": 1},
+		"scattering": false,
+		"drift":
+		{
+			"detector": null,
+			"source":   null,
+			"stage":    null,
+			"samples":  null
+		}
+	},
+
+	"materials":
+	[
+		{
+			"id":   "Vacuum",
+			"name": "Vacuum",
+			"density": {"value": 0.0, "unit": "g/cm^3", "uncertainty": 0, "uncertainty_unit": "g/cm^3"},
+			"composition": ""
+		},
+		{
+			"id":   "Al",
+			"name": "Aluminium",
+			"density": {"value": 2.6989, "unit": "g/cm^3", "uncertainty": 0, "uncertainty_unit": "g/cm^3"},
+			"composition": "Al"
+		},
+		{
+			"id":   "W",
+			"name": "Tungsten",
+			"density": {"value": 19.25, "unit": "g/cm^3", "uncertainty": 0, "uncertainty_unit": "g/cm^3"},
+			"composition": "W"
+		},
+		{
+			"id":   "CsI",
+			"name": "Caesium Iodide",
+			"density": {"value": 4.51, "unit": "g/cm^3", "uncertainty": 0, "uncertainty_unit": "g/cm^3"},
+			"composition": "CsI"
+		}
+	]
+}
