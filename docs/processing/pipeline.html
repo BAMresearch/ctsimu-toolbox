@@ -88,7 +88,7 @@ class ProcessingPipeline:
                     self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
             # Treat projection files
-            if self.inputFileStack.nSlices() &gt; 0:
+            if self.inputFileStack.nSlices &gt; 0:
                 outputFiles = None               
 
                 if saveOutputFiles:
@@ -107,10 +107,10 @@ class ProcessingPipeline:
                         self.outputFileStack.setVolumeChunk(True)
 
                 print(&#34;Running image processing pipeline.&#34;)
-                for i in range(self.inputFileStack.nSlices()):
-                    progress = 100*(float(i+1)/float(self.inputFileStack.nSlices()))
+                for i in range(self.inputFileStack.nSlices):
+                    progress = 100*(float(i+1)/float(self.inputFileStack.nSlices))
 
-                    print(&#34;\rImage {}/{} ({:0.1f}%)  \r&#34;.format((i+1), self.inputFileStack.nSlices(), progress), end=&#39;&#39;)
+                    print(&#34;\rImage {}/{} ({:0.1f}%)  \r&#34;.format((i+1), self.inputFileStack.nSlices, progress), end=&#39;&#39;)
                     image = self.inputFileStack.getImage(index=i, outputFile=outputFiles)
 
                     # Run through processing steps:
@@ -138,7 +138,7 @@ class ProcessingPipeline:
 
                     nImagesProcessed += 1
 
-                print(&#34;Image {}/{} (100%)  &#34;.format((i+1), self.inputFileStack.nSlices()))
+                print(&#34;Image {}/{} (100%)  &#34;.format((i+1), self.inputFileStack.nSlices))
 
             else:
                 log(&#34;No projection file(s) found that match the given name pattern.&#34;)
@@ -228,7 +228,7 @@ class ProcessingPipeline:
                     self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
             # Treat projection files
-            if self.inputFileStack.nSlices() &gt; 0:
+            if self.inputFileStack.nSlices &gt; 0:
                 outputFiles = None               
 
                 if saveOutputFiles:
@@ -247,10 +247,10 @@ class ProcessingPipeline:
                         self.outputFileStack.setVolumeChunk(True)
 
                 print(&#34;Running image processing pipeline.&#34;)
-                for i in range(self.inputFileStack.nSlices()):
-                    progress = 100*(float(i+1)/float(self.inputFileStack.nSlices()))
+                for i in range(self.inputFileStack.nSlices):
+                    progress = 100*(float(i+1)/float(self.inputFileStack.nSlices))
 
-                    print(&#34;\rImage {}/{} ({:0.1f}%)  \r&#34;.format((i+1), self.inputFileStack.nSlices(), progress), end=&#39;&#39;)
+                    print(&#34;\rImage {}/{} ({:0.1f}%)  \r&#34;.format((i+1), self.inputFileStack.nSlices, progress), end=&#39;&#39;)
                     image = self.inputFileStack.getImage(index=i, outputFile=outputFiles)
 
                     # Run through processing steps:
@@ -278,7 +278,7 @@ class ProcessingPipeline:
 
                     nImagesProcessed += 1
 
-                print(&#34;Image {}/{} (100%)  &#34;.format((i+1), self.inputFileStack.nSlices()))
+                print(&#34;Image {}/{} (100%)  &#34;.format((i+1), self.inputFileStack.nSlices))
 
             else:
                 log(&#34;No projection file(s) found that match the given name pattern.&#34;)
@@ -345,7 +345,7 @@ class ProcessingPipeline:
                 self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
         # Treat projection files
-        if self.inputFileStack.nSlices() &gt; 0:
+        if self.inputFileStack.nSlices &gt; 0:
             outputFiles = None               
 
             if saveOutputFiles:
@@ -364,10 +364,10 @@ class ProcessingPipeline:
                     self.outputFileStack.setVolumeChunk(True)
 
             print(&#34;Running image processing pipeline.&#34;)
-            for i in range(self.inputFileStack.nSlices()):
-                progress = 100*(float(i+1)/float(self.inputFileStack.nSlices()))
+            for i in range(self.inputFileStack.nSlices):
+                progress = 100*(float(i+1)/float(self.inputFileStack.nSlices))
 
-                print(&#34;\rImage {}/{} ({:0.1f}%)  \r&#34;.format((i+1), self.inputFileStack.nSlices(), progress), end=&#39;&#39;)
+                print(&#34;\rImage {}/{} ({:0.1f}%)  \r&#34;.format((i+1), self.inputFileStack.nSlices, progress), end=&#39;&#39;)
                 image = self.inputFileStack.getImage(index=i, outputFile=outputFiles)
 
                 # Run through processing steps:
@@ -395,7 +395,7 @@ class ProcessingPipeline:
 
                 nImagesProcessed += 1
 
-            print(&#34;Image {}/{} (100%)  &#34;.format((i+1), self.inputFileStack.nSlices()))
+            print(&#34;Image {}/{} (100%)  &#34;.format((i+1), self.inputFileStack.nSlices))
 
         else:
             log(&#34;No projection file(s) found that match the given name pattern.&#34;)

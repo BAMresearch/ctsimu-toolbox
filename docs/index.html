@@ -61,18 +61,26 @@
 </ul>
 <h1 id="getting-started">Getting started</h1>
 <h2 id="requirements">Requirements</h2>
-<p>A <strong>Python 3</strong> environment (Python 3.9 or higher) is required. The Python distribution that was used to develop and test the toolbox is <em>Anaconda 3</em> (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:</p>
+<p>A <strong>Python 3</strong> environment (Python 3.8 or higher) is required. The Python distribution that was used to develop and test the toolbox is <em>Anaconda 3</em> (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:</p>
 <ul>
 <li>NumPy,</li>
 <li>SciPy subpackages <em>ndimage, optimize, stats, signal</em> and</li>
 <li>Matplotlib (only required if you want plots of evaluation results).</li>
 </ul>
 <h2 id="installation">Installation</h2>
-<p>The file :guilabel:<code>ctsimu_1.4.4.zip</code> contains the complete Python package.</p>
-<p>To use it <strong>without installation,</strong> copy the folder <code><a title="ctsimu" href="#ctsimu">ctsimu</a></code> from the zip file to the directory where you want to run the Python scripts that need to import the package modules.</p>
-<p>If you choose to <strong>install</strong> the package in your Python environment, you can use <a href="https://pip.pypa.io">pip</a>. For example, you can run the following command in your <em>Anaconda Prompt</em>:</p>
-<pre><code>pip install ctsimu_1.4.4.zip
+<p>If you want to <strong>install</strong> the package in your Python environment, you can use <a href="https://pip.pypa.io">pip</a>. For example, you can run the following command in your <em>Anaconda Prompt</em> to make the toolbox available:</p>
+<pre><code>pip install ctsimu
 </code></pre>
+<p>To use the package <strong>without installation</strong>, you need to download the package manually. You have the following three options:</p>
+<ul>
+<li>Download the package <a href="https://pypi.org/project/ctsimu/">from PyPi</a>. You will get a zipped file called <code>ctsimu-X.X.X.tar.gz</code> (where X.X.X is the current version number). Open or unpack this file to get to its contents.</li>
+<li>Download the repository <a href="https://github.com/BAMresearch/ctsimu-toolbox">from GitHub</a>: press the <strong>clone</strong> link to download a ZIP file. Unpack this <code>main.zip</code> or open it to see its contents.</li>
+<li>
+<p>You can also clone the repository from GitHub via the terminal:</p>
+<p><code>git clone https://github.com/BAMresearch/ctsimu-toolbox.git</code></p>
+</li>
+</ul>
+<p>From any of these three options, you will get the complete package source code. It contains a folder called <code><a title="ctsimu" href="#ctsimu">ctsimu</a></code>. If you want to use the toolbox from your Python scripts without installing it, you need to copy the folder <code><a title="ctsimu" href="#ctsimu">ctsimu</a></code> to the location of your Python scripts to make the package available.</p>
 <h1 id="about">About</h1>
 <p>The CTSimU toolbox was developed for the <a href="https://www.ctsimu.forschung.fau.de/">CTSimU</a> project for its needs in reproducible image processing and serves as the project's reference software implementation. It provides useful tools for many CT-related tasks, beyond the aims of the CTSimU project.</p>
 <p>The software is released under the <strong>Apache 2.0 license,</strong> its source code is available <a href="https://github.com/BAMresearch/ctsimu-toolbox">on GitHub</a>.</p>

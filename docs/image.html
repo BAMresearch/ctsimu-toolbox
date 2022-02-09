@@ -157,18 +157,6 @@ class ImageROI:
         self.x1 = int(x1)
         self.y1 = int(y1)
 
-    def x0(self):
-        return self.x0
-
-    def y0(self):
-        return self.y0
-
-    def x1(self):
-        return self.x1
-
-    def y1(self):
-        return self.y1
-
     def width(self):
         return self.x1 - self.x0
 
@@ -376,7 +364,7 @@ class Image:
         if ROI==None:
             return numpy.amax(self.px)
 
-        return numpy.amax(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def min(self, ROI=None):
         &#34;&#34;&#34; Return minimum intensity in image. &#34;&#34;&#34;
@@ -385,7 +373,7 @@ class Image:
         if ROI==None:
             return numpy.amin(self.px)
 
-        return numpy.amin(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def mean(self, ROI=None):
         &#34;&#34;&#34; Return arithmetic mean of the image grey values. &#34;&#34;&#34;
@@ -394,7 +382,7 @@ class Image:
         if ROI==None:
             return numpy.mean(self.px)
 
-        return numpy.mean(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def stdDev(self, ROI=None):
         &#34;&#34;&#34; Return the standard deviation of the image grey values. &#34;&#34;&#34;
@@ -403,7 +391,7 @@ class Image:
         if ROI==None:
             return numpy.std(self.px)
 
-        return numpy.std(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def centerOfMass(self):
         return ndimage.center_of_mass(self.px)
@@ -815,7 +803,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         profile = slc.mean(axis=1)
         return numpy.ravel(profile)
@@ -831,7 +819,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         profile = slc.mean(axis=0)
         return profile
@@ -1392,7 +1380,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         if currentMin == None:
             currentMin = slc.min()
@@ -1402,10 +1390,10 @@ class Image:
 
         if(currentMax != currentMin):
             slc = (slc-currentMin)*(newMax-newMin)/(currentMax-currentMin)+newMin
-            self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+            self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
         else:
             slc = slc*0
-            self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+            self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
             #raise Exception(&#34;Division by zero upon renormalization: currentMax=currentMin={}&#34;.format(currentMax))
 
     def map_lookup(self, gv, gv_from, gv_to):
@@ -1501,7 +1489,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         mean  = numpy.mean(slc)
         sigma = numpy.std(slc)
@@ -1538,7 +1526,7 @@ class Image:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = ((self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] - mean)/stdDev)*30000 + 30000
+        self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000
 
     def edges_sobel(self):
         # Sobel edge detection:
@@ -1784,7 +1772,7 @@ class ImageStack:
         self.rawFileHeaderSize = rawFileHeaderSize
         self.rawImageHeaderSize = rawImageHeaderSize
 
-        self.isVolumeChunk = False    # Is this a volume chunk or is a file list provided?
+        self._isVolumeChunk = False    # Is this a volume chunk or is a file list provided?
 
         self.fileList = []
         self.fileNumbers = []   # store original stack number in file name
@@ -1797,14 +1785,11 @@ class ImageStack:
         else:
             raise Exception(&#34;Error adding stack: image dimensions don&#39;t match.&#34;)
 
-    def nSlices(self):
-        return self.nSlices
-
     def isVolumeChunk(self):
-        return self.isVolumeChunk
+        return self._isVolumeChunk
 
     def setVolumeChunk(self, isVolumeChunk):
-        self.isVolumeChunk = isVolumeChunk
+        self._isVolumeChunk = isVolumeChunk
 
     def getFileByteOrder(self):
         return self.files.getByteOrder()
@@ -1871,7 +1856,7 @@ class ImageStack:
             self.fileList.append(inFilePattern)
 
             if(isTIFF(inFilePattern)):  # treat as single TIFF projection            
-                self.isVolumeChunk = False
+                self._isVolumeChunk = False
                 testImage = Image(inFilePattern)
                 testImage.read()
                 self.width    = testImage.getWidth()
@@ -1882,7 +1867,7 @@ class ImageStack:
                 if (self.width != None) and (self.height != None):
                     if (self.files.getDataType() != None):
                         if os.path.isfile(inFilePattern):
-                            self.isVolumeChunk = True
+                            self._isVolumeChunk = True
 
                             if (self.nSlices == None):
                                 # Determine number of slices.
@@ -1950,7 +1935,7 @@ class ImageStack:
 
     def getFilename(self, index=None):
         if index != None:
-            if self.isVolumeChunk:
+            if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return self.fileList[0]
                 else:
@@ -1965,7 +1950,7 @@ class ImageStack:
 
     def getFileBasename(self, index=None):
         if index != None:
-            if self.isVolumeChunk:
+            if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return os.path.basename(self.fileList[0])
                 else:
@@ -1984,7 +1969,7 @@ class ImageStack:
     def getImage(self, index, outputFile=None):
         &#34;&#34;&#34; Read and return image at position &#39;index&#39; within the stack. &#34;&#34;&#34;
         if index &gt;= 0:
-            if not self.isVolumeChunk:  # read single image file from stack:
+            if not self._isVolumeChunk:  # read single image file from stack:
                 if len(self.fileList) &gt; index:
                     filename = self.fileList[index]
                     file = ImageFile(filename=filename, dataType=self.getFileDataType(), byteOrder=self.getFileByteOrder(), flipByteOrder=self.doFlipByteOrder())
@@ -2014,17 +1999,17 @@ class ImageStack:
 
     def getMeanImage(self, outputFile=None):
         &#34;&#34;&#34; Calculate the mean of all image files. &#34;&#34;&#34;
-        if self.nSlices() &gt; 0:
-            if self.nSlices() &gt; 1:
+        if self.nSlices &gt; 0:
+            if self.nSlices &gt; 1:
                 sumImg = self.getImage(0, outputFile)
-                for i in range(1, self.nSlices()):
-                    print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices()), end=&#39;&#39;)
+                for i in range(1, self.nSlices):
+                    print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices), end=&#39;&#39;)
                     sumImg.addImage(self.getImage(i, outputFile))
                     
 
                 print(&#34;&#34;)
 
-                sumImg.divide(self.nSlices())
+                sumImg.divide(self.nSlices)
                 return sumImg
             else:
                 return self.getImage(0, outputFile)
@@ -2033,23 +2018,23 @@ class ImageStack:
 
     def getStdDevImage(self, meanImg=None, outputFile=None):
         &#34;&#34;&#34; Calculate the pixel-wise RMS of the image files. &#34;&#34;&#34;
-        if self.nSlices() &gt; 0:
-            if self.nSlices() &gt; 1:
+        if self.nSlices &gt; 0:
+            if self.nSlices &gt; 1:
                 if meanImg == None:
                     meanImg = self.getMeanImage(outputFile)
 
                 sumImg = Image()
                 sumImg.shapeLike(otherImg=meanImg)
 
-                for i in range(0, self.nSlices()):
-                    print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices()), end=&#39;&#39;)
+                for i in range(0, self.nSlices):
+                    print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices), end=&#39;&#39;)
                     sqDiffImg = self.getImage(i, outputFile)
                     sqDiffImg.subtractImage(meanImg)
                     sqDiffImg.square()
 
                     sumImg.addImage(sqDiffImg)
 
-                sumImg.divide(self.nSlices())
+                sumImg.divide(self.nSlices)
                 sumImg.sqrt()
 
                 print(&#34;&#34;)
@@ -2315,7 +2300,7 @@ class ImageStack:
         if ROI==None:
             return numpy.amax(self.px)
 
-        return numpy.amax(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def min(self, ROI=None):
         &#34;&#34;&#34; Return minimum intensity in image. &#34;&#34;&#34;
@@ -2324,7 +2309,7 @@ class ImageStack:
         if ROI==None:
             return numpy.amin(self.px)
 
-        return numpy.amin(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def mean(self, ROI=None):
         &#34;&#34;&#34; Return arithmetic mean of the image grey values. &#34;&#34;&#34;
@@ -2333,7 +2318,7 @@ class ImageStack:
         if ROI==None:
             return numpy.mean(self.px)
 
-        return numpy.mean(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def stdDev(self, ROI=None):
         &#34;&#34;&#34; Return the standard deviation of the image grey values. &#34;&#34;&#34;
@@ -2342,7 +2327,7 @@ class ImageStack:
         if ROI==None:
             return numpy.std(self.px)
 
-        return numpy.std(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])
+        return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
 
     def centerOfMass(self):
         return ndimage.center_of_mass(self.px)
@@ -2754,7 +2739,7 @@ class ImageStack:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         profile = slc.mean(axis=1)
         return numpy.ravel(profile)
@@ -2770,7 +2755,7 @@ class ImageStack:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         profile = slc.mean(axis=0)
         return profile
@@ -3331,7 +3316,7 @@ class ImageStack:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         if currentMin == None:
             currentMin = slc.min()
@@ -3341,10 +3326,10 @@ class ImageStack:
 
         if(currentMax != currentMin):
             slc = (slc-currentMin)*(newMax-newMin)/(currentMax-currentMin)+newMin
-            self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+            self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
         else:
             slc = slc*0
-            self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+            self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
             #raise Exception(&#34;Division by zero upon renormalization: currentMax=currentMin={}&#34;.format(currentMax))
 
     def map_lookup(self, gv, gv_from, gv_to):
@@ -3440,7 +3425,7 @@ class ImageStack:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+        slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
         mean  = numpy.mean(slc)
         sigma = numpy.std(slc)
@@ -3477,7 +3462,7 @@ class ImageStack:
         if ROI==None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-        self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = ((self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] - mean)/stdDev)*30000 + 30000
+        self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000
 
     def edges_sobel(self):
         # Sobel edge detection:
@@ -4746,7 +4731,7 @@ Valid operations: mean, max, min, sum.</p></div>
     if ROI==None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-    slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
     profile = slc.mean(axis=0)
     return profile</code></pre>
@@ -5073,7 +5058,7 @@ numpy array of assigned grey values (for converted image)</p>
     if ROI==None:
         return numpy.amax(self.px)
 
-    return numpy.amax(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])</code></pre>
+    return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.image.Image.mean"><code class="name flex">
@@ -5092,7 +5077,7 @@ numpy array of assigned grey values (for converted image)</p>
     if ROI==None:
         return numpy.mean(self.px)
 
-    return numpy.mean(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])</code></pre>
+    return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.image.Image.meanGVinBin"><code class="name flex">
@@ -5243,7 +5228,7 @@ unit vector along width axis</p></div>
     if ROI==None:
         return numpy.amin(self.px)
 
-    return numpy.amin(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])</code></pre>
+    return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.image.Image.multiply"><code class="name flex">
@@ -5559,7 +5544,7 @@ False
     if ROI==None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-    slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
     if currentMin == None:
         currentMin = slc.min()
@@ -5569,10 +5554,10 @@ False
 
     if(currentMax != currentMin):
         slc = (slc-currentMin)*(newMax-newMin)/(currentMax-currentMin)+newMin
-        self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+        self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
     else:
         slc = slc*0
-        self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = slc
+        self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
         #raise Exception(&#34;Division by zero upon renormalization: currentMax=currentMin={}&#34;.format(currentMax))</code></pre>
 </details>
 </dd>
@@ -5592,7 +5577,7 @@ False
     if ROI==None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-    self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] = ((self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()] - mean)/stdDev)*30000 + 30000</code></pre>
+    self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.image.Image.resetAccumulations"><code class="name flex">
@@ -6059,7 +6044,7 @@ False
     if ROI==None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-    slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
     mean  = numpy.mean(slc)
     sigma = numpy.std(slc)
@@ -6086,7 +6071,7 @@ False
     if ROI==None:
         return numpy.std(self.px)
 
-    return numpy.std(self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()])</code></pre>
+    return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.image.Image.subtract"><code class="name flex">
@@ -6165,7 +6150,7 @@ False
     if ROI==None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
-    slc = self.px[ROI.y0():ROI.y1(), ROI.x0():ROI.x1()]
+    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
     profile = slc.mean(axis=1)
     return numpy.ravel(profile)</code></pre>
@@ -6442,18 +6427,6 @@ False
         self.x1 = int(x1)
         self.y1 = int(y1)
 
-    def x0(self):
-        return self.x0
-
-    def y0(self):
-        return self.y0
-
-    def x1(self):
-        return self.x1
-
-    def y1(self):
-        return self.y1
-
     def width(self):
         return self.x1 - self.x0
 
@@ -6544,58 +6517,6 @@ False
     return self.x1 - self.x0</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.image.ImageROI.x0"><code class="name flex">
-<span>def <span class="ident">x0</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def x0(self):
-    return self.x0</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.image.ImageROI.x1"><code class="name flex">
-<span>def <span class="ident">x1</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def x1(self):
-    return self.x1</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.image.ImageROI.y0"><code class="name flex">
-<span>def <span class="ident">y0</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def y0(self):
-    return self.y0</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.image.ImageROI.y1"><code class="name flex">
-<span>def <span class="ident">y1</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def y1(self):
-    return self.y1</code></pre>
-</details>
-</dd>
 </dl>
 </dd>
 <dt id="ctsimu.image.ImageStack"><code class="flex name class">
@@ -6629,7 +6550,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
         self.rawFileHeaderSize = rawFileHeaderSize
         self.rawImageHeaderSize = rawImageHeaderSize
 
-        self.isVolumeChunk = False    # Is this a volume chunk or is a file list provided?
+        self._isVolumeChunk = False    # Is this a volume chunk or is a file list provided?
 
         self.fileList = []
         self.fileNumbers = []   # store original stack number in file name
@@ -6642,14 +6563,11 @@ a collection of single 2D RAW or TIFF files.</p></div>
         else:
             raise Exception(&#34;Error adding stack: image dimensions don&#39;t match.&#34;)
 
-    def nSlices(self):
-        return self.nSlices
-
     def isVolumeChunk(self):
-        return self.isVolumeChunk
+        return self._isVolumeChunk
 
     def setVolumeChunk(self, isVolumeChunk):
-        self.isVolumeChunk = isVolumeChunk
+        self._isVolumeChunk = isVolumeChunk
 
     def getFileByteOrder(self):
         return self.files.getByteOrder()
@@ -6716,7 +6634,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
             self.fileList.append(inFilePattern)
 
             if(isTIFF(inFilePattern)):  # treat as single TIFF projection            
-                self.isVolumeChunk = False
+                self._isVolumeChunk = False
                 testImage = Image(inFilePattern)
                 testImage.read()
                 self.width    = testImage.getWidth()
@@ -6727,7 +6645,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
                 if (self.width != None) and (self.height != None):
                     if (self.files.getDataType() != None):
                         if os.path.isfile(inFilePattern):
-                            self.isVolumeChunk = True
+                            self._isVolumeChunk = True
 
                             if (self.nSlices == None):
                                 # Determine number of slices.
@@ -6795,7 +6713,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 
     def getFilename(self, index=None):
         if index != None:
-            if self.isVolumeChunk:
+            if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return self.fileList[0]
                 else:
@@ -6810,7 +6728,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 
     def getFileBasename(self, index=None):
         if index != None:
-            if self.isVolumeChunk:
+            if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return os.path.basename(self.fileList[0])
                 else:
@@ -6829,7 +6747,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
     def getImage(self, index, outputFile=None):
         &#34;&#34;&#34; Read and return image at position &#39;index&#39; within the stack. &#34;&#34;&#34;
         if index &gt;= 0:
-            if not self.isVolumeChunk:  # read single image file from stack:
+            if not self._isVolumeChunk:  # read single image file from stack:
                 if len(self.fileList) &gt; index:
                     filename = self.fileList[index]
                     file = ImageFile(filename=filename, dataType=self.getFileDataType(), byteOrder=self.getFileByteOrder(), flipByteOrder=self.doFlipByteOrder())
@@ -6859,17 +6777,17 @@ a collection of single 2D RAW or TIFF files.</p></div>
 
     def getMeanImage(self, outputFile=None):
         &#34;&#34;&#34; Calculate the mean of all image files. &#34;&#34;&#34;
-        if self.nSlices() &gt; 0:
-            if self.nSlices() &gt; 1:
+        if self.nSlices &gt; 0:
+            if self.nSlices &gt; 1:
                 sumImg = self.getImage(0, outputFile)
-                for i in range(1, self.nSlices()):
-                    print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices()), end=&#39;&#39;)
+                for i in range(1, self.nSlices):
+                    print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices), end=&#39;&#39;)
                     sumImg.addImage(self.getImage(i, outputFile))
                     
 
                 print(&#34;&#34;)
 
-                sumImg.divide(self.nSlices())
+                sumImg.divide(self.nSlices)
                 return sumImg
             else:
                 return self.getImage(0, outputFile)
@@ -6878,23 +6796,23 @@ a collection of single 2D RAW or TIFF files.</p></div>
 
     def getStdDevImage(self, meanImg=None, outputFile=None):
         &#34;&#34;&#34; Calculate the pixel-wise RMS of the image files. &#34;&#34;&#34;
-        if self.nSlices() &gt; 0:
-            if self.nSlices() &gt; 1:
+        if self.nSlices &gt; 0:
+            if self.nSlices &gt; 1:
                 if meanImg == None:
                     meanImg = self.getMeanImage(outputFile)
 
                 sumImg = Image()
                 sumImg.shapeLike(otherImg=meanImg)
 
-                for i in range(0, self.nSlices()):
-                    print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices()), end=&#39;&#39;)
+                for i in range(0, self.nSlices):
+                    print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices), end=&#39;&#39;)
                     sqDiffImg = self.getImage(i, outputFile)
                     sqDiffImg.subtractImage(meanImg)
                     sqDiffImg.square()
 
                     sumImg.addImage(sqDiffImg)
 
-                sumImg.divide(self.nSlices())
+                sumImg.divide(self.nSlices)
                 sumImg.sqrt()
 
                 print(&#34;&#34;)
@@ -6952,7 +6870,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
         self.fileList.append(inFilePattern)
 
         if(isTIFF(inFilePattern)):  # treat as single TIFF projection            
-            self.isVolumeChunk = False
+            self._isVolumeChunk = False
             testImage = Image(inFilePattern)
             testImage.read()
             self.width    = testImage.getWidth()
@@ -6963,7 +6881,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
             if (self.width != None) and (self.height != None):
                 if (self.files.getDataType() != None):
                     if os.path.isfile(inFilePattern):
-                        self.isVolumeChunk = True
+                        self._isVolumeChunk = True
 
                         if (self.nSlices == None):
                             # Determine number of slices.
@@ -7092,7 +7010,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 </summary>
 <pre><code class="python">def getFileBasename(self, index=None):
     if index != None:
-        if self.isVolumeChunk:
+        if self._isVolumeChunk:
             if len(self.fileList) &gt; 0:
                 return os.path.basename(self.fileList[0])
             else:
@@ -7143,7 +7061,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 </summary>
 <pre><code class="python">def getFilename(self, index=None):
     if index != None:
-        if self.isVolumeChunk:
+        if self._isVolumeChunk:
             if len(self.fileList) &gt; 0:
                 return self.fileList[0]
             else:
@@ -7169,7 +7087,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 <pre><code class="python">def getImage(self, index, outputFile=None):
     &#34;&#34;&#34; Read and return image at position &#39;index&#39; within the stack. &#34;&#34;&#34;
     if index &gt;= 0:
-        if not self.isVolumeChunk:  # read single image file from stack:
+        if not self._isVolumeChunk:  # read single image file from stack:
             if len(self.fileList) &gt; index:
                 filename = self.fileList[index]
                 file = ImageFile(filename=filename, dataType=self.getFileDataType(), byteOrder=self.getFileByteOrder(), flipByteOrder=self.doFlipByteOrder())
@@ -7209,17 +7127,17 @@ a collection of single 2D RAW or TIFF files.</p></div>
 </summary>
 <pre><code class="python">def getMeanImage(self, outputFile=None):
     &#34;&#34;&#34; Calculate the mean of all image files. &#34;&#34;&#34;
-    if self.nSlices() &gt; 0:
-        if self.nSlices() &gt; 1:
+    if self.nSlices &gt; 0:
+        if self.nSlices &gt; 1:
             sumImg = self.getImage(0, outputFile)
-            for i in range(1, self.nSlices()):
-                print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices()), end=&#39;&#39;)
+            for i in range(1, self.nSlices):
+                print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices), end=&#39;&#39;)
                 sumImg.addImage(self.getImage(i, outputFile))
                 
 
             print(&#34;&#34;)
 
-            sumImg.divide(self.nSlices())
+            sumImg.divide(self.nSlices)
             return sumImg
         else:
             return self.getImage(0, outputFile)
@@ -7238,23 +7156,23 @@ a collection of single 2D RAW or TIFF files.</p></div>
 </summary>
 <pre><code class="python">def getStdDevImage(self, meanImg=None, outputFile=None):
     &#34;&#34;&#34; Calculate the pixel-wise RMS of the image files. &#34;&#34;&#34;
-    if self.nSlices() &gt; 0:
-        if self.nSlices() &gt; 1:
+    if self.nSlices &gt; 0:
+        if self.nSlices &gt; 1:
             if meanImg == None:
                 meanImg = self.getMeanImage(outputFile)
 
             sumImg = Image()
             sumImg.shapeLike(otherImg=meanImg)
 
-            for i in range(0, self.nSlices()):
-                print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices()), end=&#39;&#39;)
+            for i in range(0, self.nSlices):
+                print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices), end=&#39;&#39;)
                 sqDiffImg = self.getImage(i, outputFile)
                 sqDiffImg.subtractImage(meanImg)
                 sqDiffImg.square()
 
                 sumImg.addImage(sqDiffImg)
 
-            sumImg.divide(self.nSlices())
+            sumImg.divide(self.nSlices)
             sumImg.sqrt()
 
             print(&#34;&#34;)
@@ -7276,20 +7194,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def isVolumeChunk(self):
-    return self.isVolumeChunk</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.image.ImageStack.nSlices"><code class="name flex">
-<span>def <span class="ident">nSlices</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def nSlices(self):
-    return self.nSlices</code></pre>
+    return self._isVolumeChunk</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.image.ImageStack.setFileByteOrder"><code class="name flex">
@@ -7354,7 +7259,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def setVolumeChunk(self, isVolumeChunk):
-    self.isVolumeChunk = isVolumeChunk</code></pre>
+    self._isVolumeChunk = isVolumeChunk</code></pre>
 </details>
 </dd>
 </dl>
@@ -7508,16 +7413,12 @@ a collection of single 2D RAW or TIFF files.</p></div>
 </li>
 <li>
 <h4><code><a title="ctsimu.image.ImageROI" href="#ctsimu.image.ImageROI">ImageROI</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="ctsimu.image.ImageROI.area" href="#ctsimu.image.ImageROI.area">area</a></code></li>
 <li><code><a title="ctsimu.image.ImageROI.grow" href="#ctsimu.image.ImageROI.grow">grow</a></code></li>
 <li><code><a title="ctsimu.image.ImageROI.height" href="#ctsimu.image.ImageROI.height">height</a></code></li>
 <li><code><a title="ctsimu.image.ImageROI.set" href="#ctsimu.image.ImageROI.set">set</a></code></li>
 <li><code><a title="ctsimu.image.ImageROI.width" href="#ctsimu.image.ImageROI.width">width</a></code></li>
-<li><code><a title="ctsimu.image.ImageROI.x0" href="#ctsimu.image.ImageROI.x0">x0</a></code></li>
-<li><code><a title="ctsimu.image.ImageROI.x1" href="#ctsimu.image.ImageROI.x1">x1</a></code></li>
-<li><code><a title="ctsimu.image.ImageROI.y0" href="#ctsimu.image.ImageROI.y0">y0</a></code></li>
-<li><code><a title="ctsimu.image.ImageROI.y1" href="#ctsimu.image.ImageROI.y1">y1</a></code></li>
 </ul>
 </li>
 <li>
@@ -7535,7 +7436,6 @@ a collection of single 2D RAW or TIFF files.</p></div>
 <li><code><a title="ctsimu.image.ImageStack.getMeanImage" href="#ctsimu.image.ImageStack.getMeanImage">getMeanImage</a></code></li>
 <li><code><a title="ctsimu.image.ImageStack.getStdDevImage" href="#ctsimu.image.ImageStack.getStdDevImage">getStdDevImage</a></code></li>
 <li><code><a title="ctsimu.image.ImageStack.isVolumeChunk" href="#ctsimu.image.ImageStack.isVolumeChunk">isVolumeChunk</a></code></li>
-<li><code><a title="ctsimu.image.ImageStack.nSlices" href="#ctsimu.image.ImageStack.nSlices">nSlices</a></code></li>
 <li><code><a title="ctsimu.image.ImageStack.setFileByteOrder" href="#ctsimu.image.ImageStack.setFileByteOrder">setFileByteOrder</a></code></li>
 <li><code><a title="ctsimu.image.ImageStack.setFileDataType" href="#ctsimu.image.ImageStack.setFileDataType">setFileDataType</a></code></li>
 <li><code><a title="ctsimu.image.ImageStack.setFilename" href="#ctsimu.image.ImageStack.setFilename">setFilename</a></code></li>

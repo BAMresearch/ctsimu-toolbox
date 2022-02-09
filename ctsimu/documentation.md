@@ -49,7 +49,7 @@ Getting started
 
 Requirements
 ------------
-A **Python 3** environment (Python 3.9 or higher) is required. The Python distribution that was used to develop and test the toolbox is *Anaconda 3* (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:
+A **Python 3** environment (Python 3.8 or higher) is required. The Python distribution that was used to develop and test the toolbox is *Anaconda 3* (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:
 
 * NumPy,
 * SciPy subpackages *ndimage, optimize, stats, signal* and
@@ -59,16 +59,25 @@ A **Python 3** environment (Python 3.9 or higher) is required. The Python distri
 Installation
 ------------
 
-The file :guilabel:`ctsimu_1.4.4.zip` contains the complete Python package.
+If you want to **install** the package in your Python environment, you can use [pip]. For example, you can run the following command in your *Anaconda Prompt* to make the toolbox available:
 
-To use it **without installation,** copy the folder `ctsimu` from the zip file to the directory where you want to run the Python scripts that need to import the package modules.
-
-If you choose to **install** the package in your Python environment, you can use [pip]. For example, you can run the following command in your *Anaconda Prompt*:
-
-	pip install ctsimu_1.4.4.zip
+	pip install ctsimu
 
 [pip]: https://pip.pypa.io
 
+To use the package **without installation**, you need to download the package manually. You have the following three options:
+
+* Download the package [from PyPi]. You will get a zipped file called `ctsimu-X.X.X.tar.gz` (where X.X.X is the current version number). Open or unpack this file to get to its contents.
+* Download the repository [from GitHub]: press the **clone** link to download a ZIP file. Unpack this `main.zip` or open it to see its contents.
+* You can also clone the repository from GitHub via the terminal:
+
+	`git clone https://github.com/BAMresearch/ctsimu-toolbox.git`
+
+From any of these three options, you will get the complete package source code. It contains a folder called `ctsimu`. If you want to use the toolbox from your Python scripts without installing it, you need to copy the folder `ctsimu` to the location of your Python scripts to make the package available.
+
+
+[from GitHub]: https://github.com/BAMresearch/ctsimu-toolbox
+[from PyPi]: https://pypi.org/project/ctsimu/
 
 About
 =====

@@ -120,7 +120,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
             if(self.doOffsetCorrection):
                 if(not self.analyticalCorrection):
                     self.darkFileStack.buildStack()
-                    if self.darkFileStack.nSlices() &gt; 0:
+                    if self.darkFileStack.nSlices &gt; 0:
                         self.darkImage = self.darkFileStack.getMeanImage(outputFiles)
                     else:
                         log(&#34;No offset file(s) found that match the given name pattern.&#34;)
@@ -129,7 +129,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
             if(self.doGainCorrection):
                 if(not self.analyticalCorrection):
                     self.flatFileStack.buildStack()
-                    if self.flatFileStack.nSlices() &gt; 0:
+                    if self.flatFileStack.nSlices &gt; 0:
                         self.gainImage = self.flatFileStack.getMeanImage(outputFiles)
                     else:
                         log(&#34;No flat field file(s) found that match the given name pattern.&#34;)
@@ -270,7 +270,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
             if(self.doOffsetCorrection):
                 if(not self.analyticalCorrection):
                     self.darkFileStack.buildStack()
-                    if self.darkFileStack.nSlices() &gt; 0:
+                    if self.darkFileStack.nSlices &gt; 0:
                         self.darkImage = self.darkFileStack.getMeanImage(outputFiles)
                     else:
                         log(&#34;No offset file(s) found that match the given name pattern.&#34;)
@@ -279,7 +279,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
             if(self.doGainCorrection):
                 if(not self.analyticalCorrection):
                     self.flatFileStack.buildStack()
-                    if self.flatFileStack.nSlices() &gt; 0:
+                    if self.flatFileStack.nSlices &gt; 0:
                         self.gainImage = self.flatFileStack.getMeanImage(outputFiles)
                     else:
                         log(&#34;No flat field file(s) found that match the given name pattern.&#34;)
@@ -347,7 +347,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
         if(self.doOffsetCorrection):
             if(not self.analyticalCorrection):
                 self.darkFileStack.buildStack()
-                if self.darkFileStack.nSlices() &gt; 0:
+                if self.darkFileStack.nSlices &gt; 0:
                     self.darkImage = self.darkFileStack.getMeanImage(outputFiles)
                 else:
                     log(&#34;No offset file(s) found that match the given name pattern.&#34;)
@@ -356,7 +356,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
         if(self.doGainCorrection):
             if(not self.analyticalCorrection):
                 self.flatFileStack.buildStack()
-                if self.flatFileStack.nSlices() &gt; 0:
+                if self.flatFileStack.nSlices &gt; 0:
                     self.gainImage = self.flatFileStack.getMeanImage(outputFiles)
                 else:
                     log(&#34;No flat field file(s) found that match the given name pattern.&#34;)

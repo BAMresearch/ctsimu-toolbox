@@ -633,7 +633,7 @@ class Polygon:
     def __init__(self, *points):
         &#34;&#34;&#34; Points should be defined in counter-clockwise direction. They are of class Vector. &#34;&#34;&#34;
         self.points = []
-        self.area = None
+        self._area = None
         self.vertexOrderCCW = True  # Vertices defined in counter-clockwise order. Should be False for clockwise.
         self.set(*points)
     
@@ -661,16 +661,16 @@ class Polygon:
         self.points = []
         self.points.extend(points)
 
-        self.area = None
+        self._area = None
 
     def area(self):
-        if self.area == None:
+        if self._area is None:
             self.calculateArea()
 
-        return self.area
+        return self._area
 
     def calculateArea(self):
-        self.area = 0
+        self._area = 0
 
         # Split polygon into triangles and calculate area of each
         # triangle using the trapezoid method.
@@ -688,7 +688,7 @@ class Polygon:
                 y2 = p2.y
                 x3 = p3.x
                 y3 = p3.y
-                self.area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
+                self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
 
     def getBoundingBox(self):
         leftMost  = self.points[0].x
@@ -1127,7 +1127,7 @@ class Polygon:
     def __init__(self, *points):
         &#34;&#34;&#34; Points should be defined in counter-clockwise direction. They are of class Vector. &#34;&#34;&#34;
         self.points = []
-        self.area = None
+        self._area = None
         self.vertexOrderCCW = True  # Vertices defined in counter-clockwise order. Should be False for clockwise.
         self.set(*points)
     
@@ -1155,16 +1155,16 @@ class Polygon:
         self.points = []
         self.points.extend(points)
 
-        self.area = None
+        self._area = None
 
     def area(self):
-        if self.area == None:
+        if self._area is None:
             self.calculateArea()
 
-        return self.area
+        return self._area
 
     def calculateArea(self):
-        self.area = 0
+        self._area = 0
 
         # Split polygon into triangles and calculate area of each
         # triangle using the trapezoid method.
@@ -1182,7 +1182,7 @@ class Polygon:
                 y2 = p2.y
                 x3 = p3.x
                 y3 = p3.y
-                self.area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
+                self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
 
     def getBoundingBox(self):
         leftMost  = self.points[0].x
@@ -1328,10 +1328,10 @@ class Polygon:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def area(self):
-    if self.area == None:
+    if self._area is None:
         self.calculateArea()
 
-    return self.area</code></pre>
+    return self._area</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.primitives.Polygon.calculateArea"><code class="name flex">
@@ -1344,7 +1344,7 @@ class Polygon:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def calculateArea(self):
-    self.area = 0
+    self._area = 0
 
     # Split polygon into triangles and calculate area of each
     # triangle using the trapezoid method.
@@ -1362,7 +1362,7 @@ class Polygon:
             y2 = p2.y
             x3 = p3.x
             y3 = p3.y
-            self.area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )</code></pre>
+            self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.primitives.Polygon.clip"><code class="name flex">
@@ -1578,7 +1578,7 @@ using the provided zComponent.</p></div>
     self.points = []
     self.points.extend(points)
 
-    self.area = None</code></pre>
+    self._area = None</code></pre>
 </details>
 </dd>
 </dl>
