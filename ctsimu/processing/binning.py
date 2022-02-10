@@ -3,14 +3,14 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Binning(ProcessingStep):
+class Step_Binning(Step):
     """ Binning operation for the processing pipeline. """
 
     def __init__(self, binSizeX=1, binSizeY=1, binningOperation="mean"):
-        ProcessingStep.__init__(self, "Binning")
+        Step.__init__(self, "Binning")
         self.binSizeX = 1
         self.binSizeY = 1
         self.binningOperation = "mean"
@@ -22,10 +22,10 @@ class ProcessingStep_Binning(ProcessingStep):
     def setBinning(self, x, y, operation='mean'):
         self.setPrepared(False)
 
-        if x == None:
+        if x is None:
             x = 1
 
-        if y == None:
+        if y is None:
             y = 1
 
         if (x >= 0) and (y >= 0):
@@ -55,7 +55,7 @@ class ProcessingStep_Binning(ProcessingStep):
 
     def prepare(self):
         """ Nothing to prepare for the binning module. """
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 

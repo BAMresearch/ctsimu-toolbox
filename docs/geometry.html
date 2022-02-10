@@ -109,44 +109,6 @@ class GeometryObject:
 
     w : Vector
         Basis vector for the w axis.
-
-    Methods
-    -------
-    setupFromGeometryDefinition(geometry)
-        Set up geometry from a JSON dictionary.
-
-    setup(centerX, centerY, centerZ, uX, uY, uZ, wX, wY, wZ)
-        Set up center and orientation manually.
-
-    makeUnitCS()
-        Convert all basis vectors to unit vectors.
-
-    translate(translationVector)
-        Move object in space.
-
-    translateX(dx)
-        Move object in x direction.
-
-    translateY(dx)
-        Move object in y direction.
-
-    translateZ(dx)
-        Move object in z direction.
-
-    rotateAroundU(angle)
-        Rotate object around its u axis by given angle [rad].
-
-    rotateAroundV(angle)
-        Rotate object around its v axis by given angle [rad].
-
-    rotateAroundW(angle)
-        Rotate object around its w axis by given angle [rad].
-
-    rotate(axis, angle)
-        Rotate object around a given axis by the given angle [rad].
-
-    changeReferenceFrame(fromCS, toCS)
-        Change the object&#39;s reference coordinate system.
     &#34;&#34;&#34;
 
     def __init__(self):
@@ -165,7 +127,7 @@ class GeometryObject:
         txt += &#34;w:      {}\n&#34;.format(self.w)
         return txt
 
-    def setupFromGeometryDefinition(self, geometry: dict):
+    def json_import(self, geometry: dict):
         &#34;&#34;&#34;Set up geometry from a JSON dictionary.
 
         Parameters
@@ -182,7 +144,7 @@ class GeometryObject:
 
         References
         ----------
-        .. [2] CTSimU Scenario Descriptions, https://bamresearch.github.io/ctsimu-scenarios/
+        * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
         &#34;&#34;&#34;
 
         # Get center position from JSON dict:
@@ -507,28 +469,6 @@ class Detector(GeometryObject):
         (0,0) pixel of the detector (often the &#34;upper left&#34; corner).
         Computed automatically after calling `setSize()`.
 
-    Methods
-    -------
-    setSize(nPixelsU, nPixelsV, pitchU, pitchV)
-        Set the physical size of the detector.
-
-    computeGeometryParameters()
-        Calculate the physical width and height,
-        and the position of the pixel coordinate system origin.
-
-    cols()
-        Returns the number of detector columns (i.e., pixels in u direction).
-
-    rows()
-        Returns the number of detector rows (i.e., pixels in v direction).
-
-    pixelVector(x, y)
-        World position vector for given pixel coordinate.
-
-    pixelVectorCenter(x, y)
-        World position vector of pixel center,
-        for a pixel identified by its integer coordinates.
-
     Notes
     -----
     Use `setSize()` to set the size of the detector, given its number of pixels
@@ -735,10 +675,6 @@ class Geometry:
         Location of the intensity maximum on the detector, in terms of
         detector coordinate system. Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
-
-    Methods
-    -------
-
     &#34;&#34;&#34;
 
     def __init__(self, jsonFile:str = None, jsonFileFromPkg:str = None):
@@ -795,7 +731,7 @@ class Geometry:
             try:
                 detectorGeometry = getFieldOrNone(jsonDict, &#34;geometry&#34;, &#34;detector&#34;)
                 if detectorGeometry != None:
-                    self.detector.setupFromGeometryDefinition(detectorGeometry)
+                    self.detector.json_import(detectorGeometry)
                     self.detector.setSize(pixelsU, pixelsV, pitchU, pitchV)
                 else:
                     raise Exception(&#34;JSON file does not contain a valid \&#34;detector\&#34; section in \&#34;geometry\&#34;.&#34;)
@@ -806,7 +742,7 @@ class Geometry:
             try:
                 sourceGeometry = getFieldOrNone(jsonDict, &#34;geometry&#34;, &#34;source&#34;)
                 if sourceGeometry != None:
-                    self.source.setupFromGeometryDefinition(sourceGeometry)
+                    self.source.json_import(sourceGeometry)
                 else:
                     raise Exception(&#34;JSON file does not contain a valid \&#34;source\&#34; section in \&#34;geometry\&#34;.&#34;)
             except Exception as e:
@@ -816,7 +752,7 @@ class Geometry:
             try:
                 stageGeometry = getFieldOrNone(jsonDict, &#34;geometry&#34;, &#34;stage&#34;)
                 if stageGeometry != None:
-                    self.stage.setupFromGeometryDefinition(stageGeometry)
+                    self.stage.json_import(stageGeometry)
                 else:
                     raise Exception(&#34;JSON file does not contain a valid \&#34;stage\&#34; section in \&#34;geometry\&#34;.&#34;)
             except Exception as e:
@@ -1064,13 +1000,13 @@ class Geometry:
         pixelSizeU = self.detector.pitchU
         pixelSizeV = self.detector.pitchV
 
-        if(width == None):
+        if(width is None):
             raise Exception(&#34;The detector width (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(height == None):
+        if(height is None):
             raise Exception(&#34;The detector height (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(pixelSizeU == None):
+        if(pixelSizeU is None):
             raise Exception(&#34;The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.&#34;)
-        if(pixelSizeV == None):
+        if(pixelSizeV is None):
             raise Exception(&#34;The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.&#34;)
 
         flatField = Image()
@@ -1491,13 +1427,13 @@ class Geometry:
         pitchU = self.detector.pitchU
         pitchV = self.detector.pitchV
 
-        if(width == None):
+        if(width is None):
             raise Exception(&#34;The detector width (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(height == None):
+        if(height is None):
             raise Exception(&#34;The detector height (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(pitchU == None):
+        if(pitchU is None):
             raise Exception(&#34;The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.&#34;)
-        if(pitchV == None):
+        if(pitchV is None):
             raise Exception(&#34;The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.&#34;)
 
         flatField = Image()
@@ -2314,21 +2250,6 @@ coordinate system. This is the outermost corner of the
 (0,0) pixel of the detector (often the "upper left" corner).
 Computed automatically after calling <code>setSize()</code>.</dd>
 </dl>
-<h2 id="methods">Methods</h2>
-<p>setSize(nPixelsU, nPixelsV, pitchU, pitchV)
-Set the physical size of the detector.</p>
-<p>computeGeometryParameters()
-Calculate the physical width and height,
-and the position of the pixel coordinate system origin.</p>
-<p>cols()
-Returns the number of detector columns (i.e., pixels in u direction).</p>
-<p>rows()
-Returns the number of detector rows (i.e., pixels in v direction).</p>
-<p>pixelVector(x, y)
-World position vector for given pixel coordinate.</p>
-<p>pixelVectorCenter(x, y)
-World position vector of pixel center,
-for a pixel identified by its integer coordinates.</p>
 <h2 id="notes">Notes</h2>
 <p>Use <code>setSize()</code> to set the size of the detector, given its number of pixels
 and the pitch. This function automatically computes the physical dimensions
@@ -2376,28 +2297,6 @@ and the pitch. This function automatically computes the physical dimensions
         coordinate system. This is the outermost corner of the
         (0,0) pixel of the detector (often the &#34;upper left&#34; corner).
         Computed automatically after calling `setSize()`.
-
-    Methods
-    -------
-    setSize(nPixelsU, nPixelsV, pitchU, pitchV)
-        Set the physical size of the detector.
-
-    computeGeometryParameters()
-        Calculate the physical width and height,
-        and the position of the pixel coordinate system origin.
-
-    cols()
-        Returns the number of detector columns (i.e., pixels in u direction).
-
-    rows()
-        Returns the number of detector rows (i.e., pixels in v direction).
-
-    pixelVector(x, y)
-        World position vector for given pixel coordinate.
-
-    pixelVectorCenter(x, y)
-        World position vector of pixel center,
-        for a pixel identified by its integer coordinates.
 
     Notes
     -----
@@ -2850,13 +2749,13 @@ the detector orientation or position later on.</p>
 <li><code><b><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></b></code>:
 <ul class="hlist">
 <li><code><a title="ctsimu.geometry.GeometryObject.changeReferenceFrame" href="#ctsimu.geometry.GeometryObject.changeReferenceFrame">changeReferenceFrame</a></code></li>
+<li><code><a title="ctsimu.geometry.GeometryObject.json_import" href="#ctsimu.geometry.GeometryObject.json_import">json_import</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.makeUnitCS" href="#ctsimu.geometry.GeometryObject.makeUnitCS">makeUnitCS</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotate" href="#ctsimu.geometry.GeometryObject.rotate">rotate</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundU" href="#ctsimu.geometry.GeometryObject.rotateAroundU">rotateAroundU</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundV" href="#ctsimu.geometry.GeometryObject.rotateAroundV">rotateAroundV</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundW" href="#ctsimu.geometry.GeometryObject.rotateAroundW">rotateAroundW</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.setup" href="#ctsimu.geometry.GeometryObject.setup">setup</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.setupFromGeometryDefinition" href="#ctsimu.geometry.GeometryObject.setupFromGeometryDefinition">setupFromGeometryDefinition</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.translate" href="#ctsimu.geometry.GeometryObject.translate">translate</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.translateX" href="#ctsimu.geometry.GeometryObject.translateX">translateX</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.translateY" href="#ctsimu.geometry.GeometryObject.translateY">translateY</a></code></li>
@@ -2899,7 +2798,6 @@ Calculated automatically by <code>update()</code>.</dd>
 detector coordinate system. Assuming an isotropically radiating source.
 Calculated automatically by <code>update()</code>.</dd>
 </dl>
-<h2 id="methods">Methods</h2>
 <p>Initialize using the provided JSON geometry specification.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -2952,10 +2850,6 @@ usually for internal purposes only.</dd>
         Location of the intensity maximum on the detector, in terms of
         detector coordinate system. Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
-
-    Methods
-    -------
-
     &#34;&#34;&#34;
 
     def __init__(self, jsonFile:str = None, jsonFileFromPkg:str = None):
@@ -3012,7 +2906,7 @@ usually for internal purposes only.</dd>
             try:
                 detectorGeometry = getFieldOrNone(jsonDict, &#34;geometry&#34;, &#34;detector&#34;)
                 if detectorGeometry != None:
-                    self.detector.setupFromGeometryDefinition(detectorGeometry)
+                    self.detector.json_import(detectorGeometry)
                     self.detector.setSize(pixelsU, pixelsV, pitchU, pitchV)
                 else:
                     raise Exception(&#34;JSON file does not contain a valid \&#34;detector\&#34; section in \&#34;geometry\&#34;.&#34;)
@@ -3023,7 +2917,7 @@ usually for internal purposes only.</dd>
             try:
                 sourceGeometry = getFieldOrNone(jsonDict, &#34;geometry&#34;, &#34;source&#34;)
                 if sourceGeometry != None:
-                    self.source.setupFromGeometryDefinition(sourceGeometry)
+                    self.source.json_import(sourceGeometry)
                 else:
                     raise Exception(&#34;JSON file does not contain a valid \&#34;source\&#34; section in \&#34;geometry\&#34;.&#34;)
             except Exception as e:
@@ -3033,7 +2927,7 @@ usually for internal purposes only.</dd>
             try:
                 stageGeometry = getFieldOrNone(jsonDict, &#34;geometry&#34;, &#34;stage&#34;)
                 if stageGeometry != None:
-                    self.stage.setupFromGeometryDefinition(stageGeometry)
+                    self.stage.json_import(stageGeometry)
                 else:
                     raise Exception(&#34;JSON file does not contain a valid \&#34;stage\&#34; section in \&#34;geometry\&#34;.&#34;)
             except Exception as e:
@@ -3281,13 +3175,13 @@ usually for internal purposes only.</dd>
         pixelSizeU = self.detector.pitchU
         pixelSizeV = self.detector.pitchV
 
-        if(width == None):
+        if(width is None):
             raise Exception(&#34;The detector width (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(height == None):
+        if(height is None):
             raise Exception(&#34;The detector height (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(pixelSizeU == None):
+        if(pixelSizeU is None):
             raise Exception(&#34;The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.&#34;)
-        if(pixelSizeV == None):
+        if(pixelSizeV is None):
             raise Exception(&#34;The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.&#34;)
 
         flatField = Image()
@@ -3708,13 +3602,13 @@ usually for internal purposes only.</dd>
         pitchU = self.detector.pitchU
         pitchV = self.detector.pitchV
 
-        if(width == None):
+        if(width is None):
             raise Exception(&#34;The detector width (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(height == None):
+        if(height is None):
             raise Exception(&#34;The detector height (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-        if(pitchU == None):
+        if(pitchU is None):
             raise Exception(&#34;The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.&#34;)
-        if(pitchV == None):
+        if(pitchV is None):
             raise Exception(&#34;The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.&#34;)
 
         flatField = Image()
@@ -3858,13 +3752,13 @@ ideal flat field correction.</p>
     pitchU = self.detector.pitchU
     pitchV = self.detector.pitchV
 
-    if(width == None):
+    if(width is None):
         raise Exception(&#34;The detector width (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-    if(height == None):
+    if(height is None):
         raise Exception(&#34;The detector height (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-    if(pitchU == None):
+    if(pitchU is None):
         raise Exception(&#34;The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.&#34;)
-    if(pitchV == None):
+    if(pitchV is None):
         raise Exception(&#34;The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.&#34;)
 
     flatField = Image()
@@ -3986,13 +3880,13 @@ ideal flat field correction.</p></div>
      pixelSizeU = self.detector.pitchU
      pixelSizeV = self.detector.pitchV
 
-     if(width == None):
+     if(width is None):
          raise Exception(&#34;The detector width (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-     if(height == None):
+     if(height is None):
          raise Exception(&#34;The detector height (in pixels) must be provided through a valid CTSimU JSON file.&#34;)
-     if(pixelSizeU == None):
+     if(pixelSizeU is None):
          raise Exception(&#34;The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.&#34;)
-     if(pixelSizeV == None):
+     if(pixelSizeV is None):
          raise Exception(&#34;The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.&#34;)
 
      flatField = Image()
@@ -4690,31 +4584,6 @@ coordinate system (usually world or stage).</dd>
 <dt><strong><code>w</code></strong> :&ensp;<code>Vector</code></dt>
 <dd>Basis vector for the w axis.</dd>
 </dl>
-<h2 id="methods">Methods</h2>
-<p>setupFromGeometryDefinition(geometry)
-Set up geometry from a JSON dictionary.</p>
-<p>setup(centerX, centerY, centerZ, uX, uY, uZ, wX, wY, wZ)
-Set up center and orientation manually.</p>
-<p>makeUnitCS()
-Convert all basis vectors to unit vectors.</p>
-<p>translate(translationVector)
-Move object in space.</p>
-<p>translateX(dx)
-Move object in x direction.</p>
-<p>translateY(dx)
-Move object in y direction.</p>
-<p>translateZ(dx)
-Move object in z direction.</p>
-<p>rotateAroundU(angle)
-Rotate object around its u axis by given angle [rad].</p>
-<p>rotateAroundV(angle)
-Rotate object around its v axis by given angle [rad].</p>
-<p>rotateAroundW(angle)
-Rotate object around its w axis by given angle [rad].</p>
-<p>rotate(axis, angle)
-Rotate object around a given axis by the given angle [rad].</p>
-<p>changeReferenceFrame(fromCS, toCS)
-Change the object's reference coordinate system.</p>
 <p>Initialize as a standard world coordinate system.</p></div>
 <details class="source">
 <summary>
@@ -4748,44 +4617,6 @@ Change the object's reference coordinate system.</p>
 
     w : Vector
         Basis vector for the w axis.
-
-    Methods
-    -------
-    setupFromGeometryDefinition(geometry)
-        Set up geometry from a JSON dictionary.
-
-    setup(centerX, centerY, centerZ, uX, uY, uZ, wX, wY, wZ)
-        Set up center and orientation manually.
-
-    makeUnitCS()
-        Convert all basis vectors to unit vectors.
-
-    translate(translationVector)
-        Move object in space.
-
-    translateX(dx)
-        Move object in x direction.
-
-    translateY(dx)
-        Move object in y direction.
-
-    translateZ(dx)
-        Move object in z direction.
-
-    rotateAroundU(angle)
-        Rotate object around its u axis by given angle [rad].
-
-    rotateAroundV(angle)
-        Rotate object around its v axis by given angle [rad].
-
-    rotateAroundW(angle)
-        Rotate object around its w axis by given angle [rad].
-
-    rotate(axis, angle)
-        Rotate object around a given axis by the given angle [rad].
-
-    changeReferenceFrame(fromCS, toCS)
-        Change the object&#39;s reference coordinate system.
     &#34;&#34;&#34;
 
     def __init__(self):
@@ -4804,7 +4635,7 @@ Change the object's reference coordinate system.</p>
         txt += &#34;w:      {}\n&#34;.format(self.w)
         return txt
 
-    def setupFromGeometryDefinition(self, geometry: dict):
+    def json_import(self, geometry: dict):
         &#34;&#34;&#34;Set up geometry from a JSON dictionary.
 
         Parameters
@@ -4821,7 +4652,7 @@ Change the object's reference coordinate system.</p>
 
         References
         ----------
-        .. [2] CTSimU Scenario Descriptions, https://bamresearch.github.io/ctsimu-scenarios/
+        * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
         &#34;&#34;&#34;
 
         # Get center position from JSON dict:
@@ -5172,6 +5003,173 @@ Change the object's reference coordinate system.</p>
     self.center = T*relCenter</code></pre>
 </details>
 </dd>
+<dt id="ctsimu.geometry.GeometryObject.json_import"><code class="name flex">
+<span>def <span class="ident">json_import</span></span>(<span>self, geometry: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set up geometry from a JSON dictionary.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>geometry</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A parsed JSON dictionary from a CTSimU scenario description file.
+See [2]_.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>When expected JSON keys for center and vector x, y, z
+components are not found in the dictionary.</dd>
+</dl>
+<h2 id="references">References</h2>
+<ul>
+<li>CTSimU Scenario Descriptions: <a href="https://bamresearch.github.io/ctsimu-scenarios/">https://bamresearch.github.io/ctsimu-scenarios/</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def json_import(self, geometry: dict):
+    &#34;&#34;&#34;Set up geometry from a JSON dictionary.
+
+    Parameters
+    ----------
+    geometry : dict
+        A parsed JSON dictionary from a CTSimU scenario description file.
+        See [2]_.
+
+    Raises
+    ------
+    KeyError
+        When expected JSON keys for center and vector x, y, z
+        components are not found in the dictionary.
+
+    References
+    ----------
+    * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
+    &#34;&#34;&#34;
+
+    # Get center position from JSON dict:
+    if &#34;center&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;center&#34;]:
+            cx = in_mm(geometry[&#34;center&#34;][&#34;x&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;center&#34;]:
+            cy = in_mm(geometry[&#34;center&#34;][&#34;y&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
+        
+        if &#34;z&#34; in geometry[&#34;center&#34;]:
+            cz = in_mm(geometry[&#34;center&#34;][&#34;z&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
+
+        self.center.set(cx, cy, cz)
+    # Try old British spelling (up to file format v0.9)
+    elif &#34;centre&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;centre&#34;]:
+            cx = in_mm(geometry[&#34;centre&#34;][&#34;x&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;centre&#34;]:
+            cy = in_mm(geometry[&#34;centre&#34;][&#34;y&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
+        
+        if &#34;z&#34; in geometry[&#34;centre&#34;]:
+            cz = in_mm(geometry[&#34;centre&#34;][&#34;z&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
+
+        self.center.set(cx, cy, cz)
+    else:
+        raise KeyError(&#34;JSON file is missing a geometry \&#34;center\&#34; section.&#34;)
+
+    # Get vector u from JSON dict:
+    if &#34;vector_u&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;vector_u&#34;]:
+            ux = geometry[&#34;vector_u&#34;][&#34;x&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; component found for vector u.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;vector_u&#34;]:
+            uy = geometry[&#34;vector_u&#34;][&#34;y&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; component found for vector u.&#34;)
+
+        if &#34;z&#34; in geometry[&#34;vector_u&#34;]:
+            uz = geometry[&#34;vector_u&#34;][&#34;z&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; component found for vector u.&#34;)
+    else:
+        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_u\&#34; section.&#34;)
+
+    # Get vector w from JSON dict:
+    if &#34;vector_w&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;vector_w&#34;]:
+            wx = geometry[&#34;vector_w&#34;][&#34;x&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; component found for vector w.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;vector_w&#34;]:
+            wy = geometry[&#34;vector_w&#34;][&#34;y&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; component found for vector w.&#34;)
+
+        if &#34;z&#34; in geometry[&#34;vector_w&#34;]:
+            wz = geometry[&#34;vector_w&#34;][&#34;z&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; component found for vector w.&#34;)
+    else:
+        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_w\&#34; section.&#34;)
+
+    # Set up the geometry from the information given in the JSON file:
+    c = Vector(cx, cy, cz)  # center
+    u = Vector(ux, uy, uz)  # u basis vector
+    w = Vector(wx, wy, wz)  # w basis vector
+    v = w.cross(u)
+    self.setup(c, u, v, w)
+    self.makeUnitCS()
+
+    # Apply deviations from the now-ideal geometry:
+    if &#34;deviation&#34; in geometry:
+        # Positional deviations:
+        if &#34;position&#34; in geometry[&#34;deviation&#34;]:
+            if &#34;x&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;] != None:
+                    translationX = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;])
+                    self.translateX(translationX)
+
+            if &#34;y&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;] != None:
+                    translationY = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;])
+                    self.translateY(translationY)
+
+            if &#34;z&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;] != None:
+                    translationZ = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;])
+                    self.translateZ(translationZ)
+
+        # Rotations according to w&#39;&#39;v&#39;u convention:
+        if &#34;rotation&#34; in geometry[&#34;deviation&#34;]:
+            if &#34;w&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;] != None:
+                    angleAroundW = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;])
+                    self.rotateAroundW(angleAroundW)
+
+            if &#34;v&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;] != None:
+                    angleAroundV = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;])
+                    self.rotateAroundV(angleAroundV)
+
+            if &#34;u&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;] != None:
+                    angleAroundU = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;])
+                    self.rotateAroundU(angleAroundU)</code></pre>
+</details>
+</dd>
 <dt id="ctsimu.geometry.GeometryObject.makeUnitCS"><code class="name flex">
 <span>def <span class="ident">makeUnitCS</span></span>(<span>self)</span>
 </code></dt>
@@ -5353,171 +5351,6 @@ origin of local {u,v,w} coordinate system.</dd>
     self.w = w</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.geometry.GeometryObject.setupFromGeometryDefinition"><code class="name flex">
-<span>def <span class="ident">setupFromGeometryDefinition</span></span>(<span>self, geometry: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set up geometry from a JSON dictionary.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>geometry</code></strong> :&ensp;<code>dict</code></dt>
-<dd>A parsed JSON dictionary from a CTSimU scenario description file.
-See [2]_.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>KeyError</code></dt>
-<dd>When expected JSON keys for center and vector x, y, z
-components are not found in the dictionary.</dd>
-</dl>
-<h2 id="references">References</h2>
-<p>.. [2] CTSimU Scenario Descriptions, <a href="https://bamresearch.github.io/ctsimu-scenarios/">https://bamresearch.github.io/ctsimu-scenarios/</a></p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setupFromGeometryDefinition(self, geometry: dict):
-    &#34;&#34;&#34;Set up geometry from a JSON dictionary.
-
-    Parameters
-    ----------
-    geometry : dict
-        A parsed JSON dictionary from a CTSimU scenario description file.
-        See [2]_.
-
-    Raises
-    ------
-    KeyError
-        When expected JSON keys for center and vector x, y, z
-        components are not found in the dictionary.
-
-    References
-    ----------
-    .. [2] CTSimU Scenario Descriptions, https://bamresearch.github.io/ctsimu-scenarios/
-    &#34;&#34;&#34;
-
-    # Get center position from JSON dict:
-    if &#34;center&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;center&#34;]:
-            cx = in_mm(geometry[&#34;center&#34;][&#34;x&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;center&#34;]:
-            cy = in_mm(geometry[&#34;center&#34;][&#34;y&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
-        
-        if &#34;z&#34; in geometry[&#34;center&#34;]:
-            cz = in_mm(geometry[&#34;center&#34;][&#34;z&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
-
-        self.center.set(cx, cy, cz)
-    # Try old British spelling (up to file format v0.9)
-    elif &#34;centre&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;centre&#34;]:
-            cx = in_mm(geometry[&#34;centre&#34;][&#34;x&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;centre&#34;]:
-            cy = in_mm(geometry[&#34;centre&#34;][&#34;y&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
-        
-        if &#34;z&#34; in geometry[&#34;centre&#34;]:
-            cz = in_mm(geometry[&#34;centre&#34;][&#34;z&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
-
-        self.center.set(cx, cy, cz)
-    else:
-        raise KeyError(&#34;JSON file is missing a geometry \&#34;center\&#34; section.&#34;)
-
-    # Get vector u from JSON dict:
-    if &#34;vector_u&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;vector_u&#34;]:
-            ux = geometry[&#34;vector_u&#34;][&#34;x&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; component found for vector u.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;vector_u&#34;]:
-            uy = geometry[&#34;vector_u&#34;][&#34;y&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; component found for vector u.&#34;)
-
-        if &#34;z&#34; in geometry[&#34;vector_u&#34;]:
-            uz = geometry[&#34;vector_u&#34;][&#34;z&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; component found for vector u.&#34;)
-    else:
-        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_u\&#34; section.&#34;)
-
-    # Get vector w from JSON dict:
-    if &#34;vector_w&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;vector_w&#34;]:
-            wx = geometry[&#34;vector_w&#34;][&#34;x&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; component found for vector w.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;vector_w&#34;]:
-            wy = geometry[&#34;vector_w&#34;][&#34;y&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; component found for vector w.&#34;)
-
-        if &#34;z&#34; in geometry[&#34;vector_w&#34;]:
-            wz = geometry[&#34;vector_w&#34;][&#34;z&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; component found for vector w.&#34;)
-    else:
-        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_w\&#34; section.&#34;)
-
-    # Set up the geometry from the information given in the JSON file:
-    c = Vector(cx, cy, cz)  # center
-    u = Vector(ux, uy, uz)  # u basis vector
-    w = Vector(wx, wy, wz)  # w basis vector
-    v = w.cross(u)
-    self.setup(c, u, v, w)
-    self.makeUnitCS()
-
-    # Apply deviations from the now-ideal geometry:
-    if &#34;deviation&#34; in geometry:
-        # Positional deviations:
-        if &#34;position&#34; in geometry[&#34;deviation&#34;]:
-            if &#34;x&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;] != None:
-                    translationX = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;])
-                    self.translateX(translationX)
-
-            if &#34;y&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;] != None:
-                    translationY = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;])
-                    self.translateY(translationY)
-
-            if &#34;z&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;] != None:
-                    translationZ = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;])
-                    self.translateZ(translationZ)
-
-        # Rotations according to w&#39;&#39;v&#39;u convention:
-        if &#34;rotation&#34; in geometry[&#34;deviation&#34;]:
-            if &#34;w&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;] != None:
-                    angleAroundW = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;])
-                    self.rotateAroundW(angleAroundW)
-
-            if &#34;v&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;] != None:
-                    angleAroundV = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;])
-                    self.rotateAroundV(angleAroundV)
-
-            if &#34;u&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;] != None:
-                    angleAroundU = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;])
-                    self.rotateAroundU(angleAroundU)</code></pre>
-</details>
-</dd>
 <dt id="ctsimu.geometry.GeometryObject.translate"><code class="name flex">
 <span>def <span class="ident">translate</span></span>(<span>self, translationVector: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>)</span>
 </code></dt>
@@ -5681,13 +5514,13 @@ Its components are added to the center's components.</dd>
 <h4><code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></h4>
 <ul class="">
 <li><code><a title="ctsimu.geometry.GeometryObject.changeReferenceFrame" href="#ctsimu.geometry.GeometryObject.changeReferenceFrame">changeReferenceFrame</a></code></li>
+<li><code><a title="ctsimu.geometry.GeometryObject.json_import" href="#ctsimu.geometry.GeometryObject.json_import">json_import</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.makeUnitCS" href="#ctsimu.geometry.GeometryObject.makeUnitCS">makeUnitCS</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotate" href="#ctsimu.geometry.GeometryObject.rotate">rotate</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundU" href="#ctsimu.geometry.GeometryObject.rotateAroundU">rotateAroundU</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundV" href="#ctsimu.geometry.GeometryObject.rotateAroundV">rotateAroundV</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundW" href="#ctsimu.geometry.GeometryObject.rotateAroundW">rotateAroundW</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.setup" href="#ctsimu.geometry.GeometryObject.setup">setup</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.setupFromGeometryDefinition" href="#ctsimu.geometry.GeometryObject.setupFromGeometryDefinition">setupFromGeometryDefinition</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.translate" href="#ctsimu.geometry.GeometryObject.translate">translate</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.translateX" href="#ctsimu.geometry.GeometryObject.translateX">translateX</a></code></li>
 <li><code><a title="ctsimu.geometry.GeometryObject.translateY" href="#ctsimu.geometry.GeometryObject.translateY">translateY</a></code></li>

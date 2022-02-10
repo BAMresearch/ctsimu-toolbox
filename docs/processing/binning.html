@@ -33,14 +33,14 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Binning(ProcessingStep):
+class Step_Binning(Step):
     &#34;&#34;&#34; Binning operation for the processing pipeline. &#34;&#34;&#34;
 
     def __init__(self, binSizeX=1, binSizeY=1, binningOperation=&#34;mean&#34;):
-        ProcessingStep.__init__(self, &#34;Binning&#34;)
+        Step.__init__(self, &#34;Binning&#34;)
         self.binSizeX = 1
         self.binSizeY = 1
         self.binningOperation = &#34;mean&#34;
@@ -52,10 +52,10 @@ class ProcessingStep_Binning(ProcessingStep):
     def setBinning(self, x, y, operation=&#39;mean&#39;):
         self.setPrepared(False)
 
-        if x == None:
+        if x is None:
             x = 1
 
-        if y == None:
+        if y is None:
             y = 1
 
         if (x &gt;= 0) and (y &gt;= 0):
@@ -85,7 +85,7 @@ class ProcessingStep_Binning(ProcessingStep):
 
     def prepare(self):
         &#34;&#34;&#34; Nothing to prepare for the binning module. &#34;&#34;&#34;
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 
@@ -111,8 +111,8 @@ class ProcessingStep_Binning(ProcessingStep):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning"><code class="flex name class">
-<span>class <span class="ident">ProcessingStep_Binning</span></span>
+<dt id="ctsimu.processing.binning.Step_Binning"><code class="flex name class">
+<span>class <span class="ident">Step_Binning</span></span>
 <span>(</span><span>binSizeX=1, binSizeY=1, binningOperation='mean')</span>
 </code></dt>
 <dd>
@@ -121,11 +121,11 @@ class ProcessingStep_Binning(ProcessingStep):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ProcessingStep_Binning(ProcessingStep):
+<pre><code class="python">class Step_Binning(Step):
     &#34;&#34;&#34; Binning operation for the processing pipeline. &#34;&#34;&#34;
 
     def __init__(self, binSizeX=1, binSizeY=1, binningOperation=&#34;mean&#34;):
-        ProcessingStep.__init__(self, &#34;Binning&#34;)
+        Step.__init__(self, &#34;Binning&#34;)
         self.binSizeX = 1
         self.binSizeY = 1
         self.binningOperation = &#34;mean&#34;
@@ -137,10 +137,10 @@ class ProcessingStep_Binning(ProcessingStep):
     def setBinning(self, x, y, operation=&#39;mean&#39;):
         self.setPrepared(False)
 
-        if x == None:
+        if x is None:
             x = 1
 
-        if y == None:
+        if y is None:
             y = 1
 
         if (x &gt;= 0) and (y &gt;= 0):
@@ -170,7 +170,7 @@ class ProcessingStep_Binning(ProcessingStep):
 
     def prepare(self):
         &#34;&#34;&#34; Nothing to prepare for the binning module. &#34;&#34;&#34;
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 
@@ -188,11 +188,11 @@ class ProcessingStep_Binning(ProcessingStep):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="ctsimu.processing.step.ProcessingStep" href="step.html#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></li>
+<li><a title="ctsimu.processing.step.Step" href="step.html#ctsimu.processing.step.Step">Step</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning.getBinSizeX"><code class="name flex">
+<dt id="ctsimu.processing.binning.Step_Binning.getBinSizeX"><code class="name flex">
 <span>def <span class="ident">getBinSizeX</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -205,7 +205,7 @@ class ProcessingStep_Binning(ProcessingStep):
     return self.binSizeX</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning.getBinSizeY"><code class="name flex">
+<dt id="ctsimu.processing.binning.Step_Binning.getBinSizeY"><code class="name flex">
 <span>def <span class="ident">getBinSizeY</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -218,7 +218,7 @@ class ProcessingStep_Binning(ProcessingStep):
     return self.binSizeY</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning.getBinningOperation"><code class="name flex">
+<dt id="ctsimu.processing.binning.Step_Binning.getBinningOperation"><code class="name flex">
 <span>def <span class="ident">getBinningOperation</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -231,7 +231,7 @@ class ProcessingStep_Binning(ProcessingStep):
     return self.binningOperation</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning.prepare"><code class="name flex">
+<dt id="ctsimu.processing.binning.Step_Binning.prepare"><code class="name flex">
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -242,7 +242,7 @@ class ProcessingStep_Binning(ProcessingStep):
 </summary>
 <pre><code class="python">def prepare(self):
     &#34;&#34;&#34; Nothing to prepare for the binning module. &#34;&#34;&#34;
-    if isinstance(self.pipe, ProcessingPipeline):
+    if isinstance(self.pipe, Pipeline):
         self.prepared = True
         return
 
@@ -250,7 +250,7 @@ class ProcessingStep_Binning(ProcessingStep):
     raise Exception(&#34;Step must be part of a processing pipeline before it can prepare.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning.run"><code class="name flex">
+<dt id="ctsimu.processing.binning.Step_Binning.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>self, image)</span>
 </code></dt>
 <dd>
@@ -269,7 +269,7 @@ class ProcessingStep_Binning(ProcessingStep):
     return image</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.binning.ProcessingStep_Binning.setBinning"><code class="name flex">
+<dt id="ctsimu.processing.binning.Step_Binning.setBinning"><code class="name flex">
 <span>def <span class="ident">setBinning</span></span>(<span>self, x, y, operation='mean')</span>
 </code></dt>
 <dd>
@@ -281,10 +281,10 @@ class ProcessingStep_Binning(ProcessingStep):
 <pre><code class="python">def setBinning(self, x, y, operation=&#39;mean&#39;):
     self.setPrepared(False)
 
-    if x == None:
+    if x is None:
         x = 1
 
-    if y == None:
+    if y is None:
         y = 1
 
     if (x &gt;= 0) and (y &gt;= 0):
@@ -307,9 +307,9 @@ class ProcessingStep_Binning(ProcessingStep):
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="ctsimu.processing.step.ProcessingStep" href="step.html#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></b></code>:
+<li><code><b><a title="ctsimu.processing.step.Step" href="step.html#ctsimu.processing.step.Step">Step</a></b></code>:
 <ul class="hlist">
-<li><code><a title="ctsimu.processing.step.ProcessingStep.followUp" href="step.html#ctsimu.processing.step.ProcessingStep.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.followUp" href="step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
 </ul>
 </li>
 </ul>
@@ -336,14 +336,14 @@ class ProcessingStep_Binning(ProcessingStep):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="ctsimu.processing.binning.ProcessingStep_Binning" href="#ctsimu.processing.binning.ProcessingStep_Binning">ProcessingStep_Binning</a></code></h4>
+<h4><code><a title="ctsimu.processing.binning.Step_Binning" href="#ctsimu.processing.binning.Step_Binning">Step_Binning</a></code></h4>
 <ul class="two-column">
-<li><code><a title="ctsimu.processing.binning.ProcessingStep_Binning.getBinSizeX" href="#ctsimu.processing.binning.ProcessingStep_Binning.getBinSizeX">getBinSizeX</a></code></li>
-<li><code><a title="ctsimu.processing.binning.ProcessingStep_Binning.getBinSizeY" href="#ctsimu.processing.binning.ProcessingStep_Binning.getBinSizeY">getBinSizeY</a></code></li>
-<li><code><a title="ctsimu.processing.binning.ProcessingStep_Binning.getBinningOperation" href="#ctsimu.processing.binning.ProcessingStep_Binning.getBinningOperation">getBinningOperation</a></code></li>
-<li><code><a title="ctsimu.processing.binning.ProcessingStep_Binning.prepare" href="#ctsimu.processing.binning.ProcessingStep_Binning.prepare">prepare</a></code></li>
-<li><code><a title="ctsimu.processing.binning.ProcessingStep_Binning.run" href="#ctsimu.processing.binning.ProcessingStep_Binning.run">run</a></code></li>
-<li><code><a title="ctsimu.processing.binning.ProcessingStep_Binning.setBinning" href="#ctsimu.processing.binning.ProcessingStep_Binning.setBinning">setBinning</a></code></li>
+<li><code><a title="ctsimu.processing.binning.Step_Binning.getBinSizeX" href="#ctsimu.processing.binning.Step_Binning.getBinSizeX">getBinSizeX</a></code></li>
+<li><code><a title="ctsimu.processing.binning.Step_Binning.getBinSizeY" href="#ctsimu.processing.binning.Step_Binning.getBinSizeY">getBinSizeY</a></code></li>
+<li><code><a title="ctsimu.processing.binning.Step_Binning.getBinningOperation" href="#ctsimu.processing.binning.Step_Binning.getBinningOperation">getBinningOperation</a></code></li>
+<li><code><a title="ctsimu.processing.binning.Step_Binning.prepare" href="#ctsimu.processing.binning.Step_Binning.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.processing.binning.Step_Binning.run" href="#ctsimu.processing.binning.Step_Binning.run">run</a></code></li>
+<li><code><a title="ctsimu.processing.binning.Step_Binning.setBinning" href="#ctsimu.processing.binning.Step_Binning.setBinning">setBinning</a></code></li>
 </ul>
 </li>
 </ul>

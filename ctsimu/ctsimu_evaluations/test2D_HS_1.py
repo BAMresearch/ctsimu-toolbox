@@ -169,7 +169,7 @@ class ballCollector():
         text = ""
         for i in range(self.nCircles()):
             text += "Hole {:02d}: ".format(i)
-            if self.circlesInOrder[i] == None:
+            if self.circlesInOrder[i] is None:
                 text += "Not found!"
             else:
                 text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self.circlesInOrder[i].x, self.circlesInOrder[i].y)
@@ -182,7 +182,7 @@ class ballCollector():
         text = "Hole\tcenter_x [px]\tcenter_y [px]\n"
         for i in range(self.nCircles()):
             text += "{:02d}\t".format(i)
-            if self.circlesInOrder[i] == None:
+            if self.circlesInOrder[i] is None:
                 text += "Not found!"
             else:
                 text += "{:.3f}\t{:.3f}".format(self.circlesInOrder[i].x, self.circlesInOrder[i].y)

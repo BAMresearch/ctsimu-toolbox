@@ -33,9 +33,9 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .step import ProcessingStep
+from .step import Step
 
-class ProcessingPipeline:
+class Pipeline:
     &#34;&#34;&#34; Perform given processing steps on input images, save as output. &#34;&#34;&#34;
 
     def __init__(self, inputFileStack=None, outputFileStack=None):
@@ -55,7 +55,7 @@ class ProcessingPipeline:
 
     def addStep(self, step):
         &#34;&#34;&#34; Add a processing step to the pipeline. &#34;&#34;&#34;
-        if isinstance(step, ProcessingStep):
+        if isinstance(step, Step):
             step.setPipeline(self)
             self.processingSteps.append(step)
         else:
@@ -81,10 +81,10 @@ class ProcessingPipeline:
                 saveOutputFiles = True
 
                 # Set output parameters to input parameters if no others given:
-                if self.outputFileStack.getFileDataType() == None:
+                if self.outputFileStack.getFileDataType() is None:
                     self.outputFileStack.setFileDataType(self.inputFileStack.getFileDataType())
 
-                if self.outputFileStack.getFileByteOrder() == None:
+                if self.outputFileStack.getFileByteOrder() is None:
                     self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
             # Treat projection files
@@ -97,7 +97,7 @@ class ProcessingPipeline:
                     outputFolder   = os.path.dirname(generalOutputName)
                     outputBasename = os.path.basename(generalOutputName)
 
-                    if outputFolder == &#34;&#34; or outputFolder == None:
+                    if outputFolder == &#34;&#34; or outputFolder is None:
                         outputFolder = &#34;.&#34;
 
                     if &#39;%&#39; in outputBasename:
@@ -116,7 +116,7 @@ class ProcessingPipeline:
                     # Run through processing steps:
                     for step in self.processingSteps:
                         image = step.run(image)
-                        if image == None:
+                        if image is None:
                             raise Exception(&#34;Step {i} did not return a valid image from its run() method.&#34;.format(i=step.getIdentifier()))
 
                     if saveOutputFiles:
@@ -165,8 +165,8 @@ class ProcessingPipeline:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="ctsimu.processing.pipeline.ProcessingPipeline"><code class="flex name class">
-<span>class <span class="ident">ProcessingPipeline</span></span>
+<dt id="ctsimu.processing.pipeline.Pipeline"><code class="flex name class">
+<span>class <span class="ident">Pipeline</span></span>
 <span>(</span><span>inputFileStack=None, outputFileStack=None)</span>
 </code></dt>
 <dd>
@@ -175,7 +175,7 @@ class ProcessingPipeline:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ProcessingPipeline:
+<pre><code class="python">class Pipeline:
     &#34;&#34;&#34; Perform given processing steps on input images, save as output. &#34;&#34;&#34;
 
     def __init__(self, inputFileStack=None, outputFileStack=None):
@@ -195,7 +195,7 @@ class ProcessingPipeline:
 
     def addStep(self, step):
         &#34;&#34;&#34; Add a processing step to the pipeline. &#34;&#34;&#34;
-        if isinstance(step, ProcessingStep):
+        if isinstance(step, Step):
             step.setPipeline(self)
             self.processingSteps.append(step)
         else:
@@ -221,10 +221,10 @@ class ProcessingPipeline:
                 saveOutputFiles = True
 
                 # Set output parameters to input parameters if no others given:
-                if self.outputFileStack.getFileDataType() == None:
+                if self.outputFileStack.getFileDataType() is None:
                     self.outputFileStack.setFileDataType(self.inputFileStack.getFileDataType())
 
-                if self.outputFileStack.getFileByteOrder() == None:
+                if self.outputFileStack.getFileByteOrder() is None:
                     self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
             # Treat projection files
@@ -237,7 +237,7 @@ class ProcessingPipeline:
                     outputFolder   = os.path.dirname(generalOutputName)
                     outputBasename = os.path.basename(generalOutputName)
 
-                    if outputFolder == &#34;&#34; or outputFolder == None:
+                    if outputFolder == &#34;&#34; or outputFolder is None:
                         outputFolder = &#34;.&#34;
 
                     if &#39;%&#39; in outputBasename:
@@ -256,7 +256,7 @@ class ProcessingPipeline:
                     # Run through processing steps:
                     for step in self.processingSteps:
                         image = step.run(image)
-                        if image == None:
+                        if image is None:
                             raise Exception(&#34;Step {i} did not return a valid image from its run() method.&#34;.format(i=step.getIdentifier()))
 
                     if saveOutputFiles:
@@ -297,7 +297,7 @@ class ProcessingPipeline:
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="ctsimu.processing.pipeline.ProcessingPipeline.addStep"><code class="name flex">
+<dt id="ctsimu.processing.pipeline.Pipeline.addStep"><code class="name flex">
 <span>def <span class="ident">addStep</span></span>(<span>self, step)</span>
 </code></dt>
 <dd>
@@ -308,14 +308,14 @@ class ProcessingPipeline:
 </summary>
 <pre><code class="python">def addStep(self, step):
     &#34;&#34;&#34; Add a processing step to the pipeline. &#34;&#34;&#34;
-    if isinstance(step, ProcessingStep):
+    if isinstance(step, Step):
         step.setPipeline(self)
         self.processingSteps.append(step)
     else:
         raise Exception(&#34;Failed to add processing step. Not a valid type of processing step: {}&#34;.format(step))</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.pipeline.ProcessingPipeline.run"><code class="name flex">
+<dt id="ctsimu.processing.pipeline.Pipeline.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -338,10 +338,10 @@ class ProcessingPipeline:
             saveOutputFiles = True
 
             # Set output parameters to input parameters if no others given:
-            if self.outputFileStack.getFileDataType() == None:
+            if self.outputFileStack.getFileDataType() is None:
                 self.outputFileStack.setFileDataType(self.inputFileStack.getFileDataType())
 
-            if self.outputFileStack.getFileByteOrder() == None:
+            if self.outputFileStack.getFileByteOrder() is None:
                 self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
         # Treat projection files
@@ -354,7 +354,7 @@ class ProcessingPipeline:
                 outputFolder   = os.path.dirname(generalOutputName)
                 outputBasename = os.path.basename(generalOutputName)
 
-                if outputFolder == &#34;&#34; or outputFolder == None:
+                if outputFolder == &#34;&#34; or outputFolder is None:
                     outputFolder = &#34;.&#34;
 
                 if &#39;%&#39; in outputBasename:
@@ -373,7 +373,7 @@ class ProcessingPipeline:
                 # Run through processing steps:
                 for step in self.processingSteps:
                     image = step.run(image)
-                    if image == None:
+                    if image is None:
                         raise Exception(&#34;Step {i} did not return a valid image from its run() method.&#34;.format(i=step.getIdentifier()))
 
                 if saveOutputFiles:
@@ -413,7 +413,7 @@ class ProcessingPipeline:
         log(&#34;Nothing to do. The pipeline has no input files.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.pipeline.ProcessingPipeline.setInputFileStack"><code class="name flex">
+<dt id="ctsimu.processing.pipeline.Pipeline.setInputFileStack"><code class="name flex">
 <span>def <span class="ident">setInputFileStack</span></span>(<span>self, inputFileStack)</span>
 </code></dt>
 <dd>
@@ -426,7 +426,7 @@ class ProcessingPipeline:
     self.inputFileStack = createImageStack(inputFileStack)</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.pipeline.ProcessingPipeline.setOutputFileStack"><code class="name flex">
+<dt id="ctsimu.processing.pipeline.Pipeline.setOutputFileStack"><code class="name flex">
 <span>def <span class="ident">setOutputFileStack</span></span>(<span>self, outputFileStack)</span>
 </code></dt>
 <dd>
@@ -439,7 +439,7 @@ class ProcessingPipeline:
     self.outputFileStack = createImageStack(outputFileStack)</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.pipeline.ProcessingPipeline.step"><code class="name flex">
+<dt id="ctsimu.processing.pipeline.Pipeline.step"><code class="name flex">
 <span>def <span class="ident">step</span></span>(<span>self, i)</span>
 </code></dt>
 <dd>
@@ -479,13 +479,13 @@ class ProcessingPipeline:
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="ctsimu.processing.pipeline.ProcessingPipeline" href="#ctsimu.processing.pipeline.ProcessingPipeline">ProcessingPipeline</a></code></h4>
+<h4><code><a title="ctsimu.processing.pipeline.Pipeline" href="#ctsimu.processing.pipeline.Pipeline">Pipeline</a></code></h4>
 <ul class="">
-<li><code><a title="ctsimu.processing.pipeline.ProcessingPipeline.addStep" href="#ctsimu.processing.pipeline.ProcessingPipeline.addStep">addStep</a></code></li>
-<li><code><a title="ctsimu.processing.pipeline.ProcessingPipeline.run" href="#ctsimu.processing.pipeline.ProcessingPipeline.run">run</a></code></li>
-<li><code><a title="ctsimu.processing.pipeline.ProcessingPipeline.setInputFileStack" href="#ctsimu.processing.pipeline.ProcessingPipeline.setInputFileStack">setInputFileStack</a></code></li>
-<li><code><a title="ctsimu.processing.pipeline.ProcessingPipeline.setOutputFileStack" href="#ctsimu.processing.pipeline.ProcessingPipeline.setOutputFileStack">setOutputFileStack</a></code></li>
-<li><code><a title="ctsimu.processing.pipeline.ProcessingPipeline.step" href="#ctsimu.processing.pipeline.ProcessingPipeline.step">step</a></code></li>
+<li><code><a title="ctsimu.processing.pipeline.Pipeline.addStep" href="#ctsimu.processing.pipeline.Pipeline.addStep">addStep</a></code></li>
+<li><code><a title="ctsimu.processing.pipeline.Pipeline.run" href="#ctsimu.processing.pipeline.Pipeline.run">run</a></code></li>
+<li><code><a title="ctsimu.processing.pipeline.Pipeline.setInputFileStack" href="#ctsimu.processing.pipeline.Pipeline.setInputFileStack">setInputFileStack</a></code></li>
+<li><code><a title="ctsimu.processing.pipeline.Pipeline.setOutputFileStack" href="#ctsimu.processing.pipeline.Pipeline.setOutputFileStack">setOutputFileStack</a></code></li>
+<li><code><a title="ctsimu.processing.pipeline.Pipeline.step" href="#ctsimu.processing.pipeline.Pipeline.step">step</a></code></li>
 </ul>
 </li>
 </ul>

@@ -1,4 +1,4 @@
-class ProcessingStep:
+class Step:
     """ An image processing step to be run in the pipeline. """
 
     def __init__(self, stepIdentifier):

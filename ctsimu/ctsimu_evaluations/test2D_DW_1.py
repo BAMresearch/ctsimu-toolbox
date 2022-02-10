@@ -91,22 +91,22 @@ class Test2D_DW_1(generalTest):
 
                 self.currentNominalSRb = in_mm(getFieldOrNone(jsonDict, "detector", "sharpness", "basic_spatial_resolution"))
 
-                if self.currentNominalSRb == None:
+                if self.currentNominalSRb is None:
                     raise Exception("Test {name}: Cannot find 'basic_spatial_resolution' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
                 self.currentPixelSize = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
 
-                if self.currentPixelSize == None:
+                if self.currentPixelSize is None:
                     raise Exception("Test {name}: Cannot find 'pixel_pitch/u' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
                 self.currentSDD = in_mm(getFieldOrNone(jsonDict, "geometry", "detector", "center", "x"))
 
-                if self.currentSDD == None:
+                if self.currentSDD is None:
                     raise Exception("Test {name}: Cannot find 'geometry/detector/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
                 self.currentSOD = in_mm(getFieldOrNone(jsonDict, "geometry", "stage", "center", "x"))
 
-                if self.currentSOD == None:
+                if self.currentSOD is None:
                     raise Exception("Test {name}: Cannot find 'geometry/stage/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
             else:

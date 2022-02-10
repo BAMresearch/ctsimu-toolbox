@@ -3,14 +3,14 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Median(ProcessingStep):
+class Step_Median(Step):
     """ Binning operation for the processing pipeline. """
 
     def __init__(self, medianSize=3):
-        ProcessingStep.__init__(self, "Median")
+        Step.__init__(self, "Median")
         self.size = medianSize
 
     def setSize(self, medianSize=3):
@@ -22,7 +22,7 @@ class ProcessingStep_Median(ProcessingStep):
 
     def prepare(self):
         """ Nothing to prepare for the binning module. """
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 

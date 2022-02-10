@@ -68,7 +68,7 @@ If you want to **install** the package in your Python environment, you can use [
 To use the package **without installation**, you need to download the package manually. You have the following three options:
 
 * Download the package [from PyPi]. You will get a zipped file called `ctsimu-X.X.X.tar.gz` (where X.X.X is the current version number). Open or unpack this file to get to its contents.
-* Download the repository [from GitHub]: press the **clone** link to download a ZIP file. Unpack this `main.zip` or open it to see its contents.
+* Download the repository [from GitHub]: press the *clone* button to download a ZIP file. Unpack it or open it to see its contents.
 * You can also clone the repository from GitHub via the terminal:
 
 	`git clone https://github.com/BAMresearch/ctsimu-toolbox.git`

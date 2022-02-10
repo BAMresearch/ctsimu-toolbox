@@ -5,8 +5,8 @@ import json
 from .helpers import *
 from .geometry import Geometry
 from .image import ImageStack
-from .processing.pipeline import ProcessingPipeline
-from .processing.flat_field import ProcessingStep_FlatFieldCorrection
+from .processing.pipeline import Pipeline
+from .processing.flat_field import Step_FlatFieldCorrection
 from .ctsimu_evaluations.test2D_FB_2 import Test2D_FB_2
 from .ctsimu_evaluations.test2D_FB_1 import Test2D_FB_1
 from .ctsimu_evaluations.test2D_SW_1 import Test2D_SW_1
@@ -39,8 +39,8 @@ class Toolbox:
                     ffRescaleOffset = metafile
 
         # Prepare a pipeline
-        pipeline = ProcessingPipeline()
-        ffCorrection = ProcessingStep_FlatFieldCorrection()
+        pipeline = Pipeline()
+        ffCorrection = Step_FlatFieldCorrection()
         ffCorrection.setFlatFieldRescaleFactor(ffRescaleFactor, ffRescaleOffset)
         pipeline.addStep(ffCorrection)
 
@@ -175,7 +175,7 @@ class Toolbox:
 
                 log("---")
 
-                if projFilename == None:
+                if projFilename is None:
                     raise Exception("No projection filename provided in metadata file: {filename}".format(filename=metafile))
 
                 projections = ImageStack(

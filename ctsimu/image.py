@@ -1,4 +1,53 @@
 # -*- coding: UTF-8 -*-
+"""
+This module provides classes for the virtual processing of images.
+
+* `Image` reads, stores, writes and handles image data.
+* `ImageFile` gathers information about an image file: file name, data type,
+  byte order. It is used to instruct the `Image.read()` and `Image.save()`
+  routines.
+* `ImageStack` represents a stack of images in the file system. It can be used
+  in combination with a processing pipeline (see `ctsimu.processing`).
+* `ImageROI` defines a pixel region of interest in an image.
+
+Images
+------
+To import a single image, you can specify its file name in the constructor
+and then use the `Image.read()` function to import it into the internal memory.
+It will be stored in `Image.px` as a float64 NumPy array. When writing an
+image using `Image.save()`, you have to specify the data type for the new file.
+
+    from ctsimu.image import Image
+    
+    myImage = Image("example.tif")
+    myImage.read()
+    
+    # Mirror horizontally:
+    myImage.flipHorizontal()
+    
+    myImage.save("example_mirrored.raw", dataType="float32")
+
+
+RAW File Handling
+-----------------
+To read raw image data, its dimensions, data type, byte order and header size
+must be specified:
+
+    from ctsimu.image import Image
+
+    myImage = Image("example_mirrored.raw")
+    myImage.read(width=501,
+                 height=501,
+                 dataType="float32",
+                 byteOrder="little",
+                 fileHeaderSize=0)
+
+    # Export as big endian, uint16:
+    myImage.save("example_converted.raw",
+                 dataType="uint16",
+                 byteOrder="big")
+
+"""
 
 import numpy
 import os    # File and path handling
@@ -76,7 +125,7 @@ class ImageFile:
         """ Set data type, either from numpy.dtype object or string. """
         if isinstance(dataType, numpy.dtype):
             self.dataType = dataType
-        elif dataType == None:
+        elif dataType is None:
             self.dataType = None
         elif isinstance(dataType, str):  # from string
             dt = numpy.dtype(dataType)
@@ -212,7 +261,7 @@ class Image:
 
     def setInputFile(self, inputFile):
         """ Set input file properties from ImageFile object or string. """
-        if isinstance(inputFile, ImageFile) or (inputFile == None):
+        if isinstance(inputFile, ImageFile) or (inputFile is None):
             self.inputFile = inputFile
         elif isinstance(inputFile, str):  # string given
             self.inputFile = ImageFile(inputFile)
@@ -221,7 +270,7 @@ class Image:
 
     def setOutputFile(self, outputFile):
         """ Set output file properties from ImageFile object or string. """
-        if isinstance(outputFile, ImageFile) or (outputFile == None):
+        if isinstance(outputFile, ImageFile) or (outputFile is None):
             self.outputFile = outputFile
         elif isinstance(outputFile, str):  # string given
             self.outputFile = ImageFile(outputFile)
@@ -246,7 +295,7 @@ class Image:
         self.setHeight(height)
         self.setIndex(index)
 
-        if dataType == None:
+        if dataType is None:
             dataType = self.getInternalDataType()
 
         self.erase(value=0, dataType=dataType)
@@ -256,7 +305,7 @@ class Image:
         self.setHeight(otherImg.getHeight())
         self.setIndex(otherImg.getIndex())
 
-        if dataType == None:
+        if dataType is None:
             dataType = otherImg.getInternalDataType()
 
         self.erase(value=0, dataType=dataType)
@@ -266,7 +315,7 @@ class Image:
         w = self.getWidth()
         h = self.getHeight()
 
-        if dataType == None:
+        if dataType is None:
             dataType = self.getInternalDataType()
 
         self.px = 0
@@ -387,7 +436,7 @@ class Image:
             self.width, self.height = self.height, self.width
 
     def rotate(self, rotation):
-        if rotation == None:
+        if rotation is None:
             rotation = self.rotation
         else:
             self.setRotation(rotation)
@@ -444,21 +493,21 @@ class Image:
         
         return False
 
-    def read(self, filename=None):
+    def read(self, filename=None, width=None, height=None, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0):
         """ Read TIFF or RAW, decide by file name. """
-        if filename == None:
+        if filename is None:
             filename = self.inputFile.getFilename()
         else:
             self.setInputFile(filename)
 
         # If no internal file name is specified, do nothing.
-        if filename == None:
+        if filename is None:
             return
 
         if isTIFF(self.inputFile.getFilename()):
             self.readTIFF(self.inputFile.doFlipByteOrder())
         else:
-            self.readRAW(self.getWidth(), self.getHeight(), self.getIndex(), self.inputFile.getDataType(), self.inputFile.getByteOrder())
+            self.readRAW(width=width, height=height, index=index, dataType=dataType, byteOrder=byteOrder, fileHeaderSize=fileHeaderSize, imageHeaderSize=imageHeaderSize)
 
     def readTIFF(self, flipByteOrder=False, obeyOrientation=True):
         """ Import TIFF file. """
@@ -493,14 +542,14 @@ class Image:
         if not isinstance(self.inputFile, ImageFile):
             raise Exception("No valid input file defined.")
 
-        if dataType == None:
+        if dataType is None:
             dataType = self.inputFile.getDataType()
         else:
             self.inputFile.setDataType(dataType)
 
-        if byteOrder == None:
+        if byteOrder is None:
             byteOrder = self.inputFile.getByteOrder()
-            if byteOrder == None:
+            if byteOrder is None:
                 byteOrder = sys.byteorder
 
         self.inputFile.setByteOrder(byteOrder)
@@ -559,7 +608,7 @@ class Image:
     def touchFolder(self, filename):
         """ Check if folder exists. Otherwise, create. """
         folder  = os.path.dirname(filename)
-        if folder == "" or folder == None:
+        if folder == "" or folder is None:
             folder = "."
         if not os.path.exists(folder):
             os.makedirs(folder)
@@ -569,16 +618,16 @@ class Image:
         if not isinstance(self.outputFile, ImageFile):
             self.outputFile = ImageFile()
 
-        if (filename == None) or (filename == ""):
+        if (filename is None) or (filename == ""):
             filename = self.outputFile.getFilename()
-            if (filename == None) or (filename == ""):
+            if (filename is None) or (filename == ""):
                 raise Exception("No output file name specified.")
         else:
             self.outputFile.setFilename(filename)
 
-        if dataType == None:
+        if dataType is None:
             dataType = self.outputFile.getDataType()
-            if dataType == None:
+            if dataType is None:
                 if isinstance(self.inputFile, ImageFile):
                     dataType = self.inputFile.getDataType()
                     if(dataType != None):
@@ -590,14 +639,14 @@ class Image:
         else:
             self.outputFile.setDataType(dataType)
 
-        if byteOrder == None:
+        if byteOrder is None:
             byteOrder = self.outputFile.getByteOrder()
-            if byteOrder == None:
+            if byteOrder is None:
                 if isinstance(self.inputFile, ImageFile):
                     byteOrder = self.inputFile.getByteOrder()
                     self.outputFile.setByteOrder(byteOrder)
 
-            if byteOrder == None:
+            if byteOrder is None:
                 byteOrder = "little"
 
         self.outputFile.setByteOrder(byteOrder)
@@ -610,7 +659,7 @@ class Image:
     def saveTIFF(self, filename=None, dataType=None, clipValues=True):
         if (filename != None) and (len(filename) > 0):
             fileBaseName = os.path.basename(filename)
-            if (fileBaseName == "") or (fileBaseName == None):
+            if (fileBaseName == "") or (fileBaseName is None):
                 raise Exception("No output file name specified for the image to be saved.")
 
             if dataType != None:
@@ -637,11 +686,11 @@ class Image:
     def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
         if (filename != None) and (len(filename) > 0):
             fileBaseName = os.path.basename(filename)
-            if (fileBaseName == "") or (fileBaseName == None):
+            if (fileBaseName == "") or (fileBaseName is None):
                 raise Exception("No output file name specified for the image to be saved.")
 
             if dataType != None:
-                if byteOrder == None:
+                if byteOrder is None:
                     byteOrder = "little"
 
                 # Reshape to 1D array and convert to file data type (from internal 64bit data type)
@@ -710,7 +759,7 @@ class Image:
         if (compensateShift == True) and (self.n_accumulations > 0):
             shift = (0, 0)
 
-            if (roiX0 == None) or (roiY0 == None) or (roiX1 == None) or (roiY1 == None):
+            if (roiX0 is None) or (roiY0 is None) or (roiX1 is None) or (roiY1 is None):
                 shift = self.calcRelativeShift(addImg)
             else:
                 # Crop image to drift ROI,
@@ -1258,10 +1307,10 @@ class Image:
         """ Decrease image size by merging pixels using specified operation.
             Valid operations: mean, max, min, sum. """
 
-        if binSizeX == None:
+        if binSizeX is None:
             binSizeX = 1
 
-        if binSizeY == None:
+        if binSizeY is None:
             binSizeY = 1
 
         if (binSizeX > 1) or (binSizeY > 1):
@@ -1290,7 +1339,7 @@ class Image:
                 self.px = self.px.max(axis=(3, 1))
             elif operation == "min":
                 self.px = self.px.min(axis=(3, 1))
-            elif operation == None:
+            elif operation is None:
                 raise Exception("No binning operation specified.")
             else:
                 raise Exception("Invalid binning operation: {}.".format(operation))
@@ -1352,10 +1401,10 @@ class Image:
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
 
-        if currentMin == None:
+        if currentMin is None:
             currentMin = slc.min()
 
-        if currentMax == None:
+        if currentMax is None:
             currentMax = slc.max()
 
         if(currentMax != currentMin):
@@ -1672,11 +1721,11 @@ class Image:
     def fitIntensityProfile(self, axis="x", initI0=None, initMu=0.003, initR=250, initX0=None, avgLines=5):
         yData = 0
         xdata = 0
-        if initI0 == None:
+        if initI0 is None:
             initI0 = self.max()   # Hoping that a median has been applied before.
 
         if axis == "x":
-            if initX0 == None:
+            if initX0 is None:
                 initX0 = self.getWidth() / 2
 
             startLine = int((self.getHeight() / 2) - math.floor(avgLines/2))
@@ -1690,7 +1739,7 @@ class Image:
             xData = numpy.linspace(0, self.getWidth()-1, self.getWidth())
 
         elif axis == "y":
-            if initX0 == None:
+            if initX0 is None:
                 initX0 = self.getHeight() / 2
 
             startLine = int((self.getWidth() / 2) - math.floor(avgLines/2))
@@ -1818,7 +1867,7 @@ class ImageStack:
         inputFolder  = os.path.dirname(inFilePattern)
         projBasename = os.path.basename(inFilePattern)
 
-        if inputFolder == "" or inputFolder == None:
+        if inputFolder == "" or inputFolder is None:
             inputFolder = "."
 
         # Check if an image stack is provided:
@@ -1839,7 +1888,7 @@ class ImageStack:
                         if os.path.isfile(inFilePattern):
                             self._isVolumeChunk = True
 
-                            if (self.nSlices == None):
+                            if (self.nSlices is None):
                                 # Determine number of slices.
                                 fileSizeInBytes = os.path.getsize(inFilePattern)
                                 dataSizeInBytes = fileSizeInBytes - self.rawFileHeaderSize
@@ -1990,7 +2039,7 @@ class ImageStack:
         """ Calculate the pixel-wise RMS of the image files. """
         if self.nSlices > 0:
             if self.nSlices > 1:
-                if meanImg == None:
+                if meanImg is None:
                     meanImg = self.getMeanImage(outputFile)
 
                 sumImg = Image()

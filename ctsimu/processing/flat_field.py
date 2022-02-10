@@ -4,14 +4,14 @@ from ..image import *
 from ..helpers import *
 from ..geometry import Geometry   # for analytical flat field
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_FlatFieldCorrection(ProcessingStep):
+class Step_FlatFieldCorrection(Step):
     """ Flat field correction for the processing pipeline. """
 
     def __init__(self, flatFileStack=None, darkFileStack=None):
-        ProcessingStep.__init__(self, "Flatfield Correction")
+        Step.__init__(self, "Flatfield Correction")
 
         # Parameters:
         self.flatFileStack        = None
@@ -77,7 +77,7 @@ class ProcessingStep_FlatFieldCorrection(ProcessingStep):
 
     def prepare(self):
         """ Prepare by reading/generating dark and flat field images. """
-        if not isinstance(self.pipe, ProcessingPipeline):
+        if not isinstance(self.pipe, Pipeline):
             self.prepared = False
             raise Exception("Step must be part of a processing pipeline before it can prepare. Current: {}".format(self.pipe))
 

@@ -48,7 +48,7 @@ class Test2D_WE_2(generalTest):
 
     def prepare(self):
         """ Preparations before the test will be run with the images from the pipeline. """
-        if not isinstance(self.pipe, ProcessingPipeline):
+        if not isinstance(self.pipe, Pipeline):
             self.prepared = False
             raise Exception("Step must be part of a processing pipeline before it can prepare. Current pipeline: {}".format(self.pipe))
 

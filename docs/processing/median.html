@@ -33,14 +33,14 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Median(ProcessingStep):
+class Step_Median(Step):
     &#34;&#34;&#34; Binning operation for the processing pipeline. &#34;&#34;&#34;
 
     def __init__(self, medianSize=3):
-        ProcessingStep.__init__(self, &#34;Median&#34;)
+        Step.__init__(self, &#34;Median&#34;)
         self.size = medianSize
 
     def setSize(self, medianSize=3):
@@ -52,7 +52,7 @@ class ProcessingStep_Median(ProcessingStep):
 
     def prepare(self):
         &#34;&#34;&#34; Nothing to prepare for the binning module. &#34;&#34;&#34;
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 
@@ -77,8 +77,8 @@ class ProcessingStep_Median(ProcessingStep):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="ctsimu.processing.median.ProcessingStep_Median"><code class="flex name class">
-<span>class <span class="ident">ProcessingStep_Median</span></span>
+<dt id="ctsimu.processing.median.Step_Median"><code class="flex name class">
+<span>class <span class="ident">Step_Median</span></span>
 <span>(</span><span>medianSize=3)</span>
 </code></dt>
 <dd>
@@ -87,11 +87,11 @@ class ProcessingStep_Median(ProcessingStep):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ProcessingStep_Median(ProcessingStep):
+<pre><code class="python">class Step_Median(Step):
     &#34;&#34;&#34; Binning operation for the processing pipeline. &#34;&#34;&#34;
 
     def __init__(self, medianSize=3):
-        ProcessingStep.__init__(self, &#34;Median&#34;)
+        Step.__init__(self, &#34;Median&#34;)
         self.size = medianSize
 
     def setSize(self, medianSize=3):
@@ -103,7 +103,7 @@ class ProcessingStep_Median(ProcessingStep):
 
     def prepare(self):
         &#34;&#34;&#34; Nothing to prepare for the binning module. &#34;&#34;&#34;
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 
@@ -120,11 +120,11 @@ class ProcessingStep_Median(ProcessingStep):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="ctsimu.processing.step.ProcessingStep" href="step.html#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></li>
+<li><a title="ctsimu.processing.step.Step" href="step.html#ctsimu.processing.step.Step">Step</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="ctsimu.processing.median.ProcessingStep_Median.getSize"><code class="name flex">
+<dt id="ctsimu.processing.median.Step_Median.getSize"><code class="name flex">
 <span>def <span class="ident">getSize</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -137,7 +137,7 @@ class ProcessingStep_Median(ProcessingStep):
     return self.size</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.median.ProcessingStep_Median.prepare"><code class="name flex">
+<dt id="ctsimu.processing.median.Step_Median.prepare"><code class="name flex">
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -148,7 +148,7 @@ class ProcessingStep_Median(ProcessingStep):
 </summary>
 <pre><code class="python">def prepare(self):
     &#34;&#34;&#34; Nothing to prepare for the binning module. &#34;&#34;&#34;
-    if isinstance(self.pipe, ProcessingPipeline):
+    if isinstance(self.pipe, Pipeline):
         self.prepared = True
         return
 
@@ -156,7 +156,7 @@ class ProcessingStep_Median(ProcessingStep):
     raise Exception(&#34;Step must be part of a processing pipeline before it can prepare.&#34;)</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.median.ProcessingStep_Median.run"><code class="name flex">
+<dt id="ctsimu.processing.median.Step_Median.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>self, image)</span>
 </code></dt>
 <dd>
@@ -174,7 +174,7 @@ class ProcessingStep_Median(ProcessingStep):
     return image</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.median.ProcessingStep_Median.setSize"><code class="name flex">
+<dt id="ctsimu.processing.median.Step_Median.setSize"><code class="name flex">
 <span>def <span class="ident">setSize</span></span>(<span>self, medianSize=3)</span>
 </code></dt>
 <dd>
@@ -191,9 +191,9 @@ class ProcessingStep_Median(ProcessingStep):
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="ctsimu.processing.step.ProcessingStep" href="step.html#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></b></code>:
+<li><code><b><a title="ctsimu.processing.step.Step" href="step.html#ctsimu.processing.step.Step">Step</a></b></code>:
 <ul class="hlist">
-<li><code><a title="ctsimu.processing.step.ProcessingStep.followUp" href="step.html#ctsimu.processing.step.ProcessingStep.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.followUp" href="step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
 </ul>
 </li>
 </ul>
@@ -220,12 +220,12 @@ class ProcessingStep_Median(ProcessingStep):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="ctsimu.processing.median.ProcessingStep_Median" href="#ctsimu.processing.median.ProcessingStep_Median">ProcessingStep_Median</a></code></h4>
+<h4><code><a title="ctsimu.processing.median.Step_Median" href="#ctsimu.processing.median.Step_Median">Step_Median</a></code></h4>
 <ul class="">
-<li><code><a title="ctsimu.processing.median.ProcessingStep_Median.getSize" href="#ctsimu.processing.median.ProcessingStep_Median.getSize">getSize</a></code></li>
-<li><code><a title="ctsimu.processing.median.ProcessingStep_Median.prepare" href="#ctsimu.processing.median.ProcessingStep_Median.prepare">prepare</a></code></li>
-<li><code><a title="ctsimu.processing.median.ProcessingStep_Median.run" href="#ctsimu.processing.median.ProcessingStep_Median.run">run</a></code></li>
-<li><code><a title="ctsimu.processing.median.ProcessingStep_Median.setSize" href="#ctsimu.processing.median.ProcessingStep_Median.setSize">setSize</a></code></li>
+<li><code><a title="ctsimu.processing.median.Step_Median.getSize" href="#ctsimu.processing.median.Step_Median.getSize">getSize</a></code></li>
+<li><code><a title="ctsimu.processing.median.Step_Median.prepare" href="#ctsimu.processing.median.Step_Median.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.processing.median.Step_Median.run" href="#ctsimu.processing.median.Step_Median.run">run</a></code></li>
+<li><code><a title="ctsimu.processing.median.Step_Median.setSize" href="#ctsimu.processing.median.Step_Median.setSize">setSize</a></code></li>
 </ul>
 </li>
 </ul>

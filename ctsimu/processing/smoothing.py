@@ -4,14 +4,14 @@ import copy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Smoothing(ProcessingStep):
+class Step_Smoothing(Step):
     """ Smooth an image. """
 
     def __init__(self, mode="gaussian", sigma=0):
-        ProcessingStep.__init__(self, "Smoothing")
+        Step.__init__(self, "Smoothing")
         self.sigma = None
         self.mode  = None
 
@@ -29,7 +29,7 @@ class ProcessingStep_Smoothing(ProcessingStep):
 
     def prepare(self):
         """ Nothing to prepare for this module. """
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 

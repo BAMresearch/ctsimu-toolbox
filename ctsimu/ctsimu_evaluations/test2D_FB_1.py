@@ -46,7 +46,7 @@ class Test2D_FB_1(generalTest):
 
     def prepare(self):
         """ Preparations before the test will be run with the images from the pipeline. """       
-        if not isinstance(self.pipe, ProcessingPipeline):
+        if not isinstance(self.pipe, Pipeline):
             self.prepared = False
             raise Exception("Step must be part of a processing pipeline before it can prepare. Current pipeline: {}".format(self.pipe))
 
@@ -64,9 +64,9 @@ class Test2D_FB_1(generalTest):
     def prepareRun(self, i):
         if i < len(self.subtests):
             if self.subtests[i] == "SNR100":
-                self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-FB-1_Detektor1_SNR100_2021-05-25v06r00dp.json"
+                self.jsonScenarioFile = "scenarios/2D-FB-1_Detektor1_SNR100_2021-05-25v06r00dp.json"
             elif self.subtests[i] == "SNR250":
-                self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-FB-1_Detektor2_SNR250_2021-05-25v06r00dp.json"
+                self.jsonScenarioFile = "scenarios/2D-FB-1_Detektor2_SNR250_2021-05-25v06r00dp.json"
             else:
                 raise Exception("{key} is not a valid subtest identifier for test scenario {test}".format(key=self.subtests[i], test=self.testName))
 
@@ -79,10 +79,10 @@ class Test2D_FB_1(generalTest):
                 self.imax = getFieldOrNone(jsonDict, "detector", "grey_value", "imax", "value")
                 snrMax = getFieldOrNone(jsonDict, "detector", "noise", "snr_at_imax", "value")
 
-                if self.imax == None:
+                if self.imax is None:
                     raise Exception("Test {name}: Cannot find 'imax' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                if snrMax == None:
+                if snrMax is None:
                     raise Exception("Test {name}: Cannot find 'snr_at_imax' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
                 nominalSigma = self.imax / snrMax

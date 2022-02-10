@@ -37,19 +37,19 @@ import math
 
 from .image import ImageFile, Image, ImageROI, ImageStack
 from .geometry import Geometry
-from .processing.pipeline import ProcessingPipeline
-from .processing.step import ProcessingStep
+from .processing.pipeline import Pipeline
+from .processing.step import Step
 from .helpers import *
 
 def touchDirectory(folder):
     if not os.path.exists(folder):
         os.makedirs(folder)
 
-class generalTest(ProcessingStep):
+class generalTest(Step):
     &#34;&#34;&#34; General class for test scenario evaluations: get image(s), run and store evaluation. &#34;&#34;&#34;
 
     def __init__(self, testName=&#34;General Test&#34;, name=None, nExpectedRuns=1, resultFileDirectory=&#34;.&#34;, rawOutput=False):
-        ProcessingStep.__init__(self, testName)
+        Step.__init__(self, testName)
        
         self.testName = testName
         self.subtests = []
@@ -136,11 +136,11 @@ class generalTest(ProcessingStep):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class generalTest(ProcessingStep):
+<pre><code class="python">class generalTest(Step):
     &#34;&#34;&#34; General class for test scenario evaluations: get image(s), run and store evaluation. &#34;&#34;&#34;
 
     def __init__(self, testName=&#34;General Test&#34;, name=None, nExpectedRuns=1, resultFileDirectory=&#34;.&#34;, rawOutput=False):
-        ProcessingStep.__init__(self, testName)
+        Step.__init__(self, testName)
        
         self.testName = testName
         self.subtests = []
@@ -192,7 +192,7 @@ class generalTest(ProcessingStep):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="ctsimu.processing.step.ProcessingStep" href="processing/step.html#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></li>
+<li><a title="ctsimu.processing.step.Step" href="processing/step.html#ctsimu.processing.step.Step">Step</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -313,11 +313,11 @@ class generalTest(ProcessingStep):
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="ctsimu.processing.step.ProcessingStep" href="processing/step.html#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></b></code>:
+<li><code><b><a title="ctsimu.processing.step.Step" href="processing/step.html#ctsimu.processing.step.Step">Step</a></b></code>:
 <ul class="hlist">
-<li><code><a title="ctsimu.processing.step.ProcessingStep.followUp" href="processing/step.html#ctsimu.processing.step.ProcessingStep.followUp">followUp</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.prepare" href="processing/step.html#ctsimu.processing.step.ProcessingStep.prepare">prepare</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.run" href="processing/step.html#ctsimu.processing.step.ProcessingStep.run">run</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.followUp" href="processing/step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.prepare" href="processing/step.html#ctsimu.processing.step.Step.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.run" href="processing/step.html#ctsimu.processing.step.Step.run">run</a></code></li>
 </ul>
 </li>
 </ul>

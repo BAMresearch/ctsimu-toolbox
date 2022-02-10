@@ -79,44 +79,6 @@ class GeometryObject:
 
     w : Vector
         Basis vector for the w axis.
-
-    Methods
-    -------
-    setupFromGeometryDefinition(geometry)
-        Set up geometry from a JSON dictionary.
-
-    setup(centerX, centerY, centerZ, uX, uY, uZ, wX, wY, wZ)
-        Set up center and orientation manually.
-
-    makeUnitCS()
-        Convert all basis vectors to unit vectors.
-
-    translate(translationVector)
-        Move object in space.
-
-    translateX(dx)
-        Move object in x direction.
-
-    translateY(dx)
-        Move object in y direction.
-
-    translateZ(dx)
-        Move object in z direction.
-
-    rotateAroundU(angle)
-        Rotate object around its u axis by given angle [rad].
-
-    rotateAroundV(angle)
-        Rotate object around its v axis by given angle [rad].
-
-    rotateAroundW(angle)
-        Rotate object around its w axis by given angle [rad].
-
-    rotate(axis, angle)
-        Rotate object around a given axis by the given angle [rad].
-
-    changeReferenceFrame(fromCS, toCS)
-        Change the object's reference coordinate system.
     """
 
     def __init__(self):
@@ -135,7 +97,7 @@ class GeometryObject:
         txt += "w:      {}\n".format(self.w)
         return txt
 
-    def setupFromGeometryDefinition(self, geometry: dict):
+    def json_import(self, geometry: dict):
         """Set up geometry from a JSON dictionary.
 
         Parameters
@@ -152,7 +114,7 @@ class GeometryObject:
 
         References
         ----------
-        .. [2] CTSimU Scenario Descriptions, https://bamresearch.github.io/ctsimu-scenarios/
+        * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
         """
 
         # Get center position from JSON dict:
@@ -477,28 +439,6 @@ class Detector(GeometryObject):
         (0,0) pixel of the detector (often the "upper left" corner).
         Computed automatically after calling `setSize()`.
 
-    Methods
-    -------
-    setSize(nPixelsU, nPixelsV, pitchU, pitchV)
-        Set the physical size of the detector.
-
-    computeGeometryParameters()
-        Calculate the physical width and height,
-        and the position of the pixel coordinate system origin.
-
-    cols()
-        Returns the number of detector columns (i.e., pixels in u direction).
-
-    rows()
-        Returns the number of detector rows (i.e., pixels in v direction).
-
-    pixelVector(x, y)
-        World position vector for given pixel coordinate.
-
-    pixelVectorCenter(x, y)
-        World position vector of pixel center,
-        for a pixel identified by its integer coordinates.
-
     Notes
     -----
     Use `setSize()` to set the size of the detector, given its number of pixels
@@ -705,10 +645,6 @@ class Geometry:
         Location of the intensity maximum on the detector, in terms of
         detector coordinate system. Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
-
-    Methods
-    -------
-
     """
 
     def __init__(self, jsonFile:str = None, jsonFileFromPkg:str = None):
@@ -765,7 +701,7 @@ class Geometry:
             try:
                 detectorGeometry = getFieldOrNone(jsonDict, "geometry", "detector")
                 if detectorGeometry != None:
-                    self.detector.setupFromGeometryDefinition(detectorGeometry)
+                    self.detector.json_import(detectorGeometry)
                     self.detector.setSize(pixelsU, pixelsV, pitchU, pitchV)
                 else:
                     raise Exception("JSON file does not contain a valid \"detector\" section in \"geometry\".")
@@ -776,7 +712,7 @@ class Geometry:
             try:
                 sourceGeometry = getFieldOrNone(jsonDict, "geometry", "source")
                 if sourceGeometry != None:
-                    self.source.setupFromGeometryDefinition(sourceGeometry)
+                    self.source.json_import(sourceGeometry)
                 else:
                     raise Exception("JSON file does not contain a valid \"source\" section in \"geometry\".")
             except Exception as e:
@@ -786,7 +722,7 @@ class Geometry:
             try:
                 stageGeometry = getFieldOrNone(jsonDict, "geometry", "stage")
                 if stageGeometry != None:
-                    self.stage.setupFromGeometryDefinition(stageGeometry)
+                    self.stage.json_import(stageGeometry)
                 else:
                     raise Exception("JSON file does not contain a valid \"stage\" section in \"geometry\".")
             except Exception as e:
@@ -1034,13 +970,13 @@ class Geometry:
         pixelSizeU = self.detector.pitchU
         pixelSizeV = self.detector.pitchV
 
-        if(width == None):
+        if(width is None):
             raise Exception("The detector width (in pixels) must be provided through a valid CTSimU JSON file.")
-        if(height == None):
+        if(height is None):
             raise Exception("The detector height (in pixels) must be provided through a valid CTSimU JSON file.")
-        if(pixelSizeU == None):
+        if(pixelSizeU is None):
             raise Exception("The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.")
-        if(pixelSizeV == None):
+        if(pixelSizeV is None):
             raise Exception("The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.")
 
         flatField = Image()
@@ -1461,13 +1397,13 @@ class Geometry:
         pitchU = self.detector.pitchU
         pitchV = self.detector.pitchV
 
-        if(width == None):
+        if(width is None):
             raise Exception("The detector width (in pixels) must be provided through a valid CTSimU JSON file.")
-        if(height == None):
+        if(height is None):
             raise Exception("The detector height (in pixels) must be provided through a valid CTSimU JSON file.")
-        if(pitchU == None):
+        if(pitchU is None):
             raise Exception("The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.")
-        if(pitchV == None):
+        if(pitchV is None):
             raise Exception("The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.")
 
         flatField = Image()

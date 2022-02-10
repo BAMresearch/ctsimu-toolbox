@@ -3,9 +3,9 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .step import ProcessingStep
+from .step import Step
 
-class ProcessingPipeline:
+class Pipeline:
     """ Perform given processing steps on input images, save as output. """
 
     def __init__(self, inputFileStack=None, outputFileStack=None):
@@ -25,7 +25,7 @@ class ProcessingPipeline:
 
     def addStep(self, step):
         """ Add a processing step to the pipeline. """
-        if isinstance(step, ProcessingStep):
+        if isinstance(step, Step):
             step.setPipeline(self)
             self.processingSteps.append(step)
         else:
@@ -51,10 +51,10 @@ class ProcessingPipeline:
                 saveOutputFiles = True
 
                 # Set output parameters to input parameters if no others given:
-                if self.outputFileStack.getFileDataType() == None:
+                if self.outputFileStack.getFileDataType() is None:
                     self.outputFileStack.setFileDataType(self.inputFileStack.getFileDataType())
 
-                if self.outputFileStack.getFileByteOrder() == None:
+                if self.outputFileStack.getFileByteOrder() is None:
                     self.outputFileStack.setFileByteOrder(self.inputFileStack.getFileByteOrder())
 
             # Treat projection files
@@ -67,7 +67,7 @@ class ProcessingPipeline:
                     outputFolder   = os.path.dirname(generalOutputName)
                     outputBasename = os.path.basename(generalOutputName)
 
-                    if outputFolder == "" or outputFolder == None:
+                    if outputFolder == "" or outputFolder is None:
                         outputFolder = "."
 
                     if '%' in outputBasename:
@@ -86,7 +86,7 @@ class ProcessingPipeline:
                     # Run through processing steps:
                     for step in self.processingSteps:
                         image = step.run(image)
-                        if image == None:
+                        if image is None:
                             raise Exception("Step {i} did not return a valid image from its run() method.".format(i=step.getIdentifier()))
 
                     if saveOutputFiles:

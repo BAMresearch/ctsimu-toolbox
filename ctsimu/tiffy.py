@@ -1301,7 +1301,7 @@ class tiff:
     def imageData(self, subfile=0, channel=None, obeyOrientation=True):
         if subfile < len(self.subfiles):
             data = self.subfiles[subfile].imageData()
-            if channel == None:
+            if channel is None:
                 return data
             else:
                 return data[0]

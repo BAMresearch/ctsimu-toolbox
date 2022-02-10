@@ -4,10 +4,10 @@ import copy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Noise(ProcessingStep):
+class Step_Noise(Step):
     """ Add noise to image according to SNR characteristics.
 
         The noise characteristics must be specified by two lists:
@@ -19,7 +19,7 @@ class ProcessingStep_Noise(ProcessingStep):
     """
 
     def __init__(self, sigma=None, greyValues=None, SNR=None):
-        ProcessingStep.__init__(self, "Noise")
+        Step.__init__(self, "Noise")
         self.sigma = None
         self.greyValues = None
         self.SNR = None
@@ -39,7 +39,7 @@ class ProcessingStep_Noise(ProcessingStep):
 
     def prepare(self):
         """ Nothing to prepare for this module. """
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 

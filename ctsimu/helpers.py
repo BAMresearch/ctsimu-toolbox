@@ -11,7 +11,7 @@ def log(message):
 def getFieldOrNone(dictionary, *fields):
     currentElement = dictionary
 
-    if fields == None:
+    if fields is None:
         return None
     else:
         for field in fields:

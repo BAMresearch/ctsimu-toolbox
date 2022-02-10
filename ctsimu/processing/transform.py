@@ -3,14 +3,14 @@ import numpy
 from ..image import *
 from ..helpers import *
 
-from .pipeline import ProcessingPipeline
-from .step import ProcessingStep
+from .pipeline import Pipeline
+from .step import Step
 
-class ProcessingStep_Transform(ProcessingStep):
+class Step_Transform(Step):
     """ Rotations and mirroring (flip). """
 
     def __init__(self, rotate=0, flipX=False, flipY=False):
-        ProcessingStep.__init__(self, "Transform")
+        Step.__init__(self, "Transform")
         self.rotate = 0
         self.flipX  = False
         self.flipY  = False
@@ -33,7 +33,7 @@ class ProcessingStep_Transform(ProcessingStep):
 
     def prepare(self):
         """ Nothing to prepare for the transform module. """
-        if isinstance(self.pipe, ProcessingPipeline):
+        if isinstance(self.pipe, Pipeline):
             self.prepared = True
             return
 

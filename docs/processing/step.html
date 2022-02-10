@@ -28,7 +28,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ProcessingStep:
+<pre><code class="python">class Step:
     &#34;&#34;&#34; An image processing step to be run in the pipeline. &#34;&#34;&#34;
 
     def __init__(self, stepIdentifier):
@@ -76,8 +76,8 @@
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="ctsimu.processing.step.ProcessingStep"><code class="flex name class">
-<span>class <span class="ident">ProcessingStep</span></span>
+<dt id="ctsimu.processing.step.Step"><code class="flex name class">
+<span>class <span class="ident">Step</span></span>
 <span>(</span><span>stepIdentifier)</span>
 </code></dt>
 <dd>
@@ -86,7 +86,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ProcessingStep:
+<pre><code class="python">class Step:
     &#34;&#34;&#34; An image processing step to be run in the pipeline. &#34;&#34;&#34;
 
     def __init__(self, stepIdentifier):
@@ -126,17 +126,17 @@
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="ctsimu.processing.binning.ProcessingStep_Binning" href="binning.html#ctsimu.processing.binning.ProcessingStep_Binning">ProcessingStep_Binning</a></li>
-<li><a title="ctsimu.processing.flat_field.ProcessingStep_FlatFieldCorrection" href="flat_field.html#ctsimu.processing.flat_field.ProcessingStep_FlatFieldCorrection">ProcessingStep_FlatFieldCorrection</a></li>
-<li><a title="ctsimu.processing.median.ProcessingStep_Median" href="median.html#ctsimu.processing.median.ProcessingStep_Median">ProcessingStep_Median</a></li>
-<li><a title="ctsimu.processing.noise.ProcessingStep_Noise" href="noise.html#ctsimu.processing.noise.ProcessingStep_Noise">ProcessingStep_Noise</a></li>
-<li><a title="ctsimu.processing.smoothing.ProcessingStep_Smoothing" href="smoothing.html#ctsimu.processing.smoothing.ProcessingStep_Smoothing">ProcessingStep_Smoothing</a></li>
-<li><a title="ctsimu.processing.transform.ProcessingStep_Transform" href="transform.html#ctsimu.processing.transform.ProcessingStep_Transform">ProcessingStep_Transform</a></li>
+<li><a title="ctsimu.processing.binning.Step_Binning" href="binning.html#ctsimu.processing.binning.Step_Binning">Step_Binning</a></li>
+<li><a title="ctsimu.processing.flat_field.Step_FlatFieldCorrection" href="flat_field.html#ctsimu.processing.flat_field.Step_FlatFieldCorrection">Step_FlatFieldCorrection</a></li>
+<li><a title="ctsimu.processing.median.Step_Median" href="median.html#ctsimu.processing.median.Step_Median">Step_Median</a></li>
+<li><a title="ctsimu.processing.noise.Step_Noise" href="noise.html#ctsimu.processing.noise.Step_Noise">Step_Noise</a></li>
+<li><a title="ctsimu.processing.smoothing.Step_Smoothing" href="smoothing.html#ctsimu.processing.smoothing.Step_Smoothing">Step_Smoothing</a></li>
+<li><a title="ctsimu.processing.transform.Step_Transform" href="transform.html#ctsimu.processing.transform.Step_Transform">Step_Transform</a></li>
 <li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="ctsimu.processing.step.ProcessingStep.followUp"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.followUp"><code class="name flex">
 <span>def <span class="ident">followUp</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -150,7 +150,7 @@
     pass</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.getIdentifier"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.getIdentifier"><code class="name flex">
 <span>def <span class="ident">getIdentifier</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -163,7 +163,7 @@
     return self.identifier</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.isPrepared"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.isPrepared"><code class="name flex">
 <span>def <span class="ident">isPrepared</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -176,7 +176,7 @@
     return self.prepared</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.prepare"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.prepare"><code class="name flex">
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -191,7 +191,7 @@
     pass</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.run"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.run"><code class="name flex">
 <span>def <span class="ident">run</span></span>(<span>self, image)</span>
 </code></dt>
 <dd>
@@ -205,7 +205,7 @@
     pass</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.setIdentifier"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.setIdentifier"><code class="name flex">
 <span>def <span class="ident">setIdentifier</span></span>(<span>self, identifier)</span>
 </code></dt>
 <dd>
@@ -218,7 +218,7 @@
     self.identifier = identifier</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.setPipeline"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.setPipeline"><code class="name flex">
 <span>def <span class="ident">setPipeline</span></span>(<span>self, pipePtr)</span>
 </code></dt>
 <dd>
@@ -231,7 +231,7 @@
     self.pipe = pipePtr</code></pre>
 </details>
 </dd>
-<dt id="ctsimu.processing.step.ProcessingStep.setPrepared"><code class="name flex">
+<dt id="ctsimu.processing.step.Step.setPrepared"><code class="name flex">
 <span>def <span class="ident">setPrepared</span></span>(<span>self, prepared)</span>
 </code></dt>
 <dd>
@@ -268,16 +268,16 @@
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="ctsimu.processing.step.ProcessingStep" href="#ctsimu.processing.step.ProcessingStep">ProcessingStep</a></code></h4>
+<h4><code><a title="ctsimu.processing.step.Step" href="#ctsimu.processing.step.Step">Step</a></code></h4>
 <ul class="two-column">
-<li><code><a title="ctsimu.processing.step.ProcessingStep.followUp" href="#ctsimu.processing.step.ProcessingStep.followUp">followUp</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.getIdentifier" href="#ctsimu.processing.step.ProcessingStep.getIdentifier">getIdentifier</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.isPrepared" href="#ctsimu.processing.step.ProcessingStep.isPrepared">isPrepared</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.prepare" href="#ctsimu.processing.step.ProcessingStep.prepare">prepare</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.run" href="#ctsimu.processing.step.ProcessingStep.run">run</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.setIdentifier" href="#ctsimu.processing.step.ProcessingStep.setIdentifier">setIdentifier</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.setPipeline" href="#ctsimu.processing.step.ProcessingStep.setPipeline">setPipeline</a></code></li>
-<li><code><a title="ctsimu.processing.step.ProcessingStep.setPrepared" href="#ctsimu.processing.step.ProcessingStep.setPrepared">setPrepared</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.followUp" href="#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.getIdentifier" href="#ctsimu.processing.step.Step.getIdentifier">getIdentifier</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.isPrepared" href="#ctsimu.processing.step.Step.isPrepared">isPrepared</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.prepare" href="#ctsimu.processing.step.Step.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.run" href="#ctsimu.processing.step.Step.run">run</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.setIdentifier" href="#ctsimu.processing.step.Step.setIdentifier">setIdentifier</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.setPipeline" href="#ctsimu.processing.step.Step.setPipeline">setPipeline</a></code></li>
+<li><code><a title="ctsimu.processing.step.Step.setPrepared" href="#ctsimu.processing.step.Step.setPrepared">setPrepared</a></code></li>
 </ul>
 </li>
 </ul>
