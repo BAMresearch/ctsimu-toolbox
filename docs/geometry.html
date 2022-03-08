@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>ctsimu.geometry API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Coordinate systems, transformations and projection matrix functionality …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -24,11 +24,270 @@
 <h1 class="title">Module <code>ctsimu.geometry</code></h1>
 </header>
 <section id="section-intro">
+<p>Coordinate systems, transformations and projection matrix functionality.</p>
+<h1 id="coordinate-systems">Coordinate Systems</h1>
+<p>The geometry subpackage provides a <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code> class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (<code>center</code>) and three basis vectors (<code>u</code>, <code>v</code>, <code>w</code>). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The <code>center</code> acts as the pivot point for rotations.</p>
+<p>Example for creating and manipulating an object:</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+from ctsimu.helpers  import *  # provides deg2rad()
+
+mySpecimen = CoordinateSystem()
+
+# Set position and orientation:
+mySpecimen.center = Vector(250, 0, 0)
+mySpecimen.u = Vector(0, -1,  0)
+mySpecimen.v = Vector(0,  0, -1)
+mySpecimen.w = Vector(1,  0,  0)
+
+# Manipulate:
+mySpecimen.translate(translationVector = Vector(5.2, 0, 4.3))
+mySpecimen.rotateAroundU(angle = deg2rad(2.0))
+mySpecimen.rotate(axis = Vector(1, 1, 1), angle = deg2rad(5.0))
+
+print(&quot;My specimen's new location and orientation:&quot;)
+print(mySpecimen)
+</code></pre>
+<h1 id="full-ct-geometry">Full CT Geometry</h1>
+<p>For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The <code><a title="ctsimu.geometry.Geometry" href="#ctsimu.geometry.Geometry">Geometry</a></code> class bundles three coordinate systems (one for each of those components), and additional information about the detector (using the <code><a title="ctsimu.geometry.Detector" href="#ctsimu.geometry.Detector">Detector</a></code> class, an extension of a regular <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>). The following figure shows their standard orientations when a CT geometry is initialized.</p>
+<p><img alt="Standard coordinate system" src="pictures/geometry.png" title="Standard coordinate system"></p>
+<p>The orientation of the coordinate system and all components can be changed by rotations or by manually setting the object basis vectors. However, it is important to keep the following conventions.</p>
+<h2 id="detector-convention">Detector Convention</h2>
+<ul>
+<li>The detector's <code>u</code> vector is its row vector.</li>
+<li>The detector's <code>v</code> vector is its column vector.</li>
+<li>The detector's <code>w</code> vector has no special meaning. It is a planar normal that must be chosen such that the detector's coordinate system remains right-handed.</li>
+</ul>
+<h2 id="stage-convention">Stage Convention</h2>
+<ul>
+<li>The stage's <code>w</code> vector is its axis of CT rotation.</li>
+</ul>
+<h2 id="source-convention">Source Convention</h2>
+<p>There is currently no restriction on the source coordinate system. We usually assume its <code>w</code> axis to be the direction of the principal ray, but this is not a necessity.</p>
+<h2 id="example-setup">Example Setup</h2>
+<p>In the following example, we set up a standard CT geometry.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# General CT parameters:
+SOD = 250.0 # mm
+SDD = 800.0 # mm
+
+pixelSize = 0.2 # mm
+pixelColumns = 2000
+pixelRows = 1000
+
+# Create a CT geometry object:
+myCT = Geometry()
+
+# Stage:
+myCT.stage.center.x = SOD
+
+# Detector:
+myCT.detector.center.x = SDD
+myCT.detector.setSize(
+    pixelsU = pixelColumns,
+    pixelsV = pixelRows,
+    pitchU = pixelSize,
+    pitchV = pixelSize
+    )
+
+myCT.update() # calculates derived geometry parameters
+
+print(myCT.info())
+</code></pre>
+<h1 id="reference-frames">Reference Frames</h1>
+<p>Implicitly, each coordinate system has a reference coordinate system (its "reference frame") in which its <code>center</code> and <code>u</code>, <code>v</code>, <code>w</code> basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the <strong>world coordinate system</strong>. Any new <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code> object is initialized to be aligned with the world coordinate system:</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+world = CoordinateSystem()
+
+print(&quot;The World:&quot;)
+print(world)
+
+&quot;&quot;&quot;
+The World:
+Center: ( 0.0000000,  0.0000000,  0.0000000)
+u:      ( 1.0000000,  0.0000000,  0.0000000)
+v:      ( 0.0000000,  1.0000000,  0.0000000)
+w:      ( 0.0000000,  0.0000000,  1.0000000)
+&quot;&quot;&quot;
+</code></pre>
+<p>You can change the reference frame of a <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>. In the following example, we set up a CT geometry with a stage that is tilted by 2°. We place a specimen object in the stage coordinate system and move it "upwards" by 5 mm along the (now tilted) axis of rotation. Afterwards, we change the specimen's reference frame to see where it is actually located in the world coordinate system.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+from ctsimu.helpers  import *  # provides deg2rad()
+
+world = CoordinateSystem()
+
+# Set up a quick CT geometry with a tilted stage axis:
+myCT = Geometry()
+myCT.stage.center.x = 250
+myCT.stage.rotateAroundU(angle = deg2rad(2.0))
+myCT.detector.center.x = 800
+
+# Assume a specimen in the (tilted) stage
+# coordinate system, shifted 5 mm &quot;upwards&quot;
+# along the axis of rotation:
+mySpecimen = CoordinateSystem()
+mySpecimen.translateZ(5.0)
+
+# Change the specimen's reference frame to
+# the world coordinate system:
+mySpecimen.changeReferenceFrame(fromCS = myCT.stage, toCS = world)
+
+print(&quot;The specimen's world coordinates:&quot;)
+print(mySpecimen)
+</code></pre>
+<p><strong>Note:</strong> when changing reference frames, the original and the target reference frame must both have a common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;
+Coordinate systems, transformations and projection matrix functionality.
+
+Coordinate Systems
+==================
+
+The geometry subpackage provides a `CoordinateSystem` class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (`center`) and three basis vectors (`u`, `v`, `w`). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The `center` acts as the pivot point for rotations.
+
+Example for creating and manipulating an object:
+
+```python
+from ctsimu.geometry import *
+from ctsimu.helpers  import *  # provides deg2rad()
+
+mySpecimen = CoordinateSystem()
+
+# Set position and orientation:
+mySpecimen.center = Vector(250, 0, 0)
+mySpecimen.u = Vector(0, -1,  0)
+mySpecimen.v = Vector(0,  0, -1)
+mySpecimen.w = Vector(1,  0,  0)
+
+# Manipulate:
+mySpecimen.translate(translationVector = Vector(5.2, 0, 4.3))
+mySpecimen.rotateAroundU(angle = deg2rad(2.0))
+mySpecimen.rotate(axis = Vector(1, 1, 1), angle = deg2rad(5.0))
+
+print(&#34;My specimen&#39;s new location and orientation:&#34;)
+print(mySpecimen)
+```
+
+Full CT Geometry
+================
+
+For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The `Geometry` class bundles three coordinate systems (one for each of those components), and additional information about the detector (using the `Detector` class, an extension of a regular `CoordinateSystem`). The following figure shows their standard orientations when a CT geometry is initialized.
+
+![Standard coordinate system](pictures/geometry.png &#34;Standard coordinate system&#34;)
+
+The orientation of the coordinate system and all components can be changed by rotations or by manually setting the object basis vectors. However, it is important to keep the following conventions.
+
+Detector convention
+-------------------
+
+* The detector&#39;s `u` vector is its row vector.
+* The detector&#39;s `v` vector is its column vector.
+* The detector&#39;s `w` vector has no special meaning. It is a planar normal that must be chosen such that the detector&#39;s coordinate system remains right-handed.
+
+Stage convention
+----------------
+
+* The stage&#39;s `w` vector is its axis of CT rotation.
+
+Source convention
+-----------------
+
+There is currently no restriction on the source coordinate system. We usually assume its `w` axis to be the direction of the principal ray, but this is not a necessity.
+
+Example Setup
+-------------
+
+In the following example, we set up a standard CT geometry.
+
+```python
+from ctsimu.geometry import *
+
+# General CT parameters:
+SOD = 250.0 # mm
+SDD = 800.0 # mm
+
+pixelSize = 0.2 # mm
+pixelColumns = 2000
+pixelRows = 1000
+
+# Create a CT geometry object:
+myCT = Geometry()
+
+# Stage:
+myCT.stage.center.x = SOD
+
+# Detector:
+myCT.detector.center.x = SDD
+myCT.detector.setSize(
+    pixelsU = pixelColumns,
+    pixelsV = pixelRows,
+    pitchU = pixelSize,
+    pitchV = pixelSize
+    )
+
+myCT.update() # calculates derived geometry parameters
+
+print(myCT.info())
+```
+
+Reference Frames
+================
+
+Implicitly, each coordinate system has a reference coordinate system (its &#34;reference frame&#34;) in which its `center` and `u`, `v`, `w` basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the **world coordinate system**. Any new `CoordinateSystem` object is initialized to be aligned with the world coordinate system:
+
+```python
+from ctsimu.geometry import *
+
+world = CoordinateSystem()
+
+print(&#34;The World:&#34;)
+print(world)
+
+\&#34;\&#34;\&#34;
+The World:
+Center: ( 0.0000000,  0.0000000,  0.0000000)
+u:      ( 1.0000000,  0.0000000,  0.0000000)
+v:      ( 0.0000000,  1.0000000,  0.0000000)
+w:      ( 0.0000000,  0.0000000,  1.0000000)
+\&#34;\&#34;\&#34;
+```
+
+You can change the reference frame of a `CoordinateSystem`. In the following example, we set up a CT geometry with a stage that is tilted by 2°. We place a specimen object in the stage coordinate system and move it &#34;upwards&#34; by 5 mm along the (now tilted) axis of rotation. Afterwards, we change the specimen&#39;s reference frame to see where it is actually located in the world coordinate system.
+
+```python
+from ctsimu.geometry import *
+from ctsimu.helpers  import *  # provides deg2rad()
+
+world = CoordinateSystem()
+
+# Set up a quick CT geometry with a tilted stage axis:
+myCT = Geometry()
+myCT.stage.center.x = 250
+myCT.stage.rotateAroundU(angle = deg2rad(2.0))
+myCT.detector.center.x = 800
+
+# Assume a specimen in the (tilted) stage
+# coordinate system, shifted 5 mm &#34;upwards&#34;
+# along the axis of rotation:
+mySpecimen = CoordinateSystem()
+mySpecimen.translateZ(5.0)
+
+# Change the specimen&#39;s reference frame to
+# the world coordinate system:
+mySpecimen.changeReferenceFrame(fromCS = myCT.stage, toCS = world)
+
+print(&#34;The specimen&#39;s world coordinates:&#34;)
+print(mySpecimen)
+```
+
+**Note:** when changing reference frames, the original and the target reference frame must both have a common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).
+&#34;&#34;&#34;
+
 import numpy
 import os    # File and path handling
 import json
@@ -40,15 +299,15 @@ from datetime import datetime
 from .primitives import *
 from .image import Image  # To create detector flat field
 
-def basisTransformMatrix(fromCS:&#39;GeometryObject&#39;, toCS:&#39;GeometryObject&#39;) -&gt; Matrix:
+def basisTransformMatrix(fromCS:&#39;CoordinateSystem&#39;, toCS:&#39;CoordinateSystem&#39;) -&gt; Matrix:
     &#34;&#34;&#34;Calculate a matrix that transforms coordinates from `fromCS` to `toCS`.
 
     Parameters
     ----------
-    fromCS : GeometryObject
+    fromCS : CoordinateSystem
         The origin coordinate system.
 
-    toCS : GeometryObject
+    toCS : CoordinateSystem
         The target coordinate system.
 
     Returns
@@ -81,7 +340,7 @@ def basisTransformMatrix(fromCS:&#39;GeometryObject&#39;, toCS:&#39;GeometryObje
 
     return T
 
-class GeometryObject:
+class CoordinateSystem:
     &#34;&#34;&#34;Coordinate system: center point and axis vectors.
 
     An object according to the CTSimU scenario specification,
@@ -112,7 +371,7 @@ class GeometryObject:
     &#34;&#34;&#34;
 
     def __init__(self):
-        &#34;&#34;&#34;Initialize as a standard world coordinate system.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialized as a standard world coordinate system.&#34;&#34;&#34;
         self.center  = Vector(0, 0, 0)
         self.u = Vector(1, 0, 0)
         self.v = Vector(0, 1, 0)
@@ -133,18 +392,15 @@ class GeometryObject:
         Parameters
         ----------
         geometry : dict
-            A parsed JSON dictionary from a CTSimU scenario description file.
-            See [2]_.
+            A parsed JSON dictionary from a [CTSimU scenario description] file.
+
+        [CTSimU scenario description]: https://bamresearch.github.io/ctsimu-scenarios/
 
         Raises
         ------
         KeyError
             When expected JSON keys for center and vector x, y, z
             components are not found in the dictionary.
-
-        References
-        ----------
-        * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
         &#34;&#34;&#34;
 
         # Get center position from JSON dict:
@@ -350,7 +606,7 @@ class GeometryObject:
         Parameters
         ----------
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         &#34;&#34;&#34;
         self.v.rotate(self.u, angle)
         self.w.rotate(self.u, angle)
@@ -361,7 +617,7 @@ class GeometryObject:
         Parameters
         ----------
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         &#34;&#34;&#34;
         self.u.rotate(self.v, angle)
         self.w.rotate(self.v, angle)
@@ -372,7 +628,7 @@ class GeometryObject:
         Parameters
         ----------
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         &#34;&#34;&#34;
         self.u.rotate(self.w, angle)
         self.v.rotate(self.w, angle)
@@ -387,21 +643,21 @@ class GeometryObject:
             reference coordinate system (e.g. world).
         
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         &#34;&#34;&#34;
         self.u.rotate(axis, angle)
         self.v.rotate(axis, angle)
         self.w.rotate(axis, angle)
 
-    def changeReferenceFrame(self, fromCS:&#39;GeometryObject&#39;, toCS:&#39;GeometryObject&#39;):
+    def changeReferenceFrame(self, fromCS:&#39;CoordinateSystem&#39;, toCS:&#39;CoordinateSystem&#39;):
         &#34;&#34;&#34;Change the object&#39;s reference coordinate system.
         
         Parameters
         ----------
-        fromCS : GeometryObject
+        fromCS : CoordinateSystem
             Current reference coordinate system.
         
-        toCS : GeometryObject
+        toCS : CoordinateSystem
             New reference coordinate system.
 
         Notes
@@ -416,7 +672,7 @@ class GeometryObject:
         self.v = T * self.v
         self.w = T * self.w
 
-        world = GeometryObject()
+        world = CoordinateSystem()
 
         # Move center to toCS:
         # 1. Translate self.center by difference of toCS and fromCS
@@ -431,7 +687,7 @@ class GeometryObject:
         relCenter = self.center + translator
         self.center = T*relCenter
 
-class Detector(GeometryObject):
+class Detector(CoordinateSystem):
     &#34;&#34;&#34;Detector as geometrical object.
 
     With additional attributes for the spatial extension and
@@ -477,13 +733,13 @@ class Detector(GeometryObject):
     &#34;&#34;&#34;
 
     def __init__(self):
-        &#34;&#34;&#34;Initialize as a standard GeometryObject.
+        &#34;&#34;&#34;Initialize as a standard CoordinateSystem.
 
         Orientation, position and size must be set up manually afterwards.
         &#34;&#34;&#34;
 
         # Call init from parent class:
-        GeometryObject.__init__(self)
+        CoordinateSystem.__init__(self)
 
         self.pixelsU     = None  # Detector pixels in u direction
         self.pixelsV     = None  # Detector pixels in v direction
@@ -494,7 +750,7 @@ class Detector(GeometryObject):
 
         self.pixelOrigin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
 
-    def setSize(self, nPixelsU:int = None, nPixelsV:int = None, pitchU:float = None, pitchV:float = None):
+    def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
         &#34;&#34;&#34;Set the physical size of the detector.
 
         From the given parameters (number of pixels and pitch), the physical
@@ -506,10 +762,10 @@ class Detector(GeometryObject):
 
         Parameters
         ----------
-        nPixelsU : int
+        pixelsU : int
             Number of pixels in u direction.
 
-        nPixelsV : int
+        pixelsV : int
             Number of pixels in v direction.
 
         pitchU : float
@@ -519,8 +775,8 @@ class Detector(GeometryObject):
             Pixel pitch in v direction.
         &#34;&#34;&#34;
 
-        self.pixelsU = int(nPixelsU)
-        self.pixelsV = int(nPixelsV)
+        self.pixelsU = int(pixelsU)
+        self.pixelsV = int(pixelsV)
         self.pitchU = float(pitchU)
         self.pitchV = float(pitchV)
 
@@ -648,10 +904,10 @@ class Geometry:
     detector : Detector
         The detector geometry.
 
-    source : GeometryObject
+    source : CoordinateSystem
         The source geometry.
 
-    stage : GeometryObject
+    stage : CoordinateSystem
         The stage geometry.
 
     SDD : float
@@ -692,8 +948,16 @@ class Geometry:
 
         &#34;&#34;&#34;
         self.detector    = Detector()
-        self.source      = GeometryObject()
-        self.stage       = GeometryObject()
+        self.source      = CoordinateSystem()
+        self.stage       = CoordinateSystem()
+
+        # Initialize source and detector to standard CTSimU orientation:
+        self.detector.u = Vector(0, -1,  0)
+        self.detector.v = Vector(0,  0, -1)
+        self.detector.w = Vector(1,  0,  0)
+        self.source.u   = Vector(0, -1,  0)
+        self.source.v   = Vector(0,  0, -1)
+        self.source.w   = Vector(1,  0,  0)
 
         self.SDD = None
         self.SOD = None
@@ -762,6 +1026,9 @@ class Geometry:
             self.update()            
         else:
             raise Exception(&#34;JSON scenario file not available.&#34;)
+
+    def __str__(self):
+        return self.info()
         
     def update(self):
         &#34;&#34;&#34;Calculate derived geometry parameters.
@@ -786,7 +1053,7 @@ class Geometry:
         &#34;&#34;&#34;
 
         # SOD, SDD, ODD
-        world = GeometryObject()
+        world = CoordinateSystem()
         source_from_image = copy.deepcopy(self.source)
         stage_from_detector  = copy.deepcopy(self.stage)
 
@@ -821,6 +1088,8 @@ class Geometry:
             Information string for humans.
         &#34;&#34;&#34;
 
+        self.update()
+
         txt  = &#34;Detector\n&#34;
         txt += &#34;===========================================================\n&#34;
         txt += &#34;Center:          {}\n&#34;.format(self.detector.center)
@@ -828,12 +1097,9 @@ class Geometry:
         txt += &#34;v:               {}\n&#34;.format(self.detector.v)
         txt += &#34;w:               {}\n&#34;.format(self.detector.w)
         txt += &#34;Pixels:          {cols} x {rows}\n&#34;.format(cols=self.detector.cols(), rows=self.detector.rows())
-        txt += &#34;Pitch:           {pitchU} mm x {pitchV} mm\n&#34;.format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
-        txt += &#34;Physical Size:   {width} mm x {height} mm\n&#34;.format(width=self.detector.physWidth, height=self.detector.physHeight)
-        txt += &#34;Center Distance: {} mm\n&#34;.format(self.detector.center.distance(self.source.center))
+        txt += &#34;Pitch:           {pitchU} x {pitchV}\n&#34;.format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
+        txt += &#34;Physical Size:   {width} x {height}\n&#34;.format(width=self.detector.physWidth, height=self.detector.physHeight)
 
-        # Source - Detector distance (SDD) defined by shortest distance between source and detector:
-        txt += &#34;SDD:             {} mm\n&#34;.format(self.SDD)
         txt += &#34;Brightest Spot:\n&#34;
         txt += &#34;  World:         {}\n&#34;.format(self.brightestSpotWorld)
         txt += &#34;  Pixels:        {}\n&#34;.format(self.brightestSpotDetector)
@@ -846,16 +1112,32 @@ class Geometry:
         txt += &#34;v:               {}\n&#34;.format(self.source.v)
         txt += &#34;w:               {}\n&#34;.format(self.source.w)
 
+        txt += &#34;\n&#34;
+        txt += &#34;Stage:\n&#34;
+        txt += &#34;===========================================================\n&#34;
+        txt += &#34;Center:          {}\n&#34;.format(self.stage.center)
+        txt += &#34;u:               {}\n&#34;.format(self.stage.u)
+        txt += &#34;v:               {}\n&#34;.format(self.stage.v)
+        txt += &#34;w:               {}\n&#34;.format(self.stage.w)
+
+        txt += &#34;\n&#34;
+        txt += &#34;Geometry Parameters:\n&#34;
+        txt += &#34;===========================================================\n&#34;
+        # Source - Detector distance (SDD) defined by shortest distance between source and detector:
+        txt += &#34;SDD:             {}\n&#34;.format(self.SDD)
+        txt += &#34;ODD:             {}\n&#34;.format(self.ODD)
+        txt += &#34;SOD:             {}\n&#34;.format(self.SOD)
+
         return txt
 
     def projectionMatrix(self,
-                         imageCS:GeometryObject=None,
+                         imageCS:CoordinateSystem=None,
                          mode:str=None):
         &#34;&#34;&#34;Calculate a projection matrix for the current geometry.
 
         Parameters
         ----------
-        imageCS : GeometryObject
+        imageCS : CoordinateSystem
             Position of the image coordinate system in terms of the
             detector coordinate system. See notes for details.
 
@@ -881,17 +1163,16 @@ class Geometry:
         to be unit vectors).
 
         The center (origin) of the `imageCS` should be where the reconstruction
-        software places the origin of its own image or detector coordinate
-        system. For example, CERA places it at the lower-left corner of the
-        projection image. In this case, the `imageCS` center should be set to
-        ()
+        software places the origin of its own projection image coordinate
+        system. For example, CERA places it at the center of the lower-left pixel
+        of the projection image.
         &#34;&#34;&#34;
 
         validModes = [&#34;openCT&#34;, &#34;CERA&#34;]
 
         if mode is not None:
             if mode in validModes:  # Override imageCS
-                image = GeometryObject()
+                image = CoordinateSystem()
 
                 if mode == &#34;openCT&#34;:
                     &#34;&#34;&#34;openCT places the origin of the image CS at the detector 
@@ -928,7 +1209,7 @@ class Geometry:
         else:
             raise RuntimeError(&#34;projectionMatrix: Please provide either a mode or an imageCS.&#34;)
 
-        world    = GeometryObject()
+        world    = CoordinateSystem()
         source   = copy.deepcopy(self.source)
         stage    = copy.deepcopy(self.stage)
 
@@ -953,10 +1234,11 @@ class Geometry:
         stage.changeReferenceFrame(world, stage)
 
         # Translation vector from stage to source:
-        rfoc = source.center - stage.center
+        rfoc = stage.center - source.center
         xfoc = rfoc.x
         yfoc = rfoc.y
         zfoc = rfoc.z
+        SOD = rfoc.length()
 
         # Focus point on detector: principal, perpendicular ray.
         # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
@@ -969,7 +1251,7 @@ class Geometry:
         # Mirror volume:
         M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 
-        # Translation matrix: stage -&gt; source:
+        # Move origin to source (the origin of the camera CS)
         F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
 
         # Rotations:
@@ -986,6 +1268,7 @@ class Geometry:
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
+        print(&#34;lower right: {} SOD: {}&#34;.format(lower_right, SOD))
         if lower_right != 0:
             P.scale(1.0/lower_right)
 
@@ -1310,7 +1593,7 @@ class Geometry:
         # Change to the detector coordinate system:
         D = copy.deepcopy(self.detector)
         S = copy.deepcopy(self.source)
-        world = GeometryObject()  # will be initialized as world
+        world = CoordinateSystem()  # will be initialized as world
 
         S.changeReferenceFrame(world, D)
         D.changeReferenceFrame(world, D)
@@ -1837,15 +2120,15 @@ def writeOpenCTFile(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, m
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="ctsimu.geometry.basisTransformMatrix"><code class="name flex">
-<span>def <span class="ident">basisTransformMatrix</span></span>(<span>fromCS: <a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a>, toCS: <a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a>) ‑> <a title="ctsimu.primitives.Matrix" href="primitives.html#ctsimu.primitives.Matrix">Matrix</a></span>
+<span>def <span class="ident">basisTransformMatrix</span></span>(<span>fromCS: <a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a>, toCS: <a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a>) ‑> <a title="ctsimu.primitives.Matrix" href="primitives.html#ctsimu.primitives.Matrix">Matrix</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Calculate a matrix that transforms coordinates from <code>fromCS</code> to <code>toCS</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>fromCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
+<dt><strong><code>fromCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
 <dd>The origin coordinate system.</dd>
-<dt><strong><code>toCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
+<dt><strong><code>toCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
 <dd>The target coordinate system.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -1861,15 +2144,15 @@ def writeOpenCTFile(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, m
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def basisTransformMatrix(fromCS:&#39;GeometryObject&#39;, toCS:&#39;GeometryObject&#39;) -&gt; Matrix:
+<pre><code class="python">def basisTransformMatrix(fromCS:&#39;CoordinateSystem&#39;, toCS:&#39;CoordinateSystem&#39;) -&gt; Matrix:
     &#34;&#34;&#34;Calculate a matrix that transforms coordinates from `fromCS` to `toCS`.
 
     Parameters
     ----------
-    fromCS : GeometryObject
+    fromCS : CoordinateSystem
         The origin coordinate system.
 
-    toCS : GeometryObject
+    toCS : CoordinateSystem
         The target coordinate system.
 
     Returns
@@ -2217,6 +2500,891 @@ GlobalI0Value = {i0max}
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="ctsimu.geometry.CoordinateSystem"><code class="flex name class">
+<span>class <span class="ident">CoordinateSystem</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Coordinate system: center point and axis vectors.</p>
+<p>An object according to the CTSimU scenario specification,
+containing a center coordinate and an orientation in 3D space.</p>
+<p>The center and axis vectors are expressed in terms of the
+object's reference coordinate system, which must be known implicitly
+when objects of this class are used.</p>
+<p>Geometrical objects could be source, stage or detector.
+Samples would need additional attention due to possible attachment
+to stage coordinate system (instead of world).</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>center</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>The location of the center point in a reference
+coordinate system (usually world or stage).</dd>
+<dt><strong><code>u</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Basis vector for the u axis.</dd>
+<dt><strong><code>v</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Basis vector for the v axis.</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Basis vector for the w axis.</dd>
+</dl>
+<p>Initialized as a standard world coordinate system.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CoordinateSystem:
+    &#34;&#34;&#34;Coordinate system: center point and axis vectors.
+
+    An object according to the CTSimU scenario specification,
+    containing a center coordinate and an orientation in 3D space.
+    
+    The center and axis vectors are expressed in terms of the
+    object&#39;s reference coordinate system, which must be known implicitly
+    when objects of this class are used.
+
+    Geometrical objects could be source, stage or detector.
+    Samples would need additional attention due to possible attachment
+    to stage coordinate system (instead of world).
+
+    Attributes
+    ----------
+    center : Vector
+        The location of the center point in a reference
+        coordinate system (usually world or stage).
+
+    u : Vector
+        Basis vector for the u axis.
+
+    v : Vector
+        Basis vector for the v axis.
+
+    w : Vector
+        Basis vector for the w axis.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        &#34;&#34;&#34;Initialized as a standard world coordinate system.&#34;&#34;&#34;
+        self.center  = Vector(0, 0, 0)
+        self.u = Vector(1, 0, 0)
+        self.v = Vector(0, 1, 0)
+        self.w = Vector(0, 0, 1)
+
+    def __str__(self):
+        &#34;&#34;&#34;Information string for easy printing.&#34;&#34;&#34;
+
+        txt  = &#34;Center: {}\n&#34;.format(self.center)
+        txt += &#34;u:      {}\n&#34;.format(self.u)
+        txt += &#34;v:      {}\n&#34;.format(self.v)
+        txt += &#34;w:      {}\n&#34;.format(self.w)
+        return txt
+
+    def json_import(self, geometry: dict):
+        &#34;&#34;&#34;Set up geometry from a JSON dictionary.
+
+        Parameters
+        ----------
+        geometry : dict
+            A parsed JSON dictionary from a [CTSimU scenario description] file.
+
+        [CTSimU scenario description]: https://bamresearch.github.io/ctsimu-scenarios/
+
+        Raises
+        ------
+        KeyError
+            When expected JSON keys for center and vector x, y, z
+            components are not found in the dictionary.
+        &#34;&#34;&#34;
+
+        # Get center position from JSON dict:
+        if &#34;center&#34; in geometry:
+            if &#34;x&#34; in geometry[&#34;center&#34;]:
+                cx = in_mm(geometry[&#34;center&#34;][&#34;x&#34;])
+            else:
+                raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
+
+            if &#34;y&#34; in geometry[&#34;center&#34;]:
+                cy = in_mm(geometry[&#34;center&#34;][&#34;y&#34;])
+            else:
+                raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
+            
+            if &#34;z&#34; in geometry[&#34;center&#34;]:
+                cz = in_mm(geometry[&#34;center&#34;][&#34;z&#34;])
+            else:
+                raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
+
+            self.center.set(cx, cy, cz)
+        # Try old British spelling (up to file format v0.9)
+        elif &#34;centre&#34; in geometry:
+            if &#34;x&#34; in geometry[&#34;centre&#34;]:
+                cx = in_mm(geometry[&#34;centre&#34;][&#34;x&#34;])
+            else:
+                raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
+
+            if &#34;y&#34; in geometry[&#34;centre&#34;]:
+                cy = in_mm(geometry[&#34;centre&#34;][&#34;y&#34;])
+            else:
+                raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
+            
+            if &#34;z&#34; in geometry[&#34;centre&#34;]:
+                cz = in_mm(geometry[&#34;centre&#34;][&#34;z&#34;])
+            else:
+                raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
+
+            self.center.set(cx, cy, cz)
+        else:
+            raise KeyError(&#34;JSON file is missing a geometry \&#34;center\&#34; section.&#34;)
+
+        # Get vector u from JSON dict:
+        if &#34;vector_u&#34; in geometry:
+            if &#34;x&#34; in geometry[&#34;vector_u&#34;]:
+                ux = geometry[&#34;vector_u&#34;][&#34;x&#34;]
+            else:
+                raise KeyError(&#34;No \&#34;x\&#34; component found for vector u.&#34;)
+
+            if &#34;y&#34; in geometry[&#34;vector_u&#34;]:
+                uy = geometry[&#34;vector_u&#34;][&#34;y&#34;]
+            else:
+                raise KeyError(&#34;No \&#34;y\&#34; component found for vector u.&#34;)
+
+            if &#34;z&#34; in geometry[&#34;vector_u&#34;]:
+                uz = geometry[&#34;vector_u&#34;][&#34;z&#34;]
+            else:
+                raise KeyError(&#34;No \&#34;z\&#34; component found for vector u.&#34;)
+        else:
+            raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_u\&#34; section.&#34;)
+
+        # Get vector w from JSON dict:
+        if &#34;vector_w&#34; in geometry:
+            if &#34;x&#34; in geometry[&#34;vector_w&#34;]:
+                wx = geometry[&#34;vector_w&#34;][&#34;x&#34;]
+            else:
+                raise KeyError(&#34;No \&#34;x\&#34; component found for vector w.&#34;)
+
+            if &#34;y&#34; in geometry[&#34;vector_w&#34;]:
+                wy = geometry[&#34;vector_w&#34;][&#34;y&#34;]
+            else:
+                raise KeyError(&#34;No \&#34;y\&#34; component found for vector w.&#34;)
+
+            if &#34;z&#34; in geometry[&#34;vector_w&#34;]:
+                wz = geometry[&#34;vector_w&#34;][&#34;z&#34;]
+            else:
+                raise KeyError(&#34;No \&#34;z\&#34; component found for vector w.&#34;)
+        else:
+            raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_w\&#34; section.&#34;)
+
+        # Set up the geometry from the information given in the JSON file:
+        c = Vector(cx, cy, cz)  # center
+        u = Vector(ux, uy, uz)  # u basis vector
+        w = Vector(wx, wy, wz)  # w basis vector
+        v = w.cross(u)
+        self.setup(c, u, v, w)
+        self.makeUnitCS()
+
+        # Apply deviations from the now-ideal geometry:
+        if &#34;deviation&#34; in geometry:
+            # Positional deviations:
+            if &#34;position&#34; in geometry[&#34;deviation&#34;]:
+                if &#34;x&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                    if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;] != None:
+                        translationX = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;])
+                        self.translateX(translationX)
+    
+                if &#34;y&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                    if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;] != None:
+                        translationY = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;])
+                        self.translateY(translationY)
+
+                if &#34;z&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                    if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;] != None:
+                        translationZ = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;])
+                        self.translateZ(translationZ)
+
+            # Rotations according to w&#39;&#39;v&#39;u convention:
+            if &#34;rotation&#34; in geometry[&#34;deviation&#34;]:
+                if &#34;w&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                    if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;] != None:
+                        angleAroundW = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;])
+                        self.rotateAroundW(angleAroundW)
+
+                if &#34;v&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                    if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;] != None:
+                        angleAroundV = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;])
+                        self.rotateAroundV(angleAroundV)
+
+                if &#34;u&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                    if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;] != None:
+                        angleAroundU = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;])
+                        self.rotateAroundU(angleAroundU)
+
+    def setup(self, center:Vector, u:Vector, v:Vector, w:Vector):
+        &#34;&#34;&#34;Set up center and orientation manually.
+
+        Parameters
+        ----------
+        center : Vector
+            Object&#39;s center point in reference coordinate system,
+            origin of local {u,v,w} coordinate system.
+
+        u : Vector
+            Basis vector u in terms of reference coordinate system.
+
+        v : Vector
+            Basis vector v in terms of reference coordinate system.
+
+        w : Vector
+            Basis vector w in terms of reference coordinate system.
+
+        Notes
+        -----
+        All basis vectors must be orthogonal.
+        &#34;&#34;&#34;
+
+        # Create new vectors from given components:
+        self.center  = center
+        self.u = u
+        self.v = v
+        self.w = w
+
+    def makeUnitCS(self):
+        &#34;&#34;&#34;Convert all basis vectors to unit vectors.&#34;&#34;&#34;
+        self.u.makeUnitVector()
+        self.v.makeUnitVector()
+        self.w.makeUnitVector()
+
+    def translate(self, translationVector: Vector):
+        &#34;&#34;&#34;Move object in space.
+
+        Parameters
+        ----------
+        translationVector : Vector
+            Vector by which the object&#39;s center point should be shifted.
+            Its components are added to the center&#39;s components.
+        &#34;&#34;&#34;
+        self.center.add(translationVector)
+
+    def translateX(self, dx: float):
+        &#34;&#34;&#34;Move object in x direction.
+
+        Parameters
+        ----------
+        dx : float
+            Shift amount in x direction.
+        &#34;&#34;&#34;
+        self.center.setx(self.center.x + float(dx))
+
+    def translateY(self, dy: float):
+        &#34;&#34;&#34;Move object in y direction.
+
+        Parameters
+        ----------
+        dy : float
+            Shift amount in y direction.
+        &#34;&#34;&#34;
+        self.center.sety(self.center.y + float(dy))
+
+    def translateZ(self, dz: float):
+        &#34;&#34;&#34;Move object in z direction.
+
+        Parameters
+        ----------
+        dz : float
+            Shift amount in z direction.
+        &#34;&#34;&#34;
+        self.center.setz(self.center.z + float(dz))
+
+    def rotateAroundU(self, angle: float):
+        &#34;&#34;&#34;Rotate object around its u axis by given angle [rad].
+        
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        &#34;&#34;&#34;
+        self.v.rotate(self.u, angle)
+        self.w.rotate(self.u, angle)
+
+    def rotateAroundV(self, angle: float):
+        &#34;&#34;&#34;Rotate object around its v axis by given angle [rad].
+        
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        &#34;&#34;&#34;
+        self.u.rotate(self.v, angle)
+        self.w.rotate(self.v, angle)
+
+    def rotateAroundW(self, angle: float):
+        &#34;&#34;&#34;Rotate object around its w axis by given angle [rad].
+        
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        &#34;&#34;&#34;
+        self.u.rotate(self.w, angle)
+        self.v.rotate(self.w, angle)
+
+    def rotate(self, axis: Vector, angle: float):
+        &#34;&#34;&#34;Rotate object around a given axis by the given angle [rad].
+        
+        Parameters
+        ----------
+        axis : Vector
+            The axis of rotation, in terms of the object&#39;s
+            reference coordinate system (e.g. world).
+        
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        &#34;&#34;&#34;
+        self.u.rotate(axis, angle)
+        self.v.rotate(axis, angle)
+        self.w.rotate(axis, angle)
+
+    def changeReferenceFrame(self, fromCS:&#39;CoordinateSystem&#39;, toCS:&#39;CoordinateSystem&#39;):
+        &#34;&#34;&#34;Change the object&#39;s reference coordinate system.
+        
+        Parameters
+        ----------
+        fromCS : CoordinateSystem
+            Current reference coordinate system.
+        
+        toCS : CoordinateSystem
+            New reference coordinate system.
+
+        Notes
+        -----
+        Both fromCS and toCS must be in the same reference coordinate system
+        (e.g., the world coordinate system).
+        &#34;&#34;&#34;
+
+        # Rotate basis vectors into toCS:
+        T = basisTransformMatrix(fromCS, toCS)
+        self.u = T * self.u
+        self.v = T * self.v
+        self.w = T * self.w
+
+        world = CoordinateSystem()
+
+        # Move center to toCS:
+        # 1. Translate self.center by difference of toCS and fromCS
+        #    -&gt; Origins are &#34;superimposed&#34;.
+        # 2. Rotate self.center from fromCS to toCS.
+
+        # Translation vector in world coordinates:
+        translator = fromCS.center - toCS.center  # in world coordinates
+        # Translation vector in fromCS coordinates:
+        M = basisTransformMatrix(world, fromCS)
+        translator = M*translator
+        relCenter = self.center + translator
+        self.center = T*relCenter</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="ctsimu.geometry.Detector" href="#ctsimu.geometry.Detector">Detector</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.geometry.CoordinateSystem.changeReferenceFrame"><code class="name flex">
+<span>def <span class="ident">changeReferenceFrame</span></span>(<span>self, fromCS: <a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a>, toCS: <a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change the object's reference coordinate system.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>fromCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>Current reference coordinate system.</dd>
+<dt><strong><code>toCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>New reference coordinate system.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Both fromCS and toCS must be in the same reference coordinate system
+(e.g., the world coordinate system).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def changeReferenceFrame(self, fromCS:&#39;CoordinateSystem&#39;, toCS:&#39;CoordinateSystem&#39;):
+    &#34;&#34;&#34;Change the object&#39;s reference coordinate system.
+    
+    Parameters
+    ----------
+    fromCS : CoordinateSystem
+        Current reference coordinate system.
+    
+    toCS : CoordinateSystem
+        New reference coordinate system.
+
+    Notes
+    -----
+    Both fromCS and toCS must be in the same reference coordinate system
+    (e.g., the world coordinate system).
+    &#34;&#34;&#34;
+
+    # Rotate basis vectors into toCS:
+    T = basisTransformMatrix(fromCS, toCS)
+    self.u = T * self.u
+    self.v = T * self.v
+    self.w = T * self.w
+
+    world = CoordinateSystem()
+
+    # Move center to toCS:
+    # 1. Translate self.center by difference of toCS and fromCS
+    #    -&gt; Origins are &#34;superimposed&#34;.
+    # 2. Rotate self.center from fromCS to toCS.
+
+    # Translation vector in world coordinates:
+    translator = fromCS.center - toCS.center  # in world coordinates
+    # Translation vector in fromCS coordinates:
+    M = basisTransformMatrix(world, fromCS)
+    translator = M*translator
+    relCenter = self.center + translator
+    self.center = T*relCenter</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.json_import"><code class="name flex">
+<span>def <span class="ident">json_import</span></span>(<span>self, geometry: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set up geometry from a JSON dictionary.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>geometry</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A parsed JSON dictionary from a <a href="https://bamresearch.github.io/ctsimu-scenarios/">CTSimU scenario description</a> file.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>When expected JSON keys for center and vector x, y, z
+components are not found in the dictionary.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def json_import(self, geometry: dict):
+    &#34;&#34;&#34;Set up geometry from a JSON dictionary.
+
+    Parameters
+    ----------
+    geometry : dict
+        A parsed JSON dictionary from a [CTSimU scenario description] file.
+
+    [CTSimU scenario description]: https://bamresearch.github.io/ctsimu-scenarios/
+
+    Raises
+    ------
+    KeyError
+        When expected JSON keys for center and vector x, y, z
+        components are not found in the dictionary.
+    &#34;&#34;&#34;
+
+    # Get center position from JSON dict:
+    if &#34;center&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;center&#34;]:
+            cx = in_mm(geometry[&#34;center&#34;][&#34;x&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;center&#34;]:
+            cy = in_mm(geometry[&#34;center&#34;][&#34;y&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
+        
+        if &#34;z&#34; in geometry[&#34;center&#34;]:
+            cz = in_mm(geometry[&#34;center&#34;][&#34;z&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
+
+        self.center.set(cx, cy, cz)
+    # Try old British spelling (up to file format v0.9)
+    elif &#34;centre&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;centre&#34;]:
+            cx = in_mm(geometry[&#34;centre&#34;][&#34;x&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;centre&#34;]:
+            cy = in_mm(geometry[&#34;centre&#34;][&#34;y&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
+        
+        if &#34;z&#34; in geometry[&#34;centre&#34;]:
+            cz = in_mm(geometry[&#34;centre&#34;][&#34;z&#34;])
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
+
+        self.center.set(cx, cy, cz)
+    else:
+        raise KeyError(&#34;JSON file is missing a geometry \&#34;center\&#34; section.&#34;)
+
+    # Get vector u from JSON dict:
+    if &#34;vector_u&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;vector_u&#34;]:
+            ux = geometry[&#34;vector_u&#34;][&#34;x&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; component found for vector u.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;vector_u&#34;]:
+            uy = geometry[&#34;vector_u&#34;][&#34;y&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; component found for vector u.&#34;)
+
+        if &#34;z&#34; in geometry[&#34;vector_u&#34;]:
+            uz = geometry[&#34;vector_u&#34;][&#34;z&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; component found for vector u.&#34;)
+    else:
+        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_u\&#34; section.&#34;)
+
+    # Get vector w from JSON dict:
+    if &#34;vector_w&#34; in geometry:
+        if &#34;x&#34; in geometry[&#34;vector_w&#34;]:
+            wx = geometry[&#34;vector_w&#34;][&#34;x&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;x\&#34; component found for vector w.&#34;)
+
+        if &#34;y&#34; in geometry[&#34;vector_w&#34;]:
+            wy = geometry[&#34;vector_w&#34;][&#34;y&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;y\&#34; component found for vector w.&#34;)
+
+        if &#34;z&#34; in geometry[&#34;vector_w&#34;]:
+            wz = geometry[&#34;vector_w&#34;][&#34;z&#34;]
+        else:
+            raise KeyError(&#34;No \&#34;z\&#34; component found for vector w.&#34;)
+    else:
+        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_w\&#34; section.&#34;)
+
+    # Set up the geometry from the information given in the JSON file:
+    c = Vector(cx, cy, cz)  # center
+    u = Vector(ux, uy, uz)  # u basis vector
+    w = Vector(wx, wy, wz)  # w basis vector
+    v = w.cross(u)
+    self.setup(c, u, v, w)
+    self.makeUnitCS()
+
+    # Apply deviations from the now-ideal geometry:
+    if &#34;deviation&#34; in geometry:
+        # Positional deviations:
+        if &#34;position&#34; in geometry[&#34;deviation&#34;]:
+            if &#34;x&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;] != None:
+                    translationX = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;])
+                    self.translateX(translationX)
+
+            if &#34;y&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;] != None:
+                    translationY = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;])
+                    self.translateY(translationY)
+
+            if &#34;z&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;] != None:
+                    translationZ = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;])
+                    self.translateZ(translationZ)
+
+        # Rotations according to w&#39;&#39;v&#39;u convention:
+        if &#34;rotation&#34; in geometry[&#34;deviation&#34;]:
+            if &#34;w&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;] != None:
+                    angleAroundW = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;])
+                    self.rotateAroundW(angleAroundW)
+
+            if &#34;v&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;] != None:
+                    angleAroundV = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;])
+                    self.rotateAroundV(angleAroundV)
+
+            if &#34;u&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
+                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;] != None:
+                    angleAroundU = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;])
+                    self.rotateAroundU(angleAroundU)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.makeUnitCS"><code class="name flex">
+<span>def <span class="ident">makeUnitCS</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert all basis vectors to unit vectors.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def makeUnitCS(self):
+    &#34;&#34;&#34;Convert all basis vectors to unit vectors.&#34;&#34;&#34;
+    self.u.makeUnitVector()
+    self.v.makeUnitVector()
+    self.w.makeUnitVector()</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.rotate"><code class="name flex">
+<span>def <span class="ident">rotate</span></span>(<span>self, axis: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, angle: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rotate object around a given axis by the given angle [rad].</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>axis</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>The axis of rotation, in terms of the object's
+reference coordinate system (e.g. world).</dd>
+<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
+<dd>Rotation angle in rad, mathematically positive direction (right-hand rule).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rotate(self, axis: Vector, angle: float):
+    &#34;&#34;&#34;Rotate object around a given axis by the given angle [rad].
+    
+    Parameters
+    ----------
+    axis : Vector
+        The axis of rotation, in terms of the object&#39;s
+        reference coordinate system (e.g. world).
+    
+    angle : float
+        Rotation angle in rad, mathematically positive direction (right-hand rule).
+    &#34;&#34;&#34;
+    self.u.rotate(axis, angle)
+    self.v.rotate(axis, angle)
+    self.w.rotate(axis, angle)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.rotateAroundU"><code class="name flex">
+<span>def <span class="ident">rotateAroundU</span></span>(<span>self, angle: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rotate object around its u axis by given angle [rad].</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
+<dd>Rotation angle in rad, mathematically positive direction (right-hand rule).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rotateAroundU(self, angle: float):
+    &#34;&#34;&#34;Rotate object around its u axis by given angle [rad].
+    
+    Parameters
+    ----------
+    angle : float
+        Rotation angle in rad, mathematically positive direction (right-hand rule).
+    &#34;&#34;&#34;
+    self.v.rotate(self.u, angle)
+    self.w.rotate(self.u, angle)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.rotateAroundV"><code class="name flex">
+<span>def <span class="ident">rotateAroundV</span></span>(<span>self, angle: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rotate object around its v axis by given angle [rad].</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
+<dd>Rotation angle in rad, mathematically positive direction (right-hand rule).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rotateAroundV(self, angle: float):
+    &#34;&#34;&#34;Rotate object around its v axis by given angle [rad].
+    
+    Parameters
+    ----------
+    angle : float
+        Rotation angle in rad, mathematically positive direction (right-hand rule).
+    &#34;&#34;&#34;
+    self.u.rotate(self.v, angle)
+    self.w.rotate(self.v, angle)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.rotateAroundW"><code class="name flex">
+<span>def <span class="ident">rotateAroundW</span></span>(<span>self, angle: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Rotate object around its w axis by given angle [rad].</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
+<dd>Rotation angle in rad, mathematically positive direction (right-hand rule).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rotateAroundW(self, angle: float):
+    &#34;&#34;&#34;Rotate object around its w axis by given angle [rad].
+    
+    Parameters
+    ----------
+    angle : float
+        Rotation angle in rad, mathematically positive direction (right-hand rule).
+    &#34;&#34;&#34;
+    self.u.rotate(self.w, angle)
+    self.v.rotate(self.w, angle)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.setup"><code class="name flex">
+<span>def <span class="ident">setup</span></span>(<span>self, center: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, u: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, v: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, w: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set up center and orientation manually.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>center</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Object's center point in reference coordinate system,
+origin of local {u,v,w} coordinate system.</dd>
+<dt><strong><code>u</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Basis vector u in terms of reference coordinate system.</dd>
+<dt><strong><code>v</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Basis vector v in terms of reference coordinate system.</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Basis vector w in terms of reference coordinate system.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>All basis vectors must be orthogonal.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setup(self, center:Vector, u:Vector, v:Vector, w:Vector):
+    &#34;&#34;&#34;Set up center and orientation manually.
+
+    Parameters
+    ----------
+    center : Vector
+        Object&#39;s center point in reference coordinate system,
+        origin of local {u,v,w} coordinate system.
+
+    u : Vector
+        Basis vector u in terms of reference coordinate system.
+
+    v : Vector
+        Basis vector v in terms of reference coordinate system.
+
+    w : Vector
+        Basis vector w in terms of reference coordinate system.
+
+    Notes
+    -----
+    All basis vectors must be orthogonal.
+    &#34;&#34;&#34;
+
+    # Create new vectors from given components:
+    self.center  = center
+    self.u = u
+    self.v = v
+    self.w = w</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.translate"><code class="name flex">
+<span>def <span class="ident">translate</span></span>(<span>self, translationVector: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Move object in space.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>translationVector</code></strong> :&ensp;<code>Vector</code></dt>
+<dd>Vector by which the object's center point should be shifted.
+Its components are added to the center's components.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def translate(self, translationVector: Vector):
+    &#34;&#34;&#34;Move object in space.
+
+    Parameters
+    ----------
+    translationVector : Vector
+        Vector by which the object&#39;s center point should be shifted.
+        Its components are added to the center&#39;s components.
+    &#34;&#34;&#34;
+    self.center.add(translationVector)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.translateX"><code class="name flex">
+<span>def <span class="ident">translateX</span></span>(<span>self, dx: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Move object in x direction.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dx</code></strong> :&ensp;<code>float</code></dt>
+<dd>Shift amount in x direction.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def translateX(self, dx: float):
+    &#34;&#34;&#34;Move object in x direction.
+
+    Parameters
+    ----------
+    dx : float
+        Shift amount in x direction.
+    &#34;&#34;&#34;
+    self.center.setx(self.center.x + float(dx))</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.translateY"><code class="name flex">
+<span>def <span class="ident">translateY</span></span>(<span>self, dy: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Move object in y direction.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dy</code></strong> :&ensp;<code>float</code></dt>
+<dd>Shift amount in y direction.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def translateY(self, dy: float):
+    &#34;&#34;&#34;Move object in y direction.
+
+    Parameters
+    ----------
+    dy : float
+        Shift amount in y direction.
+    &#34;&#34;&#34;
+    self.center.sety(self.center.y + float(dy))</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.CoordinateSystem.translateZ"><code class="name flex">
+<span>def <span class="ident">translateZ</span></span>(<span>self, dz: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Move object in z direction.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dz</code></strong> :&ensp;<code>float</code></dt>
+<dd>Shift amount in z direction.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def translateZ(self, dz: float):
+    &#34;&#34;&#34;Move object in z direction.
+
+    Parameters
+    ----------
+    dz : float
+        Shift amount in z direction.
+    &#34;&#34;&#34;
+    self.center.setz(self.center.z + float(dz))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
 <dt id="ctsimu.geometry.Detector"><code class="flex name class">
 <span>class <span class="ident">Detector</span></span>
 </code></dt>
@@ -2254,13 +3422,13 @@ Computed automatically after calling <code>setSize()</code>.</dd>
 <p>Use <code>setSize()</code> to set the size of the detector, given its number of pixels
 and the pitch. This function automatically computes the physical dimensions
 <code>physWidth</code> and <code>physHeight</code> and the origin of the pixel coordinate system.</p>
-<p>Initialize as a standard GeometryObject.</p>
+<p>Initialize as a standard CoordinateSystem.</p>
 <p>Orientation, position and size must be set up manually afterwards.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Detector(GeometryObject):
+<pre><code class="python">class Detector(CoordinateSystem):
     &#34;&#34;&#34;Detector as geometrical object.
 
     With additional attributes for the spatial extension and
@@ -2306,13 +3474,13 @@ and the pitch. This function automatically computes the physical dimensions
     &#34;&#34;&#34;
 
     def __init__(self):
-        &#34;&#34;&#34;Initialize as a standard GeometryObject.
+        &#34;&#34;&#34;Initialize as a standard CoordinateSystem.
 
         Orientation, position and size must be set up manually afterwards.
         &#34;&#34;&#34;
 
         # Call init from parent class:
-        GeometryObject.__init__(self)
+        CoordinateSystem.__init__(self)
 
         self.pixelsU     = None  # Detector pixels in u direction
         self.pixelsV     = None  # Detector pixels in v direction
@@ -2323,7 +3491,7 @@ and the pitch. This function automatically computes the physical dimensions
 
         self.pixelOrigin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
 
-    def setSize(self, nPixelsU:int = None, nPixelsV:int = None, pitchU:float = None, pitchV:float = None):
+    def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
         &#34;&#34;&#34;Set the physical size of the detector.
 
         From the given parameters (number of pixels and pitch), the physical
@@ -2335,10 +3503,10 @@ and the pitch. This function automatically computes the physical dimensions
 
         Parameters
         ----------
-        nPixelsU : int
+        pixelsU : int
             Number of pixels in u direction.
 
-        nPixelsV : int
+        pixelsV : int
             Number of pixels in v direction.
 
         pitchU : float
@@ -2348,8 +3516,8 @@ and the pitch. This function automatically computes the physical dimensions
             Pixel pitch in v direction.
         &#34;&#34;&#34;
 
-        self.pixelsU = int(nPixelsU)
-        self.pixelsV = int(nPixelsV)
+        self.pixelsU = int(pixelsU)
+        self.pixelsV = int(pixelsV)
         self.pitchU = float(pitchU)
         self.pitchV = float(pitchV)
 
@@ -2467,7 +3635,7 @@ and the pitch. This function automatically computes the physical dimensions
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></li>
+<li><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -2685,7 +3853,7 @@ they are converted to integers using <code>math.floor</code>.</p></div>
 </details>
 </dd>
 <dt id="ctsimu.geometry.Detector.setSize"><code class="name flex">
-<span>def <span class="ident">setSize</span></span>(<span>self, nPixelsU: int = None, nPixelsV: int = None, pitchU: float = None, pitchV: float = None)</span>
+<span>def <span class="ident">setSize</span></span>(<span>self, pixelsU: int = None, pixelsV: int = None, pitchU: float = None, pitchV: float = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set the physical size of the detector.</p>
@@ -2697,9 +3865,9 @@ vectors and position of the detector are correct before calling
 the detector orientation or position later on.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>nPixelsU</code></strong> :&ensp;<code>int</code></dt>
+<dt><strong><code>pixelsU</code></strong> :&ensp;<code>int</code></dt>
 <dd>Number of pixels in u direction.</dd>
-<dt><strong><code>nPixelsV</code></strong> :&ensp;<code>int</code></dt>
+<dt><strong><code>pixelsV</code></strong> :&ensp;<code>int</code></dt>
 <dd>Number of pixels in v direction.</dd>
 <dt><strong><code>pitchU</code></strong> :&ensp;<code>float</code></dt>
 <dd>Pixel pitch in u direction.</dd>
@@ -2710,7 +3878,7 @@ the detector orientation or position later on.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def setSize(self, nPixelsU:int = None, nPixelsV:int = None, pitchU:float = None, pitchV:float = None):
+<pre><code class="python">def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
     &#34;&#34;&#34;Set the physical size of the detector.
 
     From the given parameters (number of pixels and pitch), the physical
@@ -2722,10 +3890,10 @@ the detector orientation or position later on.</p>
 
     Parameters
     ----------
-    nPixelsU : int
+    pixelsU : int
         Number of pixels in u direction.
 
-    nPixelsV : int
+    pixelsV : int
         Number of pixels in v direction.
 
     pitchU : float
@@ -2735,8 +3903,8 @@ the detector orientation or position later on.</p>
         Pixel pitch in v direction.
     &#34;&#34;&#34;
 
-    self.pixelsU = int(nPixelsU)
-    self.pixelsV = int(nPixelsV)
+    self.pixelsU = int(pixelsU)
+    self.pixelsV = int(pixelsV)
     self.pitchU = float(pitchU)
     self.pitchV = float(pitchV)
 
@@ -2746,20 +3914,20 @@ the detector orientation or position later on.</p>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></b></code>:
+<li><code><b><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="ctsimu.geometry.GeometryObject.changeReferenceFrame" href="#ctsimu.geometry.GeometryObject.changeReferenceFrame">changeReferenceFrame</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.json_import" href="#ctsimu.geometry.GeometryObject.json_import">json_import</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.makeUnitCS" href="#ctsimu.geometry.GeometryObject.makeUnitCS">makeUnitCS</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotate" href="#ctsimu.geometry.GeometryObject.rotate">rotate</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundU" href="#ctsimu.geometry.GeometryObject.rotateAroundU">rotateAroundU</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundV" href="#ctsimu.geometry.GeometryObject.rotateAroundV">rotateAroundV</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundW" href="#ctsimu.geometry.GeometryObject.rotateAroundW">rotateAroundW</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.setup" href="#ctsimu.geometry.GeometryObject.setup">setup</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translate" href="#ctsimu.geometry.GeometryObject.translate">translate</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translateX" href="#ctsimu.geometry.GeometryObject.translateX">translateX</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translateY" href="#ctsimu.geometry.GeometryObject.translateY">translateY</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translateZ" href="#ctsimu.geometry.GeometryObject.translateZ">translateZ</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.changeReferenceFrame" href="#ctsimu.geometry.CoordinateSystem.changeReferenceFrame">changeReferenceFrame</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.json_import" href="#ctsimu.geometry.CoordinateSystem.json_import">json_import</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.makeUnitCS" href="#ctsimu.geometry.CoordinateSystem.makeUnitCS">makeUnitCS</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotate" href="#ctsimu.geometry.CoordinateSystem.rotate">rotate</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotateAroundU" href="#ctsimu.geometry.CoordinateSystem.rotateAroundU">rotateAroundU</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotateAroundV" href="#ctsimu.geometry.CoordinateSystem.rotateAroundV">rotateAroundV</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotateAroundW" href="#ctsimu.geometry.CoordinateSystem.rotateAroundW">rotateAroundW</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.setup" href="#ctsimu.geometry.CoordinateSystem.setup">setup</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translate" href="#ctsimu.geometry.CoordinateSystem.translate">translate</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translateX" href="#ctsimu.geometry.CoordinateSystem.translateX">translateX</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translateY" href="#ctsimu.geometry.CoordinateSystem.translateY">translateY</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translateZ" href="#ctsimu.geometry.CoordinateSystem.translateZ">translateZ</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2776,9 +3944,9 @@ to calculate geometry parameters and projection matrices.</p>
 <dl>
 <dt><strong><code>detector</code></strong> :&ensp;<code><a title="ctsimu.geometry.Detector" href="#ctsimu.geometry.Detector">Detector</a></code></dt>
 <dd>The detector geometry.</dd>
-<dt><strong><code>source</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
+<dt><strong><code>source</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
 <dd>The source geometry.</dd>
-<dt><strong><code>stage</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
+<dt><strong><code>stage</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
 <dd>The stage geometry.</dd>
 <dt><strong><code>SDD</code></strong> :&ensp;<code>float</code></dt>
 <dd>Shortest distance between source center and detector plane.
@@ -2823,10 +3991,10 @@ usually for internal purposes only.</dd>
     detector : Detector
         The detector geometry.
 
-    source : GeometryObject
+    source : CoordinateSystem
         The source geometry.
 
-    stage : GeometryObject
+    stage : CoordinateSystem
         The stage geometry.
 
     SDD : float
@@ -2867,8 +4035,16 @@ usually for internal purposes only.</dd>
 
         &#34;&#34;&#34;
         self.detector    = Detector()
-        self.source      = GeometryObject()
-        self.stage       = GeometryObject()
+        self.source      = CoordinateSystem()
+        self.stage       = CoordinateSystem()
+
+        # Initialize source and detector to standard CTSimU orientation:
+        self.detector.u = Vector(0, -1,  0)
+        self.detector.v = Vector(0,  0, -1)
+        self.detector.w = Vector(1,  0,  0)
+        self.source.u   = Vector(0, -1,  0)
+        self.source.v   = Vector(0,  0, -1)
+        self.source.w   = Vector(1,  0,  0)
 
         self.SDD = None
         self.SOD = None
@@ -2937,6 +4113,9 @@ usually for internal purposes only.</dd>
             self.update()            
         else:
             raise Exception(&#34;JSON scenario file not available.&#34;)
+
+    def __str__(self):
+        return self.info()
         
     def update(self):
         &#34;&#34;&#34;Calculate derived geometry parameters.
@@ -2961,7 +4140,7 @@ usually for internal purposes only.</dd>
         &#34;&#34;&#34;
 
         # SOD, SDD, ODD
-        world = GeometryObject()
+        world = CoordinateSystem()
         source_from_image = copy.deepcopy(self.source)
         stage_from_detector  = copy.deepcopy(self.stage)
 
@@ -2996,6 +4175,8 @@ usually for internal purposes only.</dd>
             Information string for humans.
         &#34;&#34;&#34;
 
+        self.update()
+
         txt  = &#34;Detector\n&#34;
         txt += &#34;===========================================================\n&#34;
         txt += &#34;Center:          {}\n&#34;.format(self.detector.center)
@@ -3003,12 +4184,9 @@ usually for internal purposes only.</dd>
         txt += &#34;v:               {}\n&#34;.format(self.detector.v)
         txt += &#34;w:               {}\n&#34;.format(self.detector.w)
         txt += &#34;Pixels:          {cols} x {rows}\n&#34;.format(cols=self.detector.cols(), rows=self.detector.rows())
-        txt += &#34;Pitch:           {pitchU} mm x {pitchV} mm\n&#34;.format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
-        txt += &#34;Physical Size:   {width} mm x {height} mm\n&#34;.format(width=self.detector.physWidth, height=self.detector.physHeight)
-        txt += &#34;Center Distance: {} mm\n&#34;.format(self.detector.center.distance(self.source.center))
+        txt += &#34;Pitch:           {pitchU} x {pitchV}\n&#34;.format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
+        txt += &#34;Physical Size:   {width} x {height}\n&#34;.format(width=self.detector.physWidth, height=self.detector.physHeight)
 
-        # Source - Detector distance (SDD) defined by shortest distance between source and detector:
-        txt += &#34;SDD:             {} mm\n&#34;.format(self.SDD)
         txt += &#34;Brightest Spot:\n&#34;
         txt += &#34;  World:         {}\n&#34;.format(self.brightestSpotWorld)
         txt += &#34;  Pixels:        {}\n&#34;.format(self.brightestSpotDetector)
@@ -3021,16 +4199,32 @@ usually for internal purposes only.</dd>
         txt += &#34;v:               {}\n&#34;.format(self.source.v)
         txt += &#34;w:               {}\n&#34;.format(self.source.w)
 
+        txt += &#34;\n&#34;
+        txt += &#34;Stage:\n&#34;
+        txt += &#34;===========================================================\n&#34;
+        txt += &#34;Center:          {}\n&#34;.format(self.stage.center)
+        txt += &#34;u:               {}\n&#34;.format(self.stage.u)
+        txt += &#34;v:               {}\n&#34;.format(self.stage.v)
+        txt += &#34;w:               {}\n&#34;.format(self.stage.w)
+
+        txt += &#34;\n&#34;
+        txt += &#34;Geometry Parameters:\n&#34;
+        txt += &#34;===========================================================\n&#34;
+        # Source - Detector distance (SDD) defined by shortest distance between source and detector:
+        txt += &#34;SDD:             {}\n&#34;.format(self.SDD)
+        txt += &#34;ODD:             {}\n&#34;.format(self.ODD)
+        txt += &#34;SOD:             {}\n&#34;.format(self.SOD)
+
         return txt
 
     def projectionMatrix(self,
-                         imageCS:GeometryObject=None,
+                         imageCS:CoordinateSystem=None,
                          mode:str=None):
         &#34;&#34;&#34;Calculate a projection matrix for the current geometry.
 
         Parameters
         ----------
-        imageCS : GeometryObject
+        imageCS : CoordinateSystem
             Position of the image coordinate system in terms of the
             detector coordinate system. See notes for details.
 
@@ -3056,17 +4250,16 @@ usually for internal purposes only.</dd>
         to be unit vectors).
 
         The center (origin) of the `imageCS` should be where the reconstruction
-        software places the origin of its own image or detector coordinate
-        system. For example, CERA places it at the lower-left corner of the
-        projection image. In this case, the `imageCS` center should be set to
-        ()
+        software places the origin of its own projection image coordinate
+        system. For example, CERA places it at the center of the lower-left pixel
+        of the projection image.
         &#34;&#34;&#34;
 
         validModes = [&#34;openCT&#34;, &#34;CERA&#34;]
 
         if mode is not None:
             if mode in validModes:  # Override imageCS
-                image = GeometryObject()
+                image = CoordinateSystem()
 
                 if mode == &#34;openCT&#34;:
                     &#34;&#34;&#34;openCT places the origin of the image CS at the detector 
@@ -3103,7 +4296,7 @@ usually for internal purposes only.</dd>
         else:
             raise RuntimeError(&#34;projectionMatrix: Please provide either a mode or an imageCS.&#34;)
 
-        world    = GeometryObject()
+        world    = CoordinateSystem()
         source   = copy.deepcopy(self.source)
         stage    = copy.deepcopy(self.stage)
 
@@ -3128,10 +4321,11 @@ usually for internal purposes only.</dd>
         stage.changeReferenceFrame(world, stage)
 
         # Translation vector from stage to source:
-        rfoc = source.center - stage.center
+        rfoc = stage.center - source.center
         xfoc = rfoc.x
         yfoc = rfoc.y
         zfoc = rfoc.z
+        SOD = rfoc.length()
 
         # Focus point on detector: principal, perpendicular ray.
         # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
@@ -3144,7 +4338,7 @@ usually for internal purposes only.</dd>
         # Mirror volume:
         M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 
-        # Translation matrix: stage -&gt; source:
+        # Move origin to source (the origin of the camera CS)
         F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
 
         # Rotations:
@@ -3161,6 +4355,7 @@ usually for internal purposes only.</dd>
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
+        print(&#34;lower right: {} SOD: {}&#34;.format(lower_right, SOD))
         if lower_right != 0:
             P.scale(1.0/lower_right)
 
@@ -3485,7 +4680,7 @@ usually for internal purposes only.</dd>
         # Change to the detector coordinate system:
         D = copy.deepcopy(self.detector)
         S = copy.deepcopy(self.source)
-        world = GeometryObject()  # will be initialized as world
+        world = CoordinateSystem()  # will be initialized as world
 
         S.changeReferenceFrame(world, D)
         D.changeReferenceFrame(world, D)
@@ -4025,7 +5220,7 @@ ideal flat field correction.</p>
     # Change to the detector coordinate system:
     D = copy.deepcopy(self.detector)
     S = copy.deepcopy(self.source)
-    world = GeometryObject()  # will be initialized as world
+    world = CoordinateSystem()  # will be initialized as world
 
     S.changeReferenceFrame(world, D)
     D.changeReferenceFrame(world, D)
@@ -4147,6 +5342,8 @@ ideal flat field correction.</p>
         Information string for humans.
     &#34;&#34;&#34;
 
+    self.update()
+
     txt  = &#34;Detector\n&#34;
     txt += &#34;===========================================================\n&#34;
     txt += &#34;Center:          {}\n&#34;.format(self.detector.center)
@@ -4154,12 +5351,9 @@ ideal flat field correction.</p>
     txt += &#34;v:               {}\n&#34;.format(self.detector.v)
     txt += &#34;w:               {}\n&#34;.format(self.detector.w)
     txt += &#34;Pixels:          {cols} x {rows}\n&#34;.format(cols=self.detector.cols(), rows=self.detector.rows())
-    txt += &#34;Pitch:           {pitchU} mm x {pitchV} mm\n&#34;.format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
-    txt += &#34;Physical Size:   {width} mm x {height} mm\n&#34;.format(width=self.detector.physWidth, height=self.detector.physHeight)
-    txt += &#34;Center Distance: {} mm\n&#34;.format(self.detector.center.distance(self.source.center))
+    txt += &#34;Pitch:           {pitchU} x {pitchV}\n&#34;.format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
+    txt += &#34;Physical Size:   {width} x {height}\n&#34;.format(width=self.detector.physWidth, height=self.detector.physHeight)
 
-    # Source - Detector distance (SDD) defined by shortest distance between source and detector:
-    txt += &#34;SDD:             {} mm\n&#34;.format(self.SDD)
     txt += &#34;Brightest Spot:\n&#34;
     txt += &#34;  World:         {}\n&#34;.format(self.brightestSpotWorld)
     txt += &#34;  Pixels:        {}\n&#34;.format(self.brightestSpotDetector)
@@ -4171,6 +5365,22 @@ ideal flat field correction.</p>
     txt += &#34;u:               {}\n&#34;.format(self.source.u)
     txt += &#34;v:               {}\n&#34;.format(self.source.v)
     txt += &#34;w:               {}\n&#34;.format(self.source.w)
+
+    txt += &#34;\n&#34;
+    txt += &#34;Stage:\n&#34;
+    txt += &#34;===========================================================\n&#34;
+    txt += &#34;Center:          {}\n&#34;.format(self.stage.center)
+    txt += &#34;u:               {}\n&#34;.format(self.stage.u)
+    txt += &#34;v:               {}\n&#34;.format(self.stage.v)
+    txt += &#34;w:               {}\n&#34;.format(self.stage.w)
+
+    txt += &#34;\n&#34;
+    txt += &#34;Geometry Parameters:\n&#34;
+    txt += &#34;===========================================================\n&#34;
+    # Source - Detector distance (SDD) defined by shortest distance between source and detector:
+    txt += &#34;SDD:             {}\n&#34;.format(self.SDD)
+    txt += &#34;ODD:             {}\n&#34;.format(self.ODD)
+    txt += &#34;SOD:             {}\n&#34;.format(self.SOD)
 
     return txt</code></pre>
 </details>
@@ -4256,13 +5466,13 @@ ideal flat field correction.</p>
 </details>
 </dd>
 <dt id="ctsimu.geometry.Geometry.projectionMatrix"><code class="name flex">
-<span>def <span class="ident">projectionMatrix</span></span>(<span>self, imageCS: <a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a> = None, mode: str = None)</span>
+<span>def <span class="ident">projectionMatrix</span></span>(<span>self, imageCS: <a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a> = None, mode: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Calculate a projection matrix for the current geometry.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>imageCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
+<dt><strong><code>imageCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
 <dd>Position of the image coordinate system in terms of the
 detector coordinate system. See notes for details.</dd>
 <dt><strong><code>mode</code></strong> :&ensp;<code>str</code></dt>
@@ -4284,22 +5494,21 @@ the u unit vector points in the row vector direction, and the
 v unit vector points in column vector direction (they are always assumed
 to be unit vectors).</p>
 <p>The center (origin) of the <code>imageCS</code> should be where the reconstruction
-software places the origin of its own image or detector coordinate
-system. For example, CERA places it at the lower-left corner of the
-projection image. In this case, the <code>imageCS</code> center should be set to
-()</p></div>
+software places the origin of its own projection image coordinate
+system. For example, CERA places it at the center of the lower-left pixel
+of the projection image.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def projectionMatrix(self,
-                     imageCS:GeometryObject=None,
+                     imageCS:CoordinateSystem=None,
                      mode:str=None):
     &#34;&#34;&#34;Calculate a projection matrix for the current geometry.
 
     Parameters
     ----------
-    imageCS : GeometryObject
+    imageCS : CoordinateSystem
         Position of the image coordinate system in terms of the
         detector coordinate system. See notes for details.
 
@@ -4325,17 +5534,16 @@ projection image. In this case, the <code>imageCS</code> center should be set to
     to be unit vectors).
 
     The center (origin) of the `imageCS` should be where the reconstruction
-    software places the origin of its own image or detector coordinate
-    system. For example, CERA places it at the lower-left corner of the
-    projection image. In this case, the `imageCS` center should be set to
-    ()
+    software places the origin of its own projection image coordinate
+    system. For example, CERA places it at the center of the lower-left pixel
+    of the projection image.
     &#34;&#34;&#34;
 
     validModes = [&#34;openCT&#34;, &#34;CERA&#34;]
 
     if mode is not None:
         if mode in validModes:  # Override imageCS
-            image = GeometryObject()
+            image = CoordinateSystem()
 
             if mode == &#34;openCT&#34;:
                 &#34;&#34;&#34;openCT places the origin of the image CS at the detector 
@@ -4372,7 +5580,7 @@ projection image. In this case, the <code>imageCS</code> center should be set to
     else:
         raise RuntimeError(&#34;projectionMatrix: Please provide either a mode or an imageCS.&#34;)
 
-    world    = GeometryObject()
+    world    = CoordinateSystem()
     source   = copy.deepcopy(self.source)
     stage    = copy.deepcopy(self.stage)
 
@@ -4397,10 +5605,11 @@ projection image. In this case, the <code>imageCS</code> center should be set to
     stage.changeReferenceFrame(world, stage)
 
     # Translation vector from stage to source:
-    rfoc = source.center - stage.center
+    rfoc = stage.center - source.center
     xfoc = rfoc.x
     yfoc = rfoc.y
     zfoc = rfoc.z
+    SOD = rfoc.length()
 
     # Focus point on detector: principal, perpendicular ray.
     # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
@@ -4413,7 +5622,7 @@ projection image. In this case, the <code>imageCS</code> center should be set to
     # Mirror volume:
     M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 
-    # Translation matrix: stage -&gt; source:
+    # Move origin to source (the origin of the camera CS)
     F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
 
     # Rotations:
@@ -4430,6 +5639,7 @@ projection image. In this case, the <code>imageCS</code> center should be set to
 
     # Renormalize:
     lower_right = P.get(col=3, row=2)
+    print(&#34;lower right: {} SOD: {}&#34;.format(lower_right, SOD))
     if lower_right != 0:
         P.scale(1.0/lower_right)
 
@@ -4531,7 +5741,7 @@ Assuming an isotropically radiating source.</p></div>
     &#34;&#34;&#34;
 
     # SOD, SDD, ODD
-    world = GeometryObject()
+    world = CoordinateSystem()
     source_from_image = copy.deepcopy(self.source)
     stage_from_detector  = copy.deepcopy(self.stage)
 
@@ -4559,902 +5769,6 @@ Assuming an isotropically radiating source.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="ctsimu.geometry.GeometryObject"><code class="flex name class">
-<span>class <span class="ident">GeometryObject</span></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Coordinate system: center point and axis vectors.</p>
-<p>An object according to the CTSimU scenario specification,
-containing a center coordinate and an orientation in 3D space.</p>
-<p>The center and axis vectors are expressed in terms of the
-object's reference coordinate system, which must be known implicitly
-when objects of this class are used.</p>
-<p>Geometrical objects could be source, stage or detector.
-Samples would need additional attention due to possible attachment
-to stage coordinate system (instead of world).</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>center</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>The location of the center point in a reference
-coordinate system (usually world or stage).</dd>
-<dt><strong><code>u</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Basis vector for the u axis.</dd>
-<dt><strong><code>v</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Basis vector for the v axis.</dd>
-<dt><strong><code>w</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Basis vector for the w axis.</dd>
-</dl>
-<p>Initialize as a standard world coordinate system.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class GeometryObject:
-    &#34;&#34;&#34;Coordinate system: center point and axis vectors.
-
-    An object according to the CTSimU scenario specification,
-    containing a center coordinate and an orientation in 3D space.
-    
-    The center and axis vectors are expressed in terms of the
-    object&#39;s reference coordinate system, which must be known implicitly
-    when objects of this class are used.
-
-    Geometrical objects could be source, stage or detector.
-    Samples would need additional attention due to possible attachment
-    to stage coordinate system (instead of world).
-
-    Attributes
-    ----------
-    center : Vector
-        The location of the center point in a reference
-        coordinate system (usually world or stage).
-
-    u : Vector
-        Basis vector for the u axis.
-
-    v : Vector
-        Basis vector for the v axis.
-
-    w : Vector
-        Basis vector for the w axis.
-    &#34;&#34;&#34;
-
-    def __init__(self):
-        &#34;&#34;&#34;Initialize as a standard world coordinate system.&#34;&#34;&#34;
-        self.center  = Vector(0, 0, 0)
-        self.u = Vector(1, 0, 0)
-        self.v = Vector(0, 1, 0)
-        self.w = Vector(0, 0, 1)
-
-    def __str__(self):
-        &#34;&#34;&#34;Information string for easy printing.&#34;&#34;&#34;
-
-        txt  = &#34;Center: {}\n&#34;.format(self.center)
-        txt += &#34;u:      {}\n&#34;.format(self.u)
-        txt += &#34;v:      {}\n&#34;.format(self.v)
-        txt += &#34;w:      {}\n&#34;.format(self.w)
-        return txt
-
-    def json_import(self, geometry: dict):
-        &#34;&#34;&#34;Set up geometry from a JSON dictionary.
-
-        Parameters
-        ----------
-        geometry : dict
-            A parsed JSON dictionary from a CTSimU scenario description file.
-            See [2]_.
-
-        Raises
-        ------
-        KeyError
-            When expected JSON keys for center and vector x, y, z
-            components are not found in the dictionary.
-
-        References
-        ----------
-        * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
-        &#34;&#34;&#34;
-
-        # Get center position from JSON dict:
-        if &#34;center&#34; in geometry:
-            if &#34;x&#34; in geometry[&#34;center&#34;]:
-                cx = in_mm(geometry[&#34;center&#34;][&#34;x&#34;])
-            else:
-                raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
-
-            if &#34;y&#34; in geometry[&#34;center&#34;]:
-                cy = in_mm(geometry[&#34;center&#34;][&#34;y&#34;])
-            else:
-                raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
-            
-            if &#34;z&#34; in geometry[&#34;center&#34;]:
-                cz = in_mm(geometry[&#34;center&#34;][&#34;z&#34;])
-            else:
-                raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
-
-            self.center.set(cx, cy, cz)
-        # Try old British spelling (up to file format v0.9)
-        elif &#34;centre&#34; in geometry:
-            if &#34;x&#34; in geometry[&#34;centre&#34;]:
-                cx = in_mm(geometry[&#34;centre&#34;][&#34;x&#34;])
-            else:
-                raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
-
-            if &#34;y&#34; in geometry[&#34;centre&#34;]:
-                cy = in_mm(geometry[&#34;centre&#34;][&#34;y&#34;])
-            else:
-                raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
-            
-            if &#34;z&#34; in geometry[&#34;centre&#34;]:
-                cz = in_mm(geometry[&#34;centre&#34;][&#34;z&#34;])
-            else:
-                raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
-
-            self.center.set(cx, cy, cz)
-        else:
-            raise KeyError(&#34;JSON file is missing a geometry \&#34;center\&#34; section.&#34;)
-
-        # Get vector u from JSON dict:
-        if &#34;vector_u&#34; in geometry:
-            if &#34;x&#34; in geometry[&#34;vector_u&#34;]:
-                ux = geometry[&#34;vector_u&#34;][&#34;x&#34;]
-            else:
-                raise KeyError(&#34;No \&#34;x\&#34; component found for vector u.&#34;)
-
-            if &#34;y&#34; in geometry[&#34;vector_u&#34;]:
-                uy = geometry[&#34;vector_u&#34;][&#34;y&#34;]
-            else:
-                raise KeyError(&#34;No \&#34;y\&#34; component found for vector u.&#34;)
-
-            if &#34;z&#34; in geometry[&#34;vector_u&#34;]:
-                uz = geometry[&#34;vector_u&#34;][&#34;z&#34;]
-            else:
-                raise KeyError(&#34;No \&#34;z\&#34; component found for vector u.&#34;)
-        else:
-            raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_u\&#34; section.&#34;)
-
-        # Get vector w from JSON dict:
-        if &#34;vector_w&#34; in geometry:
-            if &#34;x&#34; in geometry[&#34;vector_w&#34;]:
-                wx = geometry[&#34;vector_w&#34;][&#34;x&#34;]
-            else:
-                raise KeyError(&#34;No \&#34;x\&#34; component found for vector w.&#34;)
-
-            if &#34;y&#34; in geometry[&#34;vector_w&#34;]:
-                wy = geometry[&#34;vector_w&#34;][&#34;y&#34;]
-            else:
-                raise KeyError(&#34;No \&#34;y\&#34; component found for vector w.&#34;)
-
-            if &#34;z&#34; in geometry[&#34;vector_w&#34;]:
-                wz = geometry[&#34;vector_w&#34;][&#34;z&#34;]
-            else:
-                raise KeyError(&#34;No \&#34;z\&#34; component found for vector w.&#34;)
-        else:
-            raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_w\&#34; section.&#34;)
-
-        # Set up the geometry from the information given in the JSON file:
-        c = Vector(cx, cy, cz)  # center
-        u = Vector(ux, uy, uz)  # u basis vector
-        w = Vector(wx, wy, wz)  # w basis vector
-        v = w.cross(u)
-        self.setup(c, u, v, w)
-        self.makeUnitCS()
-
-        # Apply deviations from the now-ideal geometry:
-        if &#34;deviation&#34; in geometry:
-            # Positional deviations:
-            if &#34;position&#34; in geometry[&#34;deviation&#34;]:
-                if &#34;x&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                    if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;] != None:
-                        translationX = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;])
-                        self.translateX(translationX)
-    
-                if &#34;y&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                    if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;] != None:
-                        translationY = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;])
-                        self.translateY(translationY)
-
-                if &#34;z&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                    if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;] != None:
-                        translationZ = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;])
-                        self.translateZ(translationZ)
-
-            # Rotations according to w&#39;&#39;v&#39;u convention:
-            if &#34;rotation&#34; in geometry[&#34;deviation&#34;]:
-                if &#34;w&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                    if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;] != None:
-                        angleAroundW = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;])
-                        self.rotateAroundW(angleAroundW)
-
-                if &#34;v&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                    if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;] != None:
-                        angleAroundV = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;])
-                        self.rotateAroundV(angleAroundV)
-
-                if &#34;u&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                    if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;] != None:
-                        angleAroundU = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;])
-                        self.rotateAroundU(angleAroundU)
-
-    def setup(self, center:Vector, u:Vector, v:Vector, w:Vector):
-        &#34;&#34;&#34;Set up center and orientation manually.
-
-        Parameters
-        ----------
-        center : Vector
-            Object&#39;s center point in reference coordinate system,
-            origin of local {u,v,w} coordinate system.
-
-        u : Vector
-            Basis vector u in terms of reference coordinate system.
-
-        v : Vector
-            Basis vector v in terms of reference coordinate system.
-
-        w : Vector
-            Basis vector w in terms of reference coordinate system.
-
-        Notes
-        -----
-        All basis vectors must be orthogonal.
-        &#34;&#34;&#34;
-
-        # Create new vectors from given components:
-        self.center  = center
-        self.u = u
-        self.v = v
-        self.w = w
-
-    def makeUnitCS(self):
-        &#34;&#34;&#34;Convert all basis vectors to unit vectors.&#34;&#34;&#34;
-        self.u.makeUnitVector()
-        self.v.makeUnitVector()
-        self.w.makeUnitVector()
-
-    def translate(self, translationVector: Vector):
-        &#34;&#34;&#34;Move object in space.
-
-        Parameters
-        ----------
-        translationVector : Vector
-            Vector by which the object&#39;s center point should be shifted.
-            Its components are added to the center&#39;s components.
-        &#34;&#34;&#34;
-        self.center.add(translationVector)
-
-    def translateX(self, dx: float):
-        &#34;&#34;&#34;Move object in x direction.
-
-        Parameters
-        ----------
-        dx : float
-            Shift amount in x direction.
-        &#34;&#34;&#34;
-        self.center.setx(self.center.x + float(dx))
-
-    def translateY(self, dy: float):
-        &#34;&#34;&#34;Move object in y direction.
-
-        Parameters
-        ----------
-        dy : float
-            Shift amount in y direction.
-        &#34;&#34;&#34;
-        self.center.sety(self.center.y + float(dy))
-
-    def translateZ(self, dz: float):
-        &#34;&#34;&#34;Move object in z direction.
-
-        Parameters
-        ----------
-        dz : float
-            Shift amount in z direction.
-        &#34;&#34;&#34;
-        self.center.setz(self.center.z + float(dz))
-
-    def rotateAroundU(self, angle: float):
-        &#34;&#34;&#34;Rotate object around its u axis by given angle [rad].
-        
-        Parameters
-        ----------
-        angle : float
-            Rotation angle in rad.
-        &#34;&#34;&#34;
-        self.v.rotate(self.u, angle)
-        self.w.rotate(self.u, angle)
-
-    def rotateAroundV(self, angle: float):
-        &#34;&#34;&#34;Rotate object around its v axis by given angle [rad].
-        
-        Parameters
-        ----------
-        angle : float
-            Rotation angle in rad.
-        &#34;&#34;&#34;
-        self.u.rotate(self.v, angle)
-        self.w.rotate(self.v, angle)
-
-    def rotateAroundW(self, angle: float):
-        &#34;&#34;&#34;Rotate object around its w axis by given angle [rad].
-        
-        Parameters
-        ----------
-        angle : float
-            Rotation angle in rad.
-        &#34;&#34;&#34;
-        self.u.rotate(self.w, angle)
-        self.v.rotate(self.w, angle)
-
-    def rotate(self, axis: Vector, angle: float):
-        &#34;&#34;&#34;Rotate object around a given axis by the given angle [rad].
-        
-        Parameters
-        ----------
-        axis : Vector
-            The axis of rotation, in terms of the object&#39;s
-            reference coordinate system (e.g. world).
-        
-        angle : float
-            Rotation angle in rad.
-        &#34;&#34;&#34;
-        self.u.rotate(axis, angle)
-        self.v.rotate(axis, angle)
-        self.w.rotate(axis, angle)
-
-    def changeReferenceFrame(self, fromCS:&#39;GeometryObject&#39;, toCS:&#39;GeometryObject&#39;):
-        &#34;&#34;&#34;Change the object&#39;s reference coordinate system.
-        
-        Parameters
-        ----------
-        fromCS : GeometryObject
-            Current reference coordinate system.
-        
-        toCS : GeometryObject
-            New reference coordinate system.
-
-        Notes
-        -----
-        Both fromCS and toCS must be in the same reference coordinate system
-        (e.g., the world coordinate system).
-        &#34;&#34;&#34;
-
-        # Rotate basis vectors into toCS:
-        T = basisTransformMatrix(fromCS, toCS)
-        self.u = T * self.u
-        self.v = T * self.v
-        self.w = T * self.w
-
-        world = GeometryObject()
-
-        # Move center to toCS:
-        # 1. Translate self.center by difference of toCS and fromCS
-        #    -&gt; Origins are &#34;superimposed&#34;.
-        # 2. Rotate self.center from fromCS to toCS.
-
-        # Translation vector in world coordinates:
-        translator = fromCS.center - toCS.center  # in world coordinates
-        # Translation vector in fromCS coordinates:
-        M = basisTransformMatrix(world, fromCS)
-        translator = M*translator
-        relCenter = self.center + translator
-        self.center = T*relCenter</code></pre>
-</details>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="ctsimu.geometry.Detector" href="#ctsimu.geometry.Detector">Detector</a></li>
-</ul>
-<h3>Methods</h3>
-<dl>
-<dt id="ctsimu.geometry.GeometryObject.changeReferenceFrame"><code class="name flex">
-<span>def <span class="ident">changeReferenceFrame</span></span>(<span>self, fromCS: <a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a>, toCS: <a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Change the object's reference coordinate system.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>fromCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
-<dd>Current reference coordinate system.</dd>
-<dt><strong><code>toCS</code></strong> :&ensp;<code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></dt>
-<dd>New reference coordinate system.</dd>
-</dl>
-<h2 id="notes">Notes</h2>
-<p>Both fromCS and toCS must be in the same reference coordinate system
-(e.g., the world coordinate system).</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def changeReferenceFrame(self, fromCS:&#39;GeometryObject&#39;, toCS:&#39;GeometryObject&#39;):
-    &#34;&#34;&#34;Change the object&#39;s reference coordinate system.
-    
-    Parameters
-    ----------
-    fromCS : GeometryObject
-        Current reference coordinate system.
-    
-    toCS : GeometryObject
-        New reference coordinate system.
-
-    Notes
-    -----
-    Both fromCS and toCS must be in the same reference coordinate system
-    (e.g., the world coordinate system).
-    &#34;&#34;&#34;
-
-    # Rotate basis vectors into toCS:
-    T = basisTransformMatrix(fromCS, toCS)
-    self.u = T * self.u
-    self.v = T * self.v
-    self.w = T * self.w
-
-    world = GeometryObject()
-
-    # Move center to toCS:
-    # 1. Translate self.center by difference of toCS and fromCS
-    #    -&gt; Origins are &#34;superimposed&#34;.
-    # 2. Rotate self.center from fromCS to toCS.
-
-    # Translation vector in world coordinates:
-    translator = fromCS.center - toCS.center  # in world coordinates
-    # Translation vector in fromCS coordinates:
-    M = basisTransformMatrix(world, fromCS)
-    translator = M*translator
-    relCenter = self.center + translator
-    self.center = T*relCenter</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.json_import"><code class="name flex">
-<span>def <span class="ident">json_import</span></span>(<span>self, geometry: dict)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set up geometry from a JSON dictionary.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>geometry</code></strong> :&ensp;<code>dict</code></dt>
-<dd>A parsed JSON dictionary from a CTSimU scenario description file.
-See [2]_.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>KeyError</code></dt>
-<dd>When expected JSON keys for center and vector x, y, z
-components are not found in the dictionary.</dd>
-</dl>
-<h2 id="references">References</h2>
-<ul>
-<li>CTSimU Scenario Descriptions: <a href="https://bamresearch.github.io/ctsimu-scenarios/">https://bamresearch.github.io/ctsimu-scenarios/</a></li>
-</ul></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def json_import(self, geometry: dict):
-    &#34;&#34;&#34;Set up geometry from a JSON dictionary.
-
-    Parameters
-    ----------
-    geometry : dict
-        A parsed JSON dictionary from a CTSimU scenario description file.
-        See [2]_.
-
-    Raises
-    ------
-    KeyError
-        When expected JSON keys for center and vector x, y, z
-        components are not found in the dictionary.
-
-    References
-    ----------
-    * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
-    &#34;&#34;&#34;
-
-    # Get center position from JSON dict:
-    if &#34;center&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;center&#34;]:
-            cx = in_mm(geometry[&#34;center&#34;][&#34;x&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;center&#34;]:
-            cy = in_mm(geometry[&#34;center&#34;][&#34;y&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
-        
-        if &#34;z&#34; in geometry[&#34;center&#34;]:
-            cz = in_mm(geometry[&#34;center&#34;][&#34;z&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
-
-        self.center.set(cx, cy, cz)
-    # Try old British spelling (up to file format v0.9)
-    elif &#34;centre&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;centre&#34;]:
-            cx = in_mm(geometry[&#34;centre&#34;][&#34;x&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; coordinate found for the center.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;centre&#34;]:
-            cy = in_mm(geometry[&#34;centre&#34;][&#34;y&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; coordinate found for the center.&#34;)
-        
-        if &#34;z&#34; in geometry[&#34;centre&#34;]:
-            cz = in_mm(geometry[&#34;centre&#34;][&#34;z&#34;])
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; coordinate found for the center.&#34;)
-
-        self.center.set(cx, cy, cz)
-    else:
-        raise KeyError(&#34;JSON file is missing a geometry \&#34;center\&#34; section.&#34;)
-
-    # Get vector u from JSON dict:
-    if &#34;vector_u&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;vector_u&#34;]:
-            ux = geometry[&#34;vector_u&#34;][&#34;x&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; component found for vector u.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;vector_u&#34;]:
-            uy = geometry[&#34;vector_u&#34;][&#34;y&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; component found for vector u.&#34;)
-
-        if &#34;z&#34; in geometry[&#34;vector_u&#34;]:
-            uz = geometry[&#34;vector_u&#34;][&#34;z&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; component found for vector u.&#34;)
-    else:
-        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_u\&#34; section.&#34;)
-
-    # Get vector w from JSON dict:
-    if &#34;vector_w&#34; in geometry:
-        if &#34;x&#34; in geometry[&#34;vector_w&#34;]:
-            wx = geometry[&#34;vector_w&#34;][&#34;x&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;x\&#34; component found for vector w.&#34;)
-
-        if &#34;y&#34; in geometry[&#34;vector_w&#34;]:
-            wy = geometry[&#34;vector_w&#34;][&#34;y&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;y\&#34; component found for vector w.&#34;)
-
-        if &#34;z&#34; in geometry[&#34;vector_w&#34;]:
-            wz = geometry[&#34;vector_w&#34;][&#34;z&#34;]
-        else:
-            raise KeyError(&#34;No \&#34;z\&#34; component found for vector w.&#34;)
-    else:
-        raise KeyError(&#34;JSON file is missing a geometry \&#34;vector_w\&#34; section.&#34;)
-
-    # Set up the geometry from the information given in the JSON file:
-    c = Vector(cx, cy, cz)  # center
-    u = Vector(ux, uy, uz)  # u basis vector
-    w = Vector(wx, wy, wz)  # w basis vector
-    v = w.cross(u)
-    self.setup(c, u, v, w)
-    self.makeUnitCS()
-
-    # Apply deviations from the now-ideal geometry:
-    if &#34;deviation&#34; in geometry:
-        # Positional deviations:
-        if &#34;position&#34; in geometry[&#34;deviation&#34;]:
-            if &#34;x&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;] != None:
-                    translationX = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;x&#34;])
-                    self.translateX(translationX)
-
-            if &#34;y&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;] != None:
-                    translationY = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;y&#34;])
-                    self.translateY(translationY)
-
-            if &#34;z&#34; in geometry[&#34;deviation&#34;][&#34;position&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;] != None:
-                    translationZ = in_mm(geometry[&#34;deviation&#34;][&#34;position&#34;][&#34;z&#34;])
-                    self.translateZ(translationZ)
-
-        # Rotations according to w&#39;&#39;v&#39;u convention:
-        if &#34;rotation&#34; in geometry[&#34;deviation&#34;]:
-            if &#34;w&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;] != None:
-                    angleAroundW = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;w&#34;])
-                    self.rotateAroundW(angleAroundW)
-
-            if &#34;v&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;] != None:
-                    angleAroundV = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;v&#34;])
-                    self.rotateAroundV(angleAroundV)
-
-            if &#34;u&#34; in geometry[&#34;deviation&#34;][&#34;rotation&#34;]:
-                if geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;] != None:
-                    angleAroundU = in_rad(geometry[&#34;deviation&#34;][&#34;rotation&#34;][&#34;u&#34;])
-                    self.rotateAroundU(angleAroundU)</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.makeUnitCS"><code class="name flex">
-<span>def <span class="ident">makeUnitCS</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Convert all basis vectors to unit vectors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def makeUnitCS(self):
-    &#34;&#34;&#34;Convert all basis vectors to unit vectors.&#34;&#34;&#34;
-    self.u.makeUnitVector()
-    self.v.makeUnitVector()
-    self.w.makeUnitVector()</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.rotate"><code class="name flex">
-<span>def <span class="ident">rotate</span></span>(<span>self, axis: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, angle: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Rotate object around a given axis by the given angle [rad].</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>axis</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>The axis of rotation, in terms of the object's
-reference coordinate system (e.g. world).</dd>
-<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
-<dd>Rotation angle in rad.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotate(self, axis: Vector, angle: float):
-    &#34;&#34;&#34;Rotate object around a given axis by the given angle [rad].
-    
-    Parameters
-    ----------
-    axis : Vector
-        The axis of rotation, in terms of the object&#39;s
-        reference coordinate system (e.g. world).
-    
-    angle : float
-        Rotation angle in rad.
-    &#34;&#34;&#34;
-    self.u.rotate(axis, angle)
-    self.v.rotate(axis, angle)
-    self.w.rotate(axis, angle)</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.rotateAroundU"><code class="name flex">
-<span>def <span class="ident">rotateAroundU</span></span>(<span>self, angle: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Rotate object around its u axis by given angle [rad].</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
-<dd>Rotation angle in rad.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotateAroundU(self, angle: float):
-    &#34;&#34;&#34;Rotate object around its u axis by given angle [rad].
-    
-    Parameters
-    ----------
-    angle : float
-        Rotation angle in rad.
-    &#34;&#34;&#34;
-    self.v.rotate(self.u, angle)
-    self.w.rotate(self.u, angle)</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.rotateAroundV"><code class="name flex">
-<span>def <span class="ident">rotateAroundV</span></span>(<span>self, angle: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Rotate object around its v axis by given angle [rad].</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
-<dd>Rotation angle in rad.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotateAroundV(self, angle: float):
-    &#34;&#34;&#34;Rotate object around its v axis by given angle [rad].
-    
-    Parameters
-    ----------
-    angle : float
-        Rotation angle in rad.
-    &#34;&#34;&#34;
-    self.u.rotate(self.v, angle)
-    self.w.rotate(self.v, angle)</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.rotateAroundW"><code class="name flex">
-<span>def <span class="ident">rotateAroundW</span></span>(<span>self, angle: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Rotate object around its w axis by given angle [rad].</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>angle</code></strong> :&ensp;<code>float</code></dt>
-<dd>Rotation angle in rad.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotateAroundW(self, angle: float):
-    &#34;&#34;&#34;Rotate object around its w axis by given angle [rad].
-    
-    Parameters
-    ----------
-    angle : float
-        Rotation angle in rad.
-    &#34;&#34;&#34;
-    self.u.rotate(self.w, angle)
-    self.v.rotate(self.w, angle)</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.setup"><code class="name flex">
-<span>def <span class="ident">setup</span></span>(<span>self, center: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, u: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, v: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>, w: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set up center and orientation manually.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>center</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Object's center point in reference coordinate system,
-origin of local {u,v,w} coordinate system.</dd>
-<dt><strong><code>u</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Basis vector u in terms of reference coordinate system.</dd>
-<dt><strong><code>v</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Basis vector v in terms of reference coordinate system.</dd>
-<dt><strong><code>w</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Basis vector w in terms of reference coordinate system.</dd>
-</dl>
-<h2 id="notes">Notes</h2>
-<p>All basis vectors must be orthogonal.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setup(self, center:Vector, u:Vector, v:Vector, w:Vector):
-    &#34;&#34;&#34;Set up center and orientation manually.
-
-    Parameters
-    ----------
-    center : Vector
-        Object&#39;s center point in reference coordinate system,
-        origin of local {u,v,w} coordinate system.
-
-    u : Vector
-        Basis vector u in terms of reference coordinate system.
-
-    v : Vector
-        Basis vector v in terms of reference coordinate system.
-
-    w : Vector
-        Basis vector w in terms of reference coordinate system.
-
-    Notes
-    -----
-    All basis vectors must be orthogonal.
-    &#34;&#34;&#34;
-
-    # Create new vectors from given components:
-    self.center  = center
-    self.u = u
-    self.v = v
-    self.w = w</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.translate"><code class="name flex">
-<span>def <span class="ident">translate</span></span>(<span>self, translationVector: <a title="ctsimu.primitives.Vector" href="primitives.html#ctsimu.primitives.Vector">Vector</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Move object in space.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>translationVector</code></strong> :&ensp;<code>Vector</code></dt>
-<dd>Vector by which the object's center point should be shifted.
-Its components are added to the center's components.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def translate(self, translationVector: Vector):
-    &#34;&#34;&#34;Move object in space.
-
-    Parameters
-    ----------
-    translationVector : Vector
-        Vector by which the object&#39;s center point should be shifted.
-        Its components are added to the center&#39;s components.
-    &#34;&#34;&#34;
-    self.center.add(translationVector)</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.translateX"><code class="name flex">
-<span>def <span class="ident">translateX</span></span>(<span>self, dx: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Move object in x direction.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>dx</code></strong> :&ensp;<code>float</code></dt>
-<dd>Shift amount in x direction.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def translateX(self, dx: float):
-    &#34;&#34;&#34;Move object in x direction.
-
-    Parameters
-    ----------
-    dx : float
-        Shift amount in x direction.
-    &#34;&#34;&#34;
-    self.center.setx(self.center.x + float(dx))</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.translateY"><code class="name flex">
-<span>def <span class="ident">translateY</span></span>(<span>self, dy: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Move object in y direction.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>dy</code></strong> :&ensp;<code>float</code></dt>
-<dd>Shift amount in y direction.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def translateY(self, dy: float):
-    &#34;&#34;&#34;Move object in y direction.
-
-    Parameters
-    ----------
-    dy : float
-        Shift amount in y direction.
-    &#34;&#34;&#34;
-    self.center.sety(self.center.y + float(dy))</code></pre>
-</details>
-</dd>
-<dt id="ctsimu.geometry.GeometryObject.translateZ"><code class="name flex">
-<span>def <span class="ident">translateZ</span></span>(<span>self, dz: float)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Move object in z direction.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>dz</code></strong> :&ensp;<code>float</code></dt>
-<dd>Shift amount in z direction.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def translateZ(self, dz: float):
-    &#34;&#34;&#34;Move object in z direction.
-
-    Parameters
-    ----------
-    dz : float
-        Shift amount in z direction.
-    &#34;&#34;&#34;
-    self.center.setz(self.center.z + float(dz))</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
 </dl>
 </section>
 </article>
@@ -5466,7 +5780,17 @@ Its components are added to the center's components.</dd>
 </header>
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#coordinate-systems">Coordinate Systems</a></li>
+<li><a href="#full-ct-geometry">Full CT Geometry</a><ul>
+<li><a href="#detector-convention">Detector convention</a></li>
+<li><a href="#stage-convention">Stage convention</a></li>
+<li><a href="#source-convention">Source convention</a></li>
+<li><a href="#example-setup">Example Setup</a></li>
+</ul>
+</li>
+<li><a href="#reference-frames">Reference Frames</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
@@ -5483,6 +5807,23 @@ Its components are added to the center's components.</dd>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.geometry.CoordinateSystem.changeReferenceFrame" href="#ctsimu.geometry.CoordinateSystem.changeReferenceFrame">changeReferenceFrame</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.json_import" href="#ctsimu.geometry.CoordinateSystem.json_import">json_import</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.makeUnitCS" href="#ctsimu.geometry.CoordinateSystem.makeUnitCS">makeUnitCS</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotate" href="#ctsimu.geometry.CoordinateSystem.rotate">rotate</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotateAroundU" href="#ctsimu.geometry.CoordinateSystem.rotateAroundU">rotateAroundU</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotateAroundV" href="#ctsimu.geometry.CoordinateSystem.rotateAroundV">rotateAroundV</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.rotateAroundW" href="#ctsimu.geometry.CoordinateSystem.rotateAroundW">rotateAroundW</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.setup" href="#ctsimu.geometry.CoordinateSystem.setup">setup</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translate" href="#ctsimu.geometry.CoordinateSystem.translate">translate</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translateX" href="#ctsimu.geometry.CoordinateSystem.translateX">translateX</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translateY" href="#ctsimu.geometry.CoordinateSystem.translateY">translateY</a></code></li>
+<li><code><a title="ctsimu.geometry.CoordinateSystem.translateZ" href="#ctsimu.geometry.CoordinateSystem.translateZ">translateZ</a></code></li>
+</ul>
+</li>
 <li>
 <h4><code><a title="ctsimu.geometry.Detector" href="#ctsimu.geometry.Detector">Detector</a></code></h4>
 <ul class="">
@@ -5508,23 +5849,6 @@ Its components are added to the center's components.</dd>
 <li><code><a title="ctsimu.geometry.Geometry.solidAngle" href="#ctsimu.geometry.Geometry.solidAngle">solidAngle</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.triangleAreaOnUnitSphere" href="#ctsimu.geometry.Geometry.triangleAreaOnUnitSphere">triangleAreaOnUnitSphere</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.update" href="#ctsimu.geometry.Geometry.update">update</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="ctsimu.geometry.GeometryObject" href="#ctsimu.geometry.GeometryObject">GeometryObject</a></code></h4>
-<ul class="">
-<li><code><a title="ctsimu.geometry.GeometryObject.changeReferenceFrame" href="#ctsimu.geometry.GeometryObject.changeReferenceFrame">changeReferenceFrame</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.json_import" href="#ctsimu.geometry.GeometryObject.json_import">json_import</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.makeUnitCS" href="#ctsimu.geometry.GeometryObject.makeUnitCS">makeUnitCS</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotate" href="#ctsimu.geometry.GeometryObject.rotate">rotate</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundU" href="#ctsimu.geometry.GeometryObject.rotateAroundU">rotateAroundU</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundV" href="#ctsimu.geometry.GeometryObject.rotateAroundV">rotateAroundV</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.rotateAroundW" href="#ctsimu.geometry.GeometryObject.rotateAroundW">rotateAroundW</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.setup" href="#ctsimu.geometry.GeometryObject.setup">setup</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translate" href="#ctsimu.geometry.GeometryObject.translate">translate</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translateX" href="#ctsimu.geometry.GeometryObject.translateX">translateX</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translateY" href="#ctsimu.geometry.GeometryObject.translateY">translateY</a></code></li>
-<li><code><a title="ctsimu.geometry.GeometryObject.translateZ" href="#ctsimu.geometry.GeometryObject.translateZ">translateZ</a></code></li>
 </ul>
 </li>
 </ul>

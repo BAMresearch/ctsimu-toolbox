@@ -1,4 +1,150 @@
 # -*- coding: UTF-8 -*-
+"""
+Coordinate systems, transformations and projection matrix functionality.
+
+Coordinate Systems
+==================
+
+The geometry subpackage provides a `CoordinateSystem` class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (`center`) and three basis vectors (`u`, `v`, `w`). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The `center` acts as the pivot point for rotations.
+
+Example for creating and manipulating an object:
+
+```python
+from ctsimu.geometry import *
+from ctsimu.helpers  import *  # provides deg2rad()
+
+mySpecimen = CoordinateSystem()
+
+# Set position and orientation:
+mySpecimen.center = Vector(250, 0, 0)
+mySpecimen.u = Vector(0, -1,  0)
+mySpecimen.v = Vector(0,  0, -1)
+mySpecimen.w = Vector(1,  0,  0)
+
+# Manipulate:
+mySpecimen.translate(translationVector = Vector(5.2, 0, 4.3))
+mySpecimen.rotateAroundU(angle = deg2rad(2.0))
+mySpecimen.rotate(axis = Vector(1, 1, 1), angle = deg2rad(5.0))
+
+print("My specimen's new location and orientation:")
+print(mySpecimen)
+```
+
+Full CT Geometry
+================
+
+For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The `Geometry` class bundles three coordinate systems (one for each of those components), and additional information about the detector (using the `Detector` class, an extension of a regular `CoordinateSystem`). The following figure shows their standard orientations when a CT geometry is initialized.
+
+![Standard coordinate system](pictures/geometry.png "Standard coordinate system")
+
+The orientation of the coordinate system and all components can be changed by rotations or by manually setting the object basis vectors. However, it is important to keep the following conventions.
+
+Detector convention
+-------------------
+
+* The detector's `u` vector is its row vector.
+* The detector's `v` vector is its column vector.
+* The detector's `w` vector has no special meaning. It is a planar normal that must be chosen such that the detector's coordinate system remains right-handed.
+
+Stage convention
+----------------
+
+* The stage's `w` vector is its axis of CT rotation.
+
+Source convention
+-----------------
+
+There is currently no restriction on the source coordinate system. We usually assume its `w` axis to be the direction of the principal ray, but this is not a necessity.
+
+Example Setup
+-------------
+
+In the following example, we set up a standard CT geometry.
+
+```python
+from ctsimu.geometry import *
+
+# General CT parameters:
+SOD = 250.0 # mm
+SDD = 800.0 # mm
+
+pixelSize = 0.2 # mm
+pixelColumns = 2000
+pixelRows = 1000
+
+# Create a CT geometry object:
+myCT = Geometry()
+
+# Stage:
+myCT.stage.center.x = SOD
+
+# Detector:
+myCT.detector.center.x = SDD
+myCT.detector.setSize(
+    pixelsU = pixelColumns,
+    pixelsV = pixelRows,
+    pitchU = pixelSize,
+    pitchV = pixelSize
+    )
+
+myCT.update() # calculates derived geometry parameters
+
+print(myCT.info())
+```
+
+Reference Frames
+================
+
+Implicitly, each coordinate system has a reference coordinate system (its "reference frame") in which its `center` and `u`, `v`, `w` basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the **world coordinate system**. Any new `CoordinateSystem` object is initialized to be aligned with the world coordinate system:
+
+```python
+from ctsimu.geometry import *
+
+world = CoordinateSystem()
+
+print("The World:")
+print(world)
+
+\"\"\"
+The World:
+Center: ( 0.0000000,  0.0000000,  0.0000000)
+u:      ( 1.0000000,  0.0000000,  0.0000000)
+v:      ( 0.0000000,  1.0000000,  0.0000000)
+w:      ( 0.0000000,  0.0000000,  1.0000000)
+\"\"\"
+```
+
+You can change the reference frame of a `CoordinateSystem`. In the following example, we set up a CT geometry with a stage that is tilted by 2°. We place a specimen object in the stage coordinate system and move it "upwards" by 5 mm along the (now tilted) axis of rotation. Afterwards, we change the specimen's reference frame to see where it is actually located in the world coordinate system.
+
+```python
+from ctsimu.geometry import *
+from ctsimu.helpers  import *  # provides deg2rad()
+
+world = CoordinateSystem()
+
+# Set up a quick CT geometry with a tilted stage axis:
+myCT = Geometry()
+myCT.stage.center.x = 250
+myCT.stage.rotateAroundU(angle = deg2rad(2.0))
+myCT.detector.center.x = 800
+
+# Assume a specimen in the (tilted) stage
+# coordinate system, shifted 5 mm "upwards"
+# along the axis of rotation:
+mySpecimen = CoordinateSystem()
+mySpecimen.translateZ(5.0)
+
+# Change the specimen's reference frame to
+# the world coordinate system:
+mySpecimen.changeReferenceFrame(fromCS = myCT.stage, toCS = world)
+
+print("The specimen's world coordinates:")
+print(mySpecimen)
+```
+
+**Note:** when changing reference frames, the original and the target reference frame must both have a common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).
+"""
+
 import numpy
 import os    # File and path handling
 import json
@@ -10,15 +156,15 @@ from datetime import datetime
 from .primitives import *
 from .image import Image  # To create detector flat field
 
-def basisTransformMatrix(fromCS:'GeometryObject', toCS:'GeometryObject') -> Matrix:
+def basisTransformMatrix(fromCS:'CoordinateSystem', toCS:'CoordinateSystem') -> Matrix:
     """Calculate a matrix that transforms coordinates from `fromCS` to `toCS`.
 
     Parameters
     ----------
-    fromCS : GeometryObject
+    fromCS : CoordinateSystem
         The origin coordinate system.
 
-    toCS : GeometryObject
+    toCS : CoordinateSystem
         The target coordinate system.
 
     Returns
@@ -51,7 +197,7 @@ def basisTransformMatrix(fromCS:'GeometryObject', toCS:'GeometryObject') -> Matr
 
     return T
 
-class GeometryObject:
+class CoordinateSystem:
     """Coordinate system: center point and axis vectors.
 
     An object according to the CTSimU scenario specification,
@@ -103,18 +249,15 @@ class GeometryObject:
         Parameters
         ----------
         geometry : dict
-            A parsed JSON dictionary from a CTSimU scenario description file.
-            See [2]_.
+            A parsed JSON dictionary from a [CTSimU scenario description] file.
+
+        [CTSimU scenario description]: https://bamresearch.github.io/ctsimu-scenarios/
 
         Raises
         ------
         KeyError
             When expected JSON keys for center and vector x, y, z
             components are not found in the dictionary.
-
-        References
-        ----------
-        * CTSimU Scenario Descriptions: https://bamresearch.github.io/ctsimu-scenarios/
         """
 
         # Get center position from JSON dict:
@@ -320,7 +463,7 @@ class GeometryObject:
         Parameters
         ----------
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         """
         self.v.rotate(self.u, angle)
         self.w.rotate(self.u, angle)
@@ -331,7 +474,7 @@ class GeometryObject:
         Parameters
         ----------
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         """
         self.u.rotate(self.v, angle)
         self.w.rotate(self.v, angle)
@@ -342,7 +485,7 @@ class GeometryObject:
         Parameters
         ----------
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         """
         self.u.rotate(self.w, angle)
         self.v.rotate(self.w, angle)
@@ -357,21 +500,21 @@ class GeometryObject:
             reference coordinate system (e.g. world).
         
         angle : float
-            Rotation angle in rad.
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
         """
         self.u.rotate(axis, angle)
         self.v.rotate(axis, angle)
         self.w.rotate(axis, angle)
 
-    def changeReferenceFrame(self, fromCS:'GeometryObject', toCS:'GeometryObject'):
+    def changeReferenceFrame(self, fromCS:'CoordinateSystem', toCS:'CoordinateSystem'):
         """Change the object's reference coordinate system.
         
         Parameters
         ----------
-        fromCS : GeometryObject
+        fromCS : CoordinateSystem
             Current reference coordinate system.
         
-        toCS : GeometryObject
+        toCS : CoordinateSystem
             New reference coordinate system.
 
         Notes
@@ -386,7 +529,7 @@ class GeometryObject:
         self.v = T * self.v
         self.w = T * self.w
 
-        world = GeometryObject()
+        world = CoordinateSystem()
 
         # Move center to toCS:
         # 1. Translate self.center by difference of toCS and fromCS
@@ -401,7 +544,7 @@ class GeometryObject:
         relCenter = self.center + translator
         self.center = T*relCenter
 
-class Detector(GeometryObject):
+class Detector(CoordinateSystem):
     """Detector as geometrical object.
 
     With additional attributes for the spatial extension and
@@ -447,13 +590,13 @@ class Detector(GeometryObject):
     """
 
     def __init__(self):
-        """Initialize as a standard GeometryObject.
+        """Initialize as a standard CoordinateSystem.
 
         Orientation, position and size must be set up manually afterwards.
         """
 
         # Call init from parent class:
-        GeometryObject.__init__(self)
+        CoordinateSystem.__init__(self)
 
         self.pixelsU     = None  # Detector pixels in u direction
         self.pixelsV     = None  # Detector pixels in v direction
@@ -464,7 +607,7 @@ class Detector(GeometryObject):
 
         self.pixelOrigin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
 
-    def setSize(self, nPixelsU:int = None, nPixelsV:int = None, pitchU:float = None, pitchV:float = None):
+    def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
         """Set the physical size of the detector.
 
         From the given parameters (number of pixels and pitch), the physical
@@ -476,10 +619,10 @@ class Detector(GeometryObject):
 
         Parameters
         ----------
-        nPixelsU : int
+        pixelsU : int
             Number of pixels in u direction.
 
-        nPixelsV : int
+        pixelsV : int
             Number of pixels in v direction.
 
         pitchU : float
@@ -489,8 +632,8 @@ class Detector(GeometryObject):
             Pixel pitch in v direction.
         """
 
-        self.pixelsU = int(nPixelsU)
-        self.pixelsV = int(nPixelsV)
+        self.pixelsU = int(pixelsU)
+        self.pixelsV = int(pixelsV)
         self.pitchU = float(pitchU)
         self.pitchV = float(pitchV)
 
@@ -618,10 +761,10 @@ class Geometry:
     detector : Detector
         The detector geometry.
 
-    source : GeometryObject
+    source : CoordinateSystem
         The source geometry.
 
-    stage : GeometryObject
+    stage : CoordinateSystem
         The stage geometry.
 
     SDD : float
@@ -662,8 +805,16 @@ class Geometry:
 
         """
         self.detector    = Detector()
-        self.source      = GeometryObject()
-        self.stage       = GeometryObject()
+        self.source      = CoordinateSystem()
+        self.stage       = CoordinateSystem()
+
+        # Initialize source and detector to standard CTSimU orientation:
+        self.detector.u = Vector(0, -1,  0)
+        self.detector.v = Vector(0,  0, -1)
+        self.detector.w = Vector(1,  0,  0)
+        self.source.u   = Vector(0, -1,  0)
+        self.source.v   = Vector(0,  0, -1)
+        self.source.w   = Vector(1,  0,  0)
 
         self.SDD = None
         self.SOD = None
@@ -732,6 +883,9 @@ class Geometry:
             self.update()            
         else:
             raise Exception("JSON scenario file not available.")
+
+    def __str__(self):
+        return self.info()
         
     def update(self):
         """Calculate derived geometry parameters.
@@ -756,7 +910,7 @@ class Geometry:
         """
 
         # SOD, SDD, ODD
-        world = GeometryObject()
+        world = CoordinateSystem()
         source_from_image = copy.deepcopy(self.source)
         stage_from_detector  = copy.deepcopy(self.stage)
 
@@ -791,6 +945,8 @@ class Geometry:
             Information string for humans.
         """
 
+        self.update()
+
         txt  = "Detector\n"
         txt += "===========================================================\n"
         txt += "Center:          {}\n".format(self.detector.center)
@@ -798,12 +954,9 @@ class Geometry:
         txt += "v:               {}\n".format(self.detector.v)
         txt += "w:               {}\n".format(self.detector.w)
         txt += "Pixels:          {cols} x {rows}\n".format(cols=self.detector.cols(), rows=self.detector.rows())
-        txt += "Pitch:           {pitchU} mm x {pitchV} mm\n".format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
-        txt += "Physical Size:   {width} mm x {height} mm\n".format(width=self.detector.physWidth, height=self.detector.physHeight)
-        txt += "Center Distance: {} mm\n".format(self.detector.center.distance(self.source.center))
+        txt += "Pitch:           {pitchU} x {pitchV}\n".format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
+        txt += "Physical Size:   {width} x {height}\n".format(width=self.detector.physWidth, height=self.detector.physHeight)
 
-        # Source - Detector distance (SDD) defined by shortest distance between source and detector:
-        txt += "SDD:             {} mm\n".format(self.SDD)
         txt += "Brightest Spot:\n"
         txt += "  World:         {}\n".format(self.brightestSpotWorld)
         txt += "  Pixels:        {}\n".format(self.brightestSpotDetector)
@@ -816,16 +969,32 @@ class Geometry:
         txt += "v:               {}\n".format(self.source.v)
         txt += "w:               {}\n".format(self.source.w)
 
+        txt += "\n"
+        txt += "Stage:\n"
+        txt += "===========================================================\n"
+        txt += "Center:          {}\n".format(self.stage.center)
+        txt += "u:               {}\n".format(self.stage.u)
+        txt += "v:               {}\n".format(self.stage.v)
+        txt += "w:               {}\n".format(self.stage.w)
+
+        txt += "\n"
+        txt += "Geometry Parameters:\n"
+        txt += "===========================================================\n"
+        # Source - Detector distance (SDD) defined by shortest distance between source and detector:
+        txt += "SDD:             {}\n".format(self.SDD)
+        txt += "ODD:             {}\n".format(self.ODD)
+        txt += "SOD:             {}\n".format(self.SOD)
+
         return txt
 
     def projectionMatrix(self,
-                         imageCS:GeometryObject=None,
+                         imageCS:CoordinateSystem=None,
                          mode:str=None):
         """Calculate a projection matrix for the current geometry.
 
         Parameters
         ----------
-        imageCS : GeometryObject
+        imageCS : CoordinateSystem
             Position of the image coordinate system in terms of the
             detector coordinate system. See notes for details.
 
@@ -851,17 +1020,16 @@ class Geometry:
         to be unit vectors).
 
         The center (origin) of the `imageCS` should be where the reconstruction
-        software places the origin of its own image or detector coordinate
-        system. For example, CERA places it at the lower-left corner of the
-        projection image. In this case, the `imageCS` center should be set to
-        ()
+        software places the origin of its own projection image coordinate
+        system. For example, CERA places it at the center of the lower-left pixel
+        of the projection image.
         """
 
         validModes = ["openCT", "CERA"]
 
         if mode is not None:
             if mode in validModes:  # Override imageCS
-                image = GeometryObject()
+                image = CoordinateSystem()
 
                 if mode == "openCT":
                     """openCT places the origin of the image CS at the detector 
@@ -898,7 +1066,7 @@ class Geometry:
         else:
             raise RuntimeError("projectionMatrix: Please provide either a mode or an imageCS.")
 
-        world    = GeometryObject()
+        world    = CoordinateSystem()
         source   = copy.deepcopy(self.source)
         stage    = copy.deepcopy(self.stage)
 
@@ -923,10 +1091,11 @@ class Geometry:
         stage.changeReferenceFrame(world, stage)
 
         # Translation vector from stage to source:
-        rfoc = source.center - stage.center
+        rfoc = stage.center - source.center
         xfoc = rfoc.x
         yfoc = rfoc.y
         zfoc = rfoc.z
+        SOD = rfoc.length()
 
         # Focus point on detector: principal, perpendicular ray.
         # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
@@ -939,7 +1108,7 @@ class Geometry:
         # Mirror volume:
         M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
 
-        # Translation matrix: stage -> source:
+        # Move origin to source (the origin of the camera CS)
         F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
 
         # Rotations:
@@ -956,6 +1125,7 @@ class Geometry:
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
+        print("lower right: {} SOD: {}".format(lower_right, SOD))
         if lower_right != 0:
             P.scale(1.0/lower_right)
 
@@ -1280,7 +1450,7 @@ class Geometry:
         # Change to the detector coordinate system:
         D = copy.deepcopy(self.detector)
         S = copy.deepcopy(self.source)
-        world = GeometryObject()  # will be initialized as world
+        world = CoordinateSystem()  # will be initialized as world
 
         S.changeReferenceFrame(world, D)
         D.changeReferenceFrame(world, D)
