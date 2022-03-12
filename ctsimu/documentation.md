@@ -5,7 +5,7 @@ In its current version, the toolbox can be used for the following tasks:
 
 Image conversion
 ----------------
-For image conversion, and "empty" `ctsimu.processing.pipeline` can be used. The following properties can be converted:
+For image conversion, an "empty" `ctsimu.processing.pipeline` can be used. The following properties can be converted:
 
 * Image format conversion (RAW, TIFF),
 * Data type conversion (int, float),

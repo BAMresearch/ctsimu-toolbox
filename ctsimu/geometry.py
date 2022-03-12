@@ -95,7 +95,7 @@ print(myCT.info())
 Reference Frames
 ================
 
-Implicitly, each coordinate system has a reference coordinate system (its "reference frame") in which its `center` and `u`, `v`, `w` basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the **world coordinate system**. Any new `CoordinateSystem` object is initialized to be aligned with the world coordinate system:
+Implicitly, each coordinate system has a reference coordinate system (its *reference frame*) in which its `center` and `u`, `v`, `w` basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the **world coordinate system**. Any new `CoordinateSystem` object is initialized to be aligned with the world coordinate system:
 
 ```python
 from ctsimu.geometry import *
@@ -124,9 +124,9 @@ world = CoordinateSystem()
 
 # Set up a quick CT geometry with a tilted stage axis:
 myCT = Geometry()
-myCT.stage.center.x = 250
+myCT.stage.center.x = 250  # SOD
 myCT.stage.rotateAroundU(angle = deg2rad(2.0))
-myCT.detector.center.x = 800
+myCT.detector.center.x = 800  # SDD
 
 # Assume a specimen in the (tilted) stage
 # coordinate system, shifted 5 mm "upwards"
@@ -136,13 +136,91 @@ mySpecimen.translateZ(5.0)
 
 # Change the specimen's reference frame to
 # the world coordinate system:
-mySpecimen.changeReferenceFrame(fromCS = myCT.stage, toCS = world)
+mySpecimen.changeReferenceFrame(
+    fromCS = myCT.stage,
+    toCS = world)
 
 print("The specimen's world coordinates:")
 print(mySpecimen)
+
+\"\"\"
+The specimen's world coordinates:
+Center: ( 250.0000000, -0.1744975,  4.9969541)
+u:      ( 1.0000000,  0.0000000,  0.0000000)
+v:      ( 0.0000000,  0.9993908,  0.0348995)
+w:      ( 0.0000000, -0.0348995,  0.9993908)
+\"\"\"
 ```
 
 **Note:** when changing reference frames, the original and the target reference frame must both have a common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).
+
+
+Projection Matrices
+===================
+
+A projection matrix maps a 3D point coordinate `(x, y, z)` from the stage coordinate system to a 2D point coordinate `(u, v)` in the detector coordinate system. They are used by some reconstruction softwares to describe arbitrary scan trajectories. For such a reconstruction, we need one projection matrix for each projection image.
+
+![Euclidean Mapping](pictures/pmatrix_mapping_euclidean.png "Mapping a coordinate from the stage coordinate system to a coordinate in the detector coordinate system")
+
+Mathematical Background
+-----------------------
+
+We operate in [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates), because we are in a projective geometry and this concept allows us to describe translations in space by a matrix. Homogeneous coordinates describe rays in a space and are therefore only defined up to a scale factor, which is carried as an additional coordinate. This way, a Euclidean 3-vector turns into a homogeneous 4-vector. Our mapping becomes:
+
+![Homogeneous Mapping](pictures/pmatrix_mapping_homogeneous.png "Mapping in homogeneous coordinates")
+
+The following picture illustrates a 1D projective geometry. The *h* axis is our scale factor for the homogeneous coordinates. In this geometry, all points on a ray are equivalent. The points at *h*=1 are the normalized homogeneous coordinates.
+
+![Projective geometry for a 1D Euclidean space](pictures/hom_coords.png "Projective geometry for a 1D Euclidean space")
+
+We can use this concept to describe translations in space with a matrix multiplication:
+
+![Translation Matrix](pictures/pmatrix_translation.png "Translation Matrix")
+
+We now consider two coordinate systems: the stage coordinate system (our origin) and the detector coordinate system (our target). The world coordinate system is not important in this context. In the following picture, 3D coordinates are expressed in terms of the stage coordinate system, and 2D coordinates are expressed in terms of the detector coordinate system (its *w* axis is irrelevant here).
+
+![Projective system](pictures/geometry_stage_projection.png "Projective system")
+
+To calculate a projection matrix for the current geometry, we have to consider five subsequent transformations. Each transformation is expressed by a matrix. The final projection matrix is then the product of these five transformation matrices.
+
+1. We shift the origin of the coordinate system from the stage to the source, which is our center of projection.
+
+    ![Shifting the origin to the source](pictures/pmatrix_F.png "Shifting the origin to the source")
+
+2. We perform a basis transformation to express the 3D coordinates in terms of the axes of the detector coordinate system. The origin remains at the source. You can also think of this transformation as a rotation into the detector coordinate system.
+
+    ![Rotation into detector coordinate system](pictures/pmatrix_R.png "Rotation into detector coordinate system")
+
+    All basis vectors in this matrix are assumed to be unit vectors.
+
+    After this transformation, the third (*"z"*) coordinate in a vector now refers to its position on the detector normal (its *w* axis). Therefore, this third coordinate now contains something similar to what we would normally call the SOD (source-object distance) of that point. The fourth coordinate of our homogeneous vector has not been scaled so far (α=1), which means we have not left the projective plane which we call home (our real world). This is important to keep in mind for the next step.
+
+3. We use a matrix that reduces the dimension of our vector by one (from a homogeneous 4-vector to a homogeneous 3-vector). This step is sometimes called the actual *projection*.
+
+    ![Projection reduces dimension](pictures/pmatrix_D.png "Projection reduces dimension")
+
+    In the previous step, the third component of the 4-vector used to be something similar to the SOD. This has now become the *scale component* β of our homogeneous 3-vector (because a multiplication with this matrix throws away the fourth vector component, which has still been α=1). This means we are now in a projective plane β=SOD, away from the detector plane of our home world (which would be at β=1).
+
+    This problem is solved in the end by a simple renormalization of the matrix. Stay tuned!
+
+4. We take care of the magnification and any additional scaling.
+
+    ![Scaling](pictures/pmatrix_S.png "Scaling")
+
+    The SDD (source-detector distance) in this case means the length of the principal ray from source to detector (i.e., the ray that is parallel to the detector normal *w* and orthogonally hits the detector plane).
+
+    This matrix simply scales any image at the projective plane β=1 such that its *u* and *v* component will obey the magnification by the SDD (source-detector distance). Sometimes, the stage coordinate system is expressed in a different unit than the detector coordinate system (e.g. mm vs. px). In this case, we can introduce scale factors s<sub>u</sub> and s<sub>v</sub> that take care of further scaling, e.g. to handle the pixel size.
+
+    Note that the final renormalization will turn out to be a division by the SOD (as mentioned in the previous step). This will convert the SDD-factors of this matrix into the actual magnification: M=SDD/SOD. We do not incorporate this here because the SOD as a parameter is not well-defined and might lead to confusion in a non-standard geometry.
+
+5. The origin of the detector coordinate system might not be where the principal ray hits the detector (i.e., the center of projection projected onto the detector). We need to take care of this additional shift:
+
+    ![Translation on detector](pictures/pmatrix_T.png "Translation on detector")
+
+The final projection matrix is a 3×4 matrix that results from a multiplication of these five matrices and a renormalization by the lower-right component (p<sub>23</sub>) to get back to the projective plane of our home world (see step 3).
+
+![Final projection matrix](pictures/pmatrix_P.png "Final projection matrix")
+
 """
 
 import numpy
@@ -158,6 +236,9 @@ from .image import Image  # To create detector flat field
 
 def basisTransformMatrix(fromCS:'CoordinateSystem', toCS:'CoordinateSystem') -> Matrix:
     """Calculate a matrix that transforms coordinates from `fromCS` to `toCS`.
+
+    `fromCS` and `toCS` must have the same common reference frame
+    (e.g. the world coordinate system).
 
     Parameters
     ----------
@@ -409,6 +490,13 @@ class CoordinateSystem:
         self.u = u
         self.v = v
         self.w = w
+
+    def update(self):
+        """Signal a manual update to the center position or orientation vectors."""
+        self.center.update()
+        self.u.update()
+        self.v.update()
+        self.w.update()
 
     def makeUnitCS(self):
         """Convert all basis vectors to unit vectors."""
@@ -909,6 +997,10 @@ class Geometry:
             Assuming an isotropically radiating source.
         """
 
+        self.source.update()
+        self.stage.update()
+        self.detector.update()
+
         # SOD, SDD, ODD
         world = CoordinateSystem()
         source_from_image = copy.deepcopy(self.source)
@@ -988,20 +1080,36 @@ class Geometry:
         return txt
 
     def projectionMatrix(self,
+                         volumeCS:CoordinateSystem=None,
                          imageCS:CoordinateSystem=None,
-                         mode:str=None):
+                         mode:str=None,
+                         mirror:bool=True):
         """Calculate a projection matrix for the current geometry.
 
         Parameters
         ----------
-        imageCS : CoordinateSystem
-            Position of the image coordinate system in terms of the
-            detector coordinate system. See notes for details.
+        volumeCS : CoordinateSystem, optional
+            Position of the volume coordinate system in terms of the
+            stage coordinate system. If `None` is given, the volume
+            coordinate system is assumed to be the stage coordinate system.
+            See notes for details.
 
-        mode : str
-            Pre-defined modes, either "openCT" or "CERA" are supported.
-            They override the `imageCS`, which can be set to `None` when
-            using one of the pre-defined modes.
+        imageCS : CoordinateSystem, optional
+            Position of the image coordinate system in terms of the
+            detector coordinate system. If `None` is given, the image
+            coordinate system is assumed to be the detector coordinate system.
+            See notes for details.
+
+        mode : str, optional
+            Pre-defined modes. Either "openCT" or "CERA" are supported.
+            They override the `volumeCS` and `imageCS`, which can be set
+            to `None` when using one of the pre-defined modes.
+
+        mirror : bool, optional
+            Whether or not a mirror operation should be applied to the
+            reconstruction volume. For many 3D processing softwares,
+            this parameter should be set to `True` to avoid having to
+            mirror the volume after loading it into the software.
 
         Returns
         -------
@@ -1064,11 +1172,26 @@ class Geometry:
         elif imageCS is not None:
             image = copy.deepcopy(imageCS)
         else:
-            raise RuntimeError("projectionMatrix: Please provide either a mode or an imageCS.")
+             # Set a standard coordinate system. Results in pure
+             # detector coordinate system after transformation.
+            image = CoordinateSystem()
 
         world    = CoordinateSystem()
         source   = copy.deepcopy(self.source)
-        stage    = copy.deepcopy(self.stage)
+
+        # The 3D volume (reconstruction space).
+        volume = None
+        if volumeCS is not None:
+            volume = copy.deepcopy(volumeCS)
+            volume = volume.changeReferenceFrame(self.stage, world)
+        else:
+            volume = copy.deepcopy(self.stage)
+
+        """The scale factors are derived from the lengths of the basis
+        vectors of the image CS compared to the detector CS unit vectors."""
+        scale_volume_u = self.stage.u.unitVector().dot(volume.u)
+        scale_volume_v = self.stage.v.unitVector().dot(volume.v)
+        scale_volume_w = self.stage.w.unitVector().dot(volume.w)
 
         # Detach the image CS from the detector CS and
         # express it in terms of the world CS:
@@ -1076,22 +1199,22 @@ class Geometry:
 
         """The scale factors are derived from the lengths of the basis
         vectors of the image CS compared to the detector CS unit vectors."""
-        scale_u = self.detector.u.dot(image.u)
-        scale_v = self.detector.v.dot(image.v)
-        scale_w = self.detector.w.dot(image.w)
+        scale_detector_u = self.detector.u.unitVector().dot(image.u)
+        scale_detector_v = self.detector.v.unitVector().dot(image.v)
+        scale_detector_w = self.detector.w.unitVector().dot(image.w)
 
         # Save a source CS as seen from the detector CS. This is convenient to
         # later get the SDD, ufoc and vfoc:
         source_from_image = copy.deepcopy(self.source)
         source_from_image.changeReferenceFrame(world, image)
 
-        # Make the stage CS the new world CS:
-        source.changeReferenceFrame(world, stage)
-        image.changeReferenceFrame(world, stage)
-        stage.changeReferenceFrame(world, stage)
+        # Make the volume CS the new world CS:
+        source.changeReferenceFrame(world, volume)
+        image.changeReferenceFrame(world, volume)
+        volume.changeReferenceFrame(world, volume)
 
-        # Translation vector from stage to source:
-        rfoc = stage.center - source.center
+        # Translation vector from volume to source:
+        rfoc = source.center - volume.center
         xfoc = rfoc.x
         yfoc = rfoc.y
         zfoc = rfoc.z
@@ -1106,22 +1229,28 @@ class Geometry:
         SDD  = abs(source_from_image.center.z)
 
         # Mirror volume:
-        M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+        if mirror:
+            M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
+        else:
+            M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0,  1, 0], [0, 0, 0, 1]])
+
+        # Scale: volume units -> world units
+        A = Matrix(values=[[scale_volume_u, 0, 0, 0], [0, scale_volume_v, 0, 0], [0, 0, scale_volume_w, 0], [0, 0, 0, 1]])
 
         # Move origin to source (the origin of the camera CS)
-        F = Matrix(values=[[1, 0, 0, xfoc], [0, 1, 0, yfoc], [0, 0, 1, zfoc]])
+        F = Matrix(values=[[1, 0, 0, -xfoc], [0, 1, 0, -yfoc], [0, 0, 1, -zfoc]])
 
         # Rotations:
-        R = basisTransformMatrix(stage, image)
+        R = basisTransformMatrix(volume, image)
 
         # Projection onto detector and scaling:
-        D = Matrix(values=[[SDD/scale_u, 0, 0], [0, SDD/scale_v, 0], [0, 0, 1.0/scale_w]])
+        S = Matrix(values=[[SDD/scale_detector_u, 0, 0], [0, SDD/scale_detector_v, 0], [0, 0, 1.0/scale_detector_w]])
 
         # Shift in detector CS: (ufoc and vfoc must be in scaled units)
-        V = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
+        T = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
 
         # Multiply all together:
-        P = V * (D * (R * (F*M)))
+        P = T * (S * (R * (F * (A*M))))
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
