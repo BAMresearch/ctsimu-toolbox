@@ -16,3 +16,11 @@ mySpecimen.rotate(axis=Vector(1, 1, 1), angle=deg2rad(5.0))
 
 print("My specimen's new location and orientation:")
 print(mySpecimen)
+
+"""
+My specimen's new location and orientation:
+Center: ( 255.2000000,  0.0000000,  4.3000000)
+u:      ( 0.0490510, -0.9974631, -0.0515878)
+v:      (-0.0167454,  0.0508215, -0.9985674)
+w:      ( 0.9986559,  0.0498445, -0.0142101)
+"""

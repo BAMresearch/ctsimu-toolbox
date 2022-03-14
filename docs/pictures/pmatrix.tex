@@ -1,0 +1,172 @@
+\title{Projection Matrices}
+\author{David Plotzki}
+\date{\today}
+
+\documentclass[10pt, a4paper, fleqn]{scrartcl}
+\usepackage[a4paper]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[scaled=0.9]{PTSans}
+\usepackage{charter}
+\usepackage[scaled=0.72]{beramono}   % For Code
+
+\usepackage{amsmath, amssymb}
+\usepackage{gensymb}	% degree symbol
+\usepackage{array}
+\usepackage{dsfont}
+\usepackage{nicefrac}
+
+
+\begin{document}
+
+\begin{equation*}
+\begin{pmatrix}
+x \\
+y \\
+z
+\end{pmatrix}
+\mapsto
+\begin{pmatrix}
+u \\
+v
+\end{pmatrix}
+\end{equation*}
+
+
+\begin{equation*}
+\begin{pmatrix}
+x \\
+y \\
+z \\
+1
+\end{pmatrix}
+\cong
+\begin{pmatrix}
+\alpha x \\
+\alpha y \\
+\alpha z \\
+\alpha
+\end{pmatrix}
+~~
+\mapsto
+~~
+\begin{pmatrix}
+\beta u \\
+\beta v \\
+\beta
+\end{pmatrix}
+\cong
+\begin{pmatrix}
+u \\
+v \\
+1
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+\begin{bmatrix}
+1 & 0 & 0 & r \\
+0 & 1 & 0 & s \\
+0 & 0 & 1 & t \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{pmatrix}
+x \\
+y \\
+z \\
+1
+\end{pmatrix}
+=
+\begin{pmatrix}
+x+r \\
+y+s \\
+z+t \\
+1
+\end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+\mathds{P}=
+\begin{bmatrix}
+1 & 0 & \text{u}_\text{foc} \\
+0 & 1 & \text{v}_\text{foc} \\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+\text{SDD}\cdot s_u & 0 & 0 \\
+0 & \text{SDD}\cdot s_v & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+\vec{u} \cdot \vec{x} & \vec{u} \cdot \vec{y} & \vec{u} \cdot \vec{z} & 0\\
+\vec{v} \cdot \vec{x} & \vec{v} \cdot \vec{y} & \vec{v} \cdot \vec{z} & 0\\
+\vec{w} \cdot \vec{x} & \vec{w} \cdot \vec{y} & \vec{w} \cdot \vec{z} & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & -\text{x}_\text{foc} \\
+0 & 1 & 0 & -\text{y}_\text{foc} \\
+0 & 0 & 1 & -\text{z}_\text{foc} \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+\mathds{P}=\frac{1}{p_{23}}\mathds{T}\mathds{S}\mathds{D}\mathds{R}\mathds{F} = \frac{1}{p_{23}} \begin{bmatrix}
+p_{00} & p_{01} & p_{02} & p_{03} \\
+p_{10} & p_{11} & p_{12} & p_{13} \\
+p_{20} & p_{21} & p_{22} & p_{23}
+\end{bmatrix}
+\end{equation*}
+
+
+\begin{equation*}
+\mathds{F}=\begin{bmatrix}
+1 & 0 & 0 & -\text{x}_\text{foc} \\
+0 & 1 & 0 & -\text{y}_\text{foc} \\
+0 & 0 & 1 & -\text{z}_\text{foc} \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+\mathds{R}=\begin{bmatrix}
+\vec{u} \cdot \vec{x} & \vec{u} \cdot \vec{y} & \vec{u} \cdot \vec{z} & 0\\
+\vec{v} \cdot \vec{x} & \vec{v} \cdot \vec{y} & \vec{v} \cdot \vec{z} & 0\\
+\vec{w} \cdot \vec{x} & \vec{w} \cdot \vec{y} & \vec{w} \cdot \vec{z} & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+\mathds{D}=\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+\mathds{S}=\begin{bmatrix}
+\text{SDD}\cdot s_u & 0 & 0 \\
+0 & \text{SDD}\cdot s_v & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation*}
+\mathds{T}=\begin{bmatrix}
+1 & 0 & \text{u}_\text{foc} \\
+0 & 1 & \text{v}_\text{foc} \\
+0 & 0 & 1
+\end{bmatrix}
+\end{equation*}
+
+\end{document}

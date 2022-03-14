@@ -25,6 +25,7 @@
 </header>
 <section id="section-intro">
 <p>Coordinate systems, transformations and projection matrix functionality.</p>
+<p>This geometry module relies on basic objects like vectors and matrices from the <code><a title="ctsimu.primitives" href="primitives.html">ctsimu.primitives</a></code> module.</p>
 <h1 id="coordinate-systems">Coordinate Systems</h1>
 <p>The geometry subpackage provides a <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code> class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (<code>center</code>) and three basis vectors (<code>u</code>, <code>v</code>, <code>w</code>). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The <code>center</code> acts as the pivot point for rotations.</p>
 <p>Example for creating and manipulating an object:</p>
@@ -40,29 +41,39 @@ mySpecimen.v = Vector(0,  0, -1)
 mySpecimen.w = Vector(1,  0,  0)
 
 # Manipulate:
-mySpecimen.translate(translationVector = Vector(5.2, 0, 4.3))
-mySpecimen.rotateAroundU(angle = deg2rad(2.0))
-mySpecimen.rotate(axis = Vector(1, 1, 1), angle = deg2rad(5.0))
+mySpecimen.translate(translationVector=Vector(5.2, 0, 4.3))
+mySpecimen.rotateAroundU(angle=deg2rad(2.0))
+mySpecimen.rotate(axis=Vector(1, 1, 1), angle=deg2rad(5.0))
 
 print(&quot;My specimen's new location and orientation:&quot;)
 print(mySpecimen)
+
+&quot;&quot;&quot;
+My specimen's new location and orientation:
+Center: ( 255.2000000,  0.0000000,  4.3000000)
+u:      ( 0.0490510, -0.9974631, -0.0515878)
+v:      (-0.0167454,  0.0508215, -0.9985674)
+w:      ( 0.9986559,  0.0498445, -0.0142101)
+&quot;&quot;&quot;
 </code></pre>
 <h1 id="full-ct-geometry">Full CT Geometry</h1>
 <p>For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The <code><a title="ctsimu.geometry.Geometry" href="#ctsimu.geometry.Geometry">Geometry</a></code> class bundles three coordinate systems (one for each of those components), and additional information about the detector (using the <code><a title="ctsimu.geometry.Detector" href="#ctsimu.geometry.Detector">Detector</a></code> class, an extension of a regular <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>). The following figure shows their standard orientations when a CT geometry is initialized.</p>
 <p><img alt="Standard coordinate system" src="pictures/geometry.png" title="Standard coordinate system"></p>
 <p>The orientation of the coordinate system and all components can be changed by rotations or by manually setting the object basis vectors. However, it is important to keep the following conventions.</p>
-<h2 id="detector-convention">Detector Convention</h2>
+<h2 id="detector-convention">Detector convention</h2>
 <ul>
 <li>The detector's <code>u</code> vector is its row vector.</li>
 <li>The detector's <code>v</code> vector is its column vector.</li>
 <li>The detector's <code>w</code> vector has no special meaning. It is a planar normal that must be chosen such that the detector's coordinate system remains right-handed.</li>
 </ul>
-<h2 id="stage-convention">Stage Convention</h2>
+<h2 id="stage-convention">Stage convention</h2>
 <ul>
 <li>The stage's <code>w</code> vector is its axis of CT rotation.</li>
+<li>The stage's <code>center</code> typically refers to the center of the reconstructed volume (possibly the center of the specimen) and is <em>not</em> meant to describe the location of the turntable (which would normally be at a lower position).</li>
 </ul>
-<h2 id="source-convention">Source Convention</h2>
+<h2 id="source-convention">Source convention</h2>
 <p>There is currently no restriction on the source coordinate system. We usually assume its <code>w</code> axis to be the direction of the principal ray, but this is not a necessity.</p>
+<p>In the following examples, the source will be located at the origin <code>(0, 0, 0)</code> of the world coordinate system, whereas stage and detector are placed in positive <em>x</em> direction (see figure above).</p>
 <h2 id="example-setup">Example Setup</h2>
 <p>In the following example, we set up a standard CT geometry.</p>
 <pre><code class="language-python">from ctsimu.geometry import *
@@ -95,23 +106,24 @@ myCT.update() # calculates derived geometry parameters
 print(myCT.info())
 </code></pre>
 <h1 id="reference-frames">Reference Frames</h1>
-<p>Implicitly, each coordinate system has a reference coordinate system (its <em>reference frame</em>) in which its <code>center</code> and <code>u</code>, <code>v</code>, <code>w</code> basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the <strong>world coordinate system</strong>. Any new <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code> object is initialized to be aligned with the world coordinate system:</p>
+<p>Implicitly, each coordinate system has a reference coordinate system (its <em>reference frame</em>) in which its <code>center</code> and <code>u</code>, <code>v</code>, <code>w</code> basis vectors are located and described. Typically, we assume that this is a right-handed standard coordinate system. It does not necessarily have to be the world coordinate system. For example, you might want to attach a specimen to the sample stage by implicitly making the stage coordinate system its reference coordinate system. You, the programmer, have to know the reference coordinate system of your objects, as this information is not explicitly stored by the toolbox.</p>
+<p>Any new <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code> object is initialized to be a right-handed standard coordinate system with its center at <code>(0, 0, 0)</code>:</p>
 <pre><code class="language-python">from ctsimu.geometry import *
 
-world = CoordinateSystem()
+myWorld = CoordinateSystem()
 
-print(&quot;The World:&quot;)
-print(world)
+print(&quot;My World:&quot;)
+print(myWorld)
 
 &quot;&quot;&quot;
-The World:
+My World:
 Center: ( 0.0000000,  0.0000000,  0.0000000)
 u:      ( 1.0000000,  0.0000000,  0.0000000)
 v:      ( 0.0000000,  1.0000000,  0.0000000)
 w:      ( 0.0000000,  0.0000000,  1.0000000)
 &quot;&quot;&quot;
 </code></pre>
-<p>You can change the reference frame of a <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>. In the following example, we set up a CT geometry with a stage that is tilted by 2°. We place a specimen object in the stage coordinate system and move it "upwards" by 5 mm along the (now tilted) axis of rotation. Afterwards, we change the specimen's reference frame to see where it is actually located in the world coordinate system.</p>
+<p>You can change the reference frame of a <code><a title="ctsimu.geometry.CoordinateSystem" href="#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>. In the following example, we set up a CT geometry with a stage that is tilted by 2°. We place a specimen object in the stage coordinate system and move it "upwards" by 5 mm along the (now tilted) axis of rotation. Afterwards, we change the specimen's reference frame to see where it is actually located in the world coordinate system. Refer to the image of the standard orientations above to see what is going on with the coordinate systems.</p>
 <pre><code class="language-python">from ctsimu.geometry import *
 from ctsimu.helpers  import *  # provides deg2rad()
 
@@ -146,18 +158,18 @@ v:      ( 0.0000000,  0.9993908,  0.0348995)
 w:      ( 0.0000000, -0.0348995,  0.9993908)
 &quot;&quot;&quot;
 </code></pre>
-<p><strong>Note:</strong> when changing reference frames, the original and the target reference frame must both have a common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).</p>
+<p><strong>Note:</strong> When changing reference frames, the original (<code>fromCS</code>) and the target reference frame (<code>toCS</code>) must both have the same common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).</p>
 <h1 id="projection-matrices">Projection Matrices</h1>
 <p>A projection matrix maps a 3D point coordinate <code>(x, y, z)</code> from the stage coordinate system to a 2D point coordinate <code>(u, v)</code> in the detector coordinate system. They are used by some reconstruction softwares to describe arbitrary scan trajectories. For such a reconstruction, we need one projection matrix for each projection image.</p>
 <p><img alt="Euclidean Mapping" src="pictures/pmatrix_mapping_euclidean.png" title="Mapping a coordinate from the stage coordinate system to a coordinate in the detector coordinate system"></p>
 <h2 id="mathematical-background">Mathematical Background</h2>
-<p>We operate in <a href="https://en.wikipedia.org/wiki/Homogeneous_coordinates">homogeneous coordinates</a>, because we are in a projective geometry and this concept allows us to describe translations in space by a matrix. Homogeneous coordinates describe rays in a space and are therefore only defined up to a scale factor, which is carried as an additional coordinate. This way, a Euclidean 3-vector turns into a homogeneous 4-vector. Our mapping becomes:</p>
+<p>We operate in <a href="https://en.wikipedia.org/wiki/Homogeneous_coordinates">homogeneous coordinates</a> because we are in a projective geometry and this concept allows us to describe translations in space by a matrix. Homogeneous coordinates describe rays in a space and are therefore only defined up to a scale factor, which is carried as an additional coordinate. This way, a Euclidean 3-vector turns into a homogeneous 4-vector. Our mapping becomes:</p>
 <p><img alt="Homogeneous Mapping" src="pictures/pmatrix_mapping_homogeneous.png" title="Mapping in homogeneous coordinates"></p>
 <p>The following picture illustrates a 1D projective geometry. The <em>h</em> axis is our scale factor for the homogeneous coordinates. In this geometry, all points on a ray are equivalent. The points at <em>h</em>=1 are the normalized homogeneous coordinates.</p>
 <p><img alt="Projective geometry for a 1D Euclidean space" src="pictures/hom_coords.png" title="Projective geometry for a 1D Euclidean space"></p>
 <p>We can use this concept to describe translations in space with a matrix multiplication:</p>
 <p><img alt="Translation Matrix" src="pictures/pmatrix_translation.png" title="Translation Matrix"></p>
-<p>We now consider two coordinate systems: the stage coordinate system (our origin) and the detector coordinate system (our target). The world coordinate system is not important in this context. In the following picture, 3D coordinates are expressed in terms of the stage coordinate system, and 2D coordinates are expressed in terms of the detector coordinate system (its <em>w</em> axis is irrelevant here).</p>
+<p>We now consider two coordinate systems: the stage coordinate system (our origin) and the detector coordinate system (our target). The world coordinate system is not important in this context. In the following picture, 3D (Euclidean) coordinates are expressed in terms of the stage coordinate system, and 2D (Euclidean) coordinates are expressed in terms of the detector coordinate system (ignoring its <em>w</em> axis).</p>
 <p><img alt="Projective system" src="pictures/geometry_stage_projection.png" title="Projective system"></p>
 <p>To calculate a projection matrix for the current geometry, we have to consider five subsequent transformations. Each transformation is expressed by a matrix. The final projection matrix is then the product of these five transformation matrices.</p>
 <ol>
@@ -169,6 +181,7 @@ w:      ( 0.0000000, -0.0348995,  0.9993908)
 <p>We perform a basis transformation to express the 3D coordinates in terms of the axes of the detector coordinate system. The origin remains at the source. You can also think of this transformation as a rotation into the detector coordinate system.</p>
 <p><img alt="Rotation into detector coordinate system" src="pictures/pmatrix_R.png" title="Rotation into detector coordinate system"></p>
 <p>All basis vectors in this matrix are assumed to be unit vectors.</p>
+<p>This matrix takes care of any stage or detector tilts.</p>
 <p>After this transformation, the third (<em>"z"</em>) coordinate in a vector now refers to its position on the detector normal (its <em>w</em> axis). Therefore, this third coordinate now contains something similar to what we would normally call the SOD (source-object distance) of that point. The fourth coordinate of our homogeneous vector has not been scaled so far (α=1), which means we have not left the projective plane which we call home (our real world). This is important to keep in mind for the next step.</p>
 </li>
 <li>
@@ -191,6 +204,197 @@ w:      ( 0.0000000, -0.0348995,  0.9993908)
 </ol>
 <p>The final projection matrix is a 3×4 matrix that results from a multiplication of these five matrices and a renormalization by the lower-right component (p<sub>23</sub>) to get back to the projective plane of our home world (see step 3).</p>
 <p><img alt="Final projection matrix" src="pictures/pmatrix_P.png" title="Final projection matrix"></p>
+<h2 id="generating-projection-matrices">Generating Projection Matrices</h2>
+<p>You can call the function <code>projectionMatrix()</code> of any <code><a title="ctsimu.geometry.Geometry" href="#ctsimu.geometry.Geometry">Geometry</a></code> object to get a projection matrix for its current configuration.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# Set up a quick CT geometry:
+myCT = Geometry()
+myCT.stage.center.x    = 250  # SOD
+myCT.detector.center.x = 800  # SDD
+
+# Calculate the projection matrix:
+P = myCT.projectionMatrix()
+
+print(&quot;Projection Matrix:&quot;)
+print(P)
+
+&quot;&quot;&quot;
+Projection Matrix:
+[ 0.0000000  -3.2000000   0.0000000   0.0000000  ]
+[ 0.0000000   0.0000000   3.2000000   0.0000000  ]
+[ 0.0040000   0.0000000   0.0000000   1.0000000  ]
+&quot;&quot;&quot;
+</code></pre>
+<h3 id="openct-cera">openCT &amp; CERA</h3>
+<p>The toolbox provides two pre-configured modes to calculate projection matrices for openCT (which can be used in VGSTUDIO MAX) and for SIEMENS CERA. Each software needs slightly different projection matrices, because they define their detector coordinate system in different ways. See the next section about the image and volume coordinate system for details.</p>
+<p>In the following example, we calculate a projection matrix for each software by defining the <code>mode</code> when calling the <code>projectionMatrix()</code> function.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# Set up a quick CT geometry:
+myCT = Geometry()
+myCT.stage.center.x    = 250  # SOD
+myCT.detector.center.x = 800  # SDD
+
+# Set the detector size:
+myCT.detector.setSize(
+    pixelsU = 2000,
+    pixelsV = 1000,
+    pitchU  = 0.2,
+    pitchV  = 0.2)
+
+# Calculate the projection matrix:
+P_openCT = myCT.projectionMatrix(mode=&quot;openCT&quot;)
+P_CERA   = myCT.projectionMatrix(mode=&quot;CERA&quot;)
+
+print(&quot;openCT:&quot;)
+print(P_openCT)
+
+print(&quot;CERA:&quot;)
+print(P_CERA)
+</code></pre>
+<p>openCT's definition of the detector coordinate system matches our definition. In this case, we get the same projection matrix as without the <code>mode</code> parameter.</p>
+<h3 id="image-volume-coordinate-systems">Image &amp; Volume Coordinate Systems</h3>
+<p>Depending on the reconstruction software, the <strong>image coordinate system</strong> of the projection image does not have to match our standard detector coordinate system. Also, the <strong>volume coordinate system</strong> of the reconstructed volume does not have to match the stage coordinate system.</p>
+<p>In the following three examples, we will show how to use the parameter <code>imageCS</code> and <code>volumeCS</code> to define our own image and volume coordinate systems.</p>
+<p><img alt="Image and volume coordinate system" src="pictures/image_stage_cs.png" title="Image and volume coordinate system"></p>
+<p><strong>Note:</strong> The image coordinate system is expressed in terms of the detector coordinate system (its reference coordinate system). Similarly, the volume coordinate system is expressed in terms of the stage coordinate system. To set the scale factor for the image or volume coordinate system, we set the lengths of their basis vectors to the correct conversion factor (e.g., the pixel size in mm/px or the voxel size in mm/voxel).</p>
+<h4 id="example-1-cera">Example 1: CERA</h4>
+<p>Even though we have a pre-defined more for CERA, we will use its image coordinate system (illustrated above) to show how to set up an image coordinate system for CERA manually.</p>
+<p>CERA's volume coordinate system matches our stage coordinate system, so we won't have to create our own volume coordinate system.</p>
+<p>CERA's image coordinate system has its origin in the center of the lower left pixel of the detector. This means we have to move its origin by half the detector's physical width to the left and half the detector's physical height downwards from the origin of the detector coordinate system, and then back by half a physical pixel size (the detector pitch). We can use the attributes <code>physWidth</code> and <code>physHeight</code>, which are automatically calculated when calling <code>setSize()</code>.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# Set up a quick CT geometry:
+myCT = Geometry()
+myCT.stage.center.x    = 250  # SOD
+myCT.detector.center.x = 800  # SDD
+
+# Set the detector size:
+myCT.detector.setSize(
+    pixelsU = 2000,
+    pixelsV = 1000,
+    pitchU  = 0.2,
+    pitchV  = 0.2)
+
+# Set up a new image coordinate system,
+# relative to the detector coordinate system:
+image = CoordinateSystem()
+
+# CERA places the origin of the image CS in the center
+# of the lower left pixel of the projection image.
+image.center.x = -(myCT.detector.physWidth  / 2.0) + 0.5*myCT.detector.pitchU
+image.center.y =  (myCT.detector.physHeight / 2.0) - 0.5*myCT.detector.pitchV
+
+# CERA's unit of the image CS is in px, so we need to
+# scale the image CS basis vectors by the pixel size.
+# Also, v points up instead of down. This also flips
+# the w axis to keep a right-handed coordinate system.
+image.u.scale( myCT.detector.pitchU)
+image.v.scale(-myCT.detector.pitchV)
+image.w.scale(-1.0)
+
+# Calculate the projection matrix:
+P = myCT.projectionMatrix(imageCS=image)
+
+print(&quot;CERA projection matrix:&quot;)
+print(P)
+</code></pre>
+<h4 id="example-2-openct">Example 2: openCT</h4>
+<p>In the case of openCT, the image coordinate system matches our detector coordinate system. Also, the volume coordinate system matches our definition of the stage coordinate system. In this case, we can simply call the <code>projectionMatrix()</code> function without any parameters.</p>
+<p>However, for the sake of clarity, we create a standard coordinate system for both the image and volume coordinate system. Because they are expressed in terms of their respective reference coordinate systems (detector and stage), they exactly represent their respective reference CS as seen from the outside world.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# Set up a quick CT geometry:
+myCT = Geometry()
+myCT.stage.center.x    = 250  # SOD
+myCT.detector.center.x = 800  # SDD
+
+# Set the detector size:
+myCT.detector.setSize(
+    pixelsU = 2000,
+    pixelsV = 1000,
+    pitchU  = 0.2,
+    pitchV  = 0.2)
+
+# Set up a new image coordinate system
+# as a standard coordinate system,
+# relative to the detector coordinate system:
+image = CoordinateSystem()
+
+# Set up a new volume coordinate system
+# as a standard coordinate system,
+# relative to the stage coordinate system:
+volume = CoordinateSystem()
+
+# Calculate the projection matrix:
+P = myCT.projectionMatrix(
+    imageCS = image,
+    volumeCS = volume)
+
+print(&quot;openCT projection matrix:&quot;)
+print(P)
+</code></pre>
+<h4 id="example-3">Example 3</h4>
+<p>For the third example (see illustration), we will have to move the origin of the image coordinate system to the upper left corner of the detector and scale its basis vectors by the pixel size because its units are pixels.</p>
+<p>The volume coordinate system has its origin at the front lower right corner of the reconstruction volume. Because it is no longer at the stage's center, we will actually have to define the volume's physical size in order to correctly calculate the corner coordinate in terms of the stage coordinate system.</p>
+<p>We also scale the basis vectors of the volume coordinate system by the voxel size, because we assume that our reconstruction software expresses its volume coordinates in voxel units instead of world units (mm).</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# Set up a quick CT geometry:
+myCT = Geometry()
+myCT.stage.center.x    = 250  # SOD in mm
+myCT.detector.center.x = 800  # SDD in mm
+
+# Set the detector size:
+myCT.detector.setSize(
+    pixelsU = 2000,
+    pixelsV = 1000,
+    pitchU  = 0.2,
+    pitchV  = 0.2)
+
+# Define the size of the reconstruction volume:
+volume_size_x = 2000 # voxels
+volume_size_y = 2000 # voxels
+volume_size_z = 1000 # voxels
+voxel_size = 0.0625  # mm/voxel
+
+# Set up a new image coordinate system,
+# relative to the detector coordinate system:
+image = CoordinateSystem()
+
+# Move the image origin to the upper left corner
+# of the detector coordinate system:
+image.center.x = -myCT.detector.physWidth  / 2.0
+image.center.y = -myCT.detector.physHeight / 2.0
+
+# Our unit of the image CS is in px, so we need to
+# scale the image CS basis vectors by the pixel size.
+image.u.scale(myCT.detector.pitchU)
+image.v.scale(myCT.detector.pitchV)
+
+# Set up a new volume coordinate system,
+# relative to the stage coordinate system:
+volume = CoordinateSystem()
+
+# Move the volume origin to the front lower right
+# corner of the reconstruction volume:
+volume.center.x = -volume_size_x * voxel_size / 2.0
+volume.center.y = -volume_size_y * voxel_size / 2.0
+volume.center.z = -volume_size_z * voxel_size / 2.0
+
+# Our unit of the volume CS is in voxels, so we need to
+# scale the volume CS basis vectors by the voxel size.
+volume.u.scale(voxel_size)
+volume.v.scale(voxel_size)
+volume.w.scale(voxel_size)
+
+# Calculate the projection matrix:
+P = myCT.projectionMatrix(imageCS=image, volumeCS=volume)
+
+print(&quot;My projection matrix:&quot;)
+print(P)
+</code></pre>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -199,225 +403,9 @@ w:      ( 0.0000000, -0.0348995,  0.9993908)
 &#34;&#34;&#34;
 Coordinate systems, transformations and projection matrix functionality.
 
-Coordinate Systems
-==================
+This geometry module relies on basic objects like vectors and matrices from the `ctsimu.primitives` module.
 
-The geometry subpackage provides a `CoordinateSystem` class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (`center`) and three basis vectors (`u`, `v`, `w`). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The `center` acts as the pivot point for rotations.
-
-Example for creating and manipulating an object:
-
-```python
-from ctsimu.geometry import *
-from ctsimu.helpers  import *  # provides deg2rad()
-
-mySpecimen = CoordinateSystem()
-
-# Set position and orientation:
-mySpecimen.center = Vector(250, 0, 0)
-mySpecimen.u = Vector(0, -1,  0)
-mySpecimen.v = Vector(0,  0, -1)
-mySpecimen.w = Vector(1,  0,  0)
-
-# Manipulate:
-mySpecimen.translate(translationVector = Vector(5.2, 0, 4.3))
-mySpecimen.rotateAroundU(angle = deg2rad(2.0))
-mySpecimen.rotate(axis = Vector(1, 1, 1), angle = deg2rad(5.0))
-
-print(&#34;My specimen&#39;s new location and orientation:&#34;)
-print(mySpecimen)
-```
-
-Full CT Geometry
-================
-
-For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The `Geometry` class bundles three coordinate systems (one for each of those components), and additional information about the detector (using the `Detector` class, an extension of a regular `CoordinateSystem`). The following figure shows their standard orientations when a CT geometry is initialized.
-
-![Standard coordinate system](pictures/geometry.png &#34;Standard coordinate system&#34;)
-
-The orientation of the coordinate system and all components can be changed by rotations or by manually setting the object basis vectors. However, it is important to keep the following conventions.
-
-Detector convention
--------------------
-
-* The detector&#39;s `u` vector is its row vector.
-* The detector&#39;s `v` vector is its column vector.
-* The detector&#39;s `w` vector has no special meaning. It is a planar normal that must be chosen such that the detector&#39;s coordinate system remains right-handed.
-
-Stage convention
-----------------
-
-* The stage&#39;s `w` vector is its axis of CT rotation.
-
-Source convention
------------------
-
-There is currently no restriction on the source coordinate system. We usually assume its `w` axis to be the direction of the principal ray, but this is not a necessity.
-
-Example Setup
--------------
-
-In the following example, we set up a standard CT geometry.
-
-```python
-from ctsimu.geometry import *
-
-# General CT parameters:
-SOD = 250.0 # mm
-SDD = 800.0 # mm
-
-pixelSize = 0.2 # mm
-pixelColumns = 2000
-pixelRows = 1000
-
-# Create a CT geometry object:
-myCT = Geometry()
-
-# Stage:
-myCT.stage.center.x = SOD
-
-# Detector:
-myCT.detector.center.x = SDD
-myCT.detector.setSize(
-    pixelsU = pixelColumns,
-    pixelsV = pixelRows,
-    pitchU = pixelSize,
-    pitchV = pixelSize
-    )
-
-myCT.update() # calculates derived geometry parameters
-
-print(myCT.info())
-```
-
-Reference Frames
-================
-
-Implicitly, each coordinate system has a reference coordinate system (its *reference frame*) in which its `center` and `u`, `v`, `w` basis vectors are located and described. Typically, we assume that this is a standard coordinate system called the **world coordinate system**. Any new `CoordinateSystem` object is initialized to be aligned with the world coordinate system:
-
-```python
-from ctsimu.geometry import *
-
-world = CoordinateSystem()
-
-print(&#34;The World:&#34;)
-print(world)
-
-\&#34;\&#34;\&#34;
-The World:
-Center: ( 0.0000000,  0.0000000,  0.0000000)
-u:      ( 1.0000000,  0.0000000,  0.0000000)
-v:      ( 0.0000000,  1.0000000,  0.0000000)
-w:      ( 0.0000000,  0.0000000,  1.0000000)
-\&#34;\&#34;\&#34;
-```
-
-You can change the reference frame of a `CoordinateSystem`. In the following example, we set up a CT geometry with a stage that is tilted by 2°. We place a specimen object in the stage coordinate system and move it &#34;upwards&#34; by 5 mm along the (now tilted) axis of rotation. Afterwards, we change the specimen&#39;s reference frame to see where it is actually located in the world coordinate system.
-
-```python
-from ctsimu.geometry import *
-from ctsimu.helpers  import *  # provides deg2rad()
-
-world = CoordinateSystem()
-
-# Set up a quick CT geometry with a tilted stage axis:
-myCT = Geometry()
-myCT.stage.center.x = 250  # SOD
-myCT.stage.rotateAroundU(angle = deg2rad(2.0))
-myCT.detector.center.x = 800  # SDD
-
-# Assume a specimen in the (tilted) stage
-# coordinate system, shifted 5 mm &#34;upwards&#34;
-# along the axis of rotation:
-mySpecimen = CoordinateSystem()
-mySpecimen.translateZ(5.0)
-
-# Change the specimen&#39;s reference frame to
-# the world coordinate system:
-mySpecimen.changeReferenceFrame(
-    fromCS = myCT.stage,
-    toCS = world)
-
-print(&#34;The specimen&#39;s world coordinates:&#34;)
-print(mySpecimen)
-
-\&#34;\&#34;\&#34;
-The specimen&#39;s world coordinates:
-Center: ( 250.0000000, -0.1744975,  4.9969541)
-u:      ( 1.0000000,  0.0000000,  0.0000000)
-v:      ( 0.0000000,  0.9993908,  0.0348995)
-w:      ( 0.0000000, -0.0348995,  0.9993908)
-\&#34;\&#34;\&#34;
-```
-
-**Note:** when changing reference frames, the original and the target reference frame must both have a common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).
-
-
-Projection Matrices
-===================
-
-A projection matrix maps a 3D point coordinate `(x, y, z)` from the stage coordinate system to a 2D point coordinate `(u, v)` in the detector coordinate system. They are used by some reconstruction softwares to describe arbitrary scan trajectories. For such a reconstruction, we need one projection matrix for each projection image.
-
-![Euclidean Mapping](pictures/pmatrix_mapping_euclidean.png &#34;Mapping a coordinate from the stage coordinate system to a coordinate in the detector coordinate system&#34;)
-
-Mathematical Background
------------------------
-
-We operate in [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates), because we are in a projective geometry and this concept allows us to describe translations in space by a matrix. Homogeneous coordinates describe rays in a space and are therefore only defined up to a scale factor, which is carried as an additional coordinate. This way, a Euclidean 3-vector turns into a homogeneous 4-vector. Our mapping becomes:
-
-![Homogeneous Mapping](pictures/pmatrix_mapping_homogeneous.png &#34;Mapping in homogeneous coordinates&#34;)
-
-The following picture illustrates a 1D projective geometry. The *h* axis is our scale factor for the homogeneous coordinates. In this geometry, all points on a ray are equivalent. The points at *h*=1 are the normalized homogeneous coordinates.
-
-![Projective geometry for a 1D Euclidean space](pictures/hom_coords.png &#34;Projective geometry for a 1D Euclidean space&#34;)
-
-We can use this concept to describe translations in space with a matrix multiplication:
-
-![Translation Matrix](pictures/pmatrix_translation.png &#34;Translation Matrix&#34;)
-
-We now consider two coordinate systems: the stage coordinate system (our origin) and the detector coordinate system (our target). The world coordinate system is not important in this context. In the following picture, 3D coordinates are expressed in terms of the stage coordinate system, and 2D coordinates are expressed in terms of the detector coordinate system (its *w* axis is irrelevant here).
-
-![Projective system](pictures/geometry_stage_projection.png &#34;Projective system&#34;)
-
-To calculate a projection matrix for the current geometry, we have to consider five subsequent transformations. Each transformation is expressed by a matrix. The final projection matrix is then the product of these five transformation matrices.
-
-1. We shift the origin of the coordinate system from the stage to the source, which is our center of projection.
-
-    ![Shifting the origin to the source](pictures/pmatrix_F.png &#34;Shifting the origin to the source&#34;)
-
-2. We perform a basis transformation to express the 3D coordinates in terms of the axes of the detector coordinate system. The origin remains at the source. You can also think of this transformation as a rotation into the detector coordinate system.
-
-    ![Rotation into detector coordinate system](pictures/pmatrix_R.png &#34;Rotation into detector coordinate system&#34;)
-
-    All basis vectors in this matrix are assumed to be unit vectors.
-
-    After this transformation, the third (*&#34;z&#34;*) coordinate in a vector now refers to its position on the detector normal (its *w* axis). Therefore, this third coordinate now contains something similar to what we would normally call the SOD (source-object distance) of that point. The fourth coordinate of our homogeneous vector has not been scaled so far (α=1), which means we have not left the projective plane which we call home (our real world). This is important to keep in mind for the next step.
-
-3. We use a matrix that reduces the dimension of our vector by one (from a homogeneous 4-vector to a homogeneous 3-vector). This step is sometimes called the actual *projection*.
-
-    ![Projection reduces dimension](pictures/pmatrix_D.png &#34;Projection reduces dimension&#34;)
-
-    In the previous step, the third component of the 4-vector used to be something similar to the SOD. This has now become the *scale component* β of our homogeneous 3-vector (because a multiplication with this matrix throws away the fourth vector component, which has still been α=1). This means we are now in a projective plane β=SOD, away from the detector plane of our home world (which would be at β=1).
-
-    This problem is solved in the end by a simple renormalization of the matrix. Stay tuned!
-
-4. We take care of the magnification and any additional scaling.
-
-    ![Scaling](pictures/pmatrix_S.png &#34;Scaling&#34;)
-
-    The SDD (source-detector distance) in this case means the length of the principal ray from source to detector (i.e., the ray that is parallel to the detector normal *w* and orthogonally hits the detector plane).
-
-    This matrix simply scales any image at the projective plane β=1 such that its *u* and *v* component will obey the magnification by the SDD (source-detector distance). Sometimes, the stage coordinate system is expressed in a different unit than the detector coordinate system (e.g. mm vs. px). In this case, we can introduce scale factors s&lt;sub&gt;u&lt;/sub&gt; and s&lt;sub&gt;v&lt;/sub&gt; that take care of further scaling, e.g. to handle the pixel size.
-
-    Note that the final renormalization will turn out to be a division by the SOD (as mentioned in the previous step). This will convert the SDD-factors of this matrix into the actual magnification: M=SDD/SOD. We do not incorporate this here because the SOD as a parameter is not well-defined and might lead to confusion in a non-standard geometry.
-
-5. The origin of the detector coordinate system might not be where the principal ray hits the detector (i.e., the center of projection projected onto the detector). We need to take care of this additional shift:
-
-    ![Translation on detector](pictures/pmatrix_T.png &#34;Translation on detector&#34;)
-
-The final projection matrix is a 3×4 matrix that results from a multiplication of these five matrices and a renormalization by the lower-right component (p&lt;sub&gt;23&lt;/sub&gt;) to get back to the projective plane of our home world (see step 3).
-
-![Final projection matrix](pictures/pmatrix_P.png &#34;Final projection matrix&#34;)
-
+.. include:: ./geometry.md
 &#34;&#34;&#34;
 
 import numpy
@@ -892,6 +880,12 @@ class Detector(CoordinateSystem):
 
         self.pixelOrigin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
 
+    def sizeIsSet(self):
+        if (self.pixelsU is None) or (self.pixelsV is None) or (self.pitchU is None) or (self.pitchV is None):
+            return False
+
+        return True
+
     def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
         &#34;&#34;&#34;Set the physical size of the detector.
 
@@ -934,7 +928,7 @@ class Detector(CoordinateSystem):
         Results are assigned to their member variables (attributes).
         &#34;&#34;&#34;
 
-        if (self.pixelsU is not None) and (self.pixelsV is not None) and (self.pitchU is not None) and (self.pitchV is not None):
+        if self.sizeIsSet():
             # Physical width and height:
             self.physWidth  = self.pixelsU * self.pitchU
             self.physHeight = self.pixelsV * self.pitchV
@@ -1224,6 +1218,8 @@ class Geometry:
 
         self.brightestSpotDetector = Vector(pxU, pxV, 0)
 
+        self.detector.computeGeometryParameters()
+
 
     def info(self) -&gt; str:
         &#34;&#34;&#34;Generate an information string about the current geometry.
@@ -1352,18 +1348,21 @@ class Geometry:
                     # image.w.scale(1.0)
 
                 elif mode == &#34;CERA&#34;:
-                    &#34;&#34;&#34;CERA places the origin of the image CS in the center
-                    of the lower left pixel of the projection image.&#34;&#34;&#34;
-                    image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
-                    image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
-                    # image.center.z = 0
+                    if self.detector.sizeIsSet():
+                        &#34;&#34;&#34;CERA places the origin of the image CS in the center
+                        of the lower left pixel of the projection image.&#34;&#34;&#34;
+                        image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
+                        image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
+                        # image.center.z = 0
 
-                    &#34;&#34;&#34;CERA&#39;s unit of the image CS is in px, so we need to
-                    scale the image CS basis vectors by the pixel size.
-                    Also, v points up instead of down.&#34;&#34;&#34;
-                    image.u.scale( self.detector.pitchU)
-                    image.v.scale(-self.detector.pitchV)
-                    image.w.scale(-1.0)
+                        &#34;&#34;&#34;CERA&#39;s unit of the image CS is in px, so we need to
+                        scale the image CS basis vectors by the pixel size.
+                        Also, v points up instead of down.&#34;&#34;&#34;
+                        image.u.scale( self.detector.pitchU)
+                        image.v.scale(-self.detector.pitchV)
+                        image.w.scale(-1.0)
+                    else:
+                        raise RuntimeError(&#34;Detector size not set. To calculate a projection matrix for CERA, you need to set the size of the detector. Use the setSize() function of your detector object.&#34;)
             else:
                 raise RuntimeError(&#34;Unsupported mode for projection matrix: \&#34;{}\&#34;&#34;.format(mode))
         elif imageCS is not None:
@@ -1380,25 +1379,25 @@ class Geometry:
         volume = None
         if volumeCS is not None:
             volume = copy.deepcopy(volumeCS)
-            volume = volume.changeReferenceFrame(self.stage, world)
+            volume.changeReferenceFrame(self.stage, world)
         else:
             volume = copy.deepcopy(self.stage)
 
         &#34;&#34;&#34;The scale factors are derived from the lengths of the basis
-        vectors of the image CS compared to the detector CS unit vectors.&#34;&#34;&#34;
-        scale_volume_u = self.stage.u.unitVector().dot(volume.u)
-        scale_volume_v = self.stage.v.unitVector().dot(volume.v)
-        scale_volume_w = self.stage.w.unitVector().dot(volume.w)
+        vectors of the volume CS .&#34;&#34;&#34;
+        scale_volume_u = volume.u.length()
+        scale_volume_v = volume.v.length()
+        scale_volume_w = volume.w.length()
 
         # Detach the image CS from the detector CS and
         # express it in terms of the world CS:
         image.changeReferenceFrame(self.detector, world)
 
         &#34;&#34;&#34;The scale factors are derived from the lengths of the basis
-        vectors of the image CS compared to the detector CS unit vectors.&#34;&#34;&#34;
-        scale_detector_u = self.detector.u.unitVector().dot(image.u)
-        scale_detector_v = self.detector.v.unitVector().dot(image.v)
-        scale_detector_w = self.detector.w.unitVector().dot(image.w)
+        vectors of the image CS.&#34;&#34;&#34;
+        scale_image_u = image.u.length()
+        scale_image_v = image.v.length()
+        scale_image_w = image.w.length()
 
         # Save a source CS as seen from the detector CS. This is convenient to
         # later get the SDD, ufoc and vfoc:
@@ -1420,9 +1419,9 @@ class Geometry:
         # Focus point on detector: principal, perpendicular ray.
         # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
         # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
-        ufoc = source_from_image.center.x / scale_u
-        vfoc = source_from_image.center.y / scale_v
-        wfoc = source_from_image.center.z / scale_w
+        ufoc = source_from_image.center.x / scale_image_u
+        vfoc = source_from_image.center.y / scale_image_v
+        wfoc = source_from_image.center.z / scale_image_w
         SDD  = abs(source_from_image.center.z)
 
         # Mirror volume:
@@ -1440,8 +1439,8 @@ class Geometry:
         # Rotations:
         R = basisTransformMatrix(volume, image)
 
-        # Projection onto detector and scaling:
-        S = Matrix(values=[[SDD/scale_detector_u, 0, 0], [0, SDD/scale_detector_v, 0], [0, 0, 1.0/scale_detector_w]])
+        # Projection onto detector and scaling (world units -&gt; volume units):
+        S = Matrix(values=[[SDD/scale_image_u, 0, 0], [0, SDD/scale_image_v, 0], [0, 0, 1.0/scale_image_w]])
 
         # Shift in detector CS: (ufoc and vfoc must be in scaled units)
         T = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
@@ -1451,7 +1450,6 @@ class Geometry:
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
-        print(&#34;lower right: {} SOD: {}&#34;.format(lower_right, SOD))
         if lower_right != 0:
             P.scale(1.0/lower_right)
 
@@ -3703,6 +3701,12 @@ and the pitch. This function automatically computes the physical dimensions
 
         self.pixelOrigin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
 
+    def sizeIsSet(self):
+        if (self.pixelsU is None) or (self.pixelsV is None) or (self.pitchU is None) or (self.pitchV is None):
+            return False
+
+        return True
+
     def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
         &#34;&#34;&#34;Set the physical size of the detector.
 
@@ -3745,7 +3749,7 @@ and the pitch. This function automatically computes the physical dimensions
         Results are assigned to their member variables (attributes).
         &#34;&#34;&#34;
 
-        if (self.pixelsU is not None) and (self.pixelsV is not None) and (self.pitchU is not None) and (self.pitchV is not None):
+        if self.sizeIsSet():
             # Physical width and height:
             self.physWidth  = self.pixelsU * self.pitchU
             self.physHeight = self.pixelsV * self.pitchV
@@ -3899,7 +3903,7 @@ orientation of the detector are correctly set up.</p>
     Results are assigned to their member variables (attributes).
     &#34;&#34;&#34;
 
-    if (self.pixelsU is not None) and (self.pixelsV is not None) and (self.pitchU is not None) and (self.pitchV is not None):
+    if self.sizeIsSet():
         # Physical width and height:
         self.physWidth  = self.pixelsU * self.pitchU
         self.physHeight = self.pixelsV * self.pitchV
@@ -4121,6 +4125,22 @@ the detector orientation or position later on.</p>
     self.pitchV = float(pitchV)
 
     self.computeGeometryParameters()</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.Detector.sizeIsSet"><code class="name flex">
+<span>def <span class="ident">sizeIsSet</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sizeIsSet(self):
+    if (self.pixelsU is None) or (self.pixelsV is None) or (self.pitchU is None) or (self.pitchV is None):
+        return False
+
+    return True</code></pre>
 </details>
 </dd>
 </dl>
@@ -4382,6 +4402,8 @@ usually for internal purposes only.</dd>
 
         self.brightestSpotDetector = Vector(pxU, pxV, 0)
 
+        self.detector.computeGeometryParameters()
+
 
     def info(self) -&gt; str:
         &#34;&#34;&#34;Generate an information string about the current geometry.
@@ -4510,18 +4532,21 @@ usually for internal purposes only.</dd>
                     # image.w.scale(1.0)
 
                 elif mode == &#34;CERA&#34;:
-                    &#34;&#34;&#34;CERA places the origin of the image CS in the center
-                    of the lower left pixel of the projection image.&#34;&#34;&#34;
-                    image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
-                    image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
-                    # image.center.z = 0
+                    if self.detector.sizeIsSet():
+                        &#34;&#34;&#34;CERA places the origin of the image CS in the center
+                        of the lower left pixel of the projection image.&#34;&#34;&#34;
+                        image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
+                        image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
+                        # image.center.z = 0
 
-                    &#34;&#34;&#34;CERA&#39;s unit of the image CS is in px, so we need to
-                    scale the image CS basis vectors by the pixel size.
-                    Also, v points up instead of down.&#34;&#34;&#34;
-                    image.u.scale( self.detector.pitchU)
-                    image.v.scale(-self.detector.pitchV)
-                    image.w.scale(-1.0)
+                        &#34;&#34;&#34;CERA&#39;s unit of the image CS is in px, so we need to
+                        scale the image CS basis vectors by the pixel size.
+                        Also, v points up instead of down.&#34;&#34;&#34;
+                        image.u.scale( self.detector.pitchU)
+                        image.v.scale(-self.detector.pitchV)
+                        image.w.scale(-1.0)
+                    else:
+                        raise RuntimeError(&#34;Detector size not set. To calculate a projection matrix for CERA, you need to set the size of the detector. Use the setSize() function of your detector object.&#34;)
             else:
                 raise RuntimeError(&#34;Unsupported mode for projection matrix: \&#34;{}\&#34;&#34;.format(mode))
         elif imageCS is not None:
@@ -4538,25 +4563,25 @@ usually for internal purposes only.</dd>
         volume = None
         if volumeCS is not None:
             volume = copy.deepcopy(volumeCS)
-            volume = volume.changeReferenceFrame(self.stage, world)
+            volume.changeReferenceFrame(self.stage, world)
         else:
             volume = copy.deepcopy(self.stage)
 
         &#34;&#34;&#34;The scale factors are derived from the lengths of the basis
-        vectors of the image CS compared to the detector CS unit vectors.&#34;&#34;&#34;
-        scale_volume_u = self.stage.u.unitVector().dot(volume.u)
-        scale_volume_v = self.stage.v.unitVector().dot(volume.v)
-        scale_volume_w = self.stage.w.unitVector().dot(volume.w)
+        vectors of the volume CS .&#34;&#34;&#34;
+        scale_volume_u = volume.u.length()
+        scale_volume_v = volume.v.length()
+        scale_volume_w = volume.w.length()
 
         # Detach the image CS from the detector CS and
         # express it in terms of the world CS:
         image.changeReferenceFrame(self.detector, world)
 
         &#34;&#34;&#34;The scale factors are derived from the lengths of the basis
-        vectors of the image CS compared to the detector CS unit vectors.&#34;&#34;&#34;
-        scale_detector_u = self.detector.u.unitVector().dot(image.u)
-        scale_detector_v = self.detector.v.unitVector().dot(image.v)
-        scale_detector_w = self.detector.w.unitVector().dot(image.w)
+        vectors of the image CS.&#34;&#34;&#34;
+        scale_image_u = image.u.length()
+        scale_image_v = image.v.length()
+        scale_image_w = image.w.length()
 
         # Save a source CS as seen from the detector CS. This is convenient to
         # later get the SDD, ufoc and vfoc:
@@ -4578,9 +4603,9 @@ usually for internal purposes only.</dd>
         # Focus point on detector: principal, perpendicular ray.
         # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
         # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
-        ufoc = source_from_image.center.x / scale_u
-        vfoc = source_from_image.center.y / scale_v
-        wfoc = source_from_image.center.z / scale_w
+        ufoc = source_from_image.center.x / scale_image_u
+        vfoc = source_from_image.center.y / scale_image_v
+        wfoc = source_from_image.center.z / scale_image_w
         SDD  = abs(source_from_image.center.z)
 
         # Mirror volume:
@@ -4598,8 +4623,8 @@ usually for internal purposes only.</dd>
         # Rotations:
         R = basisTransformMatrix(volume, image)
 
-        # Projection onto detector and scaling:
-        S = Matrix(values=[[SDD/scale_detector_u, 0, 0], [0, SDD/scale_detector_v, 0], [0, 0, 1.0/scale_detector_w]])
+        # Projection onto detector and scaling (world units -&gt; volume units):
+        S = Matrix(values=[[SDD/scale_image_u, 0, 0], [0, SDD/scale_image_v, 0], [0, 0, 1.0/scale_image_w]])
 
         # Shift in detector CS: (ufoc and vfoc must be in scaled units)
         T = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
@@ -4609,7 +4634,6 @@ usually for internal purposes only.</dd>
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
-        print(&#34;lower right: {} SOD: {}&#34;.format(lower_right, SOD))
         if lower_right != 0:
             P.scale(1.0/lower_right)
 
@@ -5843,18 +5867,21 @@ of the projection image.</p></div>
                 # image.w.scale(1.0)
 
             elif mode == &#34;CERA&#34;:
-                &#34;&#34;&#34;CERA places the origin of the image CS in the center
-                of the lower left pixel of the projection image.&#34;&#34;&#34;
-                image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
-                image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
-                # image.center.z = 0
+                if self.detector.sizeIsSet():
+                    &#34;&#34;&#34;CERA places the origin of the image CS in the center
+                    of the lower left pixel of the projection image.&#34;&#34;&#34;
+                    image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
+                    image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
+                    # image.center.z = 0
 
-                &#34;&#34;&#34;CERA&#39;s unit of the image CS is in px, so we need to
-                scale the image CS basis vectors by the pixel size.
-                Also, v points up instead of down.&#34;&#34;&#34;
-                image.u.scale( self.detector.pitchU)
-                image.v.scale(-self.detector.pitchV)
-                image.w.scale(-1.0)
+                    &#34;&#34;&#34;CERA&#39;s unit of the image CS is in px, so we need to
+                    scale the image CS basis vectors by the pixel size.
+                    Also, v points up instead of down.&#34;&#34;&#34;
+                    image.u.scale( self.detector.pitchU)
+                    image.v.scale(-self.detector.pitchV)
+                    image.w.scale(-1.0)
+                else:
+                    raise RuntimeError(&#34;Detector size not set. To calculate a projection matrix for CERA, you need to set the size of the detector. Use the setSize() function of your detector object.&#34;)
         else:
             raise RuntimeError(&#34;Unsupported mode for projection matrix: \&#34;{}\&#34;&#34;.format(mode))
     elif imageCS is not None:
@@ -5871,25 +5898,25 @@ of the projection image.</p></div>
     volume = None
     if volumeCS is not None:
         volume = copy.deepcopy(volumeCS)
-        volume = volume.changeReferenceFrame(self.stage, world)
+        volume.changeReferenceFrame(self.stage, world)
     else:
         volume = copy.deepcopy(self.stage)
 
     &#34;&#34;&#34;The scale factors are derived from the lengths of the basis
-    vectors of the image CS compared to the detector CS unit vectors.&#34;&#34;&#34;
-    scale_volume_u = self.stage.u.unitVector().dot(volume.u)
-    scale_volume_v = self.stage.v.unitVector().dot(volume.v)
-    scale_volume_w = self.stage.w.unitVector().dot(volume.w)
+    vectors of the volume CS .&#34;&#34;&#34;
+    scale_volume_u = volume.u.length()
+    scale_volume_v = volume.v.length()
+    scale_volume_w = volume.w.length()
 
     # Detach the image CS from the detector CS and
     # express it in terms of the world CS:
     image.changeReferenceFrame(self.detector, world)
 
     &#34;&#34;&#34;The scale factors are derived from the lengths of the basis
-    vectors of the image CS compared to the detector CS unit vectors.&#34;&#34;&#34;
-    scale_detector_u = self.detector.u.unitVector().dot(image.u)
-    scale_detector_v = self.detector.v.unitVector().dot(image.v)
-    scale_detector_w = self.detector.w.unitVector().dot(image.w)
+    vectors of the image CS.&#34;&#34;&#34;
+    scale_image_u = image.u.length()
+    scale_image_v = image.v.length()
+    scale_image_w = image.w.length()
 
     # Save a source CS as seen from the detector CS. This is convenient to
     # later get the SDD, ufoc and vfoc:
@@ -5911,9 +5938,9 @@ of the projection image.</p></div>
     # Focus point on detector: principal, perpendicular ray.
     # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
     # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
-    ufoc = source_from_image.center.x / scale_u
-    vfoc = source_from_image.center.y / scale_v
-    wfoc = source_from_image.center.z / scale_w
+    ufoc = source_from_image.center.x / scale_image_u
+    vfoc = source_from_image.center.y / scale_image_v
+    wfoc = source_from_image.center.z / scale_image_w
     SDD  = abs(source_from_image.center.z)
 
     # Mirror volume:
@@ -5931,8 +5958,8 @@ of the projection image.</p></div>
     # Rotations:
     R = basisTransformMatrix(volume, image)
 
-    # Projection onto detector and scaling:
-    S = Matrix(values=[[SDD/scale_detector_u, 0, 0], [0, SDD/scale_detector_v, 0], [0, 0, 1.0/scale_detector_w]])
+    # Projection onto detector and scaling (world units -&gt; volume units):
+    S = Matrix(values=[[SDD/scale_image_u, 0, 0], [0, SDD/scale_image_v, 0], [0, 0, 1.0/scale_image_w]])
 
     # Shift in detector CS: (ufoc and vfoc must be in scaled units)
     T = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
@@ -5942,7 +5969,6 @@ of the projection image.</p></div>
 
     # Renormalize:
     lower_right = P.get(col=3, row=2)
-    print(&#34;lower right: {} SOD: {}&#34;.format(lower_right, SOD))
     if lower_right != 0:
         P.scale(1.0/lower_right)
 
@@ -6071,7 +6097,9 @@ Assuming an isotropically radiating source.</p></div>
     pxU = self.brightestSpotDetector.dot(self.detector.u) / self.detector.pitchU + self.detector.cols()/2.0
     pxV = self.brightestSpotDetector.dot(self.detector.v) / self.detector.pitchV + self.detector.rows()/2.0
 
-    self.brightestSpotDetector = Vector(pxU, pxV, 0)</code></pre>
+    self.brightestSpotDetector = Vector(pxU, pxV, 0)
+
+    self.detector.computeGeometryParameters()</code></pre>
 </details>
 </dd>
 </dl>
@@ -6099,6 +6127,16 @@ Assuming an isotropically radiating source.</p></div>
 <li><a href="#reference-frames">Reference Frames</a></li>
 <li><a href="#projection-matrices">Projection Matrices</a><ul>
 <li><a href="#mathematical-background">Mathematical Background</a></li>
+<li><a href="#generating-projection-matrices">Generating Projection Matrices</a><ul>
+<li><a href="#openct-cera">openCT &amp; CERA</a></li>
+<li><a href="#image-volume-coordinate-systems">Image &amp; Volume Coordinate Systems</a><ul>
+<li><a href="#example-1-cera">Example 1: CERA</a></li>
+<li><a href="#example-2-openct">Example 2: openCT</a></li>
+<li><a href="#example-3">Example 3</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -6145,6 +6183,7 @@ Assuming an isotropically radiating source.</p></div>
 <li><code><a title="ctsimu.geometry.Detector.pixelVectorCenter" href="#ctsimu.geometry.Detector.pixelVectorCenter">pixelVectorCenter</a></code></li>
 <li><code><a title="ctsimu.geometry.Detector.rows" href="#ctsimu.geometry.Detector.rows">rows</a></code></li>
 <li><code><a title="ctsimu.geometry.Detector.setSize" href="#ctsimu.geometry.Detector.setSize">setSize</a></code></li>
+<li><code><a title="ctsimu.geometry.Detector.sizeIsSet" href="#ctsimu.geometry.Detector.sizeIsSet">sizeIsSet</a></code></li>
 </ul>
 </li>
 <li>

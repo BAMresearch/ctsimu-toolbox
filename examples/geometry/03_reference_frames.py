@@ -23,3 +23,11 @@ mySpecimen.changeReferenceFrame(
 
 print("The specimen's world coordinates:")
 print(mySpecimen)
+
+"""
+The specimen's world coordinates:
+Center: ( 250.0000000, -0.1744975,  4.9969541)
+u:      ( 1.0000000,  0.0000000,  0.0000000)
+v:      ( 0.0000000,  0.9993908,  0.0348995)
+w:      ( 0.0000000, -0.0348995,  0.9993908)
+"""
