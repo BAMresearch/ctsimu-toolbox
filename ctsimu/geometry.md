@@ -143,7 +143,7 @@ The final projection matrix is a 3×4 matrix that results from a multiplication 
 
 ## Generating Projection Matrices
 
-You can call the function `projectionMatrix()` of any `Geometry` object to get a projection matrix for its current configuration.
+You can call the function `Geometry.projectionMatrix()` to get a projection matrix for the geometry's current configuration.
 
 ```python
 .. include:: ../examples/geometry/04_projection_matrix.py
@@ -153,7 +153,7 @@ You can call the function `projectionMatrix()` of any `Geometry` object to get a
 
 The toolbox provides two pre-configured modes to calculate projection matrices for openCT (which can be used in VGSTUDIO MAX) and for SIEMENS CERA. Each software needs slightly different projection matrices, because they define their detector coordinate system in different ways. See the next section about the image and volume coordinate system for details.
 
-In the following example, we calculate a projection matrix for each software by defining the `mode` when calling the `projectionMatrix()` function.
+In the following example, we calculate a projection matrix for each software by defining the `mode` when calling the `Geometry.projectionMatrix()` function.
 
 ```python
 .. include:: ../examples/geometry/05_projection_matrix_modes.py
@@ -204,4 +204,18 @@ We also scale the basis vectors of the volume coordinate system by the voxel siz
 
 ```python
 .. include:: ../examples/geometry/08_projection_matrix_example3.py
+```
+
+## Simulating a complete CT scan
+
+A single projection matrix is not enough to describe a full CT scan. We need one projection matrix for each frame (i.e., for each projection image).
+
+We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `writeOpenCTFile()` or `writeCERAconfig()` to create specific reconstruction configuration files for each reconstruction software.
+
+In the loop, it is advisable not to rotate the stage incrementally for each frame by a certain angular increment. This could lead to the accumulation of small floating-point rounding inaccuracies. Instead, we create a backup of the initial setup (at frame zero) using the `Geometry.store()` function. In each step of the loop, we restore this initial configuration by calling `Geometry.restore()` and then rotate the stage to its current absolute angle. This approach of parameterizing the whole CT trajectory as a deterministic function that only depends on the initial configuration and the current frame number is preferred over incremental changes in a loop, but might not always be feasible.
+
+The following example shows how to simulate a simple CT scan (one full stage rotation with 3000 equidistant projection images) and how to create configuration files for the reconstruction.
+
+```python
+.. include:: ../examples/geometry/09_projection_matrix_full_CT.py
 ```

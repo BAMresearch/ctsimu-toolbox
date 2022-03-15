@@ -205,7 +205,7 @@ w:      ( 0.0000000, -0.0348995,  0.9993908)
 <p>The final projection matrix is a 3×4 matrix that results from a multiplication of these five matrices and a renormalization by the lower-right component (p<sub>23</sub>) to get back to the projective plane of our home world (see step 3).</p>
 <p><img alt="Final projection matrix" src="pictures/pmatrix_P.png" title="Final projection matrix"></p>
 <h2 id="generating-projection-matrices">Generating Projection Matrices</h2>
-<p>You can call the function <code>projectionMatrix()</code> of any <code><a title="ctsimu.geometry.Geometry" href="#ctsimu.geometry.Geometry">Geometry</a></code> object to get a projection matrix for its current configuration.</p>
+<p>You can call the function <code><a title="ctsimu.geometry.Geometry.projectionMatrix" href="#ctsimu.geometry.Geometry.projectionMatrix">Geometry.projectionMatrix()</a></code> to get a projection matrix for the geometry's current configuration.</p>
 <pre><code class="language-python">from ctsimu.geometry import *
 
 # Set up a quick CT geometry:
@@ -228,7 +228,7 @@ Projection Matrix:
 </code></pre>
 <h3 id="openct-cera">openCT &amp; CERA</h3>
 <p>The toolbox provides two pre-configured modes to calculate projection matrices for openCT (which can be used in VGSTUDIO MAX) and for SIEMENS CERA. Each software needs slightly different projection matrices, because they define their detector coordinate system in different ways. See the next section about the image and volume coordinate system for details.</p>
-<p>In the following example, we calculate a projection matrix for each software by defining the <code>mode</code> when calling the <code>projectionMatrix()</code> function.</p>
+<p>In the following example, we calculate a projection matrix for each software by defining the <code>mode</code> when calling the <code><a title="ctsimu.geometry.Geometry.projectionMatrix" href="#ctsimu.geometry.Geometry.projectionMatrix">Geometry.projectionMatrix()</a></code> function.</p>
 <pre><code class="language-python">from ctsimu.geometry import *
 
 # Set up a quick CT geometry:
@@ -394,6 +394,105 @@ P = myCT.projectionMatrix(imageCS=image, volumeCS=volume)
 
 print(&quot;My projection matrix:&quot;)
 print(P)
+</code></pre>
+<h2 id="simulating-a-complete-ct-scan">Simulating a complete CT scan</h2>
+<p>A single projection matrix is not enough to describe a full CT scan. We need one projection matrix for each frame (i.e., for each projection image).</p>
+<p>We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function <code><a title="ctsimu.geometry.writeOpenCTFile" href="#ctsimu.geometry.writeOpenCTFile">writeOpenCTFile()</a></code> or <code><a title="ctsimu.geometry.writeCERAconfig" href="#ctsimu.geometry.writeCERAconfig">writeCERAconfig()</a></code> to create specific reconstruction configuration files for each reconstruction software.</p>
+<p>In the loop, it is advisable not to rotate the stage incrementally for each frame by a certain angular increment. This could lead to the accumulation of small floating-point rounding inaccuracies. Instead, we create a backup of the initial setup (at frame zero) using the <code><a title="ctsimu.geometry.Geometry.store" href="#ctsimu.geometry.Geometry.store">Geometry.store()</a></code> function. In each step of the loop, we restore this initial configuration by calling <code><a title="ctsimu.geometry.Geometry.restore" href="#ctsimu.geometry.Geometry.restore">Geometry.restore()</a></code> and then rotate the stage to its current absolute angle. This approach of parameterizing the whole CT trajectory as a deterministic function that only depends on the initial configuration and the current frame number is preferred over incremental changes in a loop, but might not always be feasible.</p>
+<p>The following example shows how to simulate a simple CT scan (one full stage rotation with 3000 equidistant projection images) and how to create configuration files for the reconstruction.</p>
+<pre><code class="language-python">from ctsimu.geometry import *
+
+# Set up a quick CT geometry:
+myCT = Geometry()
+myCT.stage.center.x    = 250  # SOD
+myCT.detector.center.x = 800  # SDD
+
+# Set the detector size:
+myCT.detector.setSize(
+    pixelsU = 2000,
+    pixelsV = 1000,
+    pitchU  = 0.2,
+    pitchV  = 0.2)
+
+myCT.update() # signals that we made manual changes
+myCT.store()  # backups the initial configuration
+
+# Scan configuration:
+projections = 3000   # number of projections or angular steps
+scan_range  = 360.0  # degrees. One full CT rotation.
+
+# We assume that the projections are stored in single TIFF image files,
+# sequentially numbered with four digits, starting at &quot;img_0000.tif&quot;.
+projectionFilename    = &quot;img_{:04d}.tif&quot; # for openCT
+projectionFilePattern = &quot;img_%04d.tif&quot;   # for CERA
+
+# The following two lists will store the projection matrices
+# for openCT and for CERA:
+matrices_openCT = []
+matrices_CERA   = []
+
+# For openCT, we also need to create a list of projection file names:
+projectionFilenames = []
+
+# Loop over each frame:
+for p in range(projections):
+    # Restore the initial configuration from the backup,
+    # i.e. the situation before the stage was rotated:
+    myCT.restore()
+
+    # Rotate the stage to its current angle:
+    current_angle = float(p) * float(scan_range) / float(projections)
+    myCT.stage.rotateAroundW(angle = deg2rad(current_angle))
+    myCT.update()
+
+    # Calculate a projection matrix for this frame:
+    P_openCT = myCT.projectionMatrix(mode=&quot;openCT&quot;)
+    P_CERA   = myCT.projectionMatrix(mode=&quot;CERA&quot;)
+
+    # Add to list of projection matrices:
+    matrices_openCT.append(P_openCT)
+    matrices_CERA.append(P_CERA)
+
+    # Store the current projection filename for openCT:
+    projectionFilenames.append(projectionFilename.format(p))
+
+
+# openCT configuration:
+# ----------------------
+# We need the bounding box dimensions of the reconstruction volume
+# in mm:
+
+voxelSize = 0.0625
+bounding_box_x = voxelSize * myCT.detector.pixelsU
+bounding_box_y = voxelSize * myCT.detector.pixelsU
+bounding_box_z = voxelSize * myCT.detector.pixelsV
+
+# Write the openCT configuration file, including the projection matrices:
+writeOpenCTFile(
+    geo=myCT,
+    totalAngle=scan_range,
+    boundingBoxX=bounding_box_x,
+    boundingBoxY=bounding_box_y,
+    boundingBoxZ=bounding_box_z,
+    matrices=matrices_openCT,
+    volumename=&quot;recon_openCT&quot;,
+    filename=&quot;recon_openCT.json&quot;,
+    projectionFilenames=projectionFilenames
+)
+
+# CERA configuration:
+# -------------------
+writeCERAconfig(
+    geo=myCT,
+    totalAngle=scan_range,
+    projectionFilePattern=projectionFilePattern,
+    matrices=matrices_CERA,
+    basename=&quot;recon_CERA&quot;,
+    voxelsX=myCT.detector.pixelsU,
+    voxelsY=myCT.detector.pixelsU,
+    voxelsZ=myCT.detector.pixelsV,
+    i0max=44000  # the average free-beam intensity
+)
 </code></pre>
 <details class="source">
 <summary>
@@ -1087,6 +1186,11 @@ class Geometry:
         self.source      = CoordinateSystem()
         self.stage       = CoordinateSystem()
 
+        # Backup geometry after calling store():
+        self._detector_stored = None
+        self._source_stored   = None
+        self._stage_stored    = None
+
         # Initialize source and detector to standard CTSimU orientation:
         self.detector.u = Vector(0, -1,  0)
         self.detector.v = Vector(0,  0, -1)
@@ -1220,6 +1324,34 @@ class Geometry:
 
         self.detector.computeGeometryParameters()
 
+    def store(self):
+        &#34;&#34;&#34;Store the current configuration in a backup buffer.
+
+        The primary purpose of this function is to create a backup
+        of the initial configuration, which can then always be recovered
+        by a call of `Geometry.restore()`. This allows the simulation of a
+        parameterized scan trajectory where each step&#39;s (or frame&#39;s)
+        configuration is deterministically calculated from the initial state,
+        rather than using incremental changes which could lead to the
+        accumulation of rounding inaccuracies.
+        &#34;&#34;&#34;
+        self._source_stored   = copy.deepcopy(self.source)
+        self._detector_stored = copy.deepcopy(self.detector)
+        self._stage_stored    = copy.deepcopy(self.stage)
+
+    def restore(self):
+        &#34;&#34;&#34;Restore the configuration that has been saved by `Geometry.store()`.&#34;&#34;&#34;
+
+        if self._source_stored is not None:
+            self.source = copy.deepcopy(self._source_stored)
+
+        if self._detector_stored is not None:
+            self.detector = copy.deepcopy(self._detector_stored)
+
+        if self._stage_stored is not None:
+            self.stage = copy.deepcopy(self._stage_stored)
+
+        self.update()
 
     def info(self) -&gt; str:
         &#34;&#34;&#34;Generate an information string about the current geometry.
@@ -1294,7 +1426,7 @@ class Geometry:
             See notes for details.
 
         mode : str, optional
-            Pre-defined modes. Either &#34;openCT&#34; or &#34;CERA&#34; are supported.
+            Pre-defined modes. Either `&#34;openCT&#34;` or `&#34;CERA&#34;` are supported.
             They override the `volumeCS` and `imageCS`, which can be set
             to `None` when using one of the pre-defined modes.
 
@@ -1311,19 +1443,40 @@ class Geometry:
 
         Notes
         -----
-        The image coordinate system (`imageCS`) should match the notation
-        used by the reconstruction software, and is expressed in terms of
-        the detector coordinate system.
+        The image coordinate system (`imageCS`) should match the location,
+        scale and orientation used by the reconstruction software, and is
+        expressed in terms of the detector coordinate system.
 
-        The detector coordinate system has its origin at the detector center,
-        the u unit vector points in the row vector direction, and the
-        v unit vector points in column vector direction (they are always assumed
-        to be unit vectors).
+        The detector coordinate system has its origin at the detector `center`,
+        the `u` unit vector points in the row vector direction, and the
+        `v` unit vector points in column vector direction (they are always
+        assumed to be unit vectors).
 
-        The center (origin) of the `imageCS` should be where the reconstruction
+        The `center` (origin) of the `imageCS` should be where the reconstruction
         software places the origin of its own projection image coordinate
-        system. For example, CERA places it at the center of the lower-left pixel
-        of the projection image.
+        system. For example, CERA places it at the center of the lower-left
+        pixel of the projection image.
+
+        Similarly, a volume coordinate system (`volumeCS`) can be provided
+        that describes the location, scale and orientation of the reconstruction
+        volume with respect to the stage coordinate system.
+
+        If the reconstruction software expects a different unit for the image
+        or volume coordinate system (e.g. mm or voxels) than the world
+        coordinates (e.g. mm), you can scale the basis vectors accordingly.
+        For example, if you need a pixel and voxel coordinate system instead
+        of a millimeter coordinate system, scale the basis vectors by the
+        respective pixel and voxel size:
+
+        ```python
+        imageCS.u.scale(pixelSize_u)
+        imageCS.v.scale(pixelSize_v)
+        imageCS.w.scale(1.0) # Do not scale the detector normal!
+
+        volumeCS.u.scale(voxelSize_u)
+        volumeCS.v.scale(voxelSize_v)
+        volumeCS.w.scale(voxelSize_w)
+        ```
         &#34;&#34;&#34;
 
         validModes = [&#34;openCT&#34;, &#34;CERA&#34;]
@@ -1452,6 +1605,7 @@ class Geometry:
         lower_right = P.get(col=3, row=2)
         if lower_right != 0:
             P.scale(1.0/lower_right)
+            P.set(col=3, row=2, value=1.0) # avoids rounding issues
 
         return P
 
@@ -4271,6 +4425,11 @@ usually for internal purposes only.</dd>
         self.source      = CoordinateSystem()
         self.stage       = CoordinateSystem()
 
+        # Backup geometry after calling store():
+        self._detector_stored = None
+        self._source_stored   = None
+        self._stage_stored    = None
+
         # Initialize source and detector to standard CTSimU orientation:
         self.detector.u = Vector(0, -1,  0)
         self.detector.v = Vector(0,  0, -1)
@@ -4404,6 +4563,34 @@ usually for internal purposes only.</dd>
 
         self.detector.computeGeometryParameters()
 
+    def store(self):
+        &#34;&#34;&#34;Store the current configuration in a backup buffer.
+
+        The primary purpose of this function is to create a backup
+        of the initial configuration, which can then always be recovered
+        by a call of `Geometry.restore()`. This allows the simulation of a
+        parameterized scan trajectory where each step&#39;s (or frame&#39;s)
+        configuration is deterministically calculated from the initial state,
+        rather than using incremental changes which could lead to the
+        accumulation of rounding inaccuracies.
+        &#34;&#34;&#34;
+        self._source_stored   = copy.deepcopy(self.source)
+        self._detector_stored = copy.deepcopy(self.detector)
+        self._stage_stored    = copy.deepcopy(self.stage)
+
+    def restore(self):
+        &#34;&#34;&#34;Restore the configuration that has been saved by `Geometry.store()`.&#34;&#34;&#34;
+
+        if self._source_stored is not None:
+            self.source = copy.deepcopy(self._source_stored)
+
+        if self._detector_stored is not None:
+            self.detector = copy.deepcopy(self._detector_stored)
+
+        if self._stage_stored is not None:
+            self.stage = copy.deepcopy(self._stage_stored)
+
+        self.update()
 
     def info(self) -&gt; str:
         &#34;&#34;&#34;Generate an information string about the current geometry.
@@ -4478,7 +4665,7 @@ usually for internal purposes only.</dd>
             See notes for details.
 
         mode : str, optional
-            Pre-defined modes. Either &#34;openCT&#34; or &#34;CERA&#34; are supported.
+            Pre-defined modes. Either `&#34;openCT&#34;` or `&#34;CERA&#34;` are supported.
             They override the `volumeCS` and `imageCS`, which can be set
             to `None` when using one of the pre-defined modes.
 
@@ -4495,19 +4682,40 @@ usually for internal purposes only.</dd>
 
         Notes
         -----
-        The image coordinate system (`imageCS`) should match the notation
-        used by the reconstruction software, and is expressed in terms of
-        the detector coordinate system.
+        The image coordinate system (`imageCS`) should match the location,
+        scale and orientation used by the reconstruction software, and is
+        expressed in terms of the detector coordinate system.
 
-        The detector coordinate system has its origin at the detector center,
-        the u unit vector points in the row vector direction, and the
-        v unit vector points in column vector direction (they are always assumed
-        to be unit vectors).
+        The detector coordinate system has its origin at the detector `center`,
+        the `u` unit vector points in the row vector direction, and the
+        `v` unit vector points in column vector direction (they are always
+        assumed to be unit vectors).
 
-        The center (origin) of the `imageCS` should be where the reconstruction
+        The `center` (origin) of the `imageCS` should be where the reconstruction
         software places the origin of its own projection image coordinate
-        system. For example, CERA places it at the center of the lower-left pixel
-        of the projection image.
+        system. For example, CERA places it at the center of the lower-left
+        pixel of the projection image.
+
+        Similarly, a volume coordinate system (`volumeCS`) can be provided
+        that describes the location, scale and orientation of the reconstruction
+        volume with respect to the stage coordinate system.
+
+        If the reconstruction software expects a different unit for the image
+        or volume coordinate system (e.g. mm or voxels) than the world
+        coordinates (e.g. mm), you can scale the basis vectors accordingly.
+        For example, if you need a pixel and voxel coordinate system instead
+        of a millimeter coordinate system, scale the basis vectors by the
+        respective pixel and voxel size:
+
+        ```python
+        imageCS.u.scale(pixelSize_u)
+        imageCS.v.scale(pixelSize_v)
+        imageCS.w.scale(1.0) # Do not scale the detector normal!
+
+        volumeCS.u.scale(voxelSize_u)
+        volumeCS.v.scale(voxelSize_v)
+        volumeCS.w.scale(voxelSize_w)
+        ```
         &#34;&#34;&#34;
 
         validModes = [&#34;openCT&#34;, &#34;CERA&#34;]
@@ -4636,6 +4844,7 @@ usually for internal purposes only.</dd>
         lower_right = P.get(col=3, row=2)
         if lower_right != 0:
             P.scale(1.0/lower_right)
+            P.set(col=3, row=2, value=1.0) # avoids rounding issues
 
         return P
 
@@ -5761,7 +5970,7 @@ detector coordinate system. If <code>None</code> is given, the image
 coordinate system is assumed to be the detector coordinate system.
 See notes for details.</dd>
 <dt><strong><code>mode</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Pre-defined modes. Either "openCT" or "CERA" are supported.
+<dd>Pre-defined modes. Either <code>"openCT"</code> or <code>"CERA"</code> are supported.
 They override the <code>volumeCS</code> and <code>imageCS</code>, which can be set
 to <code>None</code> when using one of the pre-defined modes.</dd>
 <dt><strong><code>mirror</code></strong> :&ensp;<code>bool</code>, optional</dt>
@@ -5776,17 +5985,34 @@ mirror the volume after loading it into the software.</dd>
 <dd>Projection matrix.</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p>The image coordinate system (<code>imageCS</code>) should match the notation
-used by the reconstruction software, and is expressed in terms of
-the detector coordinate system.</p>
-<p>The detector coordinate system has its origin at the detector center,
-the u unit vector points in the row vector direction, and the
-v unit vector points in column vector direction (they are always assumed
-to be unit vectors).</p>
-<p>The center (origin) of the <code>imageCS</code> should be where the reconstruction
+<p>The image coordinate system (<code>imageCS</code>) should match the location,
+scale and orientation used by the reconstruction software, and is
+expressed in terms of the detector coordinate system.</p>
+<p>The detector coordinate system has its origin at the detector <code>center</code>,
+the <code>u</code> unit vector points in the row vector direction, and the
+<code>v</code> unit vector points in column vector direction (they are always
+assumed to be unit vectors).</p>
+<p>The <code>center</code> (origin) of the <code>imageCS</code> should be where the reconstruction
 software places the origin of its own projection image coordinate
-system. For example, CERA places it at the center of the lower-left pixel
-of the projection image.</p></div>
+system. For example, CERA places it at the center of the lower-left
+pixel of the projection image.</p>
+<p>Similarly, a volume coordinate system (<code>volumeCS</code>) can be provided
+that describes the location, scale and orientation of the reconstruction
+volume with respect to the stage coordinate system.</p>
+<p>If the reconstruction software expects a different unit for the image
+or volume coordinate system (e.g. mm or voxels) than the world
+coordinates (e.g. mm), you can scale the basis vectors accordingly.
+For example, if you need a pixel and voxel coordinate system instead
+of a millimeter coordinate system, scale the basis vectors by the
+respective pixel and voxel size:</p>
+<pre><code class="language-python">imageCS.u.scale(pixelSize_u)
+imageCS.v.scale(pixelSize_v)
+imageCS.w.scale(1.0) # Do not scale the detector normal!
+
+volumeCS.u.scale(voxelSize_u)
+volumeCS.v.scale(voxelSize_v)
+volumeCS.w.scale(voxelSize_w)
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5813,7 +6039,7 @@ of the projection image.</p></div>
         See notes for details.
 
     mode : str, optional
-        Pre-defined modes. Either &#34;openCT&#34; or &#34;CERA&#34; are supported.
+        Pre-defined modes. Either `&#34;openCT&#34;` or `&#34;CERA&#34;` are supported.
         They override the `volumeCS` and `imageCS`, which can be set
         to `None` when using one of the pre-defined modes.
 
@@ -5830,19 +6056,40 @@ of the projection image.</p></div>
 
     Notes
     -----
-    The image coordinate system (`imageCS`) should match the notation
-    used by the reconstruction software, and is expressed in terms of
-    the detector coordinate system.
+    The image coordinate system (`imageCS`) should match the location,
+    scale and orientation used by the reconstruction software, and is
+    expressed in terms of the detector coordinate system.
 
-    The detector coordinate system has its origin at the detector center,
-    the u unit vector points in the row vector direction, and the
-    v unit vector points in column vector direction (they are always assumed
-    to be unit vectors).
+    The detector coordinate system has its origin at the detector `center`,
+    the `u` unit vector points in the row vector direction, and the
+    `v` unit vector points in column vector direction (they are always
+    assumed to be unit vectors).
 
-    The center (origin) of the `imageCS` should be where the reconstruction
+    The `center` (origin) of the `imageCS` should be where the reconstruction
     software places the origin of its own projection image coordinate
-    system. For example, CERA places it at the center of the lower-left pixel
-    of the projection image.
+    system. For example, CERA places it at the center of the lower-left
+    pixel of the projection image.
+
+    Similarly, a volume coordinate system (`volumeCS`) can be provided
+    that describes the location, scale and orientation of the reconstruction
+    volume with respect to the stage coordinate system.
+
+    If the reconstruction software expects a different unit for the image
+    or volume coordinate system (e.g. mm or voxels) than the world
+    coordinates (e.g. mm), you can scale the basis vectors accordingly.
+    For example, if you need a pixel and voxel coordinate system instead
+    of a millimeter coordinate system, scale the basis vectors by the
+    respective pixel and voxel size:
+
+    ```python
+    imageCS.u.scale(pixelSize_u)
+    imageCS.v.scale(pixelSize_v)
+    imageCS.w.scale(1.0) # Do not scale the detector normal!
+
+    volumeCS.u.scale(voxelSize_u)
+    volumeCS.v.scale(voxelSize_v)
+    volumeCS.w.scale(voxelSize_w)
+    ```
     &#34;&#34;&#34;
 
     validModes = [&#34;openCT&#34;, &#34;CERA&#34;]
@@ -5971,8 +6218,33 @@ of the projection image.</p></div>
     lower_right = P.get(col=3, row=2)
     if lower_right != 0:
         P.scale(1.0/lower_right)
+        P.set(col=3, row=2, value=1.0) # avoids rounding issues
 
     return P</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.Geometry.restore"><code class="name flex">
+<span>def <span class="ident">restore</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Restore the configuration that has been saved by <code><a title="ctsimu.geometry.Geometry.store" href="#ctsimu.geometry.Geometry.store">Geometry.store()</a></code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def restore(self):
+    &#34;&#34;&#34;Restore the configuration that has been saved by `Geometry.store()`.&#34;&#34;&#34;
+
+    if self._source_stored is not None:
+        self.source = copy.deepcopy(self._source_stored)
+
+    if self._detector_stored is not None:
+        self.detector = copy.deepcopy(self._detector_stored)
+
+    if self._stage_stored is not None:
+        self.stage = copy.deepcopy(self._stage_stored)
+
+    self.update()</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.geometry.Geometry.solidAngle"><code class="name flex">
@@ -5990,6 +6262,38 @@ of the projection image.</p></div>
         return (l/abs(l)) * math.atan(abs(l)*m/math.sqrt(1.0+l**2+m**2))
     else:
         return 0</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.geometry.Geometry.store"><code class="name flex">
+<span>def <span class="ident">store</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Store the current configuration in a backup buffer.</p>
+<p>The primary purpose of this function is to create a backup
+of the initial configuration, which can then always be recovered
+by a call of <code><a title="ctsimu.geometry.Geometry.restore" href="#ctsimu.geometry.Geometry.restore">Geometry.restore()</a></code>. This allows the simulation of a
+parameterized scan trajectory where each step's (or frame's)
+configuration is deterministically calculated from the initial state,
+rather than using incremental changes which could lead to the
+accumulation of rounding inaccuracies.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def store(self):
+    &#34;&#34;&#34;Store the current configuration in a backup buffer.
+
+    The primary purpose of this function is to create a backup
+    of the initial configuration, which can then always be recovered
+    by a call of `Geometry.restore()`. This allows the simulation of a
+    parameterized scan trajectory where each step&#39;s (or frame&#39;s)
+    configuration is deterministically calculated from the initial state,
+    rather than using incremental changes which could lead to the
+    accumulation of rounding inaccuracies.
+    &#34;&#34;&#34;
+    self._source_stored   = copy.deepcopy(self.source)
+    self._detector_stored = copy.deepcopy(self.detector)
+    self._stage_stored    = copy.deepcopy(self.stage)</code></pre>
 </details>
 </dd>
 <dt id="ctsimu.geometry.Geometry.triangleAreaOnUnitSphere"><code class="name flex">
@@ -6137,6 +6441,7 @@ Assuming an isotropically radiating source.</p></div>
 </li>
 </ul>
 </li>
+<li><a href="#simulating-a-complete-ct-scan">Simulating a complete CT scan</a></li>
 </ul>
 </li>
 </ul>
@@ -6197,7 +6502,9 @@ Assuming an isotropically radiating source.</p></div>
 <li><code><a title="ctsimu.geometry.Geometry.pixelAreaOnUnitSphere" href="#ctsimu.geometry.Geometry.pixelAreaOnUnitSphere">pixelAreaOnUnitSphere</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.polygonAreaOnUnitSphere" href="#ctsimu.geometry.Geometry.polygonAreaOnUnitSphere">polygonAreaOnUnitSphere</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.projectionMatrix" href="#ctsimu.geometry.Geometry.projectionMatrix">projectionMatrix</a></code></li>
+<li><code><a title="ctsimu.geometry.Geometry.restore" href="#ctsimu.geometry.Geometry.restore">restore</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.solidAngle" href="#ctsimu.geometry.Geometry.solidAngle">solidAngle</a></code></li>
+<li><code><a title="ctsimu.geometry.Geometry.store" href="#ctsimu.geometry.Geometry.store">store</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.triangleAreaOnUnitSphere" href="#ctsimu.geometry.Geometry.triangleAreaOnUnitSphere">triangleAreaOnUnitSphere</a></code></li>
 <li><code><a title="ctsimu.geometry.Geometry.update" href="#ctsimu.geometry.Geometry.update">update</a></code></li>
 </ul>

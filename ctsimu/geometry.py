@@ -926,7 +926,7 @@ class Geometry:
             See notes for details.
 
         mode : str, optional
-            Pre-defined modes. Either "openCT" or "CERA" are supported.
+            Pre-defined modes. Either `"openCT"` or `"CERA"` are supported.
             They override the `volumeCS` and `imageCS`, which can be set
             to `None` when using one of the pre-defined modes.
 
@@ -943,19 +943,40 @@ class Geometry:
 
         Notes
         -----
-        The image coordinate system (`imageCS`) should match the notation
-        used by the reconstruction software, and is expressed in terms of
-        the detector coordinate system.
+        The image coordinate system (`imageCS`) should match the location,
+        scale and orientation used by the reconstruction software, and is
+        expressed in terms of the detector coordinate system.
 
-        The detector coordinate system has its origin at the detector center,
-        the u unit vector points in the row vector direction, and the
-        v unit vector points in column vector direction (they are always assumed
-        to be unit vectors).
+        The detector coordinate system has its origin at the detector `center`,
+        the `u` unit vector points in the row vector direction, and the
+        `v` unit vector points in column vector direction (they are always
+        assumed to be unit vectors).
 
-        The center (origin) of the `imageCS` should be where the reconstruction
+        The `center` (origin) of the `imageCS` should be where the reconstruction
         software places the origin of its own projection image coordinate
-        system. For example, CERA places it at the center of the lower-left pixel
-        of the projection image.
+        system. For example, CERA places it at the center of the lower-left
+        pixel of the projection image.
+
+        Similarly, a volume coordinate system (`volumeCS`) can be provided
+        that describes the location, scale and orientation of the reconstruction
+        volume with respect to the stage coordinate system.
+
+        If the reconstruction software expects a different unit for the image
+        or volume coordinate system (e.g. mm or voxels) than the world
+        coordinates (e.g. mm), you can scale the basis vectors accordingly.
+        For example, if you need a pixel and voxel coordinate system instead
+        of a millimeter coordinate system, scale the basis vectors by the
+        respective pixel and voxel size:
+
+        ```python
+        imageCS.u.scale(pixelSize_u)
+        imageCS.v.scale(pixelSize_v)
+        imageCS.w.scale(1.0) # Do not scale the detector normal!
+
+        volumeCS.u.scale(voxelSize_u)
+        volumeCS.v.scale(voxelSize_v)
+        volumeCS.w.scale(voxelSize_w)
+        ```
         """
 
         validModes = ["openCT", "CERA"]
