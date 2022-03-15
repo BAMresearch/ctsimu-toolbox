@@ -686,6 +686,11 @@ class Geometry:
         self.source      = CoordinateSystem()
         self.stage       = CoordinateSystem()
 
+        # Backup geometry after calling store():
+        self._detector_stored = None
+        self._source_stored   = None
+        self._stage_stored    = None
+
         # Initialize source and detector to standard CTSimU orientation:
         self.detector.u = Vector(0, -1,  0)
         self.detector.v = Vector(0,  0, -1)
@@ -819,6 +824,34 @@ class Geometry:
 
         self.detector.computeGeometryParameters()
 
+    def store(self):
+        """Store the current configuration in a backup buffer.
+
+        The primary purpose of this function is to create a backup
+        of the initial configuration, which can then always be recovered
+        by a call of `Geometry.restore()`. This allows the simulation of a
+        parameterized scan trajectory where each step's (or frame's)
+        configuration is deterministically calculated from the initial state,
+        rather than using incremental changes which could lead to the
+        accumulation of rounding inaccuracies.
+        """
+        self._source_stored   = copy.deepcopy(self.source)
+        self._detector_stored = copy.deepcopy(self.detector)
+        self._stage_stored    = copy.deepcopy(self.stage)
+
+    def restore(self):
+        """Restore the configuration that has been saved by `Geometry.store()`."""
+
+        if self._source_stored is not None:
+            self.source = copy.deepcopy(self._source_stored)
+
+        if self._detector_stored is not None:
+            self.detector = copy.deepcopy(self._detector_stored)
+
+        if self._stage_stored is not None:
+            self.stage = copy.deepcopy(self._stage_stored)
+
+        self.update()
 
     def info(self) -> str:
         """Generate an information string about the current geometry.
@@ -1051,6 +1084,7 @@ class Geometry:
         lower_right = P.get(col=3, row=2)
         if lower_right != 0:
             P.scale(1.0/lower_right)
+            P.set(col=3, row=2, value=1.0) # avoids rounding issues
 
         return P
 
