@@ -1,205 +1,694 @@
 # -*- coding: UTF-8 -*-
+"""Provides basic structures for linear algebra and geometry: vectors, matrices, lines and polygons."""
 
 import math
 import numpy
-import copy
+import numbers
 
 from .helpers import *
 
 class Matrix:
-    def __init__(self, rows=None, cols=None, values=None):
-        self.rows  = None
-        self.cols  = None
-        self.value = None
+    """Simple matrix class.
 
-        if values is None:
-            if not((rows is None) or (cols is None)):
-                self.rows  = rows
-                self.cols  = cols
+    Attributes
+    ----------
+    cols : int
+        Number of matrix columns.
 
-                clist = cols*[0]
-                self.value = []
-                for i in range(rows):
-                    self.value.append(clist.copy())
-            else:
-                raise Exception("Cannot initialize matrix.")
+    rows : int
+        Number of matrix rows.
+
+    n_entries : int
+        Number of matrix elements. (Computed internally whenever matrix size is set or changed.)
+
+    value : numpy.ndarray
+        Numpy array that contains the matrix values.
+    """
+
+    def __init__(self, cols:int = None, rows:int = None, numpy_data = None):
+        """Initialize matrix by given size or numpy data array.
+
+        If `cols` and `rows` are not `None`, a matrix of the given size
+        will be created with all elements being zero. Otherwise,
+        the matrix will be set up from the `numpy_data` array if provided.
+
+        Parameters
+        ----------
+        cols : int, optional
+            Number of matrix columns.
+
+        rows : int, optional
+            Number of matrix rows.
+
+        numpy_data : numpy.ndarray, optional
+            2-dimensional NumPy array. The number of columns and rows is determined from the array.
+        """
+
+        if numpy_data is not None:
+            self.set_numpy_data_array(numpy_data)
+        elif (cols is not None) and (rows is not None):
+            self.reset(cols=cols, rows=rows)
         else:
-            self.value = values
-            if len(values) > 0:
-                self.rows = len(self.value)
-                if len(self.value[0]) > 0:
-                    self.cols = len(self.value[0])
+            raise Exception("Matrix initialization failed. Number of rows and columns must be provided, or an array of values.")
 
     def __str__(self):
-        string = ""
-        for r in range(self.rows):
-            string += "["
-            for c in range(self.cols):
-                string += "{space}{x:.7f}  ".format(x=self.value[r][c], space=" "*(self.value[r][c]>=0))
+        return f"{self.value}"
 
-            string += "]\n"
+    def __add__(self, x):
+        result = self.get_copy()
+        result.add(x)
+        return result
 
-        return string
+    def __sub__(self, x):
+        result = self.get_copy()
+        result.subtract(x)
+        return result
 
-    def __mul__(self, other):
-        if isinstance(other, Vector):
-            if self.cols >= 3 and self.rows >= 3:
-                result = Vector()
-                for r in range(3):
-                    s = 0
-                    for c in range(3):
-                        s += self.value[r][c] * other.get(c)
+    def __mul__(self, x):
+        result = self.get_copy()
+        result.multiply(x)
+        return result
 
-                    result.setIdx(i=r, value=s)
+    def __truediv__(self, x):
+        result = self.get_copy()
+        result.divide(x)
+        return result
 
-                return result
-            else:
-                raise Exception("Error: Cannot multiply matrix of size ({rows} rows x {cols} columns) with a 3-vector.".format(rows=self.rows, cols=self.cols))
-        elif isinstance(other, Matrix):
-            result_rows = self.rows
-            result_cols = other.cols
-            result = Matrix(rows=result_rows, cols=result_cols)
+    def __floordiv__(self, x):
+        result = self.get_copy()
+        result.floor_divide(x)
+        return result
 
-            for row in range(result_rows):
-                for col in range(result_cols):
-                    s = 0
-                    for idx in range(min(self.cols, other.rows)):
-                        s += self.get(col=idx, row=row) * other.get(col=col, row=idx)
+    def __radd__(self, x):
+        return self.__add__(x)
 
-                    result.set(row=row, col=col, value=s)
-
+    def __rsub__(self, x):
+        if isinstance(x, numbers.Number):
+            result = self.get_copy()
+            result.multiply(-1)
+            result.add(x)
             return result
-        else:
-            raise Exception("Matrix multiplication failed.")
 
-    def set(self, col, row, value):
+    def __rmul__(self, x):
+        if isinstance(x, numbers.Number):
+            return self.__mul__(x)
+
+    def size(self):
+        """Get the number of matrix elements.
+
+        Returns
+        -------
+        n_entries : int
+            Number of matrix elements.
+        """
+        return self.n_entries
+
+    def same_size(self, M:'Matrix'):
+        """Check if this matrix has the same size as the given matrix `M`.
+
+        Parameters
+        ----------
+        M : Matrix
+
+        Returns
+        -------
+        same_size : bool
+            `True` if `M` has the same number of rows and columns as this matrix, otherwise `False`.
+        """
+        if (self.cols == M.cols) and (self.rows == M.rows):
+            return True
+
+        return False
+
+    def reset(self, cols:int, rows:int):
+        """Set matrix size to given number of columns and rows, and set all matrix elements to zero.
+
+        Parameters
+        ----------
+        cols : int
+            Number of matrix columns.
+
+        rows : int
+            Number of matrix rows.
+        """
+        self.cols = cols
+        self.rows = rows
+        self.n_entries = cols*rows
+        self.value = numpy.zeros((rows, cols), dtype=numpy.float64)
+
+    def make_identity(self):
+        """Make this an identity matrix."""
+        self.value = numpy.zeros((self.rows, self.cols), dtype=numpy.float64)
+        for i in range(min(self.cols, self.rows)):
+            self.value[i][i] = float(1)
+
+    def set(self, col:int, row:int, value:float):
+        """Set a matrix element's value.
+
+        Parameters
+        ----------
+        col : int
+            The element's column position.
+
+        row : int
+            The element's row position.
+
+        value : float
+            The new value of the matrix element.
+        """
         self.value[row][col] = value
 
-    def get(self, col, row):
+    def set_numpy_data_array(self, numpy_data:'numpy.ndarray'):
+        """Set up the matrix from a given NumPy array.
+
+        Gets the number of columns and rows from the array and
+        uses the array for its values.
+
+        Warning: the array content is not copied, only referenced.
+        If you change the array afterwards, the matrix content will
+        change as well. Use `numpy.copy()` if you want to pass
+        a copy of your array.
+
+        Parameters
+        ----------
+        numpy_data : numpy.ndarray
+            NumPy array of the new matrix values.
+        """
+        self.rows = len(numpy_data)
+        self.cols = len(numpy_data[0])
+        self.n_entries = self.cols * self.rows
+        self.value = numpy_data.astype(float)
+
+    def copy(self, x:'Matrix'):
+        """Make this matrix a copy of the given matrix `x`.
+
+        Parameters
+        ----------
+        x : Matrix
+            The matrix whose contents shall be copied.
+        """
+        self.set_numpy_data_array(numpy_data=numpy.copy(x.value))
+
+    def get(self, col:int, row:int):
+        """Get a matrix element's value.
+
+        Parameters
+        ----------
+        col : int
+            Element's column position.
+
+        row : int
+            Element's row position.
+
+        Returns
+        -------
+        value : float
+            Value of the requested matrix element.
+        """
         if len(self.value) > row:
             if len(self.value[row]) > col:
                 return self.value[row][col]
 
-        raise Exception("Matrix.get(col={}, row={}): requested index does not exist.".format(col, row))
+        raise Exception(f"Matrix.get(col={col}, row={row}): requested index does not exist.")
 
-    def scale(self, factor):
-        for row in range(self.rows):
-            for col in range(self.cols):
-                self.set(col=col, row=row, value=self.get(col=col, row=row)*factor)
+    def get_copy(self):
+        """Get a copy of this matrix object.
+
+        Returns
+        -------
+        copy : Matrix
+            Copy of this matrix object.
+        """
+        new_values = numpy.copy(self.value)
+        return Matrix(numpy_data=new_values)
+
+    def add(self, x):
+        """Add a scalar to all matrix elements, or add another compatible matrix of the same size.
+
+        Parameters
+        ----------
+        x : Matrix or float
+            Matrix to be added to this matrix, or scalar to be added to all matrix elements.
+        """
+        if isinstance(x, Matrix):
+            # 'x' is another matrix:
+            if self.same_size(x):
+                self.value = numpy.add(self.value, x.value)
+            else:
+                raise Exception("Incompatible matrix sizes. Can only add matrices of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.add(self.value, x)
+        else:
+            raise Exception(f"Matrix addition failed: M+A is only supported when A is of type 'Matrix' or a scalar. The given type is not supported: {type(x)}.")
+
+    def subtract(self, x):
+        """Subtract a scalar from all matrix elements, or subtract another compatible matrix.
+
+        Parameters
+        ----------
+        x : Matrix or float
+            Matrix to be subtracted from this matrix, or scalar to be subtracted from all matrix elements.
+        """
+        if isinstance(x, Matrix):
+            # 'x' is another matrix:
+            if self.same_size(x):
+                self.value = numpy.subtract(self.value, x.value)
+            else:
+                raise Exception("Incompatible matrix sizes. Can only subtract matrices of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.subtract(self.value, x)
+        else:
+            raise Exception(f"Matrix subtraction failed: M-A is only supported when A is of type 'Matrix' or a scalar. The given type is not supported: {type(x)}.")
+
+    def multiply(self, x):
+        """Multiply a scalar to all matrix elements, or perform matrix multiplication with a compatible matrix.
+
+        Parameters
+        ----------
+        x : Matrix or float
+            Compatible matrix to be multiplied with this matrix, or scalar to be multiplied to all matrix elements.
+        """
+        if isinstance(x, Matrix) or isinstance(x, Vector):
+            # 'x' is another matrix:
+            self.value = numpy.matmul(self.value, x.value)
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.multiply(self.value, x)
+        else:
+            raise Exception(f"Matrix multiplication failed: M*A is only supported when A is of type 'Matrix' or 'Vector' or a scalar. The given type is not supported: {type(x)}.")
+
+    def divide(self, x):
+        """Divide all matrix elements by a scalar, or perform element-wise division with a matrix of the same size.
+
+        Parameters
+        ----------
+        x : Matrix or float
+            Matrix of same size for element-wise division with this matrix, or scalar to divide all matrix elements.
+        """
+        if isinstance(x, Matrix):
+            # 'x' is another matrix... element-wise division:
+            if self.same_size(x):
+                self.value = numpy.divide(self.value, x.value)
+            else:
+                raise Exception("Incompatible matrix sizes. Can only run an element-wise division for matrices of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.divide(self.value, x)
+        else:
+            raise Exception(f"Matrix division failed: M/A is only supported when A is of type 'Matrix' or a scalar. The given type is not supported: {type(x)}.")
+
+    def floor_divide(self, x):
+        """Floor-divide all matrix elements by a scalar, or perform element-wise division with a matrix of the same size.
+
+        Parameters
+        ----------
+        x : Matrix or float
+            Matrix of same size for element-wise floor-division with this matrix, or scalar to floor-divide all matrix elements.
+        """
+        if isinstance(x, Matrix):
+            # 'x' is another matrix... element-wise division:
+            if self.same_size(x):
+                self.value = numpy.floor_divide(self.value, x.value)
+            else:
+                raise Exception("Incompatible matrix sizes. Can only run an element-wise floor-division for matrices of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.floor_divide(self.value, x)
+        else:
+            raise Exception(f"Matrix floor-division failed: M//A is only supported when A is of type 'Matrix' or a scalar. The given type is not supported: {type(x)}.")
+
+    def scale(self, factor:float):
+        """Scale matrix by a scalar factor.
+
+        Parameters
+        ----------
+        factor : float
+            Factor that scales all matrix elements.
+        """
+        self.value = numpy.multiply(self.value, factor)
 
 class Vector:
-    """ A 3D vector in space. """
+    """A vector in space, arbitrary number of dimensions.
 
-    def __init__(self, x=0, y=0, z=0):
-        self.x = float(x)
-        self.y = float(y)
-        self.z = float(z)
-        
+    Attributes
+    ----------
+    n_entries : int
+        Number of vector elements.
+
+    value : numpy.ndarray
+        Numpy array that contains the vector elements.
+    """
+
+    def __init__(self, x:float = 0, y:float = 0, z:float = 0, w:float = None, n:int = None, numpy_data = None):
+        """Initialize vector by providing elements `x`, (`y`, `z`, `w`) and the number of elements `n`, or a numpy data array.
+
+        Parameters
+        ----------
+        n : int, optional
+            Number of vector elements. Must be provided if no NumPy data array is given.
+
+        numpy_data : numpy.ndarray, optional
+            One-dimensional NumPy data array. Must be provided if number of vector elements `n` is not given.
+
+        x : float, optional
+            Value for first vector element.
+
+        y : float, optional
+            Value for second vector element.
+
+        z : float, optional
+            Value for third vector element.
+
+        w : float, optional
+            Value for fourth vector element.
+        """
+
         # The following member variables are private and should not
         # be accessed from outside. They are invalidated whenever the
         # vector changes.
-        self._unitVector = None
-        self._length = None
+        self._unit_vector = None  # the unit vector that corresponds to this vector
+        self._length = None  # vector's length
+
+        if numpy_data is not None:
+            # Initialize from given numpy data array:
+            self.set_numpy_data_array(numpy_data)
+        else:
+            # Or from regular value arguments:
+            self.n_entries = 3
+            if n is not None:
+                self.n_entries = n
+
+            self.reset(n=self.n_entries)
+            self.set(x=x, y=y, z=z, w=w)
 
         self.update()
 
     def __str__(self):
-        return "({spaceX}{x:.7f}, {spaceY}{y:.7f}, {spaceZ}{z:.7f})".format(x=self.x, y=self.y, z=self.z, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0), spaceZ=" "*(self.z>=0))
+        return f"{self.value}"
 
-    def __add__(self, other):
-        x = self.x + other.x
-        y = self.y + other.y
-        z = self.z + other.z
-        return Vector(x, y, z)
+    def __add__(self, x:'Vector'):
+        result = self.get_copy()
+        result.add(x)
+        return result
 
-    def __sub__(self, other):
-        x = self.x - other.x
-        y = self.y - other.y
-        z = self.z - other.z
-        return Vector(x, y, z)
+    def __sub__(self, x:'Vector'):
+        result = self.get_copy()
+        result.subtract(x)
+        return result
 
-    def __mul__(self, other):
-        x = self.x * other.x
-        y = self.y * other.y
-        z = self.z * other.z
-        return Vector(x, y, z)
+    def __mul__(self, x:'Vector'):
+        result = self.get_copy()
+        result.multiply(x)
+        return result
 
-    def __truediv__(self, other):
-        x = self.x / other.x
-        y = self.y / other.y
-        z = self.z / other.z
-        return Vector(x, y, z)
+    def __truediv__(self, x:'Vector'):
+        result = self.get_copy()
+        result.divide(x)
+        return result
 
-    def __floordiv__(self, other):
-        x = self.x // other.x
-        y = self.y // other.y
-        z = self.z // other.z
-        return Vector(x, y, z)
+    def __floordiv__(self, x:'Vector'):
+        result = self.get_copy()
+        result.floor_divide(x)
+        return result
+
+    def __radd__(self, x:'Vector'):
+        if isinstance(x, numbers.Number):
+            return self.__add__(x)
+
+    def __rsub__(self, x:'Vector'):
+        if isinstance(x, numbers.Number):
+            result = self.get_copy()
+            result.multiply(-1)
+            result.add(x)
+            return result
+
+    def __rmul__(self, x:'Vector'):
+        if isinstance(x, numbers.Number):
+            return self.__mul__(x)
+
+    def size(self):
+        """Get the number of vector elements.
+
+        Returns
+        -------
+        n_entries : int
+            Number of vector elements.
+        """
+        return self.n_entries
+
+    def reset(self, n:int):
+        """Set vector to given size and initialize all values to zero.
+
+        Parameters
+        ----------
+        n : int
+            Number of vector elements.
+        """
+        self.n_entries = n
+        self.value = numpy.zeros(n, dtype=numpy.float64)
+
+    def same_size(self, x:'Vector'):
+        """Check if this vector has the same size (i.e., number of vector elements, not length!) as the given vector `x`.
+
+        Returns
+        -------
+        same_dim : bool
+            `True` if number of vector elements matches, `False` otherwise.
+        """
+
+        if self.n_entries == x.n_entries:
+            return True
+
+        return False
 
     def update(self):
         """Called when vector is changed.
 
-        Invalidates private member variables, so they will be re-calculated the
-        next time their public getter functions are called.
+        Invalidates private member variables for length and unit vector,
+        so they will be re-calculated the next time their public getter
+        functions are called.
         """
-        self._unitVector = None
+        self._unit_vector = None
         self._length = None
 
-    def get(self, i):
-        if i == 0:
-            return self.x
-        elif i == 1:
-            return self.y
-        elif i == 2:
-            return self.z
+    def x(self):
+        """Get first vector element.
 
-        return 0
+        Returns
+        -------
+        x : float
+            First vector element.
+        """
+        return self.value[0]
 
-    def setx(self, value):
-        self.x = float(value)
+    def y(self):
+        """Get second vector element.
+
+        Returns
+        -------
+        y : float
+            Second vector element.
+        """
+        return self.value[1]
+
+    def z(self):
+        """Get third vector element.
+
+        Returns
+        -------
+        z : float
+
+            Third vector element.
+        """
+        return self.value[2]
+
+    def w(self):
+        """Get fourth vector element.
+
+        Returns
+        -------
+        w : float
+
+            Fourth vector element.
+        """
+        return self.value[3]
+
+    def get(self, i:int):
+        """Get value at vector index `i`. Indices start at `0`.
+
+        Parameters
+        ----------
+        i : int
+            Element index of value.
+
+        Returns
+        -------
+        value : float
+            Element value at index position `i`.
+        """
+        return self.value[i]
+
+    def get_copy(self):
+        """Get copy of this `Vector` object.
+
+        Returns
+        -------
+        v : Vector
+            Copy of this vector object.
+        """
+        new_values = numpy.copy(self.value)
+        return Vector(numpy_data=new_values)
+
+    def set_x(self, value:float):
+        """Set vector's x value (i.e., value of first vector element).
+
+        Parameters
+        ----------
+        value : float
+            Value for the first vector element.
+        """
+        self.value[0] = float(value)
         self.update()
 
-    def sety(self, value):
-        self.y = float(value)
+    def set_y(self, value:float):
+        """Set vector's y value (i.e., value of second vector element).
+
+        Parameters
+        ----------
+        value : float
+            Value for the second vector element.
+        """
+        self.value[1] = float(value)
         self.update()
 
-    def setz(self, value):
-        self.z = float(value)
+    def set_z(self, value:float):
+        """Set vector's z value (i.e., value of third vector element).
+
+        Parameters
+        ----------
+        value : float
+            Value for the third vector element.
+        """
+        self.value[2] = float(value)
         self.update()
 
-    def setxy(self, x=0, y=0):
-        """ Set x and y component (relevant for 2D computations) """
-        self.x = float(x)
-        self.y = float(y)
+    def set_w(self, value:float):
+        """Set vector's w value (i.e., value of fourth vector element).
+
+        Parameters
+        ----------
+        value : float
+            Value for the fourth vector element.
+        """
+        self.value[3] = float(value)
         self.update()
 
-    def set(self, x=0, y=0, z=0):
-        """ Set all vector components. """
-        self.x = float(x)
-        self.y = float(y)
-        self.z = float(z)
+    def set_x_y(self, x:float=0, y:float=0):
+        """Set x and y component (relevant for 2D computations).
+
+        Parameters
+        ----------
+        x : float
+            Value for the first vector element.
+
+        y : float
+            Value for the second vector element.
+        """
+        self.value[0] = float(x)
+        self.value[1] = float(y)
         self.update()
 
-    def setIdx(self, i, value):
-        if i == 0:
-            self.setx(value)
-        elif i == 1:
-            self.sety(value)
-        elif i == 2:
-            self.setz(value)
+    def set(self, x:float=0, y:float=0, z:float=0, w:float=None):
+        """ Set all vector components.
+
+        Non-existing vector components (such as `w` for a 3D vector) should be set to `None`.
+
+        Parameters
+        ----------
+        x : float
+            Value for the first vector element.
+
+        y : float
+            Value for the second vector element.
+
+        z : float
+            Value for the third vector element.
+
+        w : float
+            Value for the fourth vector element.
+        """
+        if self.n_entries > 0 and x is not None:
+            self.value[0] = float(x)
+
+        if self.n_entries > 1 and y is not None:
+            self.value[1] = float(y)
+
+        if self.n_entries > 2 and z is not None:
+            self.value[2] = float(z)
+
+        if self.n_entries > 3 and w is not None:
+            self.value[3] = float(w)
+
+        self.update()
+
+    def set_value_for_index(self, i:int, value:float):
+        """Set value for element at vector index `i`.
+
+        Parameters
+        ----------
+        i : int
+            Index of the vector element.
+
+        value : float
+            New value for the vector element.
+        """
+        self.value[i] = float(value)
+        self.update()
+
+    def set_numpy_data_array(self, numpy_data):
+        """Provide a one-dimensional NumPy array for the vector data.
+        The new vector size will be the same as the size of the NumPy array.
+
+        Parameters
+        ----------
+        numpy_data : numpy.ndarray
+            NumPy array for the new vector values.
+        """
+        self.n_entries = len(numpy_data)
+        self.value = numpy_data.astype(float)
+        self.update()
 
     def length(self):
-        """Get the length of the vector."""
+        """Get the length of the vector.
+
+        Returns
+        -------
+        length : float
+            Length of the vector.
+        """
         if self._length is None:
-            self._length = math.sqrt(self.x**2 + self.y**2 + self.z**2)
+            self._length = numpy.linalg.norm(self.value)
 
         return self._length
 
-    def angle(self, other):
-        """ Calculate angle between this vector and another vector. """
-        dotProd = self.dot(other)
+    def angle(self, x:'Vector'):
+        """Calculate angle between this vector and the given vector `x`.
+
+        Parameters
+        ----------
+        x : Vector
+            Second vector for angle calculation.
+
+        Returns
+        -------
+        angle : float
+            Angle (in radians) between this vector and given vector `x`.
+        """
+        dotProd = self.dot(x)
         l1 = self.length()
-        l2 = other.length()
+        l2 = x.length()
         lp = l1 * l2
 
         if lp > 0:
@@ -218,331 +707,336 @@ class Vector:
         else:
             return 0
 
-    def makeUnitVector(self):
+    def make_unit_vector(self):
         """ Normalize vector length to 1. """
-        vectorLength = self.length()
-        if vectorLength != 0:
-            if vectorLength != 1.0:
-                self.x /= float(vectorLength)
-                self.y /= float(vectorLength)
-                self.z /= float(vectorLength)
+        vector_length = self.length()
+        if vector_length != 0:
+            if vector_length != 1.0:
+                self.value /= vector_length
                 self.update()
         else:
             raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
 
-    def unitVector(self):
-        if self._unitVector is None:
-            self._unitVector = Vector(self.x, self.y, self.z)
-            self._unitVector.makeUnitVector()
+    def unit_vector(self):
+        """ Get a unit vector that points in the same direction as this vector.
 
-        return self._unitVector
+        Returns
+        -------
+        unit_vector : Vector
+            Unit vector for this vector.
 
-    def scale(self, factor):
-        """ Scale vector length by a certain factor. """
-        self.x *= factor
-        self.y *= factor
-        self.z *= factor
-        self.update()
+        Note
+        ----
+        If this vector changes, the returned unit vector object will be invalidated. To store the unit vector permanently, get a copy of the unit vector (using `get_copy()`) so it won't change:
 
-    def scaled(self, factor):
-        """ Return a copy of this vector, scaled by a certain factor. """
-        return Vector(self.x*factor, self.y*factor, self.z*factor)
+        ```python
+        unitv = v.unit_vector().get_copy()
+        ```
+        """
+        if self._unit_vector is None:
+            self._unit_vector = Vector(n=self.n_entries)
+            self._unit_vector.make_unit_vector()
 
-    def add(self, vec):
-        """ Add another vector to this vector. """
-        self.x += vec.x
-        self.y += vec.y
-        self.z += vec.z
-        self.update()
+        return self._unit_vector
 
-    def subtract(self, vec):
-        """ Subtract another vector from this vector. """
-        self.x -= vec.x
-        self.y -= vec.y
-        self.z -= vec.z
-        self.update()
+    def add(self, x):
+        """Add a scalar to all vector elements, or add another compatible vector.
 
-    def multiply(self, vec):
-        """ Multiply another vector element-wise to this vector. """
-        self.x *= vec.x
-        self.y *= vec.y
-        self.z *= vec.z
-        self.update()
-
-    def divide(self, vec):
-        """ Element-wise divide this vector by another vector. """
-        if vec.x != 0 and vec.y != 0 and vec.z != 0:
-            self.x /= vec.x
-            self.y /= vec.y
-            self.z /= vec.z
-            self.update()
+        Parameters
+        ----------
+        x : Vector or float
+            Vector of same size to be added (element-wise) or scalar to be added to all vector elements.
+        """
+        if isinstance(x, Vector):
+            # 'x' is another vector:
+            if self.same_size(x):
+                self.value = numpy.add(self.value, x.value)
+            else:
+                raise Exception("Incompatible vector sizes. Can only add vectors of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.add(self.value, x)
         else:
-            raise ZeroDivisionError("Vector division by zero: one component of divisor is zero: {}".format(vec))
+            raise Exception(f"Vector addition failed: M+A is only supported when A is of type 'Vector' or a scalar. The given type is not supported: {type(x)}.")
+
+    def subtract(self, x):
+        """Subtract a scalar from all vector elements, or subtract another compatible vector.
+
+        Parameters
+        ----------
+        x : Vector or float
+            Vector of same size to be subtracted (element-wise) or scalar to be subtracted from all vector elements.
+        """
+        if isinstance(x, Vector):
+            # 'x' is another vector:
+            if self.same_size(x):
+                self.value = numpy.subtract(self.value, x.value)
+            else:
+                raise Exception("Incompatible vector sizes. Can only subtract vectors of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.subtract(self.value, x)
+        else:
+            raise Exception(f"Vector subtraction failed: M-A is only supported when A is of type 'Vector' or a scalar. The given type is not supported: {type(x)}.")
+
+    def multiply(self, x):
+        """Multiply a scalar to all vector elements, or perform vector multiplication with a compatible vector.
+
+        Parameters
+        ----------
+        x : Vector or float
+            Vector of same size to be multiplied (element-wise) or scalar to be multiplied to all vector elements.
+        """
+        if isinstance(x, Vector):
+            # 'x' is another vector:
+            self.value = numpy.matmul(self.value, x.value)
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.multiply(self.value, x)
+        else:
+            raise Exception(f"Vector multiplication failed: M*A is only supported when A is of type 'Vector' or 'Vector' or a scalar. The given type is not supported: {type(x)}.")
+
+    def divide(self, x):
+        """Divide all vector elements by a scalar, or perform element-wise division with a vector of the same size.
+
+        Parameters
+        ----------
+        x : Vector or float
+            Vector of same size to divide this vector (element-wise) or scalar to divide all vector elements.
+        """
+        if isinstance(x, Vector):
+            # 'x' is another vector... element-wise division:
+            if self.same_size(x):
+                self.value = numpy.divide(self.value, x.value)
+            else:
+                raise Exception("Incompatible vector sizes. Can only run an element-wise division for vectors of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.divide(self.value, x)
+        else:
+            raise Exception(f"Vector division failed: M/A is only supported when A is of type 'Vector' or a scalar. The given type is not supported: {type(x)}.")
+
+    def floor_divide(self, x):
+        """Divide all vector elements by a scalar, or perform element-wise division with a vector of the same size.
+
+        Parameters
+        ----------
+        x : Vector or float
+            Vector of same size to floor-divide this vector (element-wise) or scalar to floor-divide all vector elements.
+        """
+        if isinstance(x, Vector):
+            # 'x' is another vector... element-wise division:
+            if self.same_size(x):
+                self.value = numpy.floor_divide(self.value, x.value)
+            else:
+                raise Exception("Incompatible vector sizes. Can only run an element-wise division for vectors of same size.")
+        elif isinstance(x, numbers.Number):
+            # 'x' is a scalar:
+            self.value = numpy.floor_divide(self.value, x)
+        else:
+            raise Exception(f"Vector division failed: M/A is only supported when A is of type 'Vector' or a scalar. The given type is not supported: {type(x)}.")
+
+    def scale(self, factor:float):
+        """Scale vector by a scalar factor.
+
+        Parameters
+        ----------
+        factor : float
+            Factor that scales all vector elements.
+        """
+        self.value = numpy.multiply(self.value, factor)
+        self.update()
+
+    def scaled(self, factor:float):
+        """ Get a copy of this vector, scaled by the given `factor`.
+
+        Parameters
+        ----------
+        factor : float
+            Factor that scales all vector elements.
+
+        Returns
+        -------
+        result : Vector
+            Scaled copy of this vector.
+        """
+        result = self.get_copy()
+        result.scale(factor)
+        return result
 
     def square(self):
-        self.x *= self.x
-        self.y *= self.y
-        self.z *= self.z
+        """ Square all elements of this vector. """
+        self.value = numpy.square(self.value)
         self.update()
+
+    def squared(self):
+        """ Get a squared copy of this vector.
+
+        Returns
+        -------
+        result : Vector
+            Squared copy of this vector.
+        """
+        result = self.get_copy()
+        result.square()
+        return result
 
     def sqrt(self):
-        self.x = math.sqrt(self.x)
-        self.y = math.sqrt(self.y)
-        self.z = math.sqrt(self.z)
+        """ Set all elements of this vector to their square roots. """
+        self.value = numpy.sqrt(self.value)
         self.update()
 
-    def distance(self, vec):
-        """ Distance between target points of this and another vector. """
-        return math.sqrt(math.pow(self.x-vec.x, 2) + math.pow(self.y-vec.y, 2) + math.pow(self.z-vec.z, 2))
+    def distance(self, p:'Vector'):
+        """ Distance between target points of this and another vector.
 
-    def dot(self, other):
-        """ Calculate vector dot product. """
-        return (self.x*other.x + self.y*other.y + self.z*other.z)
+        Parameters
+        ----------
+        p : Vector
+            Second vector.
 
-    def cross_z(self, other):
-        """ Calculate the z component of the cross product. """
-        return self.x*other.y - self.y*other.x
+        Returns
+        -------
+        distance : float
+            Distance between the target point of this vector and the target point of the second vector `p`.
+        """
+        return (self-p).length()
 
-    def cross(self, other):
-        """ Calculate vector cross product. """
-        cx = self.y*other.z - self.z*other.y
-        cy = self.z*other.x - self.x*other.z
-        cz = self.x*other.y - self.y*other.x
+    def dot(self, x:'Vector'):
+        """ Calculate vector dot product.
 
-        c = Vector(cx, cy, cz)
-        return c
+        Parameters
+        ----------
+        x : Vector
+            Another vector to calculate the dot product with this vector.
 
-    def inverse(self):
-        return Vector(-self.x, -self.y, -self.z)
+        Returns
+        -------
+        dotp : float
+            Dot product of this vector with the vector `x`.
+        """
+        return numpy.dot(self.value, x.value)
+
+    def cross_z(self, x:'Vector'):
+        """ Calculate the z component of the 3D cross product.
+
+        Parameters
+        ----------
+        x : Vector
+            The second vector to calculate the cross product. Must contain three elements.
+
+        Returns
+        -------
+        crossz : float
+            z component of 3D cross product of this vector with the second vector `x`.
+        """
+        return self.x()*x.y() - self.y()*x.x()
+
+    def cross(self, x:'Vector'):
+        """ Calculate 3D vector cross product.
+
+        Parameters
+        ----------
+        x : Vector
+            The second vector to calculate the cross product. Must contain three elements.
+
+        Returns
+        -------
+        crossp : Vector
+            3D cross product of this vector with the second vector `x`.
+        """
+        cp = numpy.cross(self.value, x.value)
+        return Vector(numpy_data=cp)
+
+    def sum(self):
+        """ Get the sum of all vector elements.
+
+        Returns
+        -------
+        sum : float
+            Sum of all vector elements.
+        """
+        return numpy.sum(self.value)
 
     def invert(self):
-        self.x = -self.x
-        self.y = -self.y
-        self.z = -self.z
+        """ Invert this vector: v to -v. """
+        self.value = -self.value
         self.update()
 
-    def rotate(self, axis, angle):
-        """ Rotate vector around given axis by given angle [rad]. """
+    def inverse(self):
+        """ Get the inverse of this vector: -v.
+
+        Returns
+        -------
+        inv : Vector
+            Inverse of this vector, i.e. vector of same length pointing in the opposite direction.
+        """
+        result = self.get_copy()
+        result.invert()
+        return result
+
+    def rotate(self, axis:'Vector', angle:float):
+        """ Rotate vector around given axis by given angle (in rad).
+
+        Parameters
+        ----------
+        axis : Vector
+            Rotation axis.
+
+        angle : float
+            Rotation angle (in rad).
+        """
 
         # Implementing a general rotation matrix.
         cs = math.cos(angle)
         sn = math.sin(angle)
 
-        vx = self.x
-        vy = self.y
-        vz = self.z
+        vx = self.x()
+        vy = self.y()
+        vz = self.z()
 
-        nx = axis.unitVector().x
-        ny = axis.unitVector().y
-        nz = axis.unitVector().z
+        nx = axis.unit_vector().x()
+        ny = axis.unit_vector().y()
+        nz = axis.unit_vector().z()
 
         rx = vx*(nx*nx*(1.0-cs) + cs)    + vy*(nx*ny*(1.0-cs) - nz*sn) + vz*(nx*nz*(1.0-cs) + ny*sn)
         ry = vx*(ny*nx*(1.0-cs) + nz*sn) + vy*(ny*ny*(1.0-cs) + cs)    + vz*(ny*nz*(1.0-cs) - nx*sn)
         rz = vx*(nz*nx*(1.0-cs) - ny*sn) + vy*(nz*ny*(1.0-cs) + nx*sn) + vz*(nz*nz*(1.0-cs) + cs)
 
-        self.set(rx, ry, rz)
+        self.set(x=rx, y=ry, z=rz)
 
-    @staticmethod
-    def connection(vecFrom, vecTo):
-        return Vector(vecTo.x-vecFrom.x, vecTo.y-vecFrom.y, vecTo.z-vecFrom.z)
+    def to(self, x:'Vector'):
+        """ Get a vector that points from this location to the given location `x`.
 
-class Vector2D:
-    """A 2D vector in a plane.
+        Parameters
+        ----------
+        x : Vector
+            Second location vector.
 
-    Separate implementation from 3D vectors to gain speed.
-    """
-
-    def __init__(self, x=0, y=0):
-        self.x = float(x)
-        self.y = float(y)
-
-        # The following member variables are private and should not
-        # be accessed from outside. They are invalidated whenever the
-        # vector changes.
-        self._unitVector = None
-        self._length = None
-
-        self.update()
-
-    def __str__(self):
-        return "({spaceX}{x:.7f}, {spaceY}{y:.7f})".format(x=self.x, y=self.y, spaceX=" "*(self.x>=0), spaceY=" "*(self.y>=0))
-
-    def __add__(self, other):
-        x = self.x + other.x
-        y = self.y + other.y
-        return Vector2D(x, y)
-
-    def __sub__(self, other):
-        x = self.x - other.x
-        y = self.y - other.y
-        return Vector2D(x, y)
-
-    def __mul__(self, other):
-        x = self.x * other.x
-        y = self.y * other.y
-        return Vector2D(x, y)
-
-    def __truediv__(self, other):
-        x = self.x / other.x
-        y = self.y / other.y
-        return Vector2D(x, y)
-
-    def __floordiv__(self, other):
-        x = self.x // other.x
-        y = self.y // other.y
-        return Vector2D(x, y)
-
-    def update(self):
-        """Called when vector is changed.
-
-        Invalidates private member variables, so they will be re-calculated the
-        next time their public getter functions are called.
+        Returns
+        -------
+        pointer : Vector
+            Vector that points from this vector's target point to the target point of the given vector `x`.
         """
-        self._unitVector = None
-        self._length = None
-
-    def setx(self, value):
-        self.x = value
-        self.update()
-
-    def sety(self, value):
-        self.y = value
-        self.update()
-
-    def set(self, x=0, y=0):
-        """ Set all vector components. """
-        self.x = x
-        self.y = y
-        self.update()
-
-    def length(self):
-        """Get the length of the vector."""
-        if self._length is None:
-            self._length = math.sqrt(self.x**2 + self.y**2)
-
-        return self._length
-
-    def angle(self, other):
-        """ Calculate angle between this vector and another vector. """
-        dotProd = self.dot(other)
-        l1 = self.length()
-        l2 = other.length()
-        lp = l1 * l2
-
-        if lp > 0:
-            cs = dotProd / lp
-            alpha = 0
-
-            # Avoid out-of-domain due to rounding errors:
-            if cs >= 1.0:
-                alpha = 0
-            elif cs <= -1.0:
-                alpha = math.pi
-            else:
-                alpha = math.acos(cs)
-
-            return alpha
-        else:
-            return 0
-
-    def makeUnitVector(self):
-        """ Normalize vector length to 1. """
-        vectorLength = self.length()
-        if vectorLength != 0:
-            if vectorLength != 1.0:
-                self.x /= float(vectorLength)
-                self.y /= float(vectorLength)
-                self.update()
-        else:
-            raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
-
-    def unitVector(self):
-        if self._unitVector is None:
-            self._unitVector = Vector2D(self.x, self.y)
-            self._unitVector.makeUnitVector()
-
-        return self._unitVector
-
-    def scale(self, factor):
-        """ Scale vector length by a certain factor. """
-        self.x *= factor
-        self.y *= factor
-        self.update()
-
-    def add(self, vec):
-        """ Add another vector to this vector. """
-        self.x += vec.x
-        self.y += vec.y
-        self.update()
-
-    def subtract(self, vec):
-        """ Subtract another vector from this vector. """
-        self.x -= vec.x
-        self.y -= vec.y
-        self.update()
-
-    def multiply(self, vec):
-        """ Multiply another vector element-wise to this vector. """
-        self.x *= vec.x
-        self.y *= vec.y
-        self.update()
-
-    def divide(self, vec):
-        """ Element-wise divide this vector by another vector. """
-        if vec.x != 0 and vec.y != 0:
-            self.x /= vec.x
-            self.y /= vec.y
-            self.update()
-        else:
-            raise ZeroDivisionError("Vector division by zero: one component of divisor is zero: {}".format(vec))
-
-    def square(self):
-        self.x *= self.x
-        self.y *= self.y
-        self.update()
-
-    def sqrt(self):
-        self.x = math.sqrt(self.x)
-        self.y = math.sqrt(self.y)
-        self.update()
-
-    def distance(self, vec):
-        """ Distance between target points of this and another vector. """
-        return math.sqrt(math.pow(self.x-vec.x, 2) + math.pow(self.y-vec.y, 2))
-
-    def dot(self, other):
-        """ Calculate vector dot product. """
-        return (self.x*other.x + self.y*other.y)
-
-    def cross_z(self, other):
-        """ Calculate the z component of the cross product. """
-        return self.x*other.y - self.y*other.x
-
-    def cross(self, other):
-        """ Calculate vector cross product. """
-        c = Vector(0, 0, self.cross_z(other))
-        return c
-
-    def inverse(self):
-        return Vector(-self.x, -self.y)
-
-    def invert(self):
-        self.x = -self.x
-        self.y = -self.y
-        self.update()
-
-    def rotate(self, angle):
-        """ Rotate vector in plane by given angle [rad]. """
-
-        # Implementing a general rotation matrix.
-        cs = math.cos(angle)
-        sn = math.sin(angle)
-
-        self.set(self.x*cs - self.y*sn, self.x*sn + self.y*cs)
+        return self.connection(self, x)
 
     @staticmethod
-    def connection(vecFrom, vecTo):
-        return Vector2D(vecTo.x-vecFrom.x, vecTo.y-vecFrom.y)
+    def connection(p0:'Vector', p1:'Vector'):
+        """ Connection vector between two points (represented by vectors).
+
+        Parameters
+        ----------
+        p0 : Vector
+            Origin point of the connection.
+
+        p1 : Vector
+            Target point of the connection.
+
+        Returns
+        -------
+        connecting_vector : Vector
+            Vector pointing from the origin `p0` to the target point `p1`.
+        """
+        return p1 - p0
 
 class Line2D:
     def __init__(self):
@@ -559,10 +1053,10 @@ class Line2D:
 
     def setFromPoints(self, point0, point1):
         # points are defined by 2D vectors
-        x0 = point0.x
-        y0 = point0.y
-        x1 = point1.x
-        y1 = point1.y
+        x0 = point0.x()
+        y0 = point0.y()
+        x1 = point1.x()
+        y1 = point1.y()
 
         if x0 != x1:
             self.m = (y1-y0) / (x1-x0)
@@ -572,12 +1066,12 @@ class Line2D:
             self.m = math.inf
             self.n = x0  # Store x intersection in n if line is vertical
 
-    def intersection(self, otherLine):
+    def intersection(self, x):
         m0 = self.m
         n0 = self.n
 
-        m1 = otherLine.m
-        n1 = otherLine.n
+        m1 = x.m
+        n1 = x.n
 
         if m0 == m1:
             # Lines are parallel
@@ -586,15 +1080,15 @@ class Line2D:
         if m0 != math.inf and m1 != math.inf:
             xs = (n1-n0)/(m0-m1)
             ys = m0*xs + n0
-            return Vector2D(xs, ys)
+            return Vector(x=xs, y=ys, n=2)
         elif m0 == math.inf and m1 != math.inf:
             xs = n0
             ys = m1*xs + n1
-            return Vector2D(xs, ys)
+            return Vector(x=xs, y=ys, n=2)
         elif m0 != math.inf and m1 == math.inf:
             xs = n1
             ys = m0*xs + n0
-            return Vector2D(xs, ys)
+            return Vector(x=xs, y=ys, n=2)
 
 
 class Polygon:
@@ -606,7 +1100,7 @@ class Polygon:
         self._area = None
         self.vertexOrderCCW = True  # Vertices defined in counter-clockwise order. Should be False for clockwise.
         self.set(*points)
-    
+
     def __str__(self):
         s = ""
         for i in range(len(self.points)):
@@ -614,13 +1108,13 @@ class Polygon:
 
         return s
 
-    def make3D(self, zComponent):
+    def make_3D(self, z_component):
         """ Convert all points in xy-plane from 2D vectors to 3D vectors,
-            using the provided zComponent. """
+            using the provided z_component. """
 
         for i in range(len(self.points)):
             p = self.points[i]
-            newPoint = Vector(p.x, p.y, zComponent)
+            newPoint = Vector(p.x, p.y, z_component)
             self.points[i] = newPoint
 
     def set(self, *points):
@@ -635,11 +1129,11 @@ class Polygon:
 
     def area(self):
         if self._area is None:
-            self.calculateArea()
+            self.calculate_area()
 
         return self._area
 
-    def calculateArea(self):
+    def calculate_area(self):
         self._area = 0
 
         # Split polygon into triangles and calculate area of each
@@ -648,55 +1142,55 @@ class Polygon:
         if len(self.points) >= 3:
             # Start at first point
             p1 = self.points[0]
-            x1 = p1.x
-            y1 = p1.y
+            x1 = p1.x()
+            y1 = p1.y()
 
             for i in range(1, len(self.points)-1):
                 p2 = self.points[i]
-                p3 = self.points[i+1]                
-                x2 = p2.x
-                y2 = p2.y
-                x3 = p3.x
-                y3 = p3.y
+                p3 = self.points[i+1]
+                x2 = p2.x()
+                y2 = p2.y()
+                x3 = p3.x()
+                y3 = p3.y()
                 self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
 
-    def getBoundingBox(self):
-        leftMost  = self.points[0].x
+    def get_bounding_box(self):
+        leftMost  = self.points[0].x()
         rightMost = -1
-        upMost    = self.points[0].y
+        upMost    = self.points[0].y()
         downMost  = -1
 
         for p in self.points:
-            if p.x < leftMost:
-                leftMost = math.floor(p.x)
-            if p.x > rightMost:
-                rightMost = math.ceil(p.x)
+            if p.x() < leftMost:
+                leftMost = math.floor(p.x())
+            if p.x() > rightMost:
+                rightMost = math.ceil(p.x())
 
-            if p.y < upMost:
-                upMost = math.floor(p.y)
-            if p.y > downMost:
-                downMost = math.ceil(p.y)
+            if p.y() < upMost:
+                upMost = math.floor(p.y())
+            if p.y() > downMost:
+                downMost = math.ceil(p.y())
 
         return int(leftMost), int(upMost), int(rightMost), int(downMost)
 
-    def isInside2D(self, point):
+    def is_inside_2D(self, point):
         """ Check if the given point is inside the polygon or on an edge. """
-        x = point.x
-        y = point.y
+        x = point.x()
+        y = point.y()
 
         if len(self.points) >= 3:
             p1 = self.points[0]
-            x1 = p1.x
-            y1 = p1.y
+            x1 = p1.x()
+            y1 = p1.y()
 
             # Set up sub-triangles and check if point is in any of those:
             for i in range(1, len(self.points)-1):
                 p2 = self.points[i]
-                p3 = self.points[i+1]                
-                x2 = p2.x
-                y2 = p2.y
-                x3 = p3.x
-                y3 = p3.y
+                p3 = self.points[i+1]
+                x2 = p2.x()
+                y2 = p2.y()
+                x3 = p3.x()
+                y3 = p3.y()
 
                 # Calculate the barycentric coordinates of the point with respect to the triangle:
                 D = (y2-y3)*(x1-x3) + (x3-x2)*(y1-y3)
@@ -725,7 +1219,7 @@ class Polygon:
 
         if cpz >= 0:  # on the edge
             return True
-        
+
         return False
 
     def clip(self, clipPolygon):

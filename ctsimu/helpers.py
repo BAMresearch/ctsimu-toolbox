@@ -25,12 +25,6 @@ def getFieldOrNone(dictionary, *fields):
 
     return currentElement
 
-def rad2deg(rad):
-    return rad * 180.0 / math.pi
-
-def deg2rad(deg):
-    return deg * math.pi / 180.0
-
 def listMean(l):
     return sum(l) / len(l)
 
@@ -43,30 +37,6 @@ def listMeanAndStdDev(l):
     msqDev /= len(l)
 
     return mean, math.sqrt(msqDev)
-
-# Convert to unit, assuming angle is in deg:
-def deg2x(angle, unit='deg'): 
-    if unit == 'deg':
-        return angle
-    elif unit == 'rad':
-        if angle != None:
-            return ballTools.deg2rad(angle)
-        else:
-            return None
-    else:
-        raise Exception("Angle unit must be 'deg' or 'rad'.")
-
-# Convert to unit, assuming angle is in rad:
-def rad2x(angle, unit='rad'):
-    if unit == 'rad':
-        return angle
-    elif unit == 'deg':
-        if angle != None:
-            return ballTools.rad2deg(angle)
-        else:
-            return None
-    else:
-        raise Exception("Angle unit must be 'deg' or 'rad'.")
 
 def gaussian(x, mu, sigma, A):
     return A*numpy.exp(-(x-mu)*(x-mu)/(2.0*sigma*sigma))
@@ -99,7 +69,7 @@ def ratios(values):
 
 """ Unit conversions for values from CTSimU scenario descriptions (JSON files). """
 
-def in_mm(jsonVal):
+def in_mm_json(jsonVal):
     """ Convert JSON value/unit pair to mm. """
     if ("value" in jsonVal) and ("unit" in jsonVal):
         value = jsonVal["value"]
@@ -122,7 +92,7 @@ def in_mm(jsonVal):
     else:
         raise KeyError("\"value\" or \"unit\" missing.")
 
-def in_rad(jsonVal):
+def in_rad_json(jsonVal):
     """ Convert JSON value/unit pair to radians. """
     if ("value" in jsonVal) and ("unit" in jsonVal):
         value = jsonVal["value"]

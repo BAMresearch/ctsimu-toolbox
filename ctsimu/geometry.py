@@ -46,19 +46,19 @@ def basisTransformMatrix(fromCS:'CoordinateSystem', toCS:'CoordinateSystem') -> 
     T = Matrix(3, 3)
 
     # Row 1:
-    T.value[0][0] = toCS.u.unitVector().dot(fromCS.u.unitVector())
-    T.value[0][1] = toCS.u.unitVector().dot(fromCS.v.unitVector())
-    T.value[0][2] = toCS.u.unitVector().dot(fromCS.w.unitVector())
+    T.value[0][0] = toCS.u.unit_vector().dot(fromCS.u.unit_vector())
+    T.value[0][1] = toCS.u.unit_vector().dot(fromCS.v.unit_vector())
+    T.value[0][2] = toCS.u.unit_vector().dot(fromCS.w.unit_vector())
 
     # Row 2:
-    T.value[1][0] = toCS.v.unitVector().dot(fromCS.u.unitVector())
-    T.value[1][1] = toCS.v.unitVector().dot(fromCS.v.unitVector())
-    T.value[1][2] = toCS.v.unitVector().dot(fromCS.w.unitVector())
+    T.value[1][0] = toCS.v.unit_vector().dot(fromCS.u.unit_vector())
+    T.value[1][1] = toCS.v.unit_vector().dot(fromCS.v.unit_vector())
+    T.value[1][2] = toCS.v.unit_vector().dot(fromCS.w.unit_vector())
 
     # Row 3:
-    T.value[2][0] = toCS.w.unitVector().dot(fromCS.u.unitVector())
-    T.value[2][1] = toCS.w.unitVector().dot(fromCS.v.unitVector())
-    T.value[2][2] = toCS.w.unitVector().dot(fromCS.w.unitVector())
+    T.value[2][0] = toCS.w.unit_vector().dot(fromCS.u.unit_vector())
+    T.value[2][1] = toCS.w.unit_vector().dot(fromCS.v.unit_vector())
+    T.value[2][2] = toCS.w.unit_vector().dot(fromCS.w.unit_vector())
 
     return T
 
@@ -67,7 +67,7 @@ class CoordinateSystem:
 
     An object according to the CTSimU scenario specification,
     containing a center coordinate and an orientation in 3D space.
-    
+
     The center and axis vectors are expressed in terms of the
     object's reference coordinate system, which must be known implicitly
     when objects of this class are used.
@@ -128,17 +128,17 @@ class CoordinateSystem:
         # Get center position from JSON dict:
         if "center" in geometry:
             if "x" in geometry["center"]:
-                cx = in_mm(geometry["center"]["x"])
+                cx = in_mm_json(geometry["center"]["x"])
             else:
                 raise KeyError("No \"x\" coordinate found for the center.")
 
             if "y" in geometry["center"]:
-                cy = in_mm(geometry["center"]["y"])
+                cy = in_mm_json(geometry["center"]["y"])
             else:
                 raise KeyError("No \"y\" coordinate found for the center.")
-            
+
             if "z" in geometry["center"]:
-                cz = in_mm(geometry["center"]["z"])
+                cz = in_mm_json(geometry["center"]["z"])
             else:
                 raise KeyError("No \"z\" coordinate found for the center.")
 
@@ -146,17 +146,17 @@ class CoordinateSystem:
         # Try old British spelling (up to file format v0.9)
         elif "centre" in geometry:
             if "x" in geometry["centre"]:
-                cx = in_mm(geometry["centre"]["x"])
+                cx = in_mm_json(geometry["centre"]["x"])
             else:
                 raise KeyError("No \"x\" coordinate found for the center.")
 
             if "y" in geometry["centre"]:
-                cy = in_mm(geometry["centre"]["y"])
+                cy = in_mm_json(geometry["centre"]["y"])
             else:
                 raise KeyError("No \"y\" coordinate found for the center.")
-            
+
             if "z" in geometry["centre"]:
-                cz = in_mm(geometry["centre"]["z"])
+                cz = in_mm_json(geometry["centre"]["z"])
             else:
                 raise KeyError("No \"z\" coordinate found for the center.")
 
@@ -216,34 +216,34 @@ class CoordinateSystem:
             if "position" in geometry["deviation"]:
                 if "x" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["x"] != None:
-                        translationX = in_mm(geometry["deviation"]["position"]["x"])
+                        translationX = in_mm_json(geometry["deviation"]["position"]["x"])
                         self.translateX(translationX)
-    
+
                 if "y" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["y"] != None:
-                        translationY = in_mm(geometry["deviation"]["position"]["y"])
+                        translationY = in_mm_json(geometry["deviation"]["position"]["y"])
                         self.translateY(translationY)
 
                 if "z" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["z"] != None:
-                        translationZ = in_mm(geometry["deviation"]["position"]["z"])
+                        translationZ = in_mm_json(geometry["deviation"]["position"]["z"])
                         self.translateZ(translationZ)
 
             # Rotations according to w''v'u convention:
             if "rotation" in geometry["deviation"]:
                 if "w" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["w"] != None:
-                        angleAroundW = in_rad(geometry["deviation"]["rotation"]["w"])
+                        angleAroundW = in_rad_json(geometry["deviation"]["rotation"]["w"])
                         self.rotateAroundW(angleAroundW)
 
                 if "v" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["v"] != None:
-                        angleAroundV = in_rad(geometry["deviation"]["rotation"]["v"])
+                        angleAroundV = in_rad_json(geometry["deviation"]["rotation"]["v"])
                         self.rotateAroundV(angleAroundV)
 
                 if "u" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["u"] != None:
-                        angleAroundU = in_rad(geometry["deviation"]["rotation"]["u"])
+                        angleAroundU = in_rad_json(geometry["deviation"]["rotation"]["u"])
                         self.rotateAroundU(angleAroundU)
 
     def setup(self, center:Vector, u:Vector, v:Vector, w:Vector):
@@ -284,9 +284,9 @@ class CoordinateSystem:
 
     def makeUnitCS(self):
         """Convert all basis vectors to unit vectors."""
-        self.u.makeUnitVector()
-        self.v.makeUnitVector()
-        self.w.makeUnitVector()
+        self.u.make_unit_vector()
+        self.v.make_unit_vector()
+        self.w.make_unit_vector()
 
     def translate(self, translationVector: Vector):
         """Move object in space.
@@ -331,7 +331,7 @@ class CoordinateSystem:
 
     def rotateAroundU(self, angle: float):
         """Rotate object around its u axis by given angle [rad].
-        
+
         Parameters
         ----------
         angle : float
@@ -342,7 +342,7 @@ class CoordinateSystem:
 
     def rotateAroundV(self, angle: float):
         """Rotate object around its v axis by given angle [rad].
-        
+
         Parameters
         ----------
         angle : float
@@ -353,7 +353,7 @@ class CoordinateSystem:
 
     def rotateAroundW(self, angle: float):
         """Rotate object around its w axis by given angle [rad].
-        
+
         Parameters
         ----------
         angle : float
@@ -364,13 +364,13 @@ class CoordinateSystem:
 
     def rotate(self, axis: Vector, angle: float):
         """Rotate object around a given axis by the given angle [rad].
-        
+
         Parameters
         ----------
         axis : Vector
             The axis of rotation, in terms of the object's
             reference coordinate system (e.g. world).
-        
+
         angle : float
             Rotation angle in rad, mathematically positive direction (right-hand rule).
         """
@@ -380,12 +380,12 @@ class CoordinateSystem:
 
     def changeReferenceFrame(self, fromCS:'CoordinateSystem', toCS:'CoordinateSystem'):
         """Change the object's reference coordinate system.
-        
+
         Parameters
         ----------
         fromCS : CoordinateSystem
             Current reference coordinate system.
-        
+
         toCS : CoordinateSystem
             New reference coordinate system.
 
@@ -426,28 +426,28 @@ class Detector(CoordinateSystem):
     ----------
     pixelsU : int
         Number of pixels in u direction.
-    
+
     pixelsV : int
         Number of pixels in v direction.
-    
+
     pitchU : float
         Size of a pixel in u direction.
         In units of the reference coordinate system.
-    
+
     pitchV : float
         Size of a pixel in v direction.
         In units of the reference coordinate system.
-    
+
     physWidth : float
         Physical size in u direction.
         In units of the reference coordinate system.
         Computed automatically after calling `setSize()`.
-    
+
     physHeight : float
         Physical size in v direction.
         In units of the reference coordinate system.
         Computed automatically after calling `setSize()`.
- 
+
     pixelOrigin : Vector
         Origin of the pixel coordinate system in terms of the reference
         coordinate system. This is the outermost corner of the
@@ -533,12 +533,12 @@ class Detector(CoordinateSystem):
             self.physHeight = self.pixelsV * self.pitchV
 
             # Vectors of the detector coordinate system:
-            ux = self.u.unitVector().x
-            uy = self.u.unitVector().y
-            uz = self.u.unitVector().z
-            vx = self.v.unitVector().x
-            vy = self.v.unitVector().y
-            vz = self.v.unitVector().z
+            ux = self.u.unit_vector().x
+            uy = self.u.unit_vector().y
+            uz = self.u.unit_vector().z
+            vx = self.v.unit_vector().x
+            vy = self.v.unit_vector().y
+            vz = self.v.unit_vector().z
 
             # World coordinates of origin (0,0) of detector's pixel coordinate system:
             self.pixelOrigin.x = self.center.x - 0.5*(ux*self.physWidth + vx*self.physHeight)
@@ -633,7 +633,7 @@ class Geometry:
 
     Keeps the source, stage and detector as a set and provides methods
     to calculate geometry parameters and projection matrices.
-    
+
     Attributes
     ----------
     detector : Detector
@@ -763,13 +763,13 @@ class Geometry:
                 log("Something went wrong when setting up the stage geometry using the JSON file description.")
                 raise Exception(e)
 
-            self.update()            
+            self.update()
         else:
             raise Exception("JSON scenario file not available.")
 
     def __str__(self):
         return self.info()
-        
+
     def update(self):
         """Calculate derived geometry parameters.
 
@@ -816,7 +816,7 @@ class Geometry:
         ## Brightest Spot in Detector Coordinate System:
         self.brightestSpotDetector = copy.deepcopy(self.brightestSpotWorld)
         self.brightestSpotDetector.subtract(self.detector.center)
-        
+
         pxU = self.brightestSpotDetector.dot(self.detector.u) / self.detector.pitchU + self.detector.cols()/2.0
         pxV = self.brightestSpotDetector.dot(self.detector.v) / self.detector.pitchV + self.detector.rows()/2.0
 
@@ -855,7 +855,7 @@ class Geometry:
 
     def info(self) -> str:
         """Generate an information string about the current geometry.
-    
+
         Returns
         -------
         txt : string
@@ -986,7 +986,7 @@ class Geometry:
                 image = CoordinateSystem()
 
                 if mode == "openCT":
-                    """openCT places the origin of the image CS at the detector 
+                    """openCT places the origin of the image CS at the detector
                     center. The constructor places it at (0,0,0) automatically,
                     so there is nothing to do. Comments for illustration."""
                     # image.center.x = 0
@@ -1253,7 +1253,7 @@ class Geometry:
         ABout = ABin.inverse()
         BCout = BCin.inverse()
         CAout = CAin.inverse()
-        
+
         ACin  = A.cross(C)
         DAin  = D.cross(A)
         CDin  = C.cross(D)
@@ -1501,9 +1501,9 @@ class Geometry:
                 if len(coverPolygons) > 0:
                     for coverPolygon in coverPolygons:
                         pixelPolygon = pixelPolygon.clip(coverPolygon)
-                        
+
                     # Remove the intensity covered by the clipping polygon:
-                    pixelPolygon.make3D(zComponent=SDD)
+                    pixelPolygon.make_3D(zComponent=SDD)
                     subarea = self.polygonAreaOnUnitSphere(pixelPolygon)
                     pxSphericalArea -= subarea
 
@@ -1737,7 +1737,7 @@ VoxelSizeZ = {vsz}
 Datatype = float
 
 [CustomKeys]
-NumProjections = {nProjections}    
+NumProjections = {nProjections}
 ProjectionFileType = tiff
 VolumeOutputPath = {basename}.raw
 ProjectionStartNum = 0

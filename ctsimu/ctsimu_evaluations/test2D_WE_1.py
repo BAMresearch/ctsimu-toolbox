@@ -239,18 +239,18 @@ class Test2D_WE_1(generalTest):
                 raise Exception("{key} is not a valid subtest identifier for test scenario {test}".format(key=self.subtests[i], test=self.testName))
 
             results = Test2D_WE_1_results()
-            
+
             # Get the Gaussian spot size and the pixel size from the JSON file:
             jsonText = pkgutil.get_data(__name__, self.jsonScenarioFile).decode()
 
             if jsonText != None:
                 jsonDict = json.loads(jsonText)
 
-                results.nominalGaussianSigmaMM = in_mm(getFieldOrNone(jsonDict, "source", "spot", "sigma", "u"))
-                results.pixelSize = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+                results.nominalGaussianSigmaMM = in_mm_json(getFieldOrNone(jsonDict, "source", "spot", "sigma", "u"))
+                results.pixelSize = in_mm_json(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
 
                 results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
-            
+
             if self.subtests[i] == "spotPoint":
                 results.nominalGaussianSigmaMM = 0
                 results.nominalGaussianSigmaPX = 0
@@ -451,7 +451,7 @@ class Test2D_WE_1(generalTest):
 
 
             mtfText += "\n"
-     
+
         profileFileName = "{dir}/{name}_{subname}_ESF_LSF.txt".format(dir=self.resultFileDirectory, name=self.name, subname=subname)
         with open(profileFileName, 'w') as profileFile:
             profileFile.write(profileText)
@@ -466,7 +466,7 @@ class Test2D_WE_1(generalTest):
         self.prepare()
         self.prepareRun(self.currentRun)
         i = self.currentRun
-        subtestName = self.subtests[i]  
+        subtestName = self.subtests[i]
 
         print("Calculating the LSF and MTF of the projection image...")
 
@@ -532,7 +532,7 @@ class Test2D_WE_1(generalTest):
         self.results[i].LSF_gaussian_fit = numpy.zeros_like(a=self.results[i].lineProfilePos, dtype=numpy.dtype('float64'))
         for j in range(len(self.results[i].LSF_gaussian_fit)):
             self.results[i].LSF_gaussian_fit[j] = gaussian(x=self.results[i].lineProfilePos[j], mu=self.results[i].measuredGaussianMuPX, sigma=self.results[i].measuredGaussianSigmaPX, A=self.results[i].measuredGaussianAmpPX)
-        
+
         self.writeResultFile(subname=subtestName, results=self.results[i])
         self.writeSummaryFile(subname=subtestName, results=self.results[i])
 
@@ -557,7 +557,7 @@ class Test2D_WE_1(generalTest):
             matplotlib.use("agg")
 
             fig, (ax1, ax2, ax3) = matplotlib.pyplot.subplots(nrows=3, ncols=1, figsize=(6, 8))
-            
+
             # ESF:
             ax1.plot(self.results[i].lineProfilePos, self.results[i].lineProfileGV, linewidth=1.5, label="Measured", color='#ffaa00')
             ax1.plot(self.results[i].lineProfilePos, self.results[i].ideal_ESF_Convolution, linewidth=1.0, label="Analytical", color='#000000', linestyle='dotted')

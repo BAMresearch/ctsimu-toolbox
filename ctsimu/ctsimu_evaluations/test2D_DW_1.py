@@ -71,7 +71,7 @@ class Test2D_DW_1(generalTest):
 
 
     def prepare(self):
-        """ Preparations before the test will be run with the images from the pipeline. """       
+        """ Preparations before the test will be run with the images from the pipeline. """
         self.prepared = True
 
     def prepareRun(self, i):
@@ -89,22 +89,22 @@ class Test2D_DW_1(generalTest):
             if jsonText != None:
                 jsonDict = json.loads(jsonText)
 
-                self.currentNominalSRb = in_mm(getFieldOrNone(jsonDict, "detector", "sharpness", "basic_spatial_resolution"))
+                self.currentNominalSRb = in_mm_json(getFieldOrNone(jsonDict, "detector", "sharpness", "basic_spatial_resolution"))
 
                 if self.currentNominalSRb is None:
                     raise Exception("Test {name}: Cannot find 'basic_spatial_resolution' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentPixelSize = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+                self.currentPixelSize = in_mm_json(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
 
                 if self.currentPixelSize is None:
                     raise Exception("Test {name}: Cannot find 'pixel_pitch/u' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSDD = in_mm(getFieldOrNone(jsonDict, "geometry", "detector", "center", "x"))
+                self.currentSDD = in_mm_json(getFieldOrNone(jsonDict, "geometry", "detector", "center", "x"))
 
                 if self.currentSDD is None:
                     raise Exception("Test {name}: Cannot find 'geometry/detector/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSOD = in_mm(getFieldOrNone(jsonDict, "geometry", "stage", "center", "x"))
+                self.currentSOD = in_mm_json(getFieldOrNone(jsonDict, "geometry", "stage", "center", "x"))
 
                 if self.currentSOD is None:
                     raise Exception("Test {name}: Cannot find 'geometry/stage/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
@@ -119,7 +119,7 @@ class Test2D_DW_1(generalTest):
             self.results[i].pixelSize = self.currentPixelSize
             self.results[i].SDD = self.currentSDD
             self.results[i].SOD = self.currentSOD
-           
+
         else:
             if len(self.subtests) == 0:
                 raise Exception("Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts two keywords: 'SR50' for 50um basic spatial resolution and 'SR100' for 100um basic spatial resolution.".format(testname=self.testName))
@@ -137,7 +137,7 @@ class Test2D_DW_1(generalTest):
         for j in range(len(pos)):
             profileText += "{pos:.2f}\t{GV}".format(pos=pos[j], GV=prof[j])
             profileText += "\n"
-     
+
         profileFileName = "{dir}/{name}_{subname}_profile.txt".format(dir=self.resultFileDirectory, name=self.name, subname=subname)
         with open(profileFileName, 'w') as profileFile:
             profileFile.write(profileText)
@@ -159,7 +159,7 @@ class Test2D_DW_1(generalTest):
         for j in range(len(results.wireSpacings)):
             resultText += "{ws:.3f}\t{md:.3f}".format(ws=results.wireSpacings[j], md=results.modulationDepths[j])
             resultText += "\n"
-     
+
         resultTextFileName = "{dir}/{name}_{subname}_results.txt".format(dir=self.resultFileDirectory, name=self.name, subname=subname)
         with open(resultTextFileName, 'w') as resultFile:
             resultFile.write(resultText)
@@ -210,7 +210,7 @@ class Test2D_DW_1(generalTest):
 
     def followUp(self):
         pass
-        
+
     def plotResults(self):
         i = self.currentRun
         subtestName = self.subtests[i]
@@ -222,7 +222,7 @@ class Test2D_DW_1(generalTest):
             matplotlib.use("agg")
 
             fig, (ax1, ax2) = matplotlib.pyplot.subplots(nrows=2, ncols=1, figsize=(9, 7.5))
-            
+
             # Grey Value Profile:
             ax1.plot(self.results[i].lineProfilePos, self.results[i].lineProfileGV, linewidth=1.5, label="Measured", color='#1f77b4')
 

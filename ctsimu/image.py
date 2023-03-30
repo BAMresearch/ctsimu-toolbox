@@ -18,13 +18,13 @@ It will be stored in `Image.px` as a float64 NumPy array. When writing an
 image using `Image.save()`, you have to specify the data type for the new file.
 
     from ctsimu.image import Image
-    
+
     myImage = Image("example.tif")
     myImage.read()
-    
+
     # Mirror horizontally:
     myImage.flipHorizontal()
-    
+
     myImage.save("example_mirrored.raw", dataType="float32")
 
 
@@ -75,7 +75,7 @@ def isTIFF(filename: str) -> bool:
     if filename is not None:
         if(filename.casefold().endswith('.tif') or filename.casefold().endswith('.tiff')):
             return True
-    
+
     return False
 
 def createImageStack(stack):
@@ -320,7 +320,7 @@ class Image:
 
         self.px = 0
         self.px = numpy.full((h, w), fill_value=value, dtype=dataType)
-   
+
     def getPixelMap(self):
         return self.px
 
@@ -396,7 +396,7 @@ class Image:
 
     def mean(self, ROI=None):
         """ Return arithmetic mean of the image grey values. """
-        
+
         # Take full image if no ROI is given
         if ROI==None:
             return numpy.mean(self.px)
@@ -490,7 +490,7 @@ class Image:
                     return True
 
         raise Exception("Pixel dimensions do not match: {}x{} vs. {}x{}".format(self.getWidth(), self.getHeight(), img.getWidth(), img.getHeight()))
-        
+
         return False
 
     def read(self, filename=None, width=None, height=None, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0):
@@ -513,14 +513,14 @@ class Image:
         """ Import TIFF file. """
         if os.path.isfile(self.inputFile.getFilename()):
             basename = self.inputFile.getFileBasename()
-            
+
             tiffimg = tiff()
             tiffimg.read(self.inputFile.getFilename())
             img = tiffimg.imageData(subfile=0, channel=0, obeyOrientation=obeyOrientation)  # get a greyscale image from TIFF subfile 0
             width = tiffimg.getWidth(subfile=0)
             height = tiffimg.getHeight(subfile=0)
 
-            self.inputFile.setDataType(img.dtype) 
+            self.inputFile.setDataType(img.dtype)
 
             if flipByteOrder:
                 img.byteswap(inplace=True)
@@ -667,7 +667,7 @@ class Image:
                     filename += ".tif"
 
                 self.touchFolder(filename)
-                
+
                 tiffdata = None
                 if clipValues:  # Clipping
                     clipMin, clipMax = self.getDataTypeClippingBoundaries(dataType)
@@ -682,7 +682,7 @@ class Image:
                 raise Exception("Please specify a data type for the output file: {filename}".format(filename=filename))
         else:
             raise Exception("No output file name specified for the image to be saved.")
-            
+
     def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
         if (filename != None) and (len(filename) > 0):
             fileBaseName = os.path.basename(filename)
@@ -844,7 +844,7 @@ class Image:
         return profile
 
     def pixelsInShape(self, shape, seedPoint=None, mode='center', calculateWeights=False):
-        """ Returns all pixels in the given shape (of class Polygon). 
+        """ Returns all pixels in the given shape (of class Polygon).
 
             mode:
               'center'   : a pixel's center must be within the shape to be accepted.
@@ -890,7 +890,7 @@ class Image:
                 if visited[y][x] == 0:
                     visited[y][x] = 1
 
-                    # The pixel coordinate system is shifted by -0.5px against the shape coordinate system. Upper left pixel corner is its coordinate in the shape coordinate system.                   
+                    # The pixel coordinate system is shifted by -0.5px against the shape coordinate system. Upper left pixel corner is its coordinate in the shape coordinate system.
                     inside = False
 
                     # Reserve names but set them up later only when they are needed.
@@ -903,7 +903,7 @@ class Image:
                     center = Vector(x+0.5, y+0.5, 0)
 
                     if mode == 'center':
-                        inside = shape.isInside2D(center)
+                        inside = shape.is_inside_2D(center)
                     else:
                         upperLeft  = Vector(x,     y,     0)
                         upperRight = Vector(x+1,   y,     0)
@@ -911,11 +911,11 @@ class Image:
                         lowerRight = Vector(x+1,   y+1,   0)
 
                         if mode == 'full':
-                            inside = shape.isInside2D(upperLeft) and shape.isInside2D(upperRight) and shape.isInside2D(lowerLeft) and shape.isInside2D(lowerRight)
+                            inside = shape.is_inside_2D(upperLeft) and shape.is_inside_2D(upperRight) and shape.is_inside_2D(lowerLeft) and shape.is_inside_2D(lowerRight)
                         elif mode == 'partial':
                             inside = True
                             calculateWeights = True
-                    
+
                     if inside:
                         if calculateWeights:
                             # Calculate pixel weight from the area of the clipped pixel:
@@ -1062,9 +1062,9 @@ class Image:
         s = Vector(x1-x0+1, y1-y0+1, 0)   # +1 to fully include pixel (x1, y1)
 
         # Calculate vector t, perpendicular to s: t = s x z
-        z = Vector(0, 0, 1)  
+        z = Vector(0, 0, 1)
         t = s.cross(z)
-        t.makeUnitVector()
+        t.make_unit_vector()
         t.scale(0.5*width)
 
         # Define a rectangle along the line and its width, separated into two triangles.
@@ -1099,7 +1099,7 @@ class Image:
         sSum = numpy.zeros_like(a=sPositions, dtype=numpy.dtype('float64'))      # The sum of all grey value contributions
 
         # Make s a unit vector to correctly calculate projections using the dot product:
-        s.makeUnitVector()
+        s.make_unit_vector()
 
        # print("shape of positions: {}".format(numpy.shape(sPositions)))
 
@@ -1149,9 +1149,9 @@ class Image:
         s = Vector(x1-x0, y1-y0, 0)
 
         # Calculate vector t, perpendicular to s: t = s x z
-        z = Vector(0, 0, 1)  
+        z = Vector(0, 0, 1)
         t = s.cross(z)
-        t.makeUnitVector()
+        t.make_unit_vector()
 
         # Convert to 2D vectors:
         s = Vector2D(s.x, s.y)
@@ -1173,14 +1173,14 @@ class Image:
 
         # Create a unit vector in s direction:
         sUnit = copy.deepcopy(s)
-        sUnit.makeUnitVector()
+        sUnit.make_unit_vector()
 
         # Half a unit vector:
         binUnitHalf = copy.deepcopy(sUnit)
         binUnitHalf.scale(0.5*resolution)
 
         # Make s the length of a bin step (i.e. resolution unit)
-        s.makeUnitVector()
+        s.make_unit_vector()
         s.scale(resolution)
 
         rectPos = Vector2D(0, 0)
@@ -1228,7 +1228,7 @@ class Image:
 
         print("\rCalculating line profile... 100%   ")
         return sProfile, sPositions, sStepSize
-                
+
     def clip(self, lower, upper):
         """ Clip grey values to given boundary interval. """
         self.px = numpy.clip(self.px, lower, upper)
@@ -1279,7 +1279,7 @@ class Image:
             raise Exception("Right or lower boundary for ROI (x1 or y1) cannot be below zero.")
 
         if roiWidth>self.getWidth() or roiHeight>self.getHeight():
-            raise Exception("Size of the ROI is bigger than the image size. ROI: " + str(roiWidth) + " x " + str(roiHeight) + ". Image: " + str(self.getWidth()) + " x " + str(self.getHeight()))   
+            raise Exception("Size of the ROI is bigger than the image size. ROI: " + str(roiWidth) + " x " + str(roiHeight) + ". Image: " + str(self.getWidth()) + " x " + str(self.getHeight()))
         if x0 < 0:
             x1 += abs(x0)
             x0 = 0
@@ -1327,7 +1327,7 @@ class Image:
             # Shift pixel values that need to be binned together into additional axes:
             binshape = (newHeight, binSizeY, newWidth, binSizeX)
             self.px = self.px.reshape(binshape)
-            
+
             # Perform binning operation along binning axes (axis #3 and #1).
             # These axes will be collapsed to contain only the result
             # of the binning operation.
@@ -1436,7 +1436,7 @@ class Image:
             xa = gv_from[a]
             xb = gv_from[b]
             ya = gv_to[a]
-            yb = gv_to[b] 
+            yb = gv_to[b]
 
             # Slope of linear function:
             m = (yb-ya) / (xb-xa)
@@ -1568,7 +1568,7 @@ class Image:
             self.px = self.edges_canny()
         else:
             raise Exception("Valid edge detection modes: 'sobel'")
-        
+
         # Rescale:
         self.px = self.px.astype(self.getInternalDataType())
         #self.thresholding(0)    # black=0, white=65535
@@ -1589,7 +1589,7 @@ class Image:
             areaMin = 0
             if(min_patch_area != None):
                 areaMin = min_patch_area
-            
+
             areaMax = self.getWidth() * self.getHeight()
             if(max_patch_area != None):
                 areaMax = max_patch_area
@@ -1605,7 +1605,7 @@ class Image:
                 if nPatchPixels < areaMin or nPatchPixels > areaMax:  # Black out areas that are too small or too big for a circle
                     nCleaned += 1
                     continue
-                
+
                 coordinatesX = patchCoordinates[1]
                 coordinatesY = patchCoordinates[0]
 
@@ -1614,7 +1614,7 @@ class Image:
                 top   = numpy.amin(coordinatesY)
                 bottom= numpy.amax(coordinatesY)
 
-                if remove_border_patches:   
+                if remove_border_patches:
                     if((left==0) or (top==0) or (right==self.getWidth()-1) or (bottom==self.getHeight()-1)):
                         nCleaned += 1
                         continue
@@ -1689,9 +1689,9 @@ class Image:
 
     def intensityFunction2D(self, x, I0, mu, R, x0):   # Lambert-Beer-Law for ball intensity, to fit.
         radicand = numpy.power(R,2) - numpy.power((x-x0),2)
-        
+
         # Avoid root of negative numbers
-        radicand[radicand < 0] = 0   
+        radicand[radicand < 0] = 0
 
         # Huge radicands lead to exp()->0, therefore avoid huge exponentiation:
         radicand[radicand > (1400*1400)] = (1400*1400)
@@ -1705,15 +1705,15 @@ class Image:
             (x, y) = coord
 
             radicand = numpy.power(R,2) - numpy.power((x-x0),2) - numpy.power((y-y0),2)
-            
+
             # Avoid root of negative numbers
-            radicand[radicand < 0] = 0   
+            radicand[radicand < 0] = 0
 
             # Huge radicands lead to exp()->0, therefore avoid huge exponentiation:
             radicand[radicand > (1400*1400)] = (1400*1400)
 
             result = I0 * numpy.exp(-2.0*mu*numpy.sqrt(radicand))
-            
+
             return result
         else:
             raise Exception("3D Intensity fit function expects a tuple (x,y) for coordinates.")
@@ -1874,7 +1874,7 @@ class ImageStack:
         if('%' not in inFilePattern):
             self.fileList.append(inFilePattern)
 
-            if(isTIFF(inFilePattern)):  # treat as single TIFF projection            
+            if(isTIFF(inFilePattern)):  # treat as single TIFF projection
                 self._isVolumeChunk = False
                 testImage = Image(inFilePattern)
                 testImage.read()
@@ -1950,7 +1950,7 @@ class ImageStack:
                     self.files.setDataType(testImage.inputFile.getDataType())
 
         self.built = True
-                
+
 
     def getFilename(self, index=None):
         if index != None:
@@ -2024,7 +2024,7 @@ class ImageStack:
                 for i in range(1, self.nSlices):
                     print("\rMean Image: summing up {i}/{n}".format(i=(i+1), n=self.nSlices), end='')
                     sumImg.addImage(self.getImage(i, outputFile))
-                    
+
 
                 print("")
 

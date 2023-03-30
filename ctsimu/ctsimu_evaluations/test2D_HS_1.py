@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 from ..test import *
-from ..geometry import Vector, in_mm
+from ..geometry import Vector, in_mm_json
 from ..helpers import *
 import json
 import pkgutil
@@ -43,7 +43,7 @@ class ballCollector():
             ## Find vector pair with smallest and biggest angle:
             small = None
             hole9idx = None
-            
+
             smallestAngle = math.pi
             smallestDistance = connectionVectors[0].length()
 
@@ -59,7 +59,7 @@ class ballCollector():
                     if smallestAngle > abs(angle):
                         smallestAngle = abs(angle)
                         small = (i, j)
-                    
+
 
             # Hole 1 is the hole from the connection vector pair with the smallest angle
             # that is also the farthest away from the great circle.
@@ -115,7 +115,7 @@ class ballCollector():
                 i += 1
         else:
             raise Exception("A total of {} holes is needed. Found: {} holes.".format(self.n_circles_expected, len(self.circlesUnordered)))
-    
+
 
     def nCircles(self):
         return len(self.circlesInOrder)
@@ -196,7 +196,7 @@ class Test2D_HS_1(generalTest):
     """ CTSimU test 2D-HS-1: object positioning. """
 
     def __init__(self, resultFileDirectory=".", name=None, rawOutput=False):
-        
+
         generalTest.__init__(
             self,
             testName="2D-HS-1",
@@ -249,8 +249,8 @@ class Test2D_HS_1(generalTest):
         if jsonText != None:
             jsonDict = json.loads(jsonText)
 
-            self.pixelSizeX = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
-            self.pixelSizeY = in_mm(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
+            self.pixelSizeX = in_mm_json(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
+            self.pixelSizeY = in_mm_json(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
             self.detectorWidthPx  = getFieldOrNone(jsonDict, "detector", "columns", "value")
             self.detectorHeightPx = getFieldOrNone(jsonDict, "detector", "rows", "value")
 
@@ -267,7 +267,7 @@ class Test2D_HS_1(generalTest):
             self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=-205), R=66)
             self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=-205), R=66)
             self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=-205), R=66)
-            
+
             self.nominalCircles.sortCircles()
 
     def run(self, image):
@@ -406,7 +406,7 @@ class Test2D_HS_1(generalTest):
                     scale = 1.0 - length_ideal / length_real
 
                     summaryText += "Scale dev. ({i}, {j}): {space}{scale:.7f}\n".format(i=i, j=j, space=" "*(scale>=0), scale=scale)
-                    
+
                     scaleDevList.append(scale)
 
             meanScaleDeviation, stdDevScaleDeviation = listMeanAndStdDev(scaleDevList)
@@ -433,7 +433,7 @@ class Test2D_HS_1(generalTest):
                     connection_ideal = Vector.connection(self.nominalCircles.getCircle(i), self.nominalCircles.getCircle(j))
                     connection_real  = Vector.connection(self.circleCollection.getCircle(i), self.circleCollection.getCircle(j))
                     angle = connection_ideal.angle(connection_real)
-                    
+
                     # angular orientation:
                     cross = connection_ideal.cross(connection_real)
                     if (cross.z < 0) and (abs(angle) < (math.pi - 0.0000001)):
@@ -465,7 +465,7 @@ class Test2D_HS_1(generalTest):
             for i in range(self.nominalCircles.nCircles()):
                 translation = Vector.connection(self.nominalCircles.getCircle(i), self.circleCollection.getCircle(i))
                 summaryText += "Translation hole {i:02d} [px]: {vec}\n".format(i=i, vec=translation)
-                
+
                 translationsX.append(translation.x)
                 translationsY.append(translation.y)
 
@@ -474,7 +474,7 @@ class Test2D_HS_1(generalTest):
 
             meanTranslation = Vector(meanTranslationX, meanTranslationY, 0)
             stdDevTranslation = Vector(stdDevTranslationX, stdDevTranslationY, 0)
-            
+
             summaryText += "---------------------------------------------------------------\n"
             summaryText += "Mean translation vector [px]: {}\n".format(meanTranslation)
             summaryText += "StdDev translation [px]:      {}".format(stdDevTranslation)
