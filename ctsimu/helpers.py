@@ -34,6 +34,7 @@ def read_json_file(filename:str):
         Dictionary representation of the JSON structure.
     """
 
+    """
     if filename is not None:  # from file
         if os.path.isfile(filename):
             with open(filename, 'r') as jf:
@@ -49,6 +50,8 @@ def read_json_file(filename:str):
             raise Exception("Can't find file: " + jsonFile)
 
     return dict()
+    """
+    return json.load(filename)
 
 def value_is_null(value):
     """Check if a specific value is set to `null`."""
@@ -149,7 +152,7 @@ def json_isnull(dictionary:dict, keys:list=[]):
     if len(keys) == 0:
         raise AttributeError("json_isnull() expects a list of keys as second argument for the `keys`.")
 
-    v = get_value_or_none(dictionary, *keys)
+    v = get_value(dictionary, keys)
     if v is None:
         return True
 
@@ -164,7 +167,7 @@ def json_exists_and_not_null(dictionary:dict, keys:list=[]):
 
 def json_extract(dictionary:dict, keys:list=[]):
     """Get the JSON sub-object that is located at a given sequence of `keys` in the JSON dictionary."""
-    return get_value_or_none(dictionary, *keys)
+    return get_value(dictionary, keys)
 
 def json_extract_from_possible_keys(dictionary:dict, key_lists:list):
     """Searches the JSON object for each key sequence in the given list of key sequences. The first sequence that exists will return an extracted JSON object."""
@@ -309,27 +312,27 @@ def json_convert_to_native_unit(native_unit:str=None, value_and_unit:dict, fallb
 
     if native_unit is None:
         # No native unit given. Simply return the value.
-        return get_value_or_none(value_and_unit, "value")
+        return get_value(value_and_unit, ["value"])
     elif native_unit == "bool":
         # This is not a value/unit dictionary, but a boolean.
         return from_bool(value_and_unit)
     elif native_unit == "string":
-        if json_exists(value_and_unit, "value"):
-            return get_value_or_none(value_and_unit, "value")
+        if json_exists(value_and_unit, ["value"]):
+            return get_value(value_and_unit, ["value"])
         else:
             if isinstance(value_and_unit, str):
                 return value_and_unit
 
         raise Exception(f"Given value does not seem to be a string: {value_and_unit}")
     else:
-        if json_exists(value_and_unit, "value"):
-            value = get_value_or_none(value_and_unit, "value")
+        if json_exists(value_and_unit, ["value"]):
+            value = get_value(value_and_unit, ["value"])
             unit = fallback_json_unit
-            if json_exists(value_and_unit, "unit"):
+            if json_exists(value_and_unit, ["unit"]):
                 # The unit does not necessarily have to exist.
                 # For example, in the case of strings it is clear
                 # just from the native unit.
-                unit = get_value_or_none(value_and_unit, "unit")
+                unit = get_value(value_and_unit, ["unit"])
 
             return convert_to_native_unit(unit, native_unit, value)
 
