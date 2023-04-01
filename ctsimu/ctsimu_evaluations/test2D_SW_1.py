@@ -92,8 +92,8 @@ class Test2D_SW_1_results:
         self.means_rosi_total    = means_rosi_total
         self.means_rosi_primary  = means_rosi_primary
         self.means_mcray_total    = means_mcray_total
-        self.means_mcray_primary  = means_mcray_primary 
-        
+        self.means_mcray_primary  = means_mcray_primary
+
         self.means_mc_total         = means_total
         self.means_mc_primary       = means_primary
         self.error_mc_total_upper   = err_total_upper
@@ -217,12 +217,12 @@ class Test2D_SW_1(generalTest):
         self.prepare()
         self.prepareRun(self.currentRun)
         i = self.currentIndex
-        subtestName = self.subtests[self.currentRun]  
-       
-        # Grey value summary        
+        subtestName = self.subtests[self.currentRun]
+
+        # Grey value summary
         statsText = "# Evaluation of Test {name}, {subname}:\n".format(name=self.name, subname=subtestName)
         statsText += "# {longDesc}\n".format(longDesc=self.results[i].longName)
-        statsText += "# \n"        
+        statsText += "# \n"
         statsText += "# ROI mean grey value per step\n"
         statsText += "# step\tx0\ty0\tx1\ty1\twidth [px]\theight [px]\tarea [px]\tmean [GV]\n"
 
@@ -273,7 +273,7 @@ class Test2D_SW_1(generalTest):
         for r in range(len(self.results)):
             result = self.results[r]
             D1result = self.results[r%4]
-            
+
             if D1result is not None:
                 if result is not None:
                     result.ratios_to_D1 = len(self.steps)*[None]
@@ -286,26 +286,26 @@ class Test2D_SW_1(generalTest):
 
                     for step in range(len(self.steps)):
                         result.ratios_to_D1[step] = result.means[step] / D1result.means[step]
-                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_upper[step] = divideAndError(
+                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_upper[step] = divide_and_error(
                                 muA = result.means_mc_primary[step],
                                 muB = D1result.means_mc_primary[step],
                                 errA = result.error_mc_primary_upper[step],
                                 errB = D1result.error_mc_primary_upper[step]
                             )
-                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_lower[step] = divideAndError(
+                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_lower[step] = divide_and_error(
                                 muA = result.means_mc_primary[step],
                                 muB = D1result.means_mc_primary[step],
                                 errA = result.error_mc_primary_lower[step],
                                 errB = D1result.error_mc_primary_lower[step]
                             )
 
-                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_upper[step] = divideAndError(
+                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_upper[step] = divide_and_error(
                                 muA = result.means_mc_total[step],
                                 muB = D1result.means_mc_total[step],
                                 errA = result.error_mc_total_upper[step],
                                 errB = D1result.error_mc_total_upper[step]
                             )
-                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_lower[step] = divideAndError(
+                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_lower[step] = divide_and_error(
                                 muA = result.means_mc_total[step],
                                 muB = D1result.means_mc_total[step],
                                 errA = result.error_mc_total_lower[step],

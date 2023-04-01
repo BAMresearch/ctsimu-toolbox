@@ -22,7 +22,7 @@ class Matrix:
         Number of matrix elements. (Computed internally whenever matrix size is set or changed.)
 
     value : numpy.ndarray
-        Numpy array that contains the matrix values.
+        NumPy array that contains the matrix values.
     """
 
     def __init__(self, cols:int = None, rows:int = None, numpy_data = None):
@@ -338,7 +338,7 @@ class Vector:
         Number of vector elements.
 
     value : numpy.ndarray
-        Numpy array that contains the vector elements.
+        NumPy array that contains the vector elements.
     """
 
     def __init__(self, x:float = 0, y:float = 0, z:float = 0, w:float = None, n:int = None, numpy_data = None):

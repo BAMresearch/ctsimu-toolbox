@@ -26,7 +26,7 @@ class Toolbox:
             for metafile in metadata:
                 geo = Geometry(jsonFile=metafile)
                 print(geo.info())
-                
+
             return
 
         ffRescaleFactor = float(60000.0)
@@ -116,7 +116,7 @@ class Toolbox:
                 metafileAbsolute = os.path.abspath(metafile)
                 metafileAbsDir   = os.path.dirname(metafileAbsolute)
 
-                projFilename = getFieldOrNone(jsonDict, "output", "projections", "filename")
+                projFilename = get_value_or_none(jsonDict, "output", "projections", "filename")
                 if projFilename != None:
                     if not os.path.isabs(projFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -124,28 +124,28 @@ class Toolbox:
 
                 log("  Projection File(s):    {proj}".format(proj=projFilename))
 
-                projNumber = getFieldOrNone(jsonDict, "output", "projections", "number")
+                projNumber = get_value_or_none(jsonDict, "output", "projections", "number")
                 log("  Number of Projections: {nproj}".format(nproj=projNumber))
 
-                projDataType = getFieldOrNone(jsonDict, "output", "projections", "datatype")
+                projDataType = get_value_or_none(jsonDict, "output", "projections", "datatype")
                 log("  Data Type:             {dataType}".format(dataType=projDataType))
 
-                projByteOrder = getFieldOrNone(jsonDict, "output", "projections", "byteorder")
+                projByteOrder = get_value_or_none(jsonDict, "output", "projections", "byteorder")
                 log("  Byte Order:            {byteOrder}".format(byteOrder=projByteOrder))
 
-                projHeaderSizeFile = getFieldOrNone(jsonDict, "output", "projections", "headersize", "file")
+                projHeaderSizeFile = get_value_or_none(jsonDict, "output", "projections", "headersize", "file")
                 log("  File Header Size:      {fileHeaderSize}".format(fileHeaderSize=projHeaderSizeFile))
 
-                projHeaderSizeImage = getFieldOrNone(jsonDict, "output", "projections", "headersize", "image")
+                projHeaderSizeImage = get_value_or_none(jsonDict, "output", "projections", "headersize", "image")
                 log("  Image Header Size:     {imageHeaderSize}".format(imageHeaderSize=projHeaderSizeImage))
 
-                width  = getFieldOrNone(jsonDict, "output", "projections", "dimensions", "x", "value")
+                width  = get_value_or_none(jsonDict, "output", "projections", "dimensions", "x", "value")
                 log("  Projection Width:      {w}".format(w=width))
 
-                height = getFieldOrNone(jsonDict, "output", "projections", "dimensions", "y", "value")
+                height = get_value_or_none(jsonDict, "output", "projections", "dimensions", "y", "value")
                 log("  Projection Height:     {h}".format(h=height))
 
-                darkFilename  = getFieldOrNone(jsonDict, "output", "projections", "dark_field", "filename")
+                darkFilename  = get_value_or_none(jsonDict, "output", "projections", "dark_field", "filename")
                 if darkFilename != None:
                     if not os.path.isabs(darkFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -153,13 +153,13 @@ class Toolbox:
 
                 log("  Dark Field(s):         {df}".format(df=darkFilename))
 
-                darkNumber    = getFieldOrNone(jsonDict, "output", "projections", "dark_field", "number")
+                darkNumber    = get_value_or_none(jsonDict, "output", "projections", "dark_field", "number")
                 log("  Number of Dark Fields: {n}".format(n=darkNumber))
 
-                darkCorrected = getFieldOrNone(jsonDict, "output", "projections", "dark_field", "projections_corrected")
+                darkCorrected = get_value_or_none(jsonDict, "output", "projections", "dark_field", "projections_corrected")
                 log("  DF correction applied: {dfapplied}".format(dfapplied=darkCorrected))
 
-                flatFilename  = getFieldOrNone(jsonDict, "output", "projections", "flat_field", "filename")
+                flatFilename  = get_value_or_none(jsonDict, "output", "projections", "flat_field", "filename")
                 if flatFilename != None:
                     if not os.path.isabs(flatFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -167,10 +167,10 @@ class Toolbox:
 
                 log("  Flat Field(s):         {ff}".format(ff=flatFilename))
 
-                flatNumber    = getFieldOrNone(jsonDict, "output", "projections", "flat_field", "number")
+                flatNumber    = get_value_or_none(jsonDict, "output", "projections", "flat_field", "number")
                 log("  Number of Flat Fields: {n}".format(n=flatNumber))
 
-                flatCorrected = getFieldOrNone(jsonDict, "output", "projections", "flat_field", "projections_corrected")
+                flatCorrected = get_value_or_none(jsonDict, "output", "projections", "flat_field", "projections_corrected")
                 log("  FF correction applied: {ffapplied}".format(ffapplied=flatCorrected))
 
                 log("---")

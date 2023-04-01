@@ -41,7 +41,7 @@ class Test2D_SW_2_results:
         dataText = pkgutil.get_data(__name__, "data/2D-SW-2_scenario{name}.txt".format(name=name)).decode()
         dataIO = io.StringIO(dataText)
         allData = numpy.loadtxt(dataIO, delimiter='\t')  # ignore free beam
-        
+
         # --- total radiation
         means_rosi_total  = allData[:,1]
         means_mcray_total = allData[:,4]
@@ -91,8 +91,8 @@ class Test2D_SW_2_results:
         self.means_rosi_total    = means_rosi_total
         self.means_rosi_primary  = means_rosi_primary
         self.means_mcray_total    = means_mcray_total
-        self.means_mcray_primary  = means_mcray_primary 
-        
+        self.means_mcray_primary  = means_mcray_primary
+
         self.means_mc_total         = means_total
         self.means_mc_primary       = means_primary
         self.error_mc_total_upper   = err_total_upper
@@ -107,26 +107,26 @@ class Test2D_SW_2_results:
 
         # calculate maximum uncertainties of MC ratios:
         for v in range(1, len(self.ratios_mc_primary)+1):
-            c, uncertainty_total_upper = divideAndError(
+            c, uncertainty_total_upper = divide_and_error(
                 muA = self.means_mc_total[v-1],
                 muB = self.means_mc_total[v],
                 errA = self.error_mc_total_upper[v],
                 errB = self.error_mc_total_upper[v-1]
                 )
-            c, uncertainty_primary_upper = divideAndError(
+            c, uncertainty_primary_upper = divide_and_error(
                 muA = self.means_mc_primary[v-1],
                 muB = self.means_mc_primary[v],
                 errA = self.error_mc_primary_upper[v],
                 errB = self.error_mc_primary_upper[v-1]
                 )
 
-            c, uncertainty_total_lower = divideAndError(
+            c, uncertainty_total_lower = divide_and_error(
                 muA = self.means_mc_total[v-1],
                 muB = self.means_mc_total[v],
                 errA = self.error_mc_total_lower[v],
                 errB = self.error_mc_total_lower[v-1]
                 )
-            c, uncertainty_primary_lower = divideAndError(
+            c, uncertainty_primary_lower = divide_and_error(
                 muA = self.means_mc_primary[v-1],
                 muB = self.means_mc_primary[v],
                 errA = self.error_mc_primary_lower[v],
@@ -206,12 +206,12 @@ class Test2D_SW_2(generalTest):
         self.prepare()
         self.prepareRun(self.currentRun)
         i = self.currentRun
-        subtestName = self.subtests[i]  
+        subtestName = self.subtests[i]
 
-        # Grey value summary        
+        # Grey value summary
         statsText = "# Evaluation of Test {name}, {subname}:\n".format(name=self.name, subname=subtestName)
         statsText += "# {longDesc}\n".format(longDesc=self.results[i].longName)
-        statsText += "# \n"        
+        statsText += "# \n"
         statsText += "# ROI mean grey value per step\n"
         statsText += "# step\tx0\ty0\tx1\ty1\twidth [px]\theight [px]\tarea [px]\tmean [GV]\n"
 
@@ -226,17 +226,17 @@ class Test2D_SW_2(generalTest):
 
             self.results[i].means.append(stats["mean"])
 
-        self.results[i].ratios = ratios(self.results[i].means)      
+        self.results[i].ratios = ratios(self.results[i].means)
 
         statsFileName = "{dir}/{name}_{subname}_grey_values.txt".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
         with open(statsFileName, 'w') as statsFile:
             statsFile.write(statsText)
             statsFile.close()
 
-        # Ratio summary        
+        # Ratio summary
         ratioText = "# Evaluation of Test {name}, {subname}:\n".format(name=self.name, subname=subtestName)
         ratioText += "# {longDesc}\n".format(longDesc=self.results[i].longName)
-        ratioText += "# \n"    
+        ratioText += "# \n"
 
         ratioText += "# Grey value ratios\n"
         ratioText += "# step A\tstep B\tratio (A/B)\treference ratio (primary)\terror_lower (ref. primary)\terror_upper (ref. primary)\trel. deviation (primary)\treference ratio (total)\terror_lower (ref. total)\terror_upper (ref. total)\trel. deviation (total)\n"
@@ -283,9 +283,9 @@ class Test2D_SW_2(generalTest):
 
             matplotlib.use("agg")
 
-            for mode in ("primary", "total"):             
+            for mode in ("primary", "total"):
                 fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 5))
-                
+
                 # Grey Value Profile:
                 if mode == "primary":
                     modeDescription = "primary radiation"

@@ -727,13 +727,13 @@ class Geometry:
                 raise Exception("Error parsing JSON file: {}".format(jsonFile))
 
             # Detector size and pixel pitch:
-            pixelsU = getFieldOrNone(jsonDict, "detector", "columns", "value")
-            pixelsV = getFieldOrNone(jsonDict, "detector", "rows", "value")
-            pitchU = getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u", "value")
-            pitchV = getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v", "value")
+            pixelsU = get_value_or_none(jsonDict, "detector", "columns", "value")
+            pixelsV = get_value_or_none(jsonDict, "detector", "rows", "value")
+            pitchU = get_value_or_none(jsonDict, "detector", "pixel_pitch", "u", "value")
+            pitchV = get_value_or_none(jsonDict, "detector", "pixel_pitch", "v", "value")
 
             try:
-                detectorGeometry = getFieldOrNone(jsonDict, "geometry", "detector")
+                detectorGeometry = get_value_or_none(jsonDict, "geometry", "detector")
                 if detectorGeometry != None:
                     self.detector.json_import(detectorGeometry)
                     self.detector.setSize(pixelsU, pixelsV, pitchU, pitchV)
@@ -744,7 +744,7 @@ class Geometry:
                 raise Exception(e)
 
             try:
-                sourceGeometry = getFieldOrNone(jsonDict, "geometry", "source")
+                sourceGeometry = get_value_or_none(jsonDict, "geometry", "source")
                 if sourceGeometry != None:
                     self.source.json_import(sourceGeometry)
                 else:
@@ -754,7 +754,7 @@ class Geometry:
                 raise Exception(e)
 
             try:
-                stageGeometry = getFieldOrNone(jsonDict, "geometry", "stage")
+                stageGeometry = get_value_or_none(jsonDict, "geometry", "stage")
                 if stageGeometry != None:
                     self.stage.json_import(stageGeometry)
                 else:

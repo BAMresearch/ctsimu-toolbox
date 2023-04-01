@@ -45,7 +45,7 @@ class Test2D_FB_1(generalTest):
         self.results = []
 
     def prepare(self):
-        """ Preparations before the test will be run with the images from the pipeline. """       
+        """ Preparations before the test will be run with the images from the pipeline. """
         if not isinstance(self.pipe, Pipeline):
             self.prepared = False
             raise Exception("Step must be part of a processing pipeline before it can prepare. Current pipeline: {}".format(self.pipe))
@@ -76,8 +76,8 @@ class Test2D_FB_1(generalTest):
             if jsonText != None:
                 jsonDict = json.loads(jsonText)
 
-                self.imax = getFieldOrNone(jsonDict, "detector", "grey_value", "imax", "value")
-                snrMax = getFieldOrNone(jsonDict, "detector", "noise", "snr_at_imax", "value")
+                self.imax = get_value_or_none(jsonDict, "detector", "grey_value", "imax", "value")
+                snrMax = get_value_or_none(jsonDict, "detector", "noise", "snr_at_imax", "value")
 
                 if self.imax is None:
                     raise Exception("Test {name}: Cannot find 'imax' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
@@ -99,7 +99,7 @@ class Test2D_FB_1(generalTest):
             self.results[i].nominalMean = self.imax # after ff-correction
             self.results[i].nominalFWHM = nominalFWHM
             self.results[i].nominalSigma = nominalSigma
-           
+
         else:
             if len(self.subtests) == 0:
                 raise Exception("Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts two keywords: 'SNR100' and 'SNR250'.".format(testname=self.testName))
@@ -111,7 +111,7 @@ class Test2D_FB_1(generalTest):
         if self.currentRun < self.nExpectedRuns:
             self.prepareRun(self.currentRun)
             i = self.currentRun
-            subtestName = self.subtests[i]  
+            subtestName = self.subtests[i]
 
             # Create Grey Value Histogram:
             for x in range(image.getWidth()):
@@ -129,8 +129,8 @@ class Test2D_FB_1(generalTest):
             self.results[i].fwhm   = 2.0*math.sqrt(2.0*math.log(2.0)) * self.results[i].stdDev
 
             self.results[i].gvHistNormalized = self.results[i].gvHistogram / numpy.sum(self.results[i].gvHistogram)
-            
- 
+
+
 
             log("Writing evaluation results...")
 
@@ -194,7 +194,7 @@ class Test2D_FB_1(generalTest):
                 matplotlib.use("agg")
 
                 fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(9, 7))
-                
+
                 ax.plot(self.xValues, result.gvHistNormalized, 'o', markersize=1.0, label="Measured (Subtest {subtest})".format(subtest=subtestName), color='#1f77b4')
 
                 ax.set_xlabel("Grey Value")
@@ -229,4 +229,3 @@ class Test2D_FB_1(generalTest):
 
     def followUp(self):
         pass
-        

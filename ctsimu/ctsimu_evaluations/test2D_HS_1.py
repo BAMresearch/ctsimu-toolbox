@@ -249,10 +249,10 @@ class Test2D_HS_1(generalTest):
         if jsonText != None:
             jsonDict = json.loads(jsonText)
 
-            self.pixelSizeX = in_mm_json(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "u"))
-            self.pixelSizeY = in_mm_json(getFieldOrNone(jsonDict, "detector", "pixel_pitch", "v"))
-            self.detectorWidthPx  = getFieldOrNone(jsonDict, "detector", "columns", "value")
-            self.detectorHeightPx = getFieldOrNone(jsonDict, "detector", "rows", "value")
+            self.pixelSizeX = in_mm_json(get_value_or_none(jsonDict, "detector", "pixel_pitch", "u"))
+            self.pixelSizeY = in_mm_json(get_value_or_none(jsonDict, "detector", "pixel_pitch", "v"))
+            self.detectorWidthPx  = get_value_or_none(jsonDict, "detector", "columns", "value")
+            self.detectorHeightPx = get_value_or_none(jsonDict, "detector", "rows", "value")
 
             self.detectorWidthMM  = self.detectorWidthPx  * self.pixelSizeX
             self.detectorHeightMM = self.detectorHeightPx * self.pixelSizeY
@@ -409,7 +409,7 @@ class Test2D_HS_1(generalTest):
 
                     scaleDevList.append(scale)
 
-            meanScaleDeviation, stdDevScaleDeviation = listMeanAndStdDev(scaleDevList)
+            meanScaleDeviation, stdDevScaleDeviation = list_mean_and_stddev(scaleDevList)
 
             summaryText += "---------------------------------------------------------------\n"
             summaryText += "Mean scale deviation:   {space}{value:.7f}\n".format(space=" "*(meanScaleDeviation>=0), value=meanScaleDeviation)
@@ -445,7 +445,7 @@ class Test2D_HS_1(generalTest):
 
                     angleList.append(angle)
 
-            meanAngle, stdDevAngle = listMeanAndStdDev(angleList)
+            meanAngle, stdDevAngle = list_mean_and_stddev(angleList)
 
             summaryText += "---------------------------------------------------------------\n"
             summaryText += "Mean rotation angle:   {space}{value:.7f} rad = {space}{angleDeg:.7f} deg\n".format(space=" "*(meanAngle>=0), value=meanAngle, angleDeg=(meanAngle*180.0/math.pi))
@@ -469,8 +469,8 @@ class Test2D_HS_1(generalTest):
                 translationsX.append(translation.x)
                 translationsY.append(translation.y)
 
-            meanTranslationX, stdDevTranslationX = listMeanAndStdDev(translationsX)
-            meanTranslationY, stdDevTranslationY = listMeanAndStdDev(translationsY)
+            meanTranslationX, stdDevTranslationX = list_mean_and_stddev(translationsX)
+            meanTranslationY, stdDevTranslationY = list_mean_and_stddev(translationsY)
 
             meanTranslation = Vector(meanTranslationX, meanTranslationY, 0)
             stdDevTranslation = Vector(stdDevTranslationX, stdDevTranslationY, 0)
