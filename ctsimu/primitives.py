@@ -1039,24 +1039,69 @@ class Vector:
         return p1 - p0
 
 class Line2D:
-    def __init__(self):
-        # y = mx + n
-        self.m = None
-        self.n = None
+    """A mathematical line in 2D space, with a slope and an offset.
+
+    `y = m*x + n`
+
+    Attributes
+    ----------
+    m : float
+        Slope
+
+    n : float
+        Vertical offset (i.e., intersection with y axis)
+    """
+
+    def __init__(self, m:float=None, n:float=None):
+        """Initialize with specified slope and offset (both optional).
+
+        Parameters
+        ----------
+        m : float, optional
+            Slope
+
+        n : float, optional
+            Vertical offset (i.e., intersection with y axis)
+        """
+
+        self.m = m
+        self.n = n
 
     def __str__(self):
         return "m={}, n={}".format(self.m, self.n)
 
-    def set(self, m, n):
+    def set(self, m:float, n:float):
+        """Set line parameters.
+
+        Parameters
+        ----------
+        m : float
+            Slope
+
+        n : float
+            Vertical offset (i.e., intersection with y axis)
+        """
         self.m = m
         self.n = n
 
-    def setFromPoints(self, point0, point1):
+    def set_from_points(self, p0:'Vector', p1:'Vector'):
+        """Set line slope `m` and offset `n` from two given points `p0` and `p1`.
+        Both points are assumed to be on the line.
+
+        Parameters
+        ----------
+        p0 : Vector
+            First point, given by 2D vector. For higher-dimensional vectors, only the first two coordinates are considered.
+
+        p1 : Vector
+            Second point, given by 2D vector. For higher-dimensional vectors, only the first two coordinates are considered.
+        """
+
         # points are defined by 2D vectors
-        x0 = point0.x()
-        y0 = point0.y()
-        x1 = point1.x()
-        y1 = point1.y()
+        x0 = p0.x()
+        y0 = p0.y()
+        x1 = p1.x()
+        y1 = p1.y()
 
         if x0 != x1:
             self.m = (y1-y0) / (x1-x0)
@@ -1066,12 +1111,24 @@ class Line2D:
             self.m = math.inf
             self.n = x0  # Store x intersection in n if line is vertical
 
-    def intersection(self, x):
+    def intersection(self, v:'Vector'):
+        """Get intersection point with another vector.
+
+        Parameters
+        ----------
+        v : Vector
+            Second vector.
+
+        Returns
+        -------
+        intersection : Vector
+            2D vector that contains the coordinates of the intersection point.
+        """
         m0 = self.m
         n0 = self.n
 
-        m1 = x.m
-        n1 = x.n
+        m1 = v.m
+        n1 = v.n
 
         if m0 == m1:
             # Lines are parallel
@@ -1092,35 +1149,68 @@ class Line2D:
 
 
 class Polygon:
-    """ A general polygon with N points in space. """
+    """ A general 2D polygon with N points in space.
 
-    def __init__(self, *points):
-        """ Points should be defined in counter-clockwise direction. They are of class Vector. """
+    Attributes
+    ----------
+    points : list
+        List of points that make up the polygon, each point represented by a `Vector` (at least 2D).
+
+    vertex_order_CCW : bool
+        `True` if the vertex order is counter-clockwise (standard) or `False` if clockwise.
+    """
+
+    def __init__(self, *points:'Vector'):
+        """ Initialize with a series of points.
+        They should be defined in counter-clockwise direction. They are objects of class `Vector`.
+
+        If the points are specified in clockwise direction, the parameter `vertex_order_CCW` should be set to `False` manually.
+
+        Parameters
+        ----------
+        *points : Vector
+            An arbitrary number of points given.
+        """
         self.points = []
         self._area = None
-        self.vertexOrderCCW = True  # Vertices defined in counter-clockwise order. Should be False for clockwise.
+
+        # Vertices defined in counter-clockwise order (True) or clockwise order (False).
+        self.vertex_order_CCW = True
+
         self.set(*points)
 
     def __str__(self):
         s = ""
-        for i in range(len(self.points)):
-            s += "P{i}: ({x}, {y})\n".format(i=i, x=self.points[i].x, y=self.points[i].y)
+        for i, p in enumerate(self.points):
+            s += "P{i}: ({x}, {y})\n".format(i=i, x=p.x, y=p.y)
 
         return s
 
-    def make_3D(self, z_component):
-        """ Convert all points in xy-plane from 2D vectors to 3D vectors,
-            using the provided z_component. """
+    def make_3D(self, z_component:float):
+        """Convert all points in xy-plane from 2D vectors to 3D vectors,
+        using the provided z_component.
 
-        for i in range(len(self.points)):
-            p = self.points[i]
-            newPoint = Vector(p.x, p.y, z_component)
+        Parameters
+        ----------
+        z_component : float
+            The new z component for each point's 3D vector.
+        """
+
+        for i, p in enumerate(self.points):
+            newPoint = Vector(x=p.x, y=p.y, z=z_component, n=3)
             self.points[i] = newPoint
 
-    def set(self, *points):
-        """ Points should be defined in counter-clockwise direction. They are of class Vector. """
-        #print("Setting: {}".format(points))
-        #print("points has a length of {}".format(len(points)))
+    def set(self, *points:'Vector'):
+        """ Set polygon from an arbitrary number of points.
+        The points should be defined in counter-clockwise direction. They are objects of class `Vector`.
+
+        If the points are specified in clockwise direction, the parameter `vertex_order_CCW` should be set to `False` manually.
+
+        Parameters
+        ----------
+        *points : Vector
+            An arbitrary number of points.
+        """
 
         self.points = []
         self.points.extend(points)
@@ -1128,17 +1218,29 @@ class Polygon:
         self._area = None
 
     def area(self):
+        """Get the area enclosed by the polygon.
+
+        Returns
+        -------
+        area : float
+            Area enclosed by the polygon.
+        """
+
         if self._area is None:
-            self.calculate_area()
+            self._calculate_area()
 
         return self._area
 
-    def calculate_area(self):
+    def _calculate_area(self):
+        """Calculate the area enclosed by the polygon.
+
+        The area will be stored as an internal parameter. The function `area()` can be used to get this value.
+        """
+
         self._area = 0
 
         # Split polygon into triangles and calculate area of each
         # triangle using the trapezoid method.
-
         if len(self.points) >= 3:
             # Start at first point
             p1 = self.points[0]
@@ -1155,26 +1257,55 @@ class Polygon:
                 self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
 
     def get_bounding_box(self):
-        leftMost  = self.points[0].x()
-        rightMost = -1
-        upMost    = self.points[0].y()
-        downMost  = -1
+        """Get the polygon's bounding box values.
+
+        Returns
+        -------
+        leftmost : float
+            Leftmost coordinate.
+
+        upmost : float
+            Upmost coordinate.
+
+        rightmost : float
+            Rightmost coordinate.
+
+        downmost : float
+            Downmost coordinate.
+        """
+
+        leftmost  = self.points[0].x()
+        rightmost = -1
+        upmost    = self.points[0].y()
+        downmost  = -1
 
         for p in self.points:
-            if p.x() < leftMost:
-                leftMost = math.floor(p.x())
-            if p.x() > rightMost:
-                rightMost = math.ceil(p.x())
+            if p.x() < leftmost:
+                leftmost = math.floor(p.x())
+            if p.x() > rightmost:
+                rightmost = math.ceil(p.x())
 
-            if p.y() < upMost:
-                upMost = math.floor(p.y())
-            if p.y() > downMost:
-                downMost = math.ceil(p.y())
+            if p.y() < upmost:
+                upmost = math.floor(p.y())
+            if p.y() > downmost:
+                downmost = math.ceil(p.y())
 
-        return int(leftMost), int(upMost), int(rightMost), int(downMost)
+        return int(leftmost), int(upmost), int(rightmost), int(downmost)
 
-    def is_inside_2D(self, point):
-        """ Check if the given point is inside the polygon or on an edge. """
+    def is_inside_2D(self, point:'Vector'):
+        """ Check if the given point is inside the polygon or on an edge.
+        Only the xy plane is considered (2D projection).
+
+        Parameters
+        ----------
+        point : Vector
+            Point coordinates to check if they are inside the polygon.
+
+        Returns
+        -------
+        inside : bool
+            `True` if inside, `False` otherwise.
+        """
         x = point.x()
         y = point.y()
 
@@ -1206,7 +1337,7 @@ class Polygon:
 
         return False
 
-    def insideEdge(self, edgePoint0, edgePoint1, vertexToTest):
+    def _inside_edge(self, edgePoint0:'Vector', edgePoint1:'Vector', vertexToTest:'Vector'):
         """ Helper function for clip():
             decide if vertex point is on the "inside" of the clipping edge.
             Inside means "to the left" if vertices are in counter-clockwise direction,
@@ -1222,21 +1353,34 @@ class Polygon:
 
         return False
 
-    def clip(self, clipPolygon):
-        """ Implementation of the Sutherland-Hodgman algorithm.
+    def clip(self, clipping_polygon:'Polygon'):
+        """ Clips the polygon using the given clipping polygon.
 
-            clipPolygon must be convex. """
+        Implementation of the Sutherland-Hodgman clipping algorithm.
 
-        # Make a list of edges (lines) of the clip polygon:
+        The given `clipping_polygon` must be convex.
+
+        Parameters
+        ----------
+        clipping_polygon : Polygon
+            Clipping polygon. The result will be a polygon that only exists within the boundaries of this clipping polygon.
+
+        Returns
+        -------
+        clipped : Polygon
+            Clipped polygon.
+        """
+
+        # Make a list of edges (lines) of the clipping polygon:
         outputVertices = self.points # copy.deepcopy(self.points)
 
-        nPoints = len(clipPolygon.points)
+        nPoints = len(clipping_polygon.points)
         for i in range(nPoints):
-            edgePoint0 = clipPolygon.points[i]
-            edgePoint1 = clipPolygon.points[((i+1)%nPoints)]
+            edgePoint0 = clipping_polygon.points[i]
+            edgePoint1 = clipping_polygon.points[int((i+1)%nPoints)]
 
             edgeLine = Line2D()
-            edgeLine.setFromPoints(point0=edgePoint0, point1=edgePoint1)
+            edgeLine.set_from_points(p0=edgePoint0, p1=edgePoint1)
 
             inputVertices = outputVertices
             outputVertices = []
@@ -1251,13 +1395,13 @@ class Polygon:
                 #print("  Previous Point: {}".format(previousPoint))
 
                 currentLine = Line2D()
-                currentLine.setFromPoints(point0=currentPoint, point1=previousPoint)
+                currentLine.set_from_points(p0=currentPoint, p1=previousPoint)
 
                 #print("  -> current Line: {}".format(currentLine))
 
-                if self.insideEdge(edgePoint0, edgePoint1, currentPoint):
-                    #print("  Current point is inside clip polygon.")
-                    if not self.insideEdge(edgePoint0, edgePoint1, previousPoint):
+                if self._inside_edge(edgePoint0, edgePoint1, currentPoint):
+                    #print("  Current point is inside clipping polygon.")
+                    if not self._inside_edge(edgePoint0, edgePoint1, previousPoint):
                         try:
                             intersectionPoint = currentLine.intersection(edgeLine)
                             #print("  Added intersection to output list.")
@@ -1268,8 +1412,8 @@ class Polygon:
 
                     #print("  Added currentPoint to output list.")
                     outputVertices.append(currentPoint)
-                elif self.insideEdge(edgePoint0, edgePoint1, previousPoint):
-                    #print("  Current point is not inside clip polygon, but previous point is.")
+                elif self._inside_edge(edgePoint0, edgePoint1, previousPoint):
+                    #print("  Current point is not inside clipping polygon, but previous point is.")
                     try:
                         intersectionPoint = currentLine.intersection(edgeLine)
                         #print("  Only added intersection point to output list.")
@@ -1278,7 +1422,7 @@ class Polygon:
                     except:
                         pass
                 #else:
-                    #print("Neither current nor previous point is inside clip polygon.")
+                    #print("Neither current nor previous point is inside clipping polygon.")
 
 
                 #print("\n")
