@@ -70,7 +70,7 @@ You can change the reference frame of a `CoordinateSystem`. In the following exa
 .. include:: ../examples/geometry/03_reference_frames.py
 ```
 
-**Note:** When changing reference frames, the original (`fromCS`) and the target reference frame (`toCS`) must both have the same common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).
+**Note:** When changing reference frames, the original (`csFrom`) and the target reference frame (`csTo`) must both have the same common reference frame for themselves. In the example above, we change the reference frame from the stage coordinate system to the world coordinate system. Both of them have the same reference frame: the world coordinate system (which is special, because it is also a reference for itself).
 
 
 # Projection Matrices

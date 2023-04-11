@@ -14,7 +14,7 @@ Images
 ------
 To import a single image, you can specify its file name in the constructor
 and then use the `Image.read()` function to import it into the internal memory.
-It will be stored in `Image.px` as a float64 NumPy array. When writing an
+It will be stored in `self._px` as a float64 NumPy array. When writing an
 image using `Image.save()`, you have to specify the data type for the new file.
 
     from ctsimu.image import Image

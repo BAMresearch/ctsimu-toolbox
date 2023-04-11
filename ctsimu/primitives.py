@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-"""Provides basic structures for linear algebra and geometry: vectors, matrices, lines and polygons."""
+"""Basic structures for linear algebra and geometry: vectors, matrices, lines and polygons."""
 
 import math
 import numpy
@@ -93,7 +93,7 @@ class Matrix:
         if isinstance(x, numbers.Number):
             return self.__mul__(x)
 
-    def size(self):
+    def size(self) -> int:
         """Get the number of matrix elements.
 
         Returns
@@ -103,7 +103,7 @@ class Matrix:
         """
         return self.n_entries
 
-    def same_size(self, M:'Matrix'):
+    def same_size(self, M:'Matrix') -> bool:
         """Check if this matrix has the same size as the given matrix `M`.
 
         Parameters
@@ -189,7 +189,7 @@ class Matrix:
         """
         self.set_numpy_data_array(numpy_data=numpy.copy(x.value))
 
-    def get(self, col:int, row:int):
+    def get(self, col:int, row:int) -> float:
         """Get a matrix element's value.
 
         Parameters
@@ -211,7 +211,7 @@ class Matrix:
 
         raise Exception(f"Matrix.get(col={col}, row={row}): requested index does not exist.")
 
-    def get_copy(self):
+    def get_copy(self) -> 'Matrix':
         """Get a copy of this matrix object.
 
         Returns
@@ -341,17 +341,11 @@ class Vector:
         NumPy array that contains the vector elements.
     """
 
-    def __init__(self, x:float = 0, y:float = 0, z:float = 0, w:float = None, n:int = None, numpy_data = None):
-        """Initialize vector by providing elements `x`, (`y`, `z`, `w`) and the number of elements `n`, or a numpy data array.
+    def __init__(self, x:float=None, y:float=None, z:float=None, w:float=None, n:int=None, numpy_data=None):
+        """Initialize vector by providing elements `x`, (`y`, `z`, `w`) and possibly the number of elements `n`, or a NumPy data array.
 
         Parameters
         ----------
-        n : int, optional
-            Number of vector elements. Must be provided if no NumPy data array is given.
-
-        numpy_data : numpy.ndarray, optional
-            One-dimensional NumPy data array. Must be provided if number of vector elements `n` is not given.
-
         x : float, optional
             Value for first vector element.
 
@@ -363,6 +357,16 @@ class Vector:
 
         w : float, optional
             Value for fourth vector element.
+
+        n : int, optional
+            Number of vector elements. Must be provided if no NumPy data array
+            is given and if the number of vector elements cannot be automatically
+            determined from the given parameters `x`, `y`, `z` and `w`
+            (those which are set to `None` are not considered in the
+            determination of the dimension).
+
+        numpy_data : numpy.ndarray, optional
+            One-dimensional NumPy data array. Must be provided if number of vector elements `n` is not given.
         """
 
         # The following member variables are private and should not
@@ -376,9 +380,19 @@ class Vector:
             self.set_numpy_data_array(numpy_data)
         else:
             # Or from regular value arguments:
-            self.n_entries = 3
             if n is not None:
+                # If the number of vector components is specified:
                 self.n_entries = n
+            else:
+                # Determine number of vector components from given values:
+                if x is not None:
+                    self.n_entries = 1
+                    if y is not None:
+                        self.n_entries = 2
+                        if z is not None:
+                            self.n_entries = 3
+                            if w is not None:
+                                self.n_entries = 4
 
             self.reset(n=self.n_entries)
             self.set(x=x, y=y, z=z, w=w)
@@ -428,7 +442,7 @@ class Vector:
         if isinstance(x, numbers.Number):
             return self.__mul__(x)
 
-    def size(self):
+    def size(self) -> int:
         """Get the number of vector elements.
 
         Returns
@@ -449,7 +463,7 @@ class Vector:
         self.n_entries = n
         self.value = numpy.zeros(n, dtype=numpy.float64)
 
-    def same_size(self, x:'Vector'):
+    def same_size(self, x:'Vector') -> bool:
         """Check if this vector has the same size (i.e., number of vector elements, not length!) as the given vector `x`.
 
         Returns
@@ -473,7 +487,7 @@ class Vector:
         self._unit_vector = None
         self._length = None
 
-    def x(self):
+    def x(self) -> float:
         """Get first vector element.
 
         Returns
@@ -483,7 +497,7 @@ class Vector:
         """
         return self.value[0]
 
-    def y(self):
+    def y(self) -> float:
         """Get second vector element.
 
         Returns
@@ -493,7 +507,7 @@ class Vector:
         """
         return self.value[1]
 
-    def z(self):
+    def z(self) -> float:
         """Get third vector element.
 
         Returns
@@ -504,7 +518,7 @@ class Vector:
         """
         return self.value[2]
 
-    def w(self):
+    def w(self) -> float:
         """Get fourth vector element.
 
         Returns
@@ -515,7 +529,7 @@ class Vector:
         """
         return self.value[3]
 
-    def get(self, i:int):
+    def get(self, i:int) -> float:
         """Get value at vector index `i`. Indices start at `0`.
 
         Parameters
@@ -530,7 +544,7 @@ class Vector:
         """
         return self.value[i]
 
-    def get_copy(self):
+    def get_copy(self) -> 'Vector':
         """Get copy of this `Vector` object.
 
         Returns
@@ -610,13 +624,13 @@ class Vector:
         x : float
             Value for the first vector element.
 
-        y : float
+        y : float, optional
             Value for the second vector element.
 
-        z : float
+        z : float, optional
             Value for the third vector element.
 
-        w : float
+        w : float, optional
             Value for the fourth vector element.
         """
         if self.n_entries > 0 and x is not None:
@@ -660,7 +674,7 @@ class Vector:
         self.value = numpy_data.astype(float)
         self.update()
 
-    def length(self):
+    def length(self) -> float:
         """Get the length of the vector.
 
         Returns
@@ -673,7 +687,7 @@ class Vector:
 
         return self._length
 
-    def angle(self, x:'Vector'):
+    def angle(self, x:'Vector') -> float:
         """Calculate angle between this vector and the given vector `x`.
 
         Parameters
@@ -717,7 +731,7 @@ class Vector:
         else:
             raise Exception("Unit vector: a zero length vector cannot be converted into a unit vector.")
 
-    def unit_vector(self):
+    def unit_vector(self) -> 'Vector':
         """ Get a unit vector that points in the same direction as this vector.
 
         Returns
@@ -847,7 +861,7 @@ class Vector:
         self.value = numpy.multiply(self.value, factor)
         self.update()
 
-    def scaled(self, factor:float):
+    def scaled(self, factor:float) -> 'Vector':
         """ Get a copy of this vector, scaled by the given `factor`.
 
         Parameters
@@ -869,7 +883,7 @@ class Vector:
         self.value = numpy.square(self.value)
         self.update()
 
-    def squared(self):
+    def squared(self) -> 'Vector':
         """ Get a squared copy of this vector.
 
         Returns
@@ -886,7 +900,7 @@ class Vector:
         self.value = numpy.sqrt(self.value)
         self.update()
 
-    def distance(self, p:'Vector'):
+    def distance(self, p:'Vector') -> float:
         """ Distance between target points of this and another vector.
 
         Parameters
@@ -901,7 +915,7 @@ class Vector:
         """
         return (self-p).length()
 
-    def dot(self, x:'Vector'):
+    def dot(self, x:'Vector') -> float:
         """ Calculate vector dot product.
 
         Parameters
@@ -916,7 +930,7 @@ class Vector:
         """
         return numpy.dot(self.value, x.value)
 
-    def cross_z(self, x:'Vector'):
+    def cross_z(self, x:'Vector') -> float:
         """ Calculate the z component of the 3D cross product.
 
         Parameters
@@ -931,7 +945,7 @@ class Vector:
         """
         return self.x()*x.y() - self.y()*x.x()
 
-    def cross(self, x:'Vector'):
+    def cross(self, x:'Vector') -> 'Vector':
         """ Calculate 3D vector cross product.
 
         Parameters
@@ -947,7 +961,7 @@ class Vector:
         cp = numpy.cross(self.value, x.value)
         return Vector(numpy_data=cp)
 
-    def sum(self):
+    def sum(self) -> float:
         """ Get the sum of all vector elements.
 
         Returns
@@ -962,7 +976,7 @@ class Vector:
         self.value = -self.value
         self.update()
 
-    def inverse(self):
+    def inverse(self) -> 'Vector':
         """ Get the inverse of this vector: -v.
 
         Returns
@@ -1004,7 +1018,20 @@ class Vector:
 
         self.set(x=rx, y=ry, z=rz)
 
-    def to(self, x:'Vector'):
+    def transform(self, M:'Matrix'):
+        """Apply the transformation given by matrix `M` to this vector.
+
+        Parameters
+        ----------
+        M : Matrix
+            Transformation matrix.
+        """
+        result = M*self
+        self.n_entries = result.n_entries
+        self.value     = result.value
+        self.update()
+
+    def to(self, x:'Vector') -> 'Vector':
         """ Get a vector that points from this location to the given location `x`.
 
         Parameters
@@ -1020,7 +1047,7 @@ class Vector:
         return self.connection(self, x)
 
     @staticmethod
-    def connection(p0:'Vector', p1:'Vector'):
+    def connection(p0:'Vector', p1:'Vector') -> 'Vector':
         """ Connection vector between two points (represented by vectors).
 
         Parameters
@@ -1111,18 +1138,23 @@ class Line2D:
             self.m = math.inf
             self.n = x0  # Store x intersection in n if line is vertical
 
-    def intersection(self, v:'Vector'):
-        """Get intersection point with another vector.
+    def intersection(self, v:'Line2D') -> 'Vector':
+        """Intersection point with another line.
 
         Parameters
         ----------
-        v : Vector
-            Second vector.
+        v : Line2D
+            Another line that intersects this line.
 
         Returns
         -------
         intersection : Vector
             2D vector that contains the coordinates of the intersection point.
+
+        Raises
+        ------
+        Exception : "Lines are parallel."
+            If the lines don't intersect.
         """
         m0 = self.m
         n0 = self.n
@@ -1217,7 +1249,7 @@ class Polygon:
 
         self._area = None
 
-    def area(self):
+    def area(self) -> float:
         """Get the area enclosed by the polygon.
 
         Returns
@@ -1256,7 +1288,7 @@ class Polygon:
                 y3 = p3.y()
                 self._area += 0.5 * ( (y1+y3)*(x3-x1) + (y2+y3)*(x2-x3) - (y1+y2)*(x2-x1) )
 
-    def get_bounding_box(self):
+    def get_bounding_box(self) -> tuple[int, int, int, int]:
         """Get the polygon's bounding box values.
 
         Returns
@@ -1292,7 +1324,7 @@ class Polygon:
 
         return int(leftmost), int(upmost), int(rightmost), int(downmost)
 
-    def is_inside_2D(self, point:'Vector'):
+    def is_inside_2D(self, point:'Vector') -> bool:
         """ Check if the given point is inside the polygon or on an edge.
         Only the xy plane is considered (2D projection).
 
@@ -1337,7 +1369,7 @@ class Polygon:
 
         return False
 
-    def _inside_edge(self, edgePoint0:'Vector', edgePoint1:'Vector', vertexToTest:'Vector'):
+    def _inside_edge(self, edgePoint0:'Vector', edgePoint1:'Vector', vertexToTest:'Vector') -> bool:
         """ Helper function for clip():
             decide if vertex point is on the "inside" of the clipping edge.
             Inside means "to the left" if vertices are in counter-clockwise direction,
@@ -1353,7 +1385,7 @@ class Polygon:
 
         return False
 
-    def clip(self, clipping_polygon:'Polygon'):
+    def clip(self, clipping_polygon:'Polygon') -> 'Polygon':
         """ Clips the polygon using the given clipping polygon.
 
         Implementation of the Sutherland-Hodgman clipping algorithm.
@@ -1429,3 +1461,50 @@ class Polygon:
 
         result = Polygon(*outputVertices)
         return result
+
+def rotation_matrix(axis:'Vector', angle:float) -> 'Matrix':
+    """A matrix that performs a 3D vector rotation around the
+    given `axis` vector by the given `angle` (in rad).
+
+    Note that this is only a rotation matrix; translations
+    are not taken into account. This means that the pivot point
+    will always be the origin of the object that you rotate, i.e.,
+    the rotation axis vector is attached to the object's origin.
+
+    Parameters
+    ----------
+    axis : Vector
+        Rotation axis. Must not be a unit vector.
+
+    angle : float
+        Rotation angle.
+
+    Returns
+    -------
+    R : Matrix
+        Rotation matrix.
+    """
+    R = Matrix(3, 3)
+    cs = math.cos(angle)
+    sn = math.sin(angle)
+
+    nx = axis.unit_vector().x()
+    ny = axis.unit_vector().y()
+    nz = axis.unit_vector().z()
+
+    # Row 1:
+    R.value[0][0] = nx*nx*(1.0-cs) + cs
+    R.value[0][1] = nx*ny*(1.0-cs) - nz*sn
+    R.value[0][2] = nx*nz*(1.0-cs) + ny*sn
+
+    # Row 2:
+    R.value[1][0] = ny*nx*(1.0-cs) + nz*sn
+    R.value[1][1] = ny*ny*(1.0-cs) + cs
+    R.value[1][2] = ny*nz*(1.0-cs) - nx*sn
+
+    # Row 3:
+    R.value[2][0] = nz*nx*(1.0-cs) - ny*sn
+    R.value[2][1] = nz*ny*(1.0-cs) + nx*sn
+    R.value[2][2] = nz*nz*(1.0-cs) + cs
+
+    return R

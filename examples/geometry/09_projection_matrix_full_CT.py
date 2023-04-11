@@ -40,7 +40,7 @@ for p in range(projections):
 
 	# Rotate the stage to its current angle:
 	current_angle = float(p) * float(scan_range) / float(projections)
-	myCT.stage.rotateAroundW(angle = deg2rad(current_angle))
+	myCT.stage.rotate_around_w(angle = deg2rad(current_angle))
 	myCT.update()
 
 	# Calculate a projection matrix for this frame:

@@ -49,7 +49,7 @@ Getting started
 
 Requirements
 ------------
-A **Python 3** environment (Python 3.8 or higher) is required. The Python distribution that was used to develop and test the toolbox is *Anaconda 3* (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:
+A **Python 3** environment (Python 3.9 or higher) is required. The Python distribution that was used to develop and test the toolbox is *Anaconda 3* (available for Windows, macOS and Linux), and therefore a recommendation if you don't know where to start. The following Python packages are required as well. They usually come with a Python environment, or can be installed there easily:
 
 * NumPy,
 * SciPy subpackages *ndimage, optimize, stats, signal* and

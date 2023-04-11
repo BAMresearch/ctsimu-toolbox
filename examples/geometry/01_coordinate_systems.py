@@ -11,7 +11,7 @@ mySpecimen.w = Vector(1,  0,  0)
 
 # Manipulate:
 mySpecimen.translate(translationVector=Vector(5.2, 0, 4.3))
-mySpecimen.rotateAroundU(angle=deg2rad(2.0))
+mySpecimen.rotate_around_u(angle=deg2rad(2.0))
 mySpecimen.rotate(axis=Vector(1, 1, 1), angle=deg2rad(5.0))
 
 print("My specimen's new location and orientation:")

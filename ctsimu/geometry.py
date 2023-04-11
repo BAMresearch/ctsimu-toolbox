@@ -18,63 +18,12 @@ from datetime import datetime
 from .primitives import *
 from .image import Image  # To create detector flat field
 
-def basisTransformMatrix(fromCS:'CoordinateSystem', toCS:'CoordinateSystem') -> Matrix:
-    """Calculate a matrix that transforms coordinates from `fromCS` to `toCS`.
-
-    `fromCS` and `toCS` must have the same common reference frame
-    (e.g. the world coordinate system).
-
-    Parameters
-    ----------
-    fromCS : CoordinateSystem
-        The origin coordinate system.
-
-    toCS : CoordinateSystem
-        The target coordinate system.
-
-    Returns
-    -------
-    T : Matrix
-        The 3x3 basis transformation matrix.
-
-    References
-    ----------
-    * S. Widnall: [Lecture L3 - Vectors, Matrices and Coordinate Transformations]
-    [Lecture L3 - Vectors, Matrices and Coordinate Transformations]: https://ocw.mit.edu/courses/aeronautics-and-astronautics/16-07-dynamics-fall-2009/lecture-notes/MIT16_07F09_Lec03.pdf
-    """
-
-    T = Matrix(3, 3)
-
-    # Row 1:
-    T.value[0][0] = toCS.u.unit_vector().dot(fromCS.u.unit_vector())
-    T.value[0][1] = toCS.u.unit_vector().dot(fromCS.v.unit_vector())
-    T.value[0][2] = toCS.u.unit_vector().dot(fromCS.w.unit_vector())
-
-    # Row 2:
-    T.value[1][0] = toCS.v.unit_vector().dot(fromCS.u.unit_vector())
-    T.value[1][1] = toCS.v.unit_vector().dot(fromCS.v.unit_vector())
-    T.value[1][2] = toCS.v.unit_vector().dot(fromCS.w.unit_vector())
-
-    # Row 3:
-    T.value[2][0] = toCS.w.unit_vector().dot(fromCS.u.unit_vector())
-    T.value[2][1] = toCS.w.unit_vector().dot(fromCS.v.unit_vector())
-    T.value[2][2] = toCS.w.unit_vector().dot(fromCS.w.unit_vector())
-
-    return T
-
 class CoordinateSystem:
     """Coordinate system: center point and axis vectors.
-
-    An object according to the CTSimU scenario specification,
-    containing a center coordinate and an orientation in 3D space.
 
     The center and axis vectors are expressed in terms of the
     object's reference coordinate system, which must be known implicitly
     when objects of this class are used.
-
-    Geometrical objects could be source, stage or detector.
-    Samples would need additional attention due to possible attachment
-    to stage coordinate system (instead of world).
 
     Attributes
     ----------
@@ -93,22 +42,29 @@ class CoordinateSystem:
     """
 
     def __init__(self):
-        """Initialize as a standard world coordinate system."""
-        self.center  = Vector(0, 0, 0)
-        self.u = Vector(1, 0, 0)
-        self.v = Vector(0, 1, 0)
-        self.w = Vector(0, 0, 1)
+        """Initialized as a standard world coordinate system."""
+        self.center = Vector(0, 0, 0)
+        self.u      = Vector(1, 0, 0)
+        self.v      = Vector(0, 1, 0)
+        self.w      = Vector(0, 0, 1)
 
     def __str__(self):
         """Information string for easy printing."""
-
         txt  = "Center: {}\n".format(self.center)
         txt += "u:      {}\n".format(self.u)
         txt += "v:      {}\n".format(self.v)
         txt += "w:      {}\n".format(self.w)
         return txt
 
-    def json_import(self, geometry: dict):
+    def reset(self):
+        """Reset to a standard world coordinate system,
+        not attached to the stage."""
+        self.center = Vector(0, 0, 0)
+        self.u      = Vector(1, 0, 0)
+        self.v      = Vector(0, 1, 0)
+        self.w      = Vector(0, 0, 1)
+
+    def json_import(self, geometry:dict):
         """Set up geometry from a JSON dictionary.
 
         Parameters
@@ -208,7 +164,7 @@ class CoordinateSystem:
         w = Vector(wx, wy, wz)  # w basis vector
         v = w.cross(u)
         self.setup(c, u, v, w)
-        self.makeUnitCS()
+        self.make_unit_coordinate_system()
 
         # Apply deviations from the now-ideal geometry:
         if "deviation" in geometry:
@@ -217,37 +173,46 @@ class CoordinateSystem:
                 if "x" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["x"] != None:
                         translationX = in_mm_json(geometry["deviation"]["position"]["x"])
-                        self.translateX(translationX)
+                        self.translate_X(translationX)
 
                 if "y" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["y"] != None:
                         translationY = in_mm_json(geometry["deviation"]["position"]["y"])
-                        self.translateY(translationY)
+                        self.translate_y(translationY)
 
                 if "z" in geometry["deviation"]["position"]:
                     if geometry["deviation"]["position"]["z"] != None:
                         translationZ = in_mm_json(geometry["deviation"]["position"]["z"])
-                        self.translateZ(translationZ)
+                        self.translate_z(translationZ)
 
             # Rotations according to w''v'u convention:
             if "rotation" in geometry["deviation"]:
                 if "w" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["w"] != None:
                         angleAroundW = in_rad_json(geometry["deviation"]["rotation"]["w"])
-                        self.rotateAroundW(angleAroundW)
+                        self.rotate_around_w(angleAroundW)
 
                 if "v" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["v"] != None:
                         angleAroundV = in_rad_json(geometry["deviation"]["rotation"]["v"])
-                        self.rotateAroundV(angleAroundV)
+                        self.rotate_around_v(angleAroundV)
 
                 if "u" in geometry["deviation"]["rotation"]:
                     if geometry["deviation"]["rotation"]["u"] != None:
                         angleAroundU = in_rad_json(geometry["deviation"]["rotation"]["u"])
-                        self.rotateAroundU(angleAroundU)
+                        self.rotate_around_u(angleAroundU)
 
-    def setup(self, center:Vector, u:Vector, v:Vector, w:Vector):
-        """Set up center and orientation manually.
+    def make_unit_coordinate_system(self):
+        """Convert all basis vectors into unit vectors."""
+        self.u.make_unit_vector()
+        self.v.make_unit_vector()
+        self.w.make_unit_vector()
+        self.update()
+
+    def make_from_vectors(self, center:'Vector', u:'Vector', w:'Vector'):
+        """Create a right-handed coordinate system from the `center`,
+        `u` vector (first basis vector) and `w` vector (third basis vector).
+        The vector `v` will be determined from the cross product `w`×`u`.
 
         Parameters
         ----------
@@ -258,22 +223,75 @@ class CoordinateSystem:
         u : Vector
             Basis vector u in terms of reference coordinate system.
 
-        v : Vector
-            Basis vector v in terms of reference coordinate system.
-
         w : Vector
             Basis vector w in terms of reference coordinate system.
 
         Notes
         -----
-        All basis vectors must be orthogonal.
+        Basis vectors must be orthogonal.
         """
-
-        # Create new vectors from given components:
         self.center  = center
         self.u = u
-        self.v = v
         self.w = w
+        self.v = self.w.cross(self.u)
+
+        self.update()
+
+    def make(self, cx:float, cy:float, cz:float, ux:float, uy:float, uz:float, wx:float, wy:float, wz:float):
+        """Set up the coordinate system from vector components (all floats)
+        for the center (`cx`, `cy`, `cz`), the `u` vector (first basis vector,
+        `ux`, `uy`, `uz`) and the `w` vector (third basis vector, `wx`, `wy`, `wz`).
+
+        Parameters
+        ----------
+        cx : float
+            Center x coordinate.
+
+        cy : float
+            Center y coordinate.
+
+        cz : float
+            Center z coordinate.
+
+        ux : float
+            `u` vector x component.
+
+        uy : float
+            `u` vector y component.
+
+        uz : float
+            `u` vector z component.
+
+        wx : float
+            `w` vector x component.
+
+        wy : float
+            `w` vector y component.
+
+        wz : float
+            `w` vector z component.
+        """
+        self.center = Vector(cx, cy, cz)
+        self.u      = Vector(ux, uy, uz)
+        self.w      = Vector(wx, wy, wz)
+        self.v      = self.w.cross(self.u)
+
+        self.update()
+
+    def get_copy(self) -> 'CoordinateSystem':
+        """Get a copy of this coordinate system.
+
+        Returns
+        -------
+        copy_cs : CoordinateSystem
+            Copy of this coordinate system.
+        """
+        new_cs = CoordinateSystem()
+        new_cs.center = Vector(self.center.x(), self.center.y(), self.center.z())
+        new_cs.u      = Vector(self.u.x(), self.u.y(), self.u.z())
+        new_cs.v      = Vector(self.v.x(), self.v.y(), self.v.z())
+        new_cs.w      = Vector(self.w.x(), self.w.y(), self.w.z())
+        return new_cs
 
     def update(self):
         """Signal a manual update to the center position or orientation vectors."""
@@ -282,55 +300,185 @@ class CoordinateSystem:
         self.v.update()
         self.w.update()
 
-    def makeUnitCS(self):
-        """Convert all basis vectors to unit vectors."""
-        self.u.make_unit_vector()
-        self.v.make_unit_vector()
-        self.w.make_unit_vector()
-
-    def translate(self, translationVector: Vector):
-        """Move object in space.
+    def translate(self, translation_vector:'Vector'):
+        """Shift center by given translation vector.
 
         Parameters
         ----------
-        translationVector : Vector
+        translation_vector : Vector
             Vector by which the object's center point should be shifted.
             Its components are added to the center's components.
         """
-        self.center.add(translationVector)
+        self.center.add(translation_vector)
 
-    def translateX(self, dx: float):
-        """Move object in x direction.
+    def translate_in_direction(self, direction:'Vector', distance:float):
+        """Shift center in given `direction` by given `distance`.
+
+        Parameters
+        ----------
+        direction : Vector
+            Vector along which the center point should be shifted.
+            It must not be a unit vector.
+
+        distance : float
+            Distance by which the center point will travel
+        """
+        t = direction.get_unit_vector().scaled(factor=distance)
+        self.translate(translation_vector=t)
+
+    def translate_x(self, dx:float):
+        """Translate coordinate system in x direction of reference
+        coordinate system by distance `dx`.
 
         Parameters
         ----------
         dx : float
             Shift amount in x direction.
         """
-        self.center.setx(self.center.x + float(dx))
+        self.center.set_x(self.center.x() + float(dx))
 
-    def translateY(self, dy: float):
-        """Move object in y direction.
+    def translate_y(self, dy: float):
+        """Translate coordinate system in y direction of reference
+        coordinate system by distance `dy`.
 
         Parameters
         ----------
         dy : float
             Shift amount in y direction.
         """
-        self.center.sety(self.center.y + float(dy))
+        self.center.set_y(self.center.y() + float(dy))
 
-    def translateZ(self, dz: float):
-        """Move object in z direction.
+    def translate_z(self, dz: float):
+        """Translate coordinate system in z direction of reference
+        coordinate system by distance `dz`.
 
         Parameters
         ----------
         dz : float
             Shift amount in z direction.
         """
-        self.center.setz(self.center.z + float(dz))
+        self.center.set_z(self.center.z() + float(dz))
 
-    def rotateAroundU(self, angle: float):
-        """Rotate object around its u axis by given angle [rad].
+    def translate_u(self, du:float):
+        """Translate coordinate system in u direction by distance `du`.
+
+        Parameters
+        ----------
+        du : float
+            Shift amount in u direction.
+        """
+        self.translate_in_direction(direction=self.u, distance=du)
+
+    def translate_v(self, dv:float):
+        """Translate coordinate system in v direction by distance `dv`.
+
+        Parameters
+        ----------
+        dv : float
+            Shift amount in v direction.
+        """
+        self.translate_in_direction(direction=self.v, distance=dv)
+
+    def translate_w(self, dw:float):
+        """Translate coordinate system in w direction by distance `dw`.
+
+        Parameters
+        ----------
+        dw : float
+            Shift amount in w direction.
+        """
+        self.translate_in_direction(direction=self.w, distance=dw)
+
+    def rotate(self, axis:'Vector', angle:float):
+        """Rotate coordinate system around a given axis by the given angle (in rad).
+
+        This does not move the center point, as the axis vector is assumed
+        to be attached to the center of the coordinate system.
+
+        Parameters
+        ----------
+        axis : Vector
+            The axis of rotation, in terms of the object's
+            reference coordinate system.
+
+        angle : float
+            Rotation angle (in rad), mathematically positive direction (right-hand rule).
+        """
+        R = rotation_matrix(axis, angle)
+        self.u.transform(R)
+        self.v.transform(R)
+        self.w.transform(R)
+
+    def rotate_around_pivot_point(self, axis:'Vector', angle:float, pivot:'Vector'):
+        """Rotate coordinate system around a pivot point.
+        Generally, this will result in a different center position,
+        as the axis of rotation is assumed to be attached to the
+        pivot point instead of the center of the coordinate system.
+
+        Parameters
+        ----------
+        axis : Vector
+            Rotation axis, in terms of the object's reference coordinate system.
+
+        angle : float
+            Rotation angle (in rad).
+
+        pivot : Vector
+            Pivot point, in terms of the object's reference coordinate system.
+        """
+
+        # Move coordinate system such that pivot point is at world origin:
+        self.center.subtract(pivot)
+
+        # Rotate center point and transform back into
+        # world coordinate system:
+        self.center.rotate(axis, angle)
+        self.center.add(pivot)
+
+        # Rotate the coordinate system itself:
+        self.rotate(axis, angle)
+
+    def rotate_around_x(self, angle: float):
+        """Rotate object around x axis of its reference coordinate system
+        by given angle (in rad).
+
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        """
+        if angle != 0:
+            x_axis = Vector(1, 0, 0)
+            self.rotate(x_axis, angle)
+
+    def rotate_around_y(self, angle: float):
+        """Rotate object around y axis of its reference coordinate system
+        by given angle (in rad).
+
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        """
+        if angle != 0:
+            y_axis = Vector(0, 1, 0)
+            self.rotate(y_axis, angle)
+
+    def rotate_around_z(self, angle: float):
+        """Rotate object around z axis of its reference coordinate system
+        by given angle (in rad).
+
+        Parameters
+        ----------
+        angle : float
+            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        """
+        if angle != 0:
+            z_axis = Vector(0, 0, 1)
+            self.rotate(z_axis, angle)
+
+    def rotate_around_u(self, angle: float):
+        """Rotate object around its u axis by given angle (in rad).
 
         Parameters
         ----------
@@ -340,8 +488,8 @@ class CoordinateSystem:
         self.v.rotate(self.u, angle)
         self.w.rotate(self.u, angle)
 
-    def rotateAroundV(self, angle: float):
-        """Rotate object around its v axis by given angle [rad].
+    def rotate_around_v(self, angle: float):
+        """Rotate object around its v axis by given angle (in rad).
 
         Parameters
         ----------
@@ -351,8 +499,8 @@ class CoordinateSystem:
         self.u.rotate(self.v, angle)
         self.w.rotate(self.v, angle)
 
-    def rotateAroundW(self, angle: float):
-        """Rotate object around its w axis by given angle [rad].
+    def rotate_around_w(self, angle: float):
+        """Rotate object around its w axis by given angle (in rad).
 
         Parameters
         ----------
@@ -362,59 +510,217 @@ class CoordinateSystem:
         self.u.rotate(self.w, angle)
         self.v.rotate(self.w, angle)
 
-    def rotate(self, axis: Vector, angle: float):
-        """Rotate object around a given axis by the given angle [rad].
+    def transform(self, csFrom:'CoordinateSystem', csTo:'CoordinateSystem'):
+        """Relative transformation in world coordinates
+        from `csFrom` to `csTo`, result will be in world coordinates.
+
+        Detailed description: assuming this CS, `csFrom` and `csTo`
+        all three are independent coordinate systems in a common
+        reference coordinate system (e.g. world). This function
+        will calculate the necessary translation and rotation that
+        would have to be done to superimpose `csFrom` with `csTo`.
+        This translation and rotation will, however, be applied
+        to this CS, not to `csFrom`.
 
         Parameters
         ----------
-        axis : Vector
-            The axis of rotation, in terms of the object's
-            reference coordinate system (e.g. world).
+        csFrom : CoordinateSystem
+            Coordinate system before the transformation.
 
-        angle : float
-            Rotation angle in rad, mathematically positive direction (right-hand rule).
+        csTo : CoordinateSystem
+            Coordinate system after the transformation.
         """
-        self.u.rotate(axis, angle)
-        self.v.rotate(axis, angle)
-        self.w.rotate(axis, angle)
 
-    def changeReferenceFrame(self, fromCS:'CoordinateSystem', toCS:'CoordinateSystem'):
+        # -- TRANSLATION:
+        t = csFrom.center.to(csTo.center)
+        self.translate(t)
+
+        # We need a copy of csFrom and csTo because later on,
+        # we might have to transform them and don't want to
+        # affect the original csFrom passed to this function.
+        # Also, csFrom or csTo could simply be pointers to
+        # this coordinate system.
+        csFromCopy = csFrom.get_copy()
+        csToCopy   = csTo.get_copy()
+
+        # -- ROTATIONS
+        # Rotation to bring w axis from -> to
+        wFrom = csFromCopy.w
+        wTo   = csToCopy.w
+        rotationAxis = wFrom.cross(wTo)
+
+        if rotationAxis.length() == 0:
+            if wTo.dot(wFrom) < 0:
+                # 180° flip; vectors point in opposite direction.
+                # Rotation axis is another CS basis vector.
+                rotationAxis = csFromCopy.u.get_copy()
+            else:
+                # wFrom already points in direction of wTo.
+                pass
+
+        if rotationAxis.length() > 0:
+            rotationAngle = wFrom.angle(wTo)
+            if rotationAngle != 0:
+                self.rotate_around_pivot_point(rotationAxis, rotationAngle, csToCopy.center)
+
+                # Also rotate `csFrom` to make calculation of
+                # rotation around u axis possible (next step):
+                csFromCopy.rotate(rotationAxis, rotationAngle)
+
+        # Rotation to bring u axis from -> to (around now fixed w axis)
+        uFrom = csFromCopy.u
+        uTo   = csToCopy.u
+        rotationAxis = uFrom.cross(uTo)
+
+        if rotationAxis.length() == 0:
+            if uTo.dot(uFrom) < 0:
+                # 180° flip; vectors point in opposite direction.
+                # Rotation axis is another CS basis vector.
+                rotationAxis = csFromCopy.w.get_copy()
+            else:
+                # uFrom already points in direction of uTo.
+                pass
+
+        if rotationAxis.length() > 0:
+            rotationAngle = uFrom.angle(uTo)
+            if rotationAngle != 0:
+                self.rotate_around_pivot_point(rotationAxis, rotationAngle, csToCopy.center)
+
+    def change_reference_frame(self, csFrom:'CoordinateSystem', csTo:'CoordinateSystem'):
         """Change the object's reference coordinate system.
 
         Parameters
         ----------
-        fromCS : CoordinateSystem
+        csFrom : CoordinateSystem
             Current reference coordinate system.
 
-        toCS : CoordinateSystem
+        csTo : CoordinateSystem
             New reference coordinate system.
 
         Notes
         -----
-        Both fromCS and toCS must be in the same reference coordinate system
+        Both `csFrom` and `csTo` must be in the same reference coordinate system
         (e.g., the world coordinate system).
         """
 
-        # Rotate basis vectors into toCS:
-        T = basisTransformMatrix(fromCS, toCS)
-        self.u = T * self.u
-        self.v = T * self.v
-        self.w = T * self.w
+        # Rotate basis vectors into csTo:
+        T = basis_transform_matrix(csFrom, csTo)
+        self.u.transform(T)
+        self.v.transform(T)
+        self.w.transform(T)
 
-        world = CoordinateSystem()
+        self.center = change_reference_frame_of_point(self.center, csFrom, csTo)
 
-        # Move center to toCS:
-        # 1. Translate self.center by difference of toCS and fromCS
-        #    -> Origins are "superimposed".
-        # 2. Rotate self.center from fromCS to toCS.
+ctsimu_world = CoordinateSystem()
 
-        # Translation vector in world coordinates:
-        translator = fromCS.center - toCS.center  # in world coordinates
-        # Translation vector in fromCS coordinates:
-        M = basisTransformMatrix(world, fromCS)
-        translator = M*translator
-        relCenter = self.center + translator
-        self.center = T*relCenter
+def basis_transform_matrix(csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -> 'Matrix':
+    """A matrix that transforms coordinates from `csFrom` to `csTo`.
+
+    `csFrom` and `csTo` must have the same common reference frame
+    (e.g. the world coordinate system). A shift in origins is not
+    taken into account, i.e., their origins are assumed to be at
+    the same position.
+
+    Parameters
+    ----------
+    csFrom : CoordinateSystem
+        The origin coordinate system.
+
+    csTo : CoordinateSystem
+        The target coordinate system.
+
+    Returns
+    -------
+    T : Matrix
+        The 3x3 basis transformation matrix.
+
+    References
+    ----------
+    * S. Widnall: [Lecture L3 - Vectors, Matrices and Coordinate Transformations]
+    [Lecture L3 - Vectors, Matrices and Coordinate Transformations]: https://ocw.mit.edu/courses/16-07-dynamics-fall-2009/resources/mit16_07f09_lec03/
+    """
+    T = Matrix(3, 3)
+
+    # Row 1:
+    T.value[0][0] = csTo.u.unit_vector().dot(csFrom.u.unit_vector())
+    T.value[0][1] = csTo.u.unit_vector().dot(csFrom.v.unit_vector())
+    T.value[0][2] = csTo.u.unit_vector().dot(csFrom.w.unit_vector())
+
+    # Row 2:
+    T.value[1][0] = csTo.v.unit_vector().dot(csFrom.u.unit_vector())
+    T.value[1][1] = csTo.v.unit_vector().dot(csFrom.v.unit_vector())
+    T.value[1][2] = csTo.v.unit_vector().dot(csFrom.w.unit_vector())
+
+    # Row 3:
+    T.value[2][0] = csTo.w.unit_vector().dot(csFrom.u.unit_vector())
+    T.value[2][1] = csTo.w.unit_vector().dot(csFrom.v.unit_vector())
+    T.value[2][2] = csTo.w.unit_vector().dot(csFrom.w.unit_vector())
+
+    return T
+
+def change_reference_frame_of_direction(direction:'Vector', csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -> 'Vector':
+    """For a `direction` in `csFrom`, get the new direction in terms of `csTo`.
+    `csFrom` and `csTo` must be in the same reference coordinate system.
+
+    Parameters
+    ----------
+    direction : Vector
+        Direction in terms of `csFrom`.
+
+    csFrom : CoordinateSystem
+        The original coordinate system.
+
+    csTo : CoordinateSystem
+        The target coordinate system, in which the direction should be expressed.
+
+    Returns
+    -------
+    direction_in_csTo : Vector
+        The direction in terms of csTo.
+    """
+
+    # Rotation matrix to rotate base vectors into csTo:
+    R = basis_transform_matrix(csFrom, csTo)
+
+    # Perform rotation:
+    return (R * direction)
+
+def change_reference_frame_of_point(point:'Vector', csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -> 'Vector':
+    """For a `point` coordinate in `csFrom`, get the new coordinate in terms of
+    `csTo`. `csFrom` and `csTo` must be in the same reference coordinate system.
+
+    Parameters
+    ----------
+    point : Vector
+        Point coordinates in terms of `csFrom`.
+
+    csFrom : CoordinateSystem
+        The original coordinate system.
+
+    csTo : CoordinateSystem
+        The target coordinate system, in which the point coordinates
+        should be expressed.
+
+    Returns
+    -------
+    point_in_csTo : Vector
+        The point coordinates in terms of csTo.
+    """
+
+    # Place the point in the common reference coordinate system
+    # (mathematically, this is always the 'world'):
+    point_in_to = point.get_copy()
+    R_to_world = basis_transform_matrix(csFrom, ctsimu_world)
+    point_in_to.transform(R_to_world)
+    point_in_to.add(csFrom.center)
+
+    # Move point to the target coordinate system:
+    point_in_to.subtract(csTo.center)
+    R_to_to = basis_transform_matrix(ctsimu_world, csTo)
+    point_in_to.transform(R_to_to)
+
+    return point_in_to
+
 
 class Detector(CoordinateSystem):
     """Detector as geometrical object.
@@ -801,8 +1107,8 @@ class Geometry:
         source_from_image = copy.deepcopy(self.source)
         stage_from_detector  = copy.deepcopy(self.stage)
 
-        source_from_image.changeReferenceFrame(world, self.detector)
-        stage_from_detector.changeReferenceFrame(world, self.detector)
+        source_from_image.change_reference_frame(world, self.detector)
+        stage_from_detector.change_reference_frame(world, self.detector)
 
         self.SDD = abs(source_from_image.center.z)
         self.ODD = abs(stage_from_detector.center.z)
@@ -1032,7 +1338,7 @@ class Geometry:
         volume = None
         if volumeCS is not None:
             volume = copy.deepcopy(volumeCS)
-            volume.changeReferenceFrame(self.stage, world)
+            volume.change_reference_frame(self.stage, world)
         else:
             volume = copy.deepcopy(self.stage)
 
@@ -1044,7 +1350,7 @@ class Geometry:
 
         # Detach the image CS from the detector CS and
         # express it in terms of the world CS:
-        image.changeReferenceFrame(self.detector, world)
+        image.change_reference_frame(self.detector, world)
 
         """The scale factors are derived from the lengths of the basis
         vectors of the image CS."""
@@ -1055,12 +1361,12 @@ class Geometry:
         # Save a source CS as seen from the detector CS. This is convenient to
         # later get the SDD, ufoc and vfoc:
         source_from_image = copy.deepcopy(self.source)
-        source_from_image.changeReferenceFrame(world, image)
+        source_from_image.change_reference_frame(world, image)
 
         # Make the volume CS the new world CS:
-        source.changeReferenceFrame(world, volume)
-        image.changeReferenceFrame(world, volume)
-        volume.changeReferenceFrame(world, volume)
+        source.change_reference_frame(world, volume)
+        image.change_reference_frame(world, volume)
+        volume.change_reference_frame(world, volume)
 
         # Translation vector from volume to source:
         rfoc = source.center - volume.center
@@ -1090,7 +1396,7 @@ class Geometry:
         F = Matrix(values=[[1, 0, 0, -xfoc], [0, 1, 0, -yfoc], [0, 0, 1, -zfoc]])
 
         # Rotations:
-        R = basisTransformMatrix(volume, image)
+        R = basis_transform_matrix(volume, image)
 
         # Projection onto detector and scaling (world units -> volume units):
         S = Matrix(values=[[SDD/scale_image_u, 0, 0], [0, SDD/scale_image_v, 0], [0, 0, 1.0/scale_image_w]])
@@ -1430,8 +1736,8 @@ class Geometry:
         S = copy.deepcopy(self.source)
         world = CoordinateSystem()  # will be initialized as world
 
-        S.changeReferenceFrame(world, D)
-        D.changeReferenceFrame(world, D)
+        S.change_reference_frame(world, D)
+        D.change_reference_frame(world, D)
         D.computeGeometryParameters()
 
         # Source - Detector distance (SDD) defined by shortest distance between source and detector,

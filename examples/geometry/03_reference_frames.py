@@ -6,20 +6,20 @@ world = CoordinateSystem()
 # Set up a quick CT geometry with a tilted stage axis:
 myCT = Geometry()
 myCT.stage.center.x = 250  # SOD
-myCT.stage.rotateAroundU(angle = deg2rad(2.0))
+myCT.stage.rotate_around_u(angle = deg2rad(2.0))
 myCT.detector.center.x = 800  # SDD
 
 # Assume a specimen in the (tilted) stage
 # coordinate system, shifted 5 mm "upwards"
 # along the axis of rotation:
 mySpecimen = CoordinateSystem()
-mySpecimen.translateZ(5.0)
+mySpecimen.translate_z(5.0)
 
 # Change the specimen's reference frame to
 # the world coordinate system:
-mySpecimen.changeReferenceFrame(
-	fromCS = myCT.stage,
-	toCS = world)
+mySpecimen.change_reference_frame(
+	csFrom = myCT.stage,
+	csTo = world)
 
 print("The specimen's world coordinates:")
 print(mySpecimen)
