@@ -1,17 +1,16 @@
 # -*- coding: UTF-8 -*-
+"""
+Geometrical deviation of a coordinate system, i.e. a translation or a rotation
+with respect to an arbitrary axis.
+"""
 
 from ..helpers import *
 from ..primitives import Vector, Matrix
 from .parameter import Parameter
 from .scenevector import Scenevector
 
-ctsimu_axis_strings = ["r", "s", "t", "u", "v", "w", "x", "y", "z"]
-ctsimu_world_axis_designations  = ["x", "y", "z"]
-ctsimu_local_axis_designations  = ["u", "v", "w"]
-ctsimu_sample_axis_designations = ["r", "s", "t"]
-
 class Deviation:
-	""" A class for a geometrical deviation of a coordinate system,
+	""" Geometrical deviation of a coordinate system,
 	i.e. a translation or a rotation with respect to one of the
 	axes x, y, z (world), u, v, w (local), or r, s, t (sample)
 	or any other arbitrary vector.
@@ -237,7 +236,7 @@ class Deviation:
 				return False
 
 		self.set_amount_from_json(json_extract(json_deviation_object, ["amount"]))
-		self.set_known_to_reconstruction(get_value_in_unit(
+		self.set_known_to_reconstruction(get_value_in_native_unit(
 			native_unit="bool",
 			dictionary=json_deviation_object,
 			keys=["known_to_reconstruction"],

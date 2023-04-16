@@ -6,6 +6,12 @@ import math
 import numpy
 from scipy import optimize, fft
 
+ctsimu_valid_axes   = ["z", "y", "x", "w", "v", "u", "t", "s", "r"]
+ctsimu_axis_strings = ["r", "s", "t", "u", "v", "w", "x", "y", "z"]
+ctsimu_world_axis_designations  = ["x", "y", "z"]
+ctsimu_local_axis_designations  = ["u", "v", "w"]
+ctsimu_sample_axis_designations = ["r", "s", "t"]
+
 def log(message:str):
     """Print an output message.
 
@@ -24,6 +30,19 @@ valid_native_units = [
     ]
 
 def is_valid_native_unit(native_unit:str) -> bool:
+    """Check if given string is a valid native unit.
+
+    Parameters
+    ----------
+    native_unit : str
+        The string to check if it is a valid native unit.
+
+    Returns
+    -------
+    is_valid : bool
+        `True` if the provided string is a valid native unit, `False` if not.
+    """
+
     if native_unit in valid_native_units:
         return True
 
@@ -40,21 +59,45 @@ def read_json_file(filename:str) -> dict:
 
     Returns
     -------
-    jd : dict
+    dictionary : dict
         Dictionary representation of the JSON structure.
     """
 
     return json.load(filename)
 
 def value_is_null(value) -> bool:
-    """Check if a specific value is set to `null`."""
+    """Check if a specific JSON value is set to `null`.
+
+    Parameters
+    ----------
+    value
+        Value to check for nullness.
+
+    Returns
+    -------
+    is_null : bool
+        `True` if the value corresponds to a JSON `null`,
+        `False` if it is something else.
+    """
     if value is None:
         return True
 
     return False
 
 def value_is_null_or_zero(value) -> bool:
-    """Check if a specific value is set to `null` or 0."""
+    """Check if a specific value is set to `null` or `0`.
+
+    Parameters
+    ----------
+    value
+        Value to check for nullness or zeroness.
+
+    Returns
+    -------
+    is_null_or_zero : bool
+        `True` if the value corresponds to a JSON `null`
+        or has the numerical value `0`, `False` if it is something else.
+    """
     if value is not None:
         if value != 0:
             return False
@@ -62,9 +105,30 @@ def value_is_null_or_zero(value) -> bool:
     return True
 
 def object_value_is_null(json_obj:dict) -> bool:
-    """Check if a JSON object has a `value` parameter and if this parameter is set to `null`."""
+    """Check if a CTSimU JSON parameter object represents a
+    `null` value, either because its `"value"` property is
+    set to a JSON `null` or because it does not have
+    a `"value"` property at all.
+
+    Parameters
+    ----------
+    json_obj : dict
+        Dictionary (as from a JSON structure) to check.
+
+    Returns
+    -------
+    is_null : bool
+        `True` if the object's `"value"` corresponds to a JSON `null`
+        or if the object does not define a `"value"`.
+        `False` if the object value is something else.
+
+    Raises
+    ------
+    TypeError
+        If `json_obj` is not a dictionary.
+    """
     if not isinstance(json_obj, dict):
-        raise AttributeError("object_value_is_null() expects dict for the `json_obj`.")
+        raise TypeError("object_value_is_null() expects dict for the `json_obj`.")
 
     if "value" in json_obj:
         return value_is_null(json_obj["value"])
@@ -72,9 +136,30 @@ def object_value_is_null(json_obj:dict) -> bool:
     return True
 
 def object_value_is_null_or_zero(json_obj:dict) -> bool:
-    """Check if a JSON object has a `value` parameter and if this parameter is set to `null` or 0."""
+    """Check if a CTSimU JSON parameter object represents
+    `null` value or the numerical value `0`, either because
+    its `"value"` property is set to a JSON `null` or `0`,
+    or because it does not have a `"value"` property at all.
+
+    Parameters
+    ----------
+    json_obj : dict
+        Dictionary (as from a JSON structure) to check.
+
+    Returns
+    -------
+    is_null_or_zero : bool
+        `True` if the object's `"value"` corresponds to a JSON `null`
+        or if the object does not define a `"value"`.
+        `False` if the object value is something else.
+
+    Raises
+    ------
+    TypeError
+        If `json_obj` is not a dictionary.
+    """
     if not isinstance(json_obj, dict):
-        raise AttributeError("object_value_is_null_or_zero() expects dict for the `json_obj`.")
+        raise TypeError("object_value_is_null_or_zero() expects dict for the `json_obj`.")
 
     if "value" in json_obj:
         return value_is_null_or_zero(json_obj["value"])
@@ -84,11 +169,31 @@ def object_value_is_null_or_zero(json_obj:dict) -> bool:
 def get_value_or_none(dictionary:dict, *keys:str) -> float | str | bool | dict | list:
     """Get the dictionary value that is located at the given
     sequence of `keys`. If it cannot be found, return `None`.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    *keys : str
+        Sequence of keys that identify a location in the dictionary tree.
+
+    Returns
+    -------
+    value : float or str or bool or dict or list
+        The entry in the `dictionary`, located by the sequence of `keys`,
+        or `None` if the entry cannot be found.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
     """
     if not isinstance(dictionary, dict):
-        raise AttributeError("get_value_or_none() expects dict as first argument for the `dictionary`.")
+        raise TypeError("get_value_or_none() expects dict as first argument for the `dictionary`.")
+
     if len(keys) == 0:
-        raise AttributeError("get_value_or_none() expects a list of keys, given as a sequence of strings.")
+        return dictionary
 
     current_element = dictionary
 
@@ -106,17 +211,41 @@ def get_value_or_none(dictionary:dict, *keys:str) -> float | str | bool | dict |
 
     return current_element
 
-def get_value(dictionary:dict, keys:list=[], fail_value=None) -> float | str | bool | dict | list:
+def get_value(dictionary:dict, keys:list, fail_value=None) -> float | str | bool | dict | list:
     """Get the specific value of the parameter that is
     located at the given sequence of `keys` in the JSON dictionary.
 
     If that element cannot be found or is set to `null`,
     return the `fail_value`.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    keys : list
+        List of keys that identify a location in the dictionary tree.
+
+    fail_value : float or str or bool or dict or list, optional
+        Value to return if the given list of keys cannot be found
+        in the dictionary.
+
+    Returns
+    -------
+    value : float or str or bool or dict or list
+        The entry in the `dictionary`, located by the sequence of `keys`
+        or the `fail_value` if the entry cannot be found.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
     """
     if not isinstance(dictionary, dict):
-        raise AttributeError("get_value() expects dict as first argument for the `dictionary`.")
+        raise TypeError("get_value() expects dict as first argument for the `dictionary`.")
+
     if len(keys) == 0:
-        raise AttributeError("get_value() expects a list of keys as second argument for the `keys`.")
+        return dictionary
 
     result = get_value_or_none(dictionary, *keys)
     if result is None:
@@ -124,11 +253,34 @@ def get_value(dictionary:dict, keys:list=[], fail_value=None) -> float | str | b
 
     return result
 
-def json_exists(dictionary:dict, keys:list=[]) -> bool:
+def json_exists(dictionary:dict, keys:list) -> bool:
+    """Check if the given key sequence can be found in the dictionary tree.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    keys : list
+        List of keys that identify a location in the dictionary tree.
+
+    Returns
+    -------
+    exists : bool
+        `True` if the given key sequence identifies an object or
+        value in the dictionary, `False` if nothing can be found
+        at the given sequence of keys.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
+    """
+
     if not isinstance(dictionary, dict):
-        raise AttributeError("json_exists() expects dict as first argument for the `dictionary`.")
+        raise TypeError("json_exists() expects dict as first argument for the `dictionary`.")
     if len(keys) == 0:
-        raise AttributeError("json_exists() expects a list of keys as second argument for the `keys`.")
+        return True
 
     current_element = dictionary
     for key in keys:
@@ -139,11 +291,33 @@ def json_exists(dictionary:dict, keys:list=[]) -> bool:
 
     return True
 
-def json_isnull(dictionary:dict, keys:list=[]) -> bool:
+def json_isnull(dictionary:dict, keys:list) -> bool:
+    """Check if the value at the given key sequence corresponds
+    to a JSON `null`, or if the value cannot be found at all.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    keys : list
+        List of keys that identify a location in the dictionary tree.
+
+    Returns
+    -------
+    is_null : bool
+        `True` if the given key sequence identifies a `null` value
+        or if the value cannot be found at all. `False` otherwise.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
+    """
     if not isinstance(dictionary, dict):
-        raise AttributeError("json_isnull() expects dict as first argument for the `dictionary`.")
+        raise TypeError("json_isnull() expects dict as first argument for the `dictionary`.")
     if len(keys) == 0:
-        raise AttributeError("json_isnull() expects a list of keys as second argument for the `keys`.")
+        return True
 
     v = get_value(dictionary, keys)
     if v is None:
@@ -151,19 +325,85 @@ def json_isnull(dictionary:dict, keys:list=[]) -> bool:
 
     return False
 
-def json_exists_and_not_null(dictionary:dict, keys:list=[]) -> bool:
+def json_exists_and_not_null(dictionary:dict, keys:list) -> bool:
+    """Check if the value at the given key sequence
+    exists and does not correspond to a JSON `null`.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    keys : list
+        List of keys that identify a location in the dictionary tree.
+
+    Returns
+    -------
+    exists_and_not_null : bool
+        `True` if the given key sequence exists and does
+        not identify a `null` value, `False` otherwise.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
+    """
     if json_exists(dictionary, keys):
         if not json_isnull(dictionary, keys):
             return True
 
     return False
 
-def json_extract(dictionary:dict, keys:list=[]) -> float | str | bool | dict | list:
-    """Get the JSON sub-object that is located at a given sequence of `keys` in the JSON dictionary."""
+def json_extract(dictionary:dict, keys:list) -> float | str | bool | dict | list:
+    """Get the JSON sub-object that is located
+    at a given sequence of `keys` in the JSON dictionary.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    keys : list
+        List of keys that identify a location in the dictionary tree.
+
+    Returns
+    -------
+    value : float or str or bool or dict or list
+        The value, object or array located at the given key sequence,
+        `None` if nothing can be found at the given key sequence.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
+    """
     return get_value(dictionary, keys)
 
 def json_extract_from_possible_keys(dictionary:dict, key_lists:list):
-    """Searches the JSON object for each key sequence in the given list of key sequences. The first sequence that exists will return an extracted JSON object."""
+    """Searches the JSON object for each key sequence in the given
+    list of key sequences. The first sequence that exists will be used to
+    extract and return the corresponding JSON object.
+
+    Parameters
+    ----------
+    dictionary : dict
+        Dictionary (as from a JSON structure).
+
+    key_lists : list
+        List of lists of keys that possibly specify a valid
+        location in the dictionary tree.
+
+    Returns
+    -------
+    value : float or str or bool or dict or list
+        The value, object or array located at the first valid key sequence,
+        `None` if nothing can be found at any of the given key sequences.
+
+    Raises
+    ------
+    TypeError
+        If `dictionary` is not a Python `dict`.
+    """
     for keys in key_lists:
         if json_exists(dictionary, keys):
             return json_extract(dictionary, keys)
@@ -176,7 +416,28 @@ def json_extract_from_possible_keys(dictionary:dict, key_lists:list):
 # Each function supports the allowed units from the CTSimU file format specification.
 
 def in_mm(value:float, unit:str) -> float:
-    """Convert a length to mm."""
+    """Convert a length to mm.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"nm"`, `"um"`, `"mm"`, `"cm"`, `"dm"`, `"m"`
+
+    Returns
+    -------
+    value_in_mm : float
+        The value converted to millimeters,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit of length.
+    """
     if value is not None:
         if unit == "nm": return (value * 1.0e-6)
         if unit == "um": return (value * 1.0e-3)
@@ -187,30 +448,93 @@ def in_mm(value:float, unit:str) -> float:
     else:
         return None
 
-    raise Exception(f"Not a valid unit of length: '{unit}'.")
+    raise ValueError(f"Not a valid unit of length: '{unit}'.")
 
 def in_rad(value:float, unit:str="deg") -> float:
-    """Convert an angle to radians."""
+    """Convert an angle to radians.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"rad"`, `"deg"`
+
+    Returns
+    -------
+    value_in_rad : float
+        The value converted to rad,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid angular unit.
+    """
     if value is not None:
         if unit == "deg": return (value * math.pi / 180.0)
         if unit == "rad": return value
     else:
         return None
 
-    raise Exception(f"Not a valid angular unit: '{unit}'.")
+    raise ValueError(f"Not a valid angular unit: '{unit}'.")
 
 def in_deg(value:float, unit:str="rad") -> float:
-    """Convert an angle to degrees."""
+    """Convert an angle to degrees.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"rad"`, `"deg"`
+
+    Returns
+    -------
+    value_in_deg : float
+        The value converted to degrees,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid angular unit.
+    """
     if value is not None:
         if unit == "rad": return (value * 180.0 / math.pi)
         if unit == "deg": return value
     else:
         return None
 
-    raise Exception(f"Not a valid angular unit: '{unit}'.")
+    raise ValueError(f"Not a valid angular unit: '{unit}'.")
 
 def in_s(value:float, unit:str) -> float:
-    """Convert a time to s."""
+    """Convert a time to seconds.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"ms"`, `"s"`, `"min"`, `"h"`
+
+    Returns
+    -------
+    value_in_s : float
+        The value converted to seconds,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit of time.
+    """
     if value is not None:
         if unit == "ms":  return (value * 1.0e-3)
         if unit == "s":   return value
@@ -219,10 +543,31 @@ def in_s(value:float, unit:str) -> float:
     else:
         return None
 
-    raise Exception(f"Not a valid unit of time: '{unit}'.")
+    raise ValueError(f"Not a valid unit of time: '{unit}'.")
 
 def in_mA(value:float, unit:str) -> float:
-    """Convert an electric current to mA."""
+    """Convert an electric current to mA.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"uA"`, `"mA"`, `"A"`
+
+    Returns
+    -------
+    value_in_mA : float
+        The value converted to milliamps,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit of electric current.
+    """
     if value is not None:
         if unit == "uA": return (value * 1.0e-3)
         if unit == "mA": return value
@@ -230,10 +575,31 @@ def in_mA(value:float, unit:str) -> float:
     else:
         return None
 
-    raise Exception(f"Not a valid unit of electric current: '{unit}'.")
+    raise ValueError(f"Not a valid unit of electric current: '{unit}'.")
 
 def in_kV(value:float, unit:str) -> float:
-    """Convert a voltage to kV."""
+    """Convert a voltage to kV.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"V"`, `"kV"`, `"MV"`
+
+    Returns
+    -------
+    value_in_kV : float
+        The value converted to kilovolts,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit of electric voltage.
+    """
     if value is not None:
         if unit == "V":  return (value * 1.0e-3)
         if unit == "kV": return value
@@ -241,46 +607,143 @@ def in_kV(value:float, unit:str) -> float:
     else:
         return None
 
-    raise Exception(f"Not a valid unit of voltage: '{unit}'.")
+    raise ValueError(f"Not a valid unit of electric voltage: '{unit}'.")
 
 def in_g_per_cm3(value:float, unit:str) -> float:
-    """Convert a mass density to g/cm³."""
+    """Convert a mass density to g/cm³.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"kg/m^3"`, `"g/cm^3"`
+
+    Returns
+    -------
+    value_in_g_per_cm3 : float
+        The value converted to grams per cubic centimeter,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit of mass density.
+    """
     if value is not None:
         if unit == "kg/m^3": return (value * 1.0e-3)
         if unit == "g/cm^3": return value
     else:
         return None
 
-    raise Exception(f"Not a valid unit of mass density: '{unit}'.")
+    raise ValueError(f"Not a valid unit of mass density: '{unit}'.")
 
 def in_lp_per_mm(value:float, unit:str) -> float:
-    """Convert a resolution to line pairs per millimeter."""
+    """Convert a resolution to line pairs per millimeter.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"lp/mm"`, `"lp/cm"`, `"lp/dm"`, `"lp/m"`
+
+    Returns
+    -------
+    value_in_lp_per_mm : float
+        The value converted to line pairs per millimeter,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit for resolution.
+    """
     if value is not None:
         if unit == "lp/mm": return value
         if unit == "lp/cm": return (value * 0.1)
         if unit == "lp/dm": return (value * 0.01)
-        if unit == "lp/m" : return (value * 0.001)
+        if unit == "lp/m":  return (value * 0.001)
     else:
         return None
 
-    raise Exception(f"Not a valid unit of length: '{unit}'.")
+    raise ValueError(f"Not a valid unit for resolution: '{unit}'.")
 
 def from_bool(value) -> bool:
-    """Convert `value` into a true boolean. (For example, `1` becomes `True`, and `0` becomes `False`.)
+    """Convert `value` into a true Python boolean.
+    (For example, `1` becomes `True`, and `0` becomes `False`.)
+
+    Parameters
+    ----------
+    value
+        Any value that can be checked with a Python `if`.
+
+    Returns
+    -------
+    b : bool
+        `True` if the value evaluates to `True`,
+        otherwise `False`.
     """
     if value:
         return True
 
     return False
 
-def convert_SNR_FWHM(SNR_or_FWHM:float, intensity:float) -> float:
-    """Converts between SNR and Gaussian FWHM for a given intensity
-    (i.e., more generally, the given distribution's mean value)."""
+def convert_SNR_FWHM(SNR_or_FWHM:float, mean:float) -> float:
+    """Converts between SNR and Gaussian FWHM for a
+    given `mean` value of the Gaussian distribution (e.g., intensity).
 
-    return 2.0 * math.sqrt(2.0 * log(2.0)) * float(intensity) / float(SNR_or_FWHM)
+    Parameters
+    ----------
+    SNR_or_FWHM : float
+        SNR value (signal to noise ratio) or
+        FWHM value (full width at half maximum).
+
+    mean : float
+        Mean value of the Gaussian distribution.
+
+    Returns
+    -------
+    FWHM_or_SNR : float
+        FWHM if an SNR was given, or the SNR if an FWHM was given.
+    """
+
+    return 2.0 * math.sqrt(2.0 * log(2.0)) * float(mean) / float(SNR_or_FWHM)
 
 def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> float | str | bool:
-    """Check which native unit is requested, convert value accordingly."""
+    """Check which native unit is requested, convert value accordingly.
+
+    If the `native_unit` is set to None, the `value` will simply
+    be returned as it is (i.e., unaltered).
+
+    Parameters
+    ----------
+    given_unit : str
+        The unit of the given value.
+
+    native_unit : str
+        The native unit into which the value must be converted.
+        Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`,
+        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+
+    value : float or str or bool
+        Value to convert.
+
+    Returns
+    -------
+    value_in_native_unit : float or str or bool
+        Converted value.
+
+    Raises
+    ------
+    ValueError
+        If the `given_unit` is not compatible with the `native_unit`.
+        For example, the function cannot convert a length into a time.
+    """
     if native_unit is None:
         return value
     else:
@@ -295,15 +758,50 @@ def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> floa
         if native_unit == "lp/mm":  return in_lp_per_mm(value, given_unit)
         if native_unit == "bool":   return from_bool(value)
 
-    raise Exception(f"Native unit '{native_unit}' is incompatible with the given unit '{given_unit}'.")
+    raise ValueError(f"Native unit '{native_unit}' is incompatible with the given unit '{given_unit}'.")
     return None
 
 def json_convert_to_native_unit(native_unit:str, value_and_unit:dict, fallback_json_unit:str=None) -> float | str | bool:
-    """Like the previous function `convert_to_native_unit`, but takes
-    a JSON object `value_and_unit`, i.e. a dictionary that must contain a `value` and
-    an associated `unit`. Checks which native unit is requested, converts
-    JSON `value` accordingly. `fallback_json_unit` is used if the unit is not specified
-    in the `value_and_unit` JSON object."""
+    """Convert a value/unit pair from a dictionary into
+    the requested `native_unit`.
+
+    Works like the function `convert_to_native_unit`, but takes
+    a JSON object `value_and_unit`, i.e. a dictionary that must contain
+    a `value` and an associated `unit`. Checks which native unit is requested,
+    and converts the JSON `value` accordingly.
+
+    `fallback_json_unit` is used if the unit is not specified
+    in the `value_and_unit` JSON object.
+
+    Parameters
+    ----------
+    native_unit : str
+        The native unit into which the value will be converted.
+        Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`,
+        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+
+    value_and_unit : dict
+        Dictionary that specifies a `"value"` and a `"unit"`,
+        as imported from a CTSimU JSON parameter object.
+
+    fallback_json_unit : str, optional
+        The fallback unit to be used if the `value_and_unit` dictionary
+        does not specify a unit.
+
+    Returns
+    -------
+    value_in_native_unit : float or str or bool
+        Converted value.
+
+    Raises
+    ------
+    ValueError
+        If the unit given in the dictionary is not compatible
+        with the requested `native_unit`. For example, the function
+        cannot convert a length into a time.
+        Also, if no valid value/unit pair is provided in the given
+        `value_and_unit` dictionary.
+    """
 
     if native_unit is None:
         # No native unit given. Simply return the value.
@@ -313,12 +811,12 @@ def json_convert_to_native_unit(native_unit:str, value_and_unit:dict, fallback_j
         return from_bool(value_and_unit)
     elif native_unit == "string":
         if json_exists(value_and_unit, ["value"]):
-            return get_value(value_and_unit, ["value"])
+            return str(get_value(value_and_unit, ["value"]))
         else:
             if isinstance(value_and_unit, str):
                 return value_and_unit
 
-        raise Exception(f"Given value does not seem to be a string: {value_and_unit}")
+        raise TypeError(f"Given value does not seem to be a string: {value_and_unit}")
     else:
         if json_exists(value_and_unit, ["value"]):
             value = get_value(value_and_unit, ["value"])
@@ -331,12 +829,43 @@ def json_convert_to_native_unit(native_unit:str, value_and_unit:dict, fallback_j
 
             return convert_to_native_unit(unit, native_unit, value)
 
-    raise Exception(f"Failed to convert a value to {native_unit}: no valid value/unit pair is provided from the JSON object.")
+    raise ValueError(f"Failed to convert a value to '{native_unit}': no valid value/unit pair is provided from the JSON object.")
 
-def get_value_in_unit(native_unit:str, dictionary:dict, keys:list, fail_value=0) -> float | str | bool:
-    """Takes a sequence of JSON keys from the given dictionary where
-    a JSON object with a value/unit pair must be located.
-    Returns the value of this JSON object in the requested `native_unit`.
+def get_value_in_native_unit(native_unit:str, dictionary:dict, keys:list, fail_value=None) -> float | str | bool:
+    """Get a parameter value in the `native_unit`,
+    located at a sequence of `keys` in a given `dictionary`.
+
+    Parameters
+    ----------
+    native_unit : str
+        The native unit into which the value will be converted.
+        Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`,
+        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+
+    dictionary : dict
+        Dictionary representation of the JSON structure.
+
+    keys : list
+        List of strings that identify the location of the paramter in
+        the dictionary.
+
+    fail_value : float or str or bool
+        The value that will be returned if nothing can be found
+        at the given sequence of `keys`.
+
+    Returns
+    -------
+    value_in_native_unit : float or str or bool
+        Converted value or `fail_value` if nothing could be found.
+
+    Raises
+    ------
+    ValueError
+        If the unit given in the dictionary is not compatible
+        with the requested `native_unit`. For example, the function
+        cannot convert a length into a time.
+        Also, if no valid value/unit pair is provided in the given
+        `value_and_unit` dictionary.
     """
     if json_exists_and_not_null(dictionary, keys):
         value_unit_pair = json_extract(dictionary, keys)
@@ -349,7 +878,27 @@ def get_value_in_unit(native_unit:str, dictionary:dict, keys:list, fail_value=0)
     return fail_value
 
 def add_filters_to_list(filter_list:list, json_object:dict, keys:list) -> list:
-    """Add filters from a given key sequence in the json object to the given filter list."""
+    """Add filters from a given key sequence in the json object
+    to the given filter list.
+
+    Parameters
+    ----------
+    filter_list : list
+        List of `ctsimu.scenario.filter.Filter` objects.
+
+    json_object : dict
+        A dictionary that contains an array of filter definitions
+        at a certain location (key sequence).
+
+    keys : list
+        List of strings that identifies the location of the
+        array of filters in the dictionary.
+
+    Returns
+    -------
+    appended_filter_list : list
+        Previously given list, with the new filters appended at the end.
+    """
     if json_exists_and_not_null(json_object, keys):
         filters = json_extract(json_object, keys)
         if isinstance(filters, list):

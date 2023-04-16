@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-This module provides classes for the virtual processing of images.
+Single image handling and processing.
 
 * `Image` reads, stores, writes and handles image data.
 * `ImageFile` gathers information about an image file: file name, data type,

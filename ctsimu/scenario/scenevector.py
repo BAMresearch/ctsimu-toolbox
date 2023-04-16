@@ -1,4 +1,8 @@
 # -*- coding: UTF-8 -*-
+"""
+A scene vector is a 3D vector that knows its reference coordinate system.
+It can be converted between these coordinate systems and handles drifts.
+"""
 
 from ..helpers import *
 from ..primitives import Vector, Matrix
@@ -7,7 +11,7 @@ from .parameter import Parameter
 
 class Scenevector:
 	"""A scene vector is a 3D vector that knows the type of its
-	reference coordinate sytem, given as world, local or sample.
+	reference coordinate system, given as world, local or sample.
 	It provides functions to convert between these coordinate systems
 	and it can handle drifts. Therefore, all three vector components
 	are stored as `ctsimu.scenario.parameter.Parameter` objects.

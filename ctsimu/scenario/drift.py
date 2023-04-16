@@ -1,4 +1,7 @@
 # -*- coding: UTF-8 -*-
+"""
+Drift structure for a `ctsimu.scenario.parameter.Parameter`.
+"""
 
 import numbers
 import math
@@ -6,7 +9,7 @@ import numpy
 from ..helpers import *
 
 class Drift:
-	"""CTSimU drift structure for a parameter.
+	"""Drift structure for a parameter.
 	Drifts typically belong to a `ctsimu.scenario.parameter.Parameter` object,
 	which keeps a list of possible parameter drifts.
 
@@ -138,7 +141,7 @@ class Drift:
 		# Known to reconstruction
 		if json_exists_and_not_null(json_drift_object, ["known_to_reconstruction"]):
 			self.set_known_to_reconstruction(
-				get_value_in_unit(
+				get_value_in_native_unit(
 					native_unit="bool",
 					dictionary=json_drift_object,
 					keys=["known_to_reconstruction"],

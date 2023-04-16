@@ -1,11 +1,14 @@
 # -*- coding: UTF-8 -*-
-
+"""
+Parameter value, includes unit conversion and handling of parameter drifts.
+"""
 import numbers
 from ..helpers import *
 from .drift import Drift
 
 class Parameter:
-	"""Parameter value, includes handling of parameter drifts.
+	"""Parameter value, includes unit conversion and
+	handling of parameter drifts.
 
 	Attributes
 	----------
@@ -75,7 +78,7 @@ class Parameter:
 		self.current_value = self.standard_value
 		self.value_has_changed = True
 
-	def has_changed(self) -> bool:
+	def changed(self) -> bool:
 		"""Has the parameter changed since the last acknowledged change?
 		(See function `acknowledge_change`).
 
@@ -203,13 +206,13 @@ class Parameter:
 
 	def acknowledge_change(self, new_change_state:bool=False):
 		"""Acknowledge a change of the parameter due to a drift.
-		After the acknowledgment, the function `has_changed`
+		After the acknowledgment, the method `changed`
 		will return the `new_change_state` value (standard: `False`).
 
 		Parameters
 		----------
-		new_change_state : bool
-			The new state to be returned by the method `has_changed`.
+		new_change_state : bool, optional
+			The new state to be returned by the method `changed`.
 			Standard value: `False`.
 		"""
 		self.value_has_changed = new_change_state
@@ -305,7 +308,7 @@ class Parameter:
 		Parameters
 		----------
 		json_parameter_object : dict
-			A CTSimU parameter structure, imported from a JSON structure.
+			A CTSimU parameter structure, as imported from a JSON structure.
 
 		Returns
 		-------
