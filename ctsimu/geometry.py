@@ -57,8 +57,7 @@ class CoordinateSystem:
         return txt
 
     def reset(self):
-        """Reset to a standard world coordinate system,
-        not attached to the stage."""
+        """Reset to a standard world coordinate system."""
         self.center = Vector(0, 0, 0)
         self.u      = Vector(1, 0, 0)
         self.v      = Vector(0, 1, 0)

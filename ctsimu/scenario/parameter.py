@@ -427,13 +427,14 @@ class Parameter:
 			Total number of frames in scan.
 
 		only_drifts_known_to_reconstruction : bool
-			Obey only those drifts that are labeled as known to the
-			reconstruction software?
+			`True`: obey only those drifts that are labeled as known to the
+			reconstruction software.
+			`False`: obey all drifts.
 
 		Returns
 		-------
 		value_has_changed : bool
-			If the value has changed from the previous value (e.g. due to drifts.)
+			If the value has changed from the previous value (e.g. due to drifts).
 		"""
 		new_value = self.standard_value
 		total_drift = self.get_total_drift_value_for_frame(frame, nFrames, only_drifts_known_to_reconstruction)

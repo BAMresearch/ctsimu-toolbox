@@ -6,6 +6,7 @@ with respect to an arbitrary axis.
 
 from ..helpers import *
 from ..primitives import Vector, Matrix
+from ..geometry import CoordinateSystem, ctsimu_world
 from .parameter import Parameter
 from .scenevector import Scenevector
 
@@ -244,3 +245,132 @@ class Deviation:
 		))
 
 		return True
+
+	def deviate(self, coordinate_system:'CoordinateSystem', frame:float, nFrames:int, only_known_to_reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:'CoordinateSystem'=None) -> 'CoordinateSystem':
+		"""
+		Apply this deviation to the given coordinate system.
+
+		This function checks if the deviation's `known_to_reconstruction`
+		property applies to this case,
+
+		Parameters
+		----------
+		coordinate_system : ctsimu.geometry.CoordinateSystem
+			The coordinate system that will be deviated.
+
+		frame : float
+			Frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+
+		only_known_to_reconstruction : bool
+			If `True`, the deviation is only applied if it is
+			known to the reconstruction software. The same applies
+			to whether its drifts are considered or not.
+			If `False`, the full deviation and all of its drifts will
+			be applied to the coordinate system.
+
+		attached_to_stage : bool
+			`True` if the coordinate system is attached to the sample stage,
+			`False` if its reference coordinate system is a world coordinate system.
+
+		stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
+			The stage coordinate system. Only necessary if the part is attached
+			to the sample stage. Otherwise, `None` can be passed.
+
+		Returns
+		-------
+		deviated_cs : ctsimu.geometry.CoordinateSystem
+			Coordinate system with the applied deviation. Note that the
+			original `coordinate_system` passed as an argument will be
+			altered equally.
+		"""
+
+		if (self.known_to_reconstruction is True) or (only_known_to_reconstruction is False):
+			amount = self.amount.set_frame_and_get_value(
+				frame=frame,
+				nFrames=nFrames,
+				only_drifts_known_to_reconstruction=only_known_to_reconstruction
+			)
+
+			if self.type == "translation":
+				if self.native_unit == "mm":
+					if attached_to_stage is False:
+						# Object in world coordinate system.
+						# --------------------------------------
+						# The deviation axis can undergo drifts and could
+						# be expressed in any coordinate system (world, local, sample).
+						# Therefore, the axis is a `Scenevector`, which can
+						# give us the translation vector for the current frame:
+						translation_axis = self.axis.direction_in_world(
+							local=coordinate_system,
+							sample=ctsimu_world,
+							frame=frame,
+							nFrames=nFrames,
+							only_known_to_reconstruction=only_known_to_reconstruction
+						)
+
+						coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
+					else:
+						# Object is in stage coordinate system.
+						# --------------------------------------
+						translation_axis = self.axis.direction_in_local(
+							local=stage_coordinate_system,
+							sample=coordinate_system,
+							frame=frame,
+							nFrames=nFrames,
+							only_known_to_reconstruction=only_known_to_reconstruction
+						)
+
+						coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
+				else:
+					raise Exception(f"CTSimU Deviation: deviate: Translational deviation must be given in a unit of length. The given unit '{self.native_unit}' cannot be used for a translation.")
+			elif self.type == "rotation":
+				if self.native_unit == "rad":
+					if attached_to_stage is False:
+						# Object in world coordinate system.
+						# --------------------------------------
+						rotation_axis = self.axis.direction_in_world(
+							local=coordinate_system,
+							sample=ctsimu_world,
+							frame=frame,
+							nFrames=nFrames,
+							only_known_to_reconstruction=only_known_to_reconstruction
+						)
+						pivot_point = self.pivot.point_in_world(
+							local=coordinate_system,
+							sample=ctsimu_world,
+							frame=frame,
+							nFrames=nFrames,
+							only_known_to_reconstruction=only_known_to_reconstruction
+						)
+
+						coordinate_system.rotate_around_pivot_point(
+							axis=rotation_axis, angle=amount, pivot=pivot_point
+						)
+					else:
+						# Object is in stage coordinate system.
+						# --------------------------------------
+						rotation_axis = self.axis.direction_in_local(
+							local=stage_coordinate_system,
+							sample=coordinate_system,
+							frame=frame,
+							nFrames=nFrames,
+							only_known_to_reconstruction=only_known_to_reconstruction
+						)
+						pivot_point = self.pivot.point_in_local(
+							local=stage_coordinate_system,
+							sample=coordinate_system,
+							frame=frame,
+							nFrames=nFrames,
+							only_known_to_reconstruction=only_known_to_reconstruction
+						)
+
+						coordinate_system.rotate_around_pivot_point(
+							axis=rotation_axis, angle=amount, pivot=pivot_point
+						)
+				else:
+					raise Exception(f"CTSimU Deviation: deviate: Rotational deviation must be given in an angular unit. The given unit '{self.native_unit}' cannot be used for a rotation.")
+
+		return coordinate_system

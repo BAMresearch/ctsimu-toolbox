@@ -87,6 +87,9 @@ class Part:
 		self._cs_initialized_recon = False # initialized to recon coordinate system?
 
 	def reset(self):
+		"""Reset to standard conditions, delete all deviations, reset
+		coordinate system to standard world coordinates,
+		and reset all parameters to their standard values."""
 		self.attached_to_stage = False
 		self._static = False
 		self._cs_initialized_real = False
@@ -274,7 +277,7 @@ class Part:
 
 		key_sequence : list
 			List of strings that identify the key sequence where the
-			parameter is found in the given JSON structure.
+			value is found in the given JSON structure.
 
 		native_unit : str
 			Native unit for the new parameter. Only necessary if the parameter
@@ -315,7 +318,7 @@ class Part:
 
 		return False
 
-	def set_parameter_from_key(self, key:str, dictionary:dict, key_sequence:list, native_unit:str=None, fail_value="undefined") -> bool:
+	def set_parameter_from_key(self, key:str, dictionary:dict, key_sequence:list, fail_value="undefined", native_unit:str=None) -> bool:
 		"""Set up a parameter object for the given
 		property `key` from the `key_sequence` in the given `dictionary`.
 		The object located at the key sequence must at least
@@ -344,14 +347,14 @@ class Part:
 			List of strings that identify the key sequence where the
 			parameter is found in the given JSON structure.
 
+		fail_value : float or str or bool, optional
+			Value to be used if no value can be found in the given `dictionary`
+			at the given `key_sequences`.
+
 		native_unit : str
 			Native unit for the new parameter. Only necessary if the parameter
 			for the given `key` does not yet exist.
 			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
-
-		fail_value : float or str or bool, optional
-			Value to be used if no value can be found in the given `dictionary`
-			at the given `key_sequences`.
 
 		Returns
 		-------
@@ -693,5 +696,191 @@ class Part:
 						raise Exception(f"An error occurred when setting a geometrical deviation (rotation) for part '{self.name}'.")
 						return False
 
-		self.set_frame(stage_coordinate_system, frame=0, nFrames=1, w_rotation_in_rad=0)
+		self.set_frame(frame=0, nFrames=1, w_rotation=0, stage_coordinate_system=stage_coordinate_system)
 		return True
+
+	def _set_frame_coordinate_system(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
+		"""
+		Set up the part's current coordinate system such that
+		it complies with the `frame` number and all necessary
+		drifts and deviations (assuming a total number of `nFrames`).
+
+		This function is used by `set_frame` and `set_frame_for_recon`
+		and is usually not called from outside the object.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+
+		only_known_to_reconstruction : bool
+			Set up the coordinate system as it
+			would be presented to the reconstruction software.
+			Ignores deviations and drifts that should not
+			be considered during the reconstruction.
+
+		w_rotation : float
+			An additional rotation around the part's w axis
+			for this frame. Used for the sample stage, which
+			rotates during a CT scan.
+
+		stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
+			If this part is attached to the sample stage,
+			the stage coordinate system for the given `frame`
+			must be passed.
+		"""
+
+		# Set up standard coordinate system at frame zero:
+		center = self.center.standard_vector()
+		u      = self.u.standard_vector()
+		w      = self.w.standard_vector()
+
+		self.coordinate_system.make_from_vectors(center, u, w)
+		self.coordinate_system.make_unit_coordinate_system()
+
+		# Legacy rotational deviations (prior to file format 1.0)
+		# all took place before any stage rotation:
+		# ----------------------------------------------------------
+		for legacy_dev in self.legacy_deviations:
+			self.coordinate_system = legacy_dev.deviate(
+				coordinate_system=self.coordinate_system,
+				frame=frame,
+				nFrames=nFrames,
+				only_known_to_reconstruction=only_known_to_reconstruction,
+				attached_to_stage=self.attached_to_stage,
+				stage_coordinate_system=stage_coordinate_system,
+			)
+
+		# Potential stage rotation:
+		# ------------------------------------
+		# Potential rotation around the w axis (in rad).
+		if w_rotation != 0:
+			self.coordinate_system.rotate_around_w(angle=w_rotation)
+
+		# Deviations:
+		# ------------------------------------
+		for dev in self.deviations:
+			self.coordinate_system = dev.deviate(
+				coordinate_system=self.coordinate_system,
+				frame=frame,
+				nFrames=nFrames,
+				only_known_to_reconstruction=only_known_to_reconstruction,
+				attached_to_stage=self.attached_to_stage,
+				stage_coordinate_system=stage_coordinate_system,
+			)
+
+		# Drifts (center and vector components):
+		# -----------------------------------------------
+		# Build a translation vector for the center point
+		# from the total drift for this frame and apply
+		# the translation:
+		if self.center.has_drifts():
+			 center_drift = self.center.drift_vector(
+			 	frame=frame,
+			 	nFrames=nFrames,
+			 	only_known_to_reconstruction=only_known_to_reconstruction
+			 )
+			 self.coordinate_system.translate(translation_vector=center_drift)
+
+		if self.u.has_drifts() or self.w.has_drifts():
+			new_u = self.u.vector_for_frame(frame, nFrames, only_known_to_reconstruction)
+			new_w = self.w.vector_for_frame(frame, nFrames, only_known_to_reconstruction)
+
+			self.coordinate_system.make_from_vectors(
+				center=coordinate_system.center,
+				u=new_u,
+				w=new_w
+			)
+			self.coordinate_system.make_unit_coordinate_system()
+
+	def set_frame(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
+		"""
+		Set up the part for the given `frame` number, obeying all
+		deviations and drifts.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+
+		w_rotation : float
+			An additional rotation around the part's w axis
+			for this frame. Used for the sample stage, which
+			rotates during a CT scan.
+
+		stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
+			If this part is attached to the sample stage,
+			the stage coordinate system for the given `frame`
+			must be passed.
+		"""
+
+		# Set up the current coordinate system obeying all drifts:
+		if (self._cs_initialized_real is False) or (self._static is False):
+			self._set_frame_coordinate_system(
+				frame=frame,
+				nFrames=nFrames,
+				only_known_to_reconstruction=False,
+				w_rotation=w_rotation,
+				stage_coordinate_system=stage_coordinate_system
+			)
+			self._cs_initialized_real  = True
+			self._cs_initialized_recon = False
+
+		# Set the frame for all elements of the properties dictionary:
+		for key in self.properties:
+			self.properties[key].set_frame(
+				frame=frame,
+				nFrames=nFrames,
+				only_drifts_known_to_reconstruction=False
+			)
+
+	def set_frame_for_reconstruction(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
+		"""
+		Set up the part for the given `frame` number, obeying only those
+		deviations and drifts that are known to the reconstruction software.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+
+		w_rotation : float
+			An additional rotation around the part's w axis
+			for this frame. Used for the sample stage, which
+			rotates during a CT scan.
+
+		stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
+			If this part is attached to the sample stage,
+			the stage coordinate system for the given `frame`
+			must be passed.
+		"""
+
+		# Set up the current coordinate system obeying only
+		# recon-known drifts:
+		if (self._cs_initialized_recon is False) or (self._static is False):
+			self._set_frame_coordinate_system(
+				frame=frame,
+				nFrames=nFrames,
+				only_known_to_reconstruction=True,
+				w_rotation=w_rotation,
+				stage_coordinate_system=stage_coordinate_system
+			)
+			self._cs_initialized_real  = False
+			self._cs_initialized_recon = True
+
+		# Set the frame for all elements of the properties dictionary:
+		for key in self.properties:
+			self.properties[key].set_frame(
+				frame=frame,
+				nFrames=nFrames,
+				only_drifts_known_to_reconstruction=True
+			)

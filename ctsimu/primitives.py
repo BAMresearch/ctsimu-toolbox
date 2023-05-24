@@ -674,6 +674,53 @@ class Vector:
         self.value = numpy_data.astype(float)
         self.update()
 
+    def min(self) -> float:
+        """Minimum value of all vector components."""
+        return self.value.min()
+
+    def max(self) -> float:
+        """Maximum value of all vector components."""
+        return self.value.min()
+
+    def absmin(self) -> float:
+        """Minimum value of absolute of all vector components."""
+        return numpy.absolute(self.value).min()
+
+    def absmax(self) -> float:
+        """Maximum value of absolute of all vector components."""
+        return numpy.absolute(self.value).max()
+
+    def absmin_nonzero(self) -> float:
+        """Minimum non-zero value of absolute of all vector components."""
+        nonzeros = self.value[numpy.nonzero(self.value)]
+        if len(nonzeros) > 0:
+            return numpy.absolute(nonzeros).min()
+        else:
+            return None
+
+    def absmax_nonzero(self) -> float:
+        """Maximum non-zero value of absolute of all vector components."""
+        nonzeros = self.value[numpy.nonzero(self.value)]
+        if len(nonzeros) > 0:
+            return numpy.absolute(nonzeros).max()
+        else:
+            return None
+
+    def make_crystal_vector(self):
+        """Scale this vector into a crystal direction vector,
+        using Miller indices."""
+        absmin_number = self.absmin_nonzero()
+        if absmin_number is not None:
+            if absmin_number > 0:
+                self.scale(1.0 / absmin_number)
+
+    def crystal_direction(self) -> 'Vector':
+        """Create a vector using Miller indices."""
+        miller = self.get_copy()
+        miller.make_crystal_vector()
+
+        return miller
+
     def length(self) -> float:
         """Get the length of the vector.
 
@@ -748,7 +795,7 @@ class Vector:
         ```
         """
         if self._unit_vector is None:
-            self._unit_vector = Vector(n=self.n_entries)
+            self._unit_vector = self.get_copy()
             self._unit_vector.make_unit_vector()
 
         return self._unit_vector
