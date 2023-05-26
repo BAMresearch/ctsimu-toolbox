@@ -705,7 +705,7 @@ class Part:
 		it complies with the `frame` number and all necessary
 		drifts and deviations (assuming a total number of `nFrames`).
 
-		This function is used by `set_frame` and `set_frame_for_recon`
+		This function is used by `set_frame` and `set_frame_for_reconstruction`
 		and is usually not called from outside the object.
 
 		Parameters
@@ -810,7 +810,7 @@ class Part:
 			Total number of frames in scan.
 
 		w_rotation : float
-			An additional rotation around the part's w axis
+			An additional rotation (in rad) around the part's w axis
 			for this frame. Used for the sample stage, which
 			rotates during a CT scan.
 
@@ -854,7 +854,7 @@ class Part:
 			Total number of frames in scan.
 
 		w_rotation : float
-			An additional rotation around the part's w axis
+			An additional rotation (in rad) around the part's w axis
 			for this frame. Used for the sample stage, which
 			rotates during a CT scan.
 

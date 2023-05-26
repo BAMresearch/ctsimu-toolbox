@@ -9,7 +9,7 @@ from .part import Part
 from .parameter import Parameter
 
 class Detector(Part):
-	"""CTSimU Detector."""
+	"""CTSimU detector."""
 	def __init__(self, name:str=""):
 		"""A name can be passed when initializing the detector.
 
@@ -132,6 +132,16 @@ class Detector(Part):
 	def set_frame(self, frame:float, nFrames:int):
 		"""Set all properties of the detector to match
 		the given `frame` number, given a total of `nFrames`.
+
+		All drifts and deviations are obeyed.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
 		"""
 
 		# Update window and filter lists:
@@ -152,6 +162,17 @@ class Detector(Part):
 	def set_frame_for_reconstruction(self, frame:float, nFrames:int):
 		"""Set all properties of the detector to match
 		the given `frame` number, given a total of `nFrames`.
+
+		Only those drifts and deviations are obeyed which are known to the
+		reconstruction software.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
 		"""
 
 		# Update window and filter lists:
@@ -182,7 +203,7 @@ class Detector(Part):
 		"""
 		self.reset()
 
-		# Extract the sample's geometry:
+		# Extract the detector's geometry:
 		geo = json_extract(json_scenario, ["geometry", "detector"])
 		self.set_geometry(geo)
 

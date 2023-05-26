@@ -29,6 +29,7 @@ valid_native_units = [
         None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "bool", "string"
     ]
 valid_detector_types = [None, "ideal", "real"]
+valid_xray_target_types = [None, "reflection", "transmission"]
 
 def is_valid_native_unit(native_unit:str) -> bool:
     """Check if given string is a valid native unit.
