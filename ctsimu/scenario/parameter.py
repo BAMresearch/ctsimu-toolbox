@@ -54,6 +54,7 @@ class Parameter:
 			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
 		"""
 		self.standard_value = standard_value
+		self.fail_value = standard_value # used when set_from_json fails
 		self.native_unit = native_unit
 		self.drifts = []
 		self.current_value = standard_value

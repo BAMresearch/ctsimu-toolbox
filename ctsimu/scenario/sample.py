@@ -48,7 +48,7 @@ class Sample(Part):
 			not attached to the stage.
 		"""
 		self.reset()
-		self.set_name(get_value(json_object, ["name"], "Sample"))
+		self.set_name(get_value(json_object, ["name"], fail_value="Sample"))
 
 		# Extract the sample's geometry:
 		geo = json_extract(json_object, ["position"])
