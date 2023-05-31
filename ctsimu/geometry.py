@@ -322,7 +322,7 @@ class CoordinateSystem:
         distance : float
             Distance by which the center point will travel
         """
-        t = direction.get_unit_vector().scaled(factor=distance)
+        t = direction.unit_vector().scaled(factor=distance)
         self.translate(translation_vector=t)
 
     def translate_x(self, dx:float):

@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from ctsimu.geometry import *
 
 # General CT parameters:

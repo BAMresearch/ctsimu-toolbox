@@ -7,18 +7,12 @@ from ..helpers import *
 from ..geometry import *
 from .part import Part
 from .parameter import Parameter
+from .group import Group, Array
 
 class Stage(Part):
 	"""CTSimU sample stage."""
-	def __init__(self, name:str=""):
-		"""A name can be passed when initializing the stage.
-
-		Parameters
-		----------
-		name : str
-			Stage name.
-		"""
-		Part.__init__(self, name)
+	def __init__(self):
+		Part.__init__(self, "stage")
 
 	def set_from_json(self, json_scenario:dict):
 		"""Import the stage definition and geometry from the JSON object.

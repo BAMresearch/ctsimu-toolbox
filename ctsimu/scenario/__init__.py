@@ -3,4 +3,55 @@
 [CTSimU scenarios]: https://bamresearch.github.io/ctsimu-scenarios
 """
 
+from ..helpers import *
 from . import *
+
+from .detector import Detector
+from .source import Source
+from .stage import Stage
+from .sample import Sample
+from .file import File
+from .environment import Environment
+from .acquisition import Acquisition
+from .material import Material
+
+class Scenario:
+	def __init__(self):
+		self.detector = Detector()
+		self.source   = Source()
+		self.stage    = Stage()
+		self.samples  = list()
+
+		self.file = File()
+		self.environment = Environment()
+		self.acquisition = Acquisition()
+		self.materials = list()
+		self.simulation = None # simply imported as dict
+
+	def read(self, file:str=None, json_dict:dict=None):
+		if file is not None:
+			json_dict = read_json_file(filename=file)
+		elif not isinstance(json_dict, dict):
+			raise Exception("Scenario: read function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
+			return False
+
+		self.detector.set_from_json(json_dict)
+		self.source.set_from_json(json_dict)
+		self.stage.set_from_json(json_dict)
+
+		json_samples = json_extract(json_dict, ["samples"])
+		for json_sample in json_samples:
+			s = Sample()
+			s.set_from_json(json_sample, self.stage.coordinate_system)
+			self.samples.append(s)
+
+		self.file.set_from_json(json_extract(json_dict, [self.file.name]))
+		self.environment.set_from_json(json_extract(json_dict, [self.environment.name]))
+		self.acquisition.set_from_json(json_extract(json_dict, [self.acquisition.name]))
+		self.simulation = json_extract(json_dict, ["simulation"])
+
+		json_materials = json_extract(json_dict, ["materials"])
+		for json_material in json_materials:
+			m = Material()
+			m.set_from_json(json_material)
+			self.materials.append(m)

@@ -7,6 +7,7 @@ from ..helpers import *
 from ..geometry import *
 from .part import Part
 from .parameter import Parameter
+from .group import Group
 
 class Sample(Part):
 	"""Generic sample."""
@@ -20,17 +21,18 @@ class Sample(Part):
 		"""
 		Part.__init__(self, name)
 
-		self.set(key="surface_mesh_file", value="", native_unit="string")
+		self.set(key="name", value=name, native_unit="string", simple=True)
+		self.set(key="file", value=None, native_unit="string")  # surface mesh file
+		self.set(key="material_id", value=None, native_unit="string", simple=True)
 
 		# Mesh file unit of length:
-		self.set(key="unit", value="mm", native_unit="string")
-		self.set(key="scaling_factor_r", value=1.0, native_unit="")
-		self.set(key="scaling_factor_s", value=1.0, native_unit="")
-		self.set(key="scaling_factor_t", value=1.0, native_unit="")
-		self.set(key="material_id", value=None, native_unit="string")
+		self.set(key="unit", value="mm", native_unit="string", simple=True)
 
-	def reset(self):
-		Part.reset()
+		self.scaling_factor = Group("scaling_factor")
+		self.scaling_factor.set(key="r", value=1.0, native_unit=None)
+		self.scaling_factor.set(key="s", value=1.0, native_unit=None)
+		self.scaling_factor.set(key="t", value=1.0, native_unit=None)
+		self.add_subgroup(self.scaling_factor)
 
 	def set_from_json(self, json_object:dict, stage_coordinate_system:'CoordinateSystem'=None):
 		"""Import the sample geometry from the JSON sample object.
@@ -54,10 +56,4 @@ class Sample(Part):
 		geo = json_extract(json_object, ["position"])
 		self.set_geometry(geo, stage_coordinate_system)
 
-		# Surface mesh file:
-		self.set_parameter_from_key("surface_mesh_file", json_object, ["file"], fail_value=None)
-		self.set_parameter_from_key("unit", json_object, ["unit"], fail_value="mm")
-		self.set_parameter_from_key("scaling_factor_r", json_object, ["scaling_factor", "r"], fail_value=1.0)
-		self.set_parameter_from_key("scaling_factor_s", json_object, ["scaling_factor", "s"], fail_value=1.0)
-		self.set_parameter_from_key("scaling_factor_t", json_object, ["scaling_factor", "t"], fail_value=1.0)
-		self.set_parameter_from_key("material_id", json_object, ["material_id"], fail_value=None)
+		Group.set_from_json(self, json_object)

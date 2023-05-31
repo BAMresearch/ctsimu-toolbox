@@ -297,7 +297,7 @@ class Material:
 						parent_material_name=self.name
 					)
 					new_component.set_from_json(json_component)
-					self.add_component(new_compnent)
+					self.add_component(new_component)
 			else:
 				# Probably legacy definition?
 				# Try composition given as single string.

@@ -3,6 +3,7 @@
 Groups are collections of parameters.
 """
 
+import copy
 from ..helpers import *
 from ..geometry import *
 from .parameter import Parameter
@@ -24,6 +25,7 @@ class Group:
 		self.name = name
 		self.properties = dict() # Properties of class Parameter.
 		self.subgroups = list()
+		self.alternative_names = list()
 
 	def reset(self):
 		"""Reset all parameters in this group to their standard values."""
@@ -118,7 +120,7 @@ class Group:
 		"""
 		return self.parameter(key).changed()
 
-	def set(self, key:str, value, native_unit:str="undefined"):
+	def set(self, key:str, value, native_unit:str="undefined", simple=False):
 		"""Set a property value in the part's properties dictionary.
 		This function sets the respective parameter's standard value.
 		If the parameter already exists in the internal properties dictionary,
@@ -136,6 +138,10 @@ class Group:
 		native_unit : str, optional
 			The native unit of the property.
 			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+
+		simple : bool
+			Set to `True` if the parameter is represented
+			in the JSON file as a
 		"""
 
 		# Check if the property already exists:
@@ -156,6 +162,11 @@ class Group:
 			# Create new parameter:
 			new_parameter = Parameter(native_unit=native_unit, standard_value=value)
 			self.properties[key] = new_parameter
+
+	def check(self):
+		# Virtual function for consistency checks.
+		# Needs specific implementations in children.
+		return True
 
 	def acknowledge_change(self, key:str, new_change_state:bool=False):
 		"""Acknowledge a change of a property value due to a drift.
@@ -395,6 +406,10 @@ class Group:
 			that matches this group's properties.
 		"""
 
+		if json_obj is None:
+			self.reset()
+			return
+
 		for key in self.properties:
 			self.set_parameter_from_key(key, json_obj, [key], fail_value=self.parameter(key).fail_value)
 
@@ -410,5 +425,102 @@ class Group:
 				for alternative_name in subgroup.alternative_names:
 					if alternative_name in json_obj:
 						json_subobj = json_extract(json_obj, alternative_name)
+						break
 
 			subgroup.set_from_json(json_subobj)
+
+	def set_frame(self, frame:float, nFrames:int):
+		"""
+		Set up the group for the given `frame` number, obeying all drifts.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+		"""
+
+		# Set the frame for all elements of the properties dictionary:
+		for key in self.properties:
+			self.properties[key].set_frame(
+				frame=frame,
+				nFrames=nFrames,
+				only_drifts_known_to_reconstruction=False
+			)
+
+		for subgroup in self.subgroups:
+			subgroup.set_frame(frame, nFrames)
+
+	def set_frame_for_reconstruction(self, frame:float, nFrames:int):
+		"""
+		Set up the group for the given `frame` number, obeying only those
+		deviations and drifts that are known to the reconstruction software.
+
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+		"""
+
+		# Set the frame for all elements of the properties dictionary:
+		for key in self.properties:
+			self.properties[key].set_frame(
+				frame=frame,
+				nFrames=nFrames,
+				only_drifts_known_to_reconstruction=True
+			)
+
+		for subgroup in self.subgroups:
+			subgroup.set_frame(frame, nFrames)
+
+class Array(Group):
+	"""Array of objects that are all of the same kind."""
+	def __init__(self, name:str=""):
+		Group.__init__(self, name)
+		self.elements = []
+
+	def reset(self):
+		for element in self.elements:
+			element.reset()
+
+	def get(self, i:int):
+		if i < len(self.elements):
+			return self.elements[i]
+
+	def add_element(self, json_obj:dict):
+		# Create new group:
+		new_group = Group()
+		new_group.properties = copy.deepcopy(self.properties)
+		new_group.subgroups  = copy.deepcopy(self.subgroups)
+		new_group.set_from_json(json_obj)
+
+		self.elements.append(new_group)
+
+	def set_from_json(self, json_obj:list):
+		if json_obj is None:
+			self.elements = list()
+			self.reset()
+			return
+
+		if isinstance(json_obj, list):
+			for element in json_obj:
+				self.add_element(element)
+		else:
+			# Given object is not a list. Try to interpret as single object.
+			if isinstance(json_obj, dict):
+				self.add_element(json_obj)
+			else:
+				raise TypeError("Array: set_from_json: given object is neither a list nor a single JSON dictionary.")
+
+	def set_frame(self, frame:float, nFrames:int):
+		for element in self.elements:
+			element.set_frame(frame, nFrames)
+
+	def set_frame_for_reconstruction(self, frame:float, nFrames:int):
+		for element in self.elements:
+			element.set_frame_for_reconstruction(frame, nFrames)

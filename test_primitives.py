@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from ctsimu.primitives import *
 from math import pi
 

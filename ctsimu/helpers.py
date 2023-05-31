@@ -26,8 +26,9 @@ def log(message:str):
 # JSON Handling
 # ----------------
 valid_native_units = [
-        None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "bool", "string"
+        None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "rad/s", "bool", "string"
     ]
+valid_dummy_units = ["px", "1/J", "C", "F", "K", "relative"] # units that are not converted
 valid_detector_types = [None, "ideal", "real"]
 valid_xray_target_types = [None, "reflection", "transmission"]
 
@@ -45,7 +46,7 @@ def is_valid_native_unit(native_unit:str) -> bool:
         `True` if the provided string is a valid native unit, `False` if not.
     """
 
-    if native_unit in valid_native_units:
+    if (native_unit in valid_native_units) or (native_unit in valid_dummy_units):
         return True
 
     raise Exception(f"CTSimU: Not a valid native unit: '{native_unit}'. Valid options are: {valid_native_units}.")
@@ -65,7 +66,14 @@ def read_json_file(filename:str) -> dict:
         Dictionary representation of the JSON structure.
     """
 
-    return json.load(filename)
+    if os.path.isfile(filename):
+        if os.path.exists(filename):
+            with open(filename, 'r') as f:
+                json_dict = json.load(f)
+                f.close()
+                return json_dict
+
+    raise Exception(f"Cannot read scenario file: '{filename}'")
 
 def value_is_null(value) -> bool:
     """Check if a specific JSON value is set to `null`.
@@ -129,8 +137,11 @@ def object_value_is_null(json_obj:dict) -> bool:
     TypeError
         If `json_obj` is not a dictionary.
     """
+    if json_obj is None:
+        return True
+
     if not isinstance(json_obj, dict):
-        raise TypeError("object_value_is_null() expects dict for the `json_obj`.")
+        return False
 
     if "value" in json_obj:
         return value_is_null(json_obj["value"])
@@ -280,7 +291,8 @@ def json_exists(dictionary:dict, keys:list) -> bool:
     """
 
     if not isinstance(dictionary, dict):
-        raise TypeError("json_exists() expects dict as first argument for the `dictionary`.")
+        return False
+
     if len(keys) == 0:
         return True
 
@@ -611,6 +623,42 @@ def in_kV(value:float, unit:str) -> float:
 
     raise ValueError(f"Not a valid unit of electric voltage: '{unit}'.")
 
+def in_rad_per_s(value:float, unit:str) -> float:
+    """Convert an angular velocity to rad/s.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"rad/s"`, `"rad/min"`, `"rad/h"`, `"deg/s"`,
+        `"deg/min"`, `"deg/h"`
+
+    Returns
+    -------
+    value_in_rad_per_s : float
+        The value converted to radians per second,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit of angular velocity.
+    """
+    if value is not None:
+        if unit == "rad/s":   return value
+        if unit == "rad/min": return (value / 60.0)
+        if unit == "rad/h":   return (value / 3600.0)
+        if unit == "deg/s":   return math.radians(value)
+        if unit == "deg/min": return math.radians(value / 60.0)
+        if unit == "deg/h":   return math.radians(value / 3600.0)
+    else:
+        return None
+
+    raise ValueError(f"Not a valid unit of angular velocity: '{unit}'.")
+
 def in_g_per_cm3(value:float, unit:str) -> float:
     """Convert a mass density to g/cm³.
 
@@ -748,6 +796,8 @@ def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> floa
     """
     if native_unit is None:
         return value
+    elif native_unit in valid_dummy_units:
+        return value
     else:
         if native_unit == "string": return value
         if native_unit == "mm":     return in_mm(value, given_unit)
@@ -756,6 +806,7 @@ def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> floa
         if native_unit == "rad":    return in_rad(value, given_unit)
         if native_unit == "mA":     return in_mA(value, given_unit)
         if native_unit == "kV":     return in_kV(value, given_unit)
+        if native_unit == "rad/s":  return in_rad_per_s(value, given_unit)
         if native_unit == "g/cm^3": return in_g_per_cm3(value, given_unit)
         if native_unit == "lp/mm":  return in_lp_per_mm(value, given_unit)
         if native_unit == "bool":   return from_bool(value)

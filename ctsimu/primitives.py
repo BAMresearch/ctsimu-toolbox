@@ -67,6 +67,10 @@ class Matrix:
     def __mul__(self, x):
         result = self.get_copy()
         result.multiply(x)
+        if isinstance(x, Vector):
+            # We need to return a vector
+            return Vector(numpy_data=result.value)
+        
         return result
 
     def __truediv__(self, x):
@@ -271,8 +275,9 @@ class Matrix:
             Compatible matrix to be multiplied with this matrix, or scalar to be multiplied to all matrix elements.
         """
         if isinstance(x, Matrix) or isinstance(x, Vector):
-            # 'x' is another matrix:
+            # 'x' is another matrix or a vector:
             self.value = numpy.matmul(self.value, x.value)
+            self.n_entries = self.value.size
         elif isinstance(x, numbers.Number):
             # 'x' is a scalar:
             self.value = numpy.multiply(self.value, x)
@@ -291,6 +296,7 @@ class Matrix:
             # 'x' is another matrix... element-wise division:
             if self.same_size(x):
                 self.value = numpy.divide(self.value, x.value)
+                self.n_entries = self.value.size
             else:
                 raise Exception("Incompatible matrix sizes. Can only run an element-wise division for matrices of same size.")
         elif isinstance(x, numbers.Number):
@@ -813,7 +819,7 @@ class Vector:
             if self.same_size(x):
                 self.value = numpy.add(self.value, x.value)
             else:
-                raise Exception("Incompatible vector sizes. Can only add vectors of same size.")
+                raise Exception(f"Incompatible vector sizes. Can only add vectors of same size. Vectors: {self} ({self.n_entries}) and {x} ({x.n_entries})")
         elif isinstance(x, numbers.Number):
             # 'x' is a scalar:
             self.value = numpy.add(self.value, x)

@@ -81,9 +81,9 @@ class Deviation:
 			self.type = transformation_type
 
 			# Set the correct native unit for the amount:
-			if self.transformation_type == "rotation":
+			if self.type == "rotation":
 				self.amount.set_native_unit("rad")
-			elif self.transformation_type == "translation":
+			elif self.type == "translation":
 				self.amount.set_native_unit("mm")
 		else:
 			raise Exception(f"CTSimU Deviation: set_type: Not a valid transformation type: '{transformation_type}'. Valid types are 'translation' and 'rotation'.")
@@ -295,7 +295,7 @@ class Deviation:
 			)
 
 			if self.type == "translation":
-				if self.native_unit == "mm":
+				if self.amount.native_unit == "mm":
 					if attached_to_stage is False:
 						# Object in world coordinate system.
 						# --------------------------------------
@@ -325,9 +325,9 @@ class Deviation:
 
 						coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
 				else:
-					raise Exception(f"CTSimU Deviation: deviate: Translational deviation must be given in a unit of length. The given unit '{self.native_unit}' cannot be used for a translation.")
+					raise Exception(f"CTSimU Deviation: deviate: Translational deviation must be given in a unit of length. The given unit '{self.amount.native_unit}' cannot be used for a translation.")
 			elif self.type == "rotation":
-				if self.native_unit == "rad":
+				if self.amount.native_unit == "rad":
 					if attached_to_stage is False:
 						# Object in world coordinate system.
 						# --------------------------------------
@@ -371,6 +371,6 @@ class Deviation:
 							axis=rotation_axis, angle=amount, pivot=pivot_point
 						)
 				else:
-					raise Exception(f"CTSimU Deviation: deviate: Rotational deviation must be given in an angular unit. The given unit '{self.native_unit}' cannot be used for a rotation.")
+					raise Exception(f"CTSimU Deviation: deviate: Rotational deviation must be given in an angular unit. The given unit '{self.amount.native_unit}' cannot be used for a rotation.")
 
 		return coordinate_system

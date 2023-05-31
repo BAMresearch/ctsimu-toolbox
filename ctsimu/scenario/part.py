@@ -66,9 +66,9 @@ class Part(Group):
 
 		self.attached_to_stage = False
 		self.coordinate_system = CoordinateSystem()
-		self.center = SceneVector(native_unit="mm")
-		self.u = SceneVector(native_unit=None)
-		self.w = SceneVector(native_unit=None)
+		self.center = Scenevector(native_unit="mm")
+		self.u = Scenevector(native_unit=None)
+		self.w = Scenevector(native_unit=None)
 		self.deviations = list()
 		self.legacy_deviations = list() # for deviations prior to file format 1.0
 
@@ -96,7 +96,7 @@ class Part(Group):
 		self.deviations = list()
 		self.legacy_deviations = list()
 
-		Group.reset()
+		Group.reset(self)
 
 	def is_attached_to_stage(self) -> bool:
 		"""Is the part attached to the sample stage?
@@ -500,13 +500,7 @@ class Part(Group):
 			self._cs_initialized_real  = True
 			self._cs_initialized_recon = False
 
-		# Set the frame for all elements of the properties dictionary:
-		for key in self.properties:
-			self.properties[key].set_frame(
-				frame=frame,
-				nFrames=nFrames,
-				only_drifts_known_to_reconstruction=False
-			)
+		Group.set_frame(self, frame, nFrames)
 
 	def set_frame_for_reconstruction(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
 		"""
@@ -545,10 +539,4 @@ class Part(Group):
 			self._cs_initialized_real  = False
 			self._cs_initialized_recon = True
 
-		# Set the frame for all elements of the properties dictionary:
-		for key in self.properties:
-			self.properties[key].set_frame(
-				frame=frame,
-				nFrames=nFrames,
-				only_drifts_known_to_reconstruction=True
-			)
+		Group.set_frame_for_reconstruction(self, frame, nFrames)

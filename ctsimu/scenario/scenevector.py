@@ -165,9 +165,9 @@ class Scenevector:
 			Standard vector (without any drifts applied).
 		"""
 		return Vector(
-			x=self.c0.standard_value(),
-			y=self.c1.standard_value(),
-			z=self.c2.standard_value()
+			x=self.c0.get_standard_value(),
+			y=self.c1.get_standard_value(),
+			z=self.c2.get_standard_value()
 		)
 
 	def drift_vector(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> 'Vector':

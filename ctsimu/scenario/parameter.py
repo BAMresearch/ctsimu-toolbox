@@ -31,9 +31,14 @@ class Parameter:
 		`True` if the parameter's value has changed since the last value
 		has been acknowledged. A parameter value can be acknowledged by
 		calling the method `Parameter.acknowledge_change()`.
+
+	simple : bool
+		`True` if the parameter is represented
+		as a single value in the JSON file instead of a
+		parameter object.
 	"""
 
-	def __init__(self, native_unit:str=None, standard_value=0):
+	def __init__(self, standard_value=0, native_unit:str=None, simple=False):
 		"""A new parameter object must be assigned a valid native unit
 		to enable the JSON parser to convert the drift values from the
 		JSON file, if necessary.
@@ -52,10 +57,19 @@ class Parameter:
 		native_unit : str
 			The parameter's native unit.
 			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+
+		simple : bool
+			Set to `True` if the parameter is represented
+			as a single value in the JSON file instead of a
+			parameter object.
 		"""
 		self.standard_value = standard_value
 		self.fail_value = standard_value # used when set_from_json fails
-		self.native_unit = native_unit
+		self.simple = simple # if JSON uses a single value, not a parameter object
+
+		self.native_unit = None
+		self.set_native_unit(native_unit)
+
 		self.drifts = []
 		self.current_value = standard_value
 		self.value_has_changed = True
@@ -63,10 +77,13 @@ class Parameter:
 		self.reset()
 
 	def __str__(self):
-		s  = f"Standard value: {self.standard_value}, "
-		s += f"Current value: {self.current_value}, "
-		s += f"Native unit: {self.native_unit}, "
-		s += f"nDrifts: {len(self.drifts)}"
+		if self.simple is True:
+			s = f"{self.standard_value}"
+		else:
+			s  = f"Standard value: {self.standard_value}, "
+			s += f"Current value: {self.current_value}, "
+			s += f"Native unit: {self.native_unit}, "
+			s += f"nDrifts: {len(self.drifts)}"
 
 		return s
 
@@ -193,6 +210,21 @@ class Parameter:
 		if is_valid_native_unit(native_unit):
 			self.native_unit = native_unit
 
+	def set_simple(self, simple:bool):
+		"""Set this parameter to "simple" mode (or not).
+		In simple mode, the parameter is represented in the JSON
+		file as a single value instead of a parameter object (with value,
+		unit, uncertainty and drifts).
+
+		Parameters
+		----------
+		simple : bool
+			Set to `True` if the parameter is represented
+			as a single value in the JSON file instead of a
+			parameter object.
+		"""
+		self.simple = simple
+
 	def set_standard_value(self, value):
 		"""Set the parameter's standard value.
 		Automatically sets the current value to the standard value.
@@ -204,6 +236,26 @@ class Parameter:
 		"""
 		self.standard_value = value
 		self.current_value = value
+
+	def get_standard_value(self) -> float | str | bool:
+		"""Get parameter's standard value.
+
+		Returns
+		-------
+		standard_value : float or str or bool
+			The parameter's standard value.
+		"""
+		return self.standard_value
+
+	def get_current_value(self) -> float | str | bool:
+		"""Get parameter's current value.
+
+		Returns
+		-------
+		current_value : float or str or bool
+			The parameter's current value.
+		"""
+		return self.current_value
 
 	def acknowledge_change(self, new_change_state:bool=False):
 		"""Acknowledge a change of the parameter due to a drift.
@@ -323,13 +375,13 @@ class Parameter:
 			# Parameter is given as a single number, not as a
 			# parameter structure (with value, unit, drift, uncertainty)
 			if self.native_unit != "string":
-				self.set_standard_value(get_value(json_parameter_object))
+				self.set_standard_value(json_parameter_object)
 				success = True
 		elif isinstance(json_parameter_object, str):
 			# Parameter is given as a single string, not as a
 			# parameter structure (with value, unit, drift, uncertainty)
 			if self.native_unit == "string":
-				self.set_standard_value(get_value(json_parameter_object))
+				self.set_standard_value(json_parameter_object)
 				success = True
 		elif isinstance(json_parameter_object, bool):
 			# Parameter is given as a boolean.
