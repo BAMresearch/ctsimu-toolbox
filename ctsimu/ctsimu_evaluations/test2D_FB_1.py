@@ -204,8 +204,8 @@ class Test2D_FB_1(generalTest):
                 #ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
                 #ax.xaxis.set_minor_locator(MultipleLocator(50))
                 ax.set_xlim(xStart, xStop)
-                ax.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-                ax.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+                ax.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed') #b=True,
+                ax.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #b=True, 
                 ax.legend()
 
                 fig.tight_layout(pad=5.0)

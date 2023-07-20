@@ -79,6 +79,88 @@ From any of these three options, you will get the complete package source code. 
 [from GitHub]: https://github.com/BAMresearch/ctsimu-toolbox
 [from PyPi]: https://pypi.org/project/ctsimu/
 
+
+Usage - Example of a test implementation
+========================================
+
+The individual tests are carried out using JSON files in a Python console. There are two JSON files. First, a JSON file describes what is to be simulated and how. It also refers to the files located in the same folder, the STL file for the geometry, and the CSV and XRS files for the spectrum description. These files are used to run a simulation. After each simulation, a `X._metadata.json` file must be generated (where X. is the current test, detector, subtest and the date of last changed JSON file). This file contains information about the results, what they are and where they are located. With this results file, the test can be started and carried out in the CTSimU toolbox. The following is a step-by-step guide as an example of a test to determine the detector unsharpness.
+
+Simulation for CTSimU in a_RT_ist
+---------------------------------
+
+In this example, a double wire bar measurement (the test name is 2D-DW-1) is presented to determine the detector unsharpness. Here, the simulation software a_RT_ist is used to create the necessary projection images for the test. For this, the appropriate CTSimU module must be downloaded and installed for a_RT_ist. Theoretically, another simulation programme could also be used. Instructions on how to install and operate the module as well as the relevant ARTP installation file can be found on the [BAM research website](https://github.com/BAMresearch/ctsimu-artist-module). 
+
+The prerequisite is that the scenario in this example is configured correctly in a_RT_ist. The following files should be in one folder: `2D-DW-1_Detektor1_2021-05-26v01r01dp.json` file, the STL of the double wire path and the two files (TXT and XRS) for the description of the spectrum. The JSON file can then be loaded into a_RT_ist. The scenario is now visible in a_RT_ist and can be started with **Run scenario**. Now the finished projection is visible in the Image Viewer ([fig][aRTist scene for DW_1-test]) and in the folder of the JSON file a new folder with the name `2D-DW-1_Detektor1_2021-05-26v01r01dp` with a subfolder `projections` is created.
+
+There are contained: 
+* two TIF files, a projection image of the double wire bar according to EN462-5 and the corresponding flatfield image (background noise image). 
+* a Python program (`2D-DW-1_Detektor1_2021-05-26v01r01dp_flat.py`) which includes the code for the flatfield correction.
+* the CTSimU module outputs to a `X._metadata.json` file (e.g.: 2D-DW-1_Detector1_2021-05-26v01r01dp_metadata.json).
+
+	The `X._metadata.json` file contains all important information of the two projections and is used for the test execution. Since detector1 has a resolution in the range of 75müm, the subtest SR75 is used. For detector2, the subtest SR150 is used, as a spatial resolution of 150microns is also expected.
+
+![aRTist scene for DW_1-test](pictures/scene_DW_1.png "a_RT_ist scene for DW_1-test")
+
+CTSimU Toolbox Test Execution from the Python Console
+-----------------------------------------------------
+
+The test "Double Wire Ridge - Detector Unsharpness" can be found at [BAM research website in CTSimu Evaluation](https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations) with the name `test2D_DW_1.py`. In this Python file, the test name "2D-DW-1" and thus also input name for the Python console can be found in line 43 (as testName="2D-DW-1").
+
+
+```python
+36 class Test2D_DW_1(generalTest):
+37	""" CTSimU test 2D-DW-1: Detector Unsharpness. """
+38
+39	def __init__(self, resultFileDirectory=".", name=None, rawOutput=False):
+40
+41		generalTest.__init__(
+42			self,
+43			testName="2D-DW-1",
+44			name=name,
+45			nExpectedRuns=2,
+46			resultFileDirectory=resultFileDirectory,
+47          rawOutput=rawOutput)
+
+```
+
+The names of the sub-tests can be read in line 80 with "SR75" and in line 82 with "SR150".
+
+```python
+77 def prepareRun(self, i):
+78    if i < len(self.subtests):
+79        self.jsonScenarioFile = "scenarios/2D-DW-1_Detektor1_2021-05-26v01r01dp.json"
+80        if self.subtests[i] == "SR75":
+81            self.jsonScenarioFile = "scenarios/2D-DW-1_Detektor1_2021-05-26v01r01dp.json"
+82        elif self.subtests[i] == "SR150":
+83            self.jsonScenarioFile = "scenarios/2D-DW-1_Detektor2_2021-05-26v01r01dp.json"
+```
+
+This is similarly structured in the other tests. In some of them there are no sub-tests.
+
+The tests SR75 and SR150 are the same only they are stored according to their names, here according to the expected spatial resolution. Since we know in advance in which range the resolution is, we can directly choose the test with the appropriate name. In this way, a suitable name is created for the resulting data. Detector1 should have a spatial resolution of iSRb = 75 microns and Detector2 should have iSRb = 150 microns.
+
+Running the 2D-DW-1 test in a Python console:
+
+To run the 2D-DW-1 test, the generated ..._metadata.json file from a_RT_ist is used. The test commands are then executed in the Python console in the following way. 1: 
+
+1.	after opening the Python console, the library ctsimu.toolbox must first be imported:
+
+	from ctsimu.toolbox import Toolbox
+
+2.	for a partial test:
+
+	Toolbox("2D-DW-1", SR75 = "\\2D-DW-1 - Doppeldrahtsteg - Detektorunschaerfe\\2D-DW-1_Detektor1_2021-05-26v01r01dp\\projections\\2D-DW-1_Detektor1_2021-05-26v01r01dp_metadata.json")
+
+3.	Both partial tests directly one after the other:
+
+	Toolbox("2D-DW-1", SR75 = "S:\\X.\\CTsimu\\2D-DW-1 - Doppeldrahtsteg - Detektorunschaerfe\\2D-DW-1_Detektor1_2021-05-26v01r01dp\\projections\\2D-DW-1_Detektor1_2021-05-26v01r01dp_metadata.json", SR150 = "S:\\X.\\CTsimu\\2D-DW-1 - Doppeldrahtsteg - Detektorunschaerfe\\2D-DW-1_Detektor2_2021-05-26v01r01dp\\projections\\2D-DW-1_Detektor2_2021-05-26v01r01dp_metadata.json")
+
+
+After execution, two folders are saved in the same path of the ..._metadata.json file. In the folder "corrected" the flatfield corrected image is saved and in the "2D-DW-1-results"-folder grey value profiles resp. grey value distribution and each the result for the basic spatial resolution (iSRb) of a detector are given with the corresponding measurement values (wire spacing [mm] modulation depth [%]) as well as the values of the interpolation function are saved in .txt-files. In addition, the corresponding plots are displayed as .png images (see ABB):
+* a histogram (grey value distribution over the horizontal distance in pixels)
+* a plot of the spatial resolution of the investigated detector with interpolation function and the determined iSRb value (modulation depth [%] over the wire distance [mm]):
+
+
 About
 =====
 

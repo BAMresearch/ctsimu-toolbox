@@ -138,8 +138,8 @@ class Test2D_FB_2(generalTest):
             axUpper.xaxis.set_major_locator(MultipleLocator(100))
             axUpper.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             axUpper.xaxis.set_minor_locator(MultipleLocator(50))
-            axUpper.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            axUpper.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            axUpper.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed') #b=True,
+            axUpper.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted')#axUpper.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             axUpper.legend()
 
             # Absolute Deviation:
@@ -150,8 +150,8 @@ class Test2D_FB_2(generalTest):
             axLower.xaxis.set_major_locator(MultipleLocator(100))
             axLower.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             axLower.xaxis.set_minor_locator(MultipleLocator(50))
-            axLower.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            axLower.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            axLower.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed') #axLower.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            axLower.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #axLower.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted') 
             
             # Relative Deviation:
             axLower2 = axLower.twinx()

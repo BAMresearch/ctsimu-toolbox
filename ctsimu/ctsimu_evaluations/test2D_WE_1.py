@@ -567,9 +567,9 @@ class Test2D_WE_1(generalTest):
             ax1.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
             ax1.set_title("Edge Spread Function (ESF)")
             #ax1.xaxis.set_ticklabels([])
-            ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
-            ax1.legend(loc='best')
+            ax1.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed') #ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax1.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax1.legend() #ax1.legend(loc='best')
 
 
             # LSF
@@ -582,9 +582,9 @@ class Test2D_WE_1(generalTest):
             ax2.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
             ax2.set_title("Line Spread Function (LSF)")
             #ax2.xaxis.set_ticklabels([])
-            ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
-            ax2.legend(loc='best')
+            ax2.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed') #ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')#
+            ax2.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #
+            ax2.legend() #ax2.legend(loc='best') 
 
 
             # Lines for MTF 10:
@@ -623,9 +623,9 @@ class Test2D_WE_1(generalTest):
             ax3.set_yticks(numpy.array([0, 0.2, 0.4, 0.6, 0.8, 1]))
             ax3.set_title("Modulation Transfer Function (MTF)")
             #ax3.xaxis.set_ticklabels([])
-            ax3.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax3.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
-            ax3.legend(loc='best')
+            ax3.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed') #ax3.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax3.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #ax3.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax3.legend() #ax3.legend(loc='best')
 
             fig.tight_layout(pad=2.5)
 

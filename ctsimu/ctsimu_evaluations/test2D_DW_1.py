@@ -215,6 +215,7 @@ class Test2D_DW_1(generalTest):
         i = self.currentRun
         subtestName = self.subtests[i]
         try:
+            import pylab
             import matplotlib
             import matplotlib.pyplot
             from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
@@ -231,28 +232,25 @@ class Test2D_DW_1(generalTest):
             #ax1.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
             ax1.set_title("Grey Value Profile")
             #ax1.xaxis.set_ticklabels([])
-            ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
-            ax1.legend(loc='best')
-
+            ax1.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax1.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #b=True, 
+            ax1.legend() #loc='best'
 
             # Contrast vs. Wire Spacing
             ax2.plot(self.results[i].interpolation_wireSpacings, self.results[i].interpolation_modulationDepths, linewidth=1.5, label="Interpolation", color='#ffaa00')
-
             ax2.plot(self.results[i].wireSpacings, self.results[i].modulationDepths, 'o', markersize=4.0, label="Measured modulation depth", color='#1f77b4')
             if self.results[i].criticalIndex is not None:
                 ci = self.results[i].criticalIndex
                 ax2.plot(self.results[i].wireSpacings[ci], self.results[i].modulationDepths[ci], 'o', markersize=9.0, label="Critical Pair", markerfacecolor='none', markeredgecolor='black')
             ax2.plot(self.results[i].SRb_interpolated, 20, 'x', markersize=7.0, label="iSRb", color='#ff0000')
-
             ax2.set_xlabel("Wire spacing in mm")
             ax2.set_ylabel("Modulation depth in %")
             ax2.set_xlim([0.9, 0])
             ax2.set_title("SRb Interpolation")
             #ax2.xaxis.set_ticklabels([])
-            ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
-            ax2.legend(loc='best')
+            ax2.grid(which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax2.grid(which='minor', axis='both', color='#e7e7e7', linestyle='dotted') #b=True, --> was the first argument, but was deleted because of errors
+            ax2.legend() #loc='best' --> deleted because of errors
 
             ax22 = ax2.twiny()
             ax22.set_xlim(ax2.get_xlim())
