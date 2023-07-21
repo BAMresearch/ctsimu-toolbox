@@ -32,7 +32,7 @@ class Scenario:
 		if file is not None:
 			json_dict = read_json_file(filename=file)
 		elif not isinstance(json_dict, dict):
-			raise Exception("Scenario: read function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
+			raise Exception("Scenario: read() function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
 			return False
 
 		self.detector.set_from_json(json_dict)
@@ -55,3 +55,40 @@ class Scenario:
 			m = Material()
 			m.set_from_json(json_material)
 			self.materials.append(m)
+
+	def write(self, file:str=None):
+		if file is not None:
+			write_json_file(filename=file, dictionary=self.json_dict())
+
+	def json_dict(self) -> dict:
+		"""Create a CTSimU JSON dictionary from the scenario.
+
+		Returns
+		-------
+		json_dict : dict
+		"""
+		jd = dict()
+		jd["file"]        = self.file.json_dict()
+		jd["environment"] = self.environment.json_dict()
+
+		jd["geometry"]    = dict()
+		jd["geometry"]["detector"] = self.detector.geometry_dict()
+
+		jd["geometry"]["source"] = self.source.geometry_dict()
+
+		jd["geometry"]["stage"] = self.stage.geometry_dict()
+
+		jd["detector"] = self.detector.json_dict()
+		jd["source"]   = self.source.json_dict()
+		jd["samples"]  = []
+		for sample in self.samples:
+			jd["samples"].append(sample.json_dict())
+
+		jd["acquisition"] = self.acquisition.json_dict()
+		jd["materials"] = []
+		for material in self.materials:
+			jd["materials"].append(material.json_dict())
+
+		jd["simulation"] = self.simulation
+
+		return jd

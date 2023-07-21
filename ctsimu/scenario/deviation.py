@@ -246,6 +246,20 @@ class Deviation:
 
 		return True
 
+	def json_dict(self) -> dict:
+		"""Create a dictionary of this deviation for a CTSimU JSON file."""
+		jd = dict()
+
+		jd["type"] = self.type
+		jd["axis"] = self.axis.json_dict()
+		if self.type == "rotation":
+			jd["pivot"] = self.pivot.json_dict()
+
+		jd["amount"] = self.amount.json_dict()
+		jd["known_to_reconstruction"] = self.known_to_reconstruction
+
+		return jd
+
 	def deviate(self, coordinate_system:'CoordinateSystem', frame:float, nFrames:int, only_known_to_reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:'CoordinateSystem'=None) -> 'CoordinateSystem':
 		"""
 		Apply this deviation to the given coordinate system.

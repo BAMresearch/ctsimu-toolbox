@@ -23,7 +23,6 @@ class Sample(Part):
 
 		self.set(key="name", value=name, native_unit="string", simple=True)
 		self.set(key="file", value=None, native_unit="string")  # surface mesh file
-		self.set(key="material_id", value=None, native_unit="string", simple=True)
 
 		# Mesh file unit of length:
 		self.set(key="unit", value="mm", native_unit="string", simple=True)
@@ -33,6 +32,8 @@ class Sample(Part):
 		self.scaling_factor.set(key="s", value=1.0, native_unit=None)
 		self.scaling_factor.set(key="t", value=1.0, native_unit=None)
 		self.add_subgroup(self.scaling_factor)
+
+		self.set(key="material_id", value=None, native_unit="string", simple=True)
 
 	def set_from_json(self, json_object:dict, stage_coordinate_system:'CoordinateSystem'=None):
 		"""Import the sample geometry from the JSON sample object.
@@ -57,3 +58,17 @@ class Sample(Part):
 		self.set_geometry(geo, stage_coordinate_system)
 
 		Group.set_from_json(self, json_object)
+
+	def json_dict(self) -> dict:
+		"""Create a dictionary of this sample for a CTSimU JSON file.
+
+		Returns
+		-------
+		json_dict : dict
+			The sample's JSON dictionary.
+		"""
+
+		jd = Part.json_dict(self)
+		jd["position"] = Part.geometry_dict(self)
+
+		return jd

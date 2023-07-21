@@ -60,6 +60,18 @@ class MaterialComponent:
 		self.formula = Parameter(native_unit="string", standard_value=formula)
 		self.mass_fraction = Parameter(native_unit=None, standard_value=mass_fraction)
 
+	def json_dict(self) -> dict:
+		"""Create a CTSimU JSON dictionary for this material component.
+
+		Returns
+		-------
+		json_dict : dict
+		"""
+		jd = dict()
+		jd["formula"] = self.formula.json_dict()
+		jd["mass_fraction"] = self.mass_fraction.json_dict()
+		return jd
+
 	def set_frame(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> bool:
 		"""Prepare the material component for the given `frame` number,
 		considering potential drifts.
@@ -191,6 +203,23 @@ class Material:
 		self.density.reset()
 		self.density.set_standard_value(0.0)
 		self.composition = list()
+
+	def json_dict(self) -> dict:
+		"""Create a CTSimU JSON dictionary for this material.
+
+		Returns
+		-------
+		json_dict : dict
+		"""
+		jd = dict()
+		jd["id"] = self.material_id
+		jd["name"] = self.name
+		jd["density"] = self.density.json_dict()
+		jd["composition"] = list()
+		for component in self.composition:
+			jd["composition"].append(component.json_dict())
+
+		return jd
 
 	def set_frame(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> bool:
 		"""Prepare the material for the given `frame` number,

@@ -26,11 +26,10 @@ def log(message:str):
 # JSON Handling
 # ----------------
 valid_native_units = [
-        None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "rad/s", "bool", "string"
+        None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "deg/s", "bool", "string"
     ]
 valid_dummy_units = ["px", "1/J", "C", "F", "K", "relative"] # units that are not converted
-valid_detector_types = [None, "ideal", "real"]
-valid_xray_target_types = [None, "reflection", "transmission"]
+native_units_to_omit_in_json_file = [None, "bool", "string"]
 
 def is_valid_native_unit(native_unit:str) -> bool:
     """Check if given string is a valid native unit.
@@ -51,6 +50,17 @@ def is_valid_native_unit(native_unit:str) -> bool:
 
     raise Exception(f"CTSimU: Not a valid native unit: '{native_unit}'. Valid options are: {valid_native_units}.")
     return False
+
+def touch_directory(filename:str):
+    folder = os.path.dirname(filename)
+
+    if folder == "" or folder is None:
+            folder = "."
+
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    return folder
 
 def read_json_file(filename:str) -> dict:
     """Read a JSON file into a Python dictionary.
@@ -74,6 +84,26 @@ def read_json_file(filename:str) -> dict:
                 return json_dict
 
     raise Exception(f"Cannot read scenario file: '{filename}'")
+
+def write_json_file(filename:str, dictionary:dict):
+    """Write a JSON file from a given Python dictionary.
+
+    Parameters
+    ----------
+    filename : str
+        Filename of the JSON file.
+
+    dictionary : dict
+        Dictionary for the JSON file.
+    """
+
+    folder = touch_directory(filename)
+    if os.path.exists(folder):
+        with open(filename, 'w') as f:
+            json.dump(dictionary, f, indent=4)
+            f.close()
+    else:
+        raise Exception(f"Error writing JSON file. Directory does not exist: {folder}")
 
 def value_is_null(value) -> bool:
     """Check if a specific JSON value is set to `null`.
@@ -623,8 +653,8 @@ def in_kV(value:float, unit:str) -> float:
 
     raise ValueError(f"Not a valid unit of electric voltage: '{unit}'.")
 
-def in_rad_per_s(value:float, unit:str) -> float:
-    """Convert an angular velocity to rad/s.
+def in_deg_per_s(value:float, unit:str) -> float:
+    """Convert an angular velocity to deg/s.
 
     Parameters
     ----------
@@ -638,8 +668,8 @@ def in_rad_per_s(value:float, unit:str) -> float:
 
     Returns
     -------
-    value_in_rad_per_s : float
-        The value converted to radians per second,
+    value_in_deg_per_s : float
+        The value converted to degrees per second,
         or 'None' if the original value was `None`.
 
     Raises
@@ -648,12 +678,12 @@ def in_rad_per_s(value:float, unit:str) -> float:
         If the given `unit` is not a valid unit of angular velocity.
     """
     if value is not None:
-        if unit == "rad/s":   return value
-        if unit == "rad/min": return (value / 60.0)
-        if unit == "rad/h":   return (value / 3600.0)
-        if unit == "deg/s":   return math.radians(value)
-        if unit == "deg/min": return math.radians(value / 60.0)
-        if unit == "deg/h":   return math.radians(value / 3600.0)
+        if unit == "rad/s":   return math.degrees(value)
+        if unit == "rad/min": return math.degrees(value / 60.0)
+        if unit == "rad/h":   return math.degrees(value / 3600.0)
+        if unit == "deg/s":   return value
+        if unit == "deg/min": return value / 60.0
+        if unit == "deg/h":   return value / 3600.0
     else:
         return None
 
@@ -806,7 +836,7 @@ def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> floa
         if native_unit == "rad":    return in_rad(value, given_unit)
         if native_unit == "mA":     return in_mA(value, given_unit)
         if native_unit == "kV":     return in_kV(value, given_unit)
-        if native_unit == "rad/s":  return in_rad_per_s(value, given_unit)
+        if native_unit == "deg/s":  return in_deg_per_s(value, given_unit)
         if native_unit == "g/cm^3": return in_g_per_cm3(value, given_unit)
         if native_unit == "lp/mm":  return in_lp_per_mm(value, given_unit)
         if native_unit == "bool":   return from_bool(value)

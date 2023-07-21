@@ -11,10 +11,6 @@ from .processing.pipeline import Pipeline
 from .processing.step import Step
 from .helpers import *
 
-def touchDirectory(folder):
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-
 class generalTest(Step):
     """ General class for test scenario evaluations: get image(s), run and store evaluation. """
 
@@ -58,7 +54,7 @@ class generalTest(Step):
     def setResultFileDirectory(self, resultFileDirectory="."):
         """ Set the location where test results should be saved. """
         self.resultFileDirectory = resultFileDirectory
-        touchDirectory(self.resultFileDirectory)
+        touch_directory(self.resultFileDirectory)
 
     def setRawOutput(self, rawOutput=False):
         """ Save intermediate projections as RAW instead of TIFF? """

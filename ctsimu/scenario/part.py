@@ -367,6 +367,35 @@ class Part(Group):
 		self.set_frame(frame=0, nFrames=1, w_rotation=0, stage_coordinate_system=stage_coordinate_system)
 		return True
 
+	def geometry_dict(self) -> dict:
+		"""Create a dictionary of the geometry for a CTSimU scenario file.
+
+		Returns
+		-------
+		geometry_dict : dict
+			Dictionary with the geometry of this part.
+		"""
+		jd = dict()
+		jd["center"] = self.center.json_dict()
+
+		if self.u.reference == "world":
+			jd["vector_u"] = self.u.json_dict()
+		elif self.u.reference == "local":
+			jd["vector_r"] = self.u.json_dict()
+
+		if self.w.reference == "world":
+			jd["vector_w"] = self.w.json_dict()
+		elif self.w.reference == "local":
+			jd["vector_t"] = self.w.json_dict()
+
+		if self.deviations is not None:
+			if len(self.deviations) > 0:
+				jd["deviations"] = list()
+				for dev in self.deviations:
+					jd["deviations"].append(dev.json_dict())
+
+		return jd
+
 	def _set_frame_coordinate_system(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
 		"""
 		Set up the part's current coordinate system such that

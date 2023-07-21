@@ -605,14 +605,6 @@ class Image:
 
         return clipMin, clipMax
 
-    def touchFolder(self, filename):
-        """ Check if folder exists. Otherwise, create. """
-        folder  = os.path.dirname(filename)
-        if folder == "" or folder is None:
-            folder = "."
-        if not os.path.exists(folder):
-            os.makedirs(folder)
-
     def save(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True):
         """ Save image as TIFF or RAW. """
         if not isinstance(self.outputFile, ImageFile):
@@ -666,7 +658,7 @@ class Image:
                 if not isTIFF(filename):
                     filename += ".tif"
 
-                self.touchFolder(filename)
+                touch_directory(filename)
 
                 tiffdata = None
                 if clipValues:  # Clipping
@@ -723,7 +715,7 @@ class Image:
                     basename, extension = os.path.splitext(filename)
                     filename = basename + infoString + extension
 
-                self.touchFolder(filename)
+                touch_directory(filename)
                 if not appendChunk:  # save as single raw file
                     with open(filename, 'w+b') as file:
                         file.write(outBytes)

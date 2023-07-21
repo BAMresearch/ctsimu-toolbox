@@ -573,3 +573,22 @@ class Scenevector:
 
 		raise Exception("Unable to set scene vector from JSON file. A vector must be specified by the three components (x,y,z), (u,v,w) or (r,s,t).")
 		return False
+
+	def json_dict(self) -> dict:
+		"""Create a dictionary of this scenevector for a CTSimU JSON file."""
+		jd = dict()
+
+		if self.reference == "world":
+			jd["x"] = self.c0.json_dict()
+			jd["y"] = self.c1.json_dict()
+			jd["z"] = self.c2.json_dict()
+		elif self.reference == "local":
+			jd["u"] = self.c0.json_dict()
+			jd["v"] = self.c1.json_dict()
+			jd["w"] = self.c2.json_dict()
+		elif self.reference == "sample":
+			jd["r"] = self.c0.json_dict()
+			jd["s"] = self.c1.json_dict()
+			jd["t"] = self.c2.json_dict()
+
+		return jd

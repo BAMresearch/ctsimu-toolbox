@@ -35,6 +35,22 @@ class Group:
 		for subgroup in self.subgroups:
 			subgroup.reset()
 
+	def json_dict(self) -> dict:
+		"""Create a CTSimU JSON dictionary for this group and its subgroups.
+
+		Returns
+		-------
+		json_dict : dict
+		"""
+		jd = dict()
+		for key in self.properties:
+			jd[key] = self.parameter(key).json_dict()
+
+		for subgroup in self.subgroups:
+			jd[subgroup.get_name()] = subgroup.json_dict()
+
+		return jd
+
 	def get_name(self):
 		return self.name
 
@@ -120,8 +136,8 @@ class Group:
 		"""
 		return self.parameter(key).changed()
 
-	def set(self, key:str, value, native_unit:str="undefined", simple=False):
-		"""Set a property value in the part's properties dictionary.
+	def set(self, key:str, value, native_unit:str="undefined", simple:bool=False, valid_values:list=None):
+		"""Set a property value in the group's properties dictionary.
 		This function sets the respective parameter's standard value.
 		If the parameter already exists in the internal properties dictionary,
 		the parameter is reset (i.e., all its drifts are deleted) before the new
@@ -141,7 +157,11 @@ class Group:
 
 		simple : bool
 			Set to `True` if the parameter is represented
-			in the JSON file as a
+			as a single value in the JSON file instead of a
+			parameter object.
+
+		valid_values : list
+			A list of acceptable standard values for the parameter.
 		"""
 
 		# Check if the property already exists:
@@ -160,7 +180,7 @@ class Group:
 				native_unit = None
 
 			# Create new parameter:
-			new_parameter = Parameter(native_unit=native_unit, standard_value=value)
+			new_parameter = Parameter(native_unit=native_unit, standard_value=value, simple=simple, valid_values=valid_values)
 			self.properties[key] = new_parameter
 
 	def check(self):
@@ -411,7 +431,10 @@ class Group:
 			return
 
 		for key in self.properties:
-			self.set_parameter_from_key(key, json_obj, [key], fail_value=self.parameter(key).fail_value)
+			try:
+				self.set_parameter_from_key(key, json_obj, [key], fail_value=self.parameter(key).fail_value)
+			except Exception as e:
+				raise f"Error setting key '{key}' of '{self.name}': {e}"
 
 		for subgroup in self.subgroups:
 			json_subobj = dict()
@@ -419,12 +442,12 @@ class Group:
 			# Check if subgroup's name is in json_obj,
 			# extract if found:
 			if subgroup.get_name() in json_obj:
-				json_subobj = json_extract(json_obj, subgroup.get_name())
+				json_subobj = json_extract(json_obj, [subgroup.get_name()])
 			else:
 				# If subgroup is not found, try alternative names:
 				for alternative_name in subgroup.alternative_names:
 					if alternative_name in json_obj:
-						json_subobj = json_extract(json_obj, alternative_name)
+						json_subobj = json_extract(json_obj, [alternative_name])
 						break
 
 			subgroup.set_from_json(json_subobj)
@@ -479,7 +502,8 @@ class Group:
 			subgroup.set_frame(frame, nFrames)
 
 class Array(Group):
-	"""Array of objects that are all of the same kind."""
+	"""Array of objects that are all of the same kind, such as
+	the CTSimU materials list."""
 	def __init__(self, name:str=""):
 		Group.__init__(self, name)
 		self.elements = []
@@ -487,6 +511,13 @@ class Array(Group):
 	def reset(self):
 		for element in self.elements:
 			element.reset()
+
+	def json_dict(self) -> list:
+		jd = list()
+		for element in self.elements:
+			jd.append(element.json_dict())
+
+		return jd
 
 	def get(self, i:int):
 		if i < len(self.elements):

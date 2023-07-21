@@ -17,10 +17,11 @@ class Acquisition(Group):
 		self.set(key="stop_angle",  value=None, native_unit="deg")
 		self.set(key="direction",   value="CCW", native_unit="string", simple=True)
 		self.set(key="scan_mode",   value="stop+go", native_unit="string", simple=True)
-		self.set(key="scan_speed",  value=None, native_unit="rad/s")
+		self.set(key="scan_speed",  value=None, native_unit="deg/s")
 		self.set(key="number_of_projections", value=None, native_unit=None, simple=True)
 		self.set(key="include_final_angle", value=True, native_unit="bool", simple=True)
 		self.set(key="frame_average", value=None, native_unit=None, simple=True)
+		self.set(key="scattering", value=False, native_unit="bool", simple=True)
 
 		self.dark_field = Group("dark_field")
 		self.dark_field.set(key="number", value=None, simple=True)

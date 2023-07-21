@@ -36,7 +36,7 @@ class Drift:
 		the number of frames in the CT scan?
 	"""
 
-	def __init__(self, native_unit:str):
+	def __init__(self, native_unit:str, preferred_unit:str=None):
 		"""A new drift object must be assigned a valid native unit
 		to enable the JSON parser to convert the drift values from the
 		JSON file, if necessary.
@@ -47,9 +47,19 @@ class Drift:
 			The drift's native unit. Should match the native unit of the
 			`ctsimu.scenario.parameter.Parameter` object to which this drift belongs.
 			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+
+		preferred_unit : str
+			Preferred unit to represent these drift values in the JSON file.
+			If set to 'None', the native unit will be used.
 		"""
 		self.trajectory = []
 		self.native_unit = native_unit
+
+		if preferred_unit is not None:
+			self.preferred_unit = preferred_unit
+		else:
+			self.preferred_unit = native_unit
+
 		self.known_to_reconstruction = True
 		self.interpolation = True
 
@@ -59,6 +69,37 @@ class Drift:
 		"""Clear the list of drift values, set `known_to_reconstruction` to `True`."""
 		self.known_to_reconstruction = True
 		self.trajectory = []
+
+	def json_dict(self) -> dict:
+		"""Create a CTSimU JSON dictionary for this drift.
+
+		Returns
+		-------
+		json_dict : dict
+		"""
+		jd = dict()
+		if len(self.trajectory) > 0:
+			jd["value"] = self.trajectory
+		else:
+			jd["value"] = None
+
+		if self.native_unit not in native_units_to_omit_in_json_file:
+			unit = self.native_unit
+			if self.preferred_unit is not None:
+				unit = self.preferred_unit
+
+				# Convert value to preferred unit:
+				conversion_factor = convert_to_native_unit(given_unit=self.preferred_unit, native_unit=self.native_unit, value=1)
+
+				if conversion_factor != 0:
+					jd["value"] = list()
+					for val in self.trajectory:
+						jd["value"].append(val/conversion_factor)
+
+			jd["unit"] = unit
+
+		jd["known_to_reconstruction"] = self.known_to_reconstruction
+		return jd
 
 	def set_known_to_reconstruction(self, known:bool):
 		"""Set the `known_to_reconstruction` property.
@@ -130,9 +171,8 @@ class Drift:
 		self.reset()
 
 		# Get JSON unit:
-		jsonUnit = self.native_unit
 		if json_exists_and_not_null(json_drift_object, ["unit"]):
-			jsonUnit = get_value(
+			self.preferred_unit = get_value(
 				dictionary=json_drift_object,
 				keys=["unit"],
 				fail_value=self.native_unit
@@ -156,14 +196,14 @@ class Drift:
 				# Drift value is an array.
 				for v in value:
 					self.add_drift_component(
-						convert_to_native_unit(jsonUnit, self.native_unit, v)
+						convert_to_native_unit(self.preferred_unit, self.native_unit, v)
 					)
 
 				return True
 			elif isinstance(value, numbers.Number):
 				# Interpret value as a single number:
 				self.add_drift_component(
-					convert_to_native_unit(jsonUnit, self.native_unit, value)
+					convert_to_native_unit(self.preferred_unit, self.native_unit, value)
 				)
 				return True
 		elif json_exists_and_not_null(json_drift_object, ["file"]):

@@ -14,16 +14,24 @@ class Source(Part):
 	def __init__(self):
 		Part.__init__(self, "source")
 
+		self.source_geometry_extras = Group()
+		self.source_geometry_extras.set(key="type", value="cone", native_unit="string",
+			valid_values=[None, "cone", "parallel"])
+		self.beam_divergence = Group("beam_divergence")
+		self.beam_divergence.set(key="u", value=0, native_unit="deg")
+		self.beam_divergence.set(key="v", value=0, native_unit="deg")
+		self.source_geometry_extras.add_subgroup(self.beam_divergence)
+
 		# X-ray source parameters
-		self.set(key="model",        value=None, native_unit="string", simple=True)
-		self.set(key="manufacturer", value=None, native_unit="string", simple=True)
-		self.set(key="voltage",      value=None, native_unit="kV")
-		self.set(key="current",      value=None, native_unit="mA")
+		self.set(key="model",         value=None, native_unit="string", simple=True)
+		self.set(key="manufacturer",  value=None, native_unit="string", simple=True)
+		self.set(key="voltage",       value=None, native_unit="kV")
+		self.set(key="current",       value=None, native_unit="mA")
 
 		# Target
 		self.target = Group("target")
 		self.target.set(key="material_id",     value=None,         native_unit="string", simple=True)
-		self.target.set(key="type",            value="reflection", native_unit="string", simple=True)
+		self.target.set(key="type",            value="reflection", native_unit="string", simple=True, valid_values=[None, "reflection", "transmission"])
 		self.target.set(key="thickness",       value=None,         native_unit="mm")
 		self.target_angle = Group("angle")
 		self.target_angle.set(key="incidence", value=None,         native_unit="deg")
@@ -159,53 +167,20 @@ class Source(Part):
 		geo = json_extract(json_scenario, ["geometry", "source"])
 		self.set_geometry(geo)
 
+		self.source_geometry_extras.set_from_json(geo)
+
 		# Source properties:
 		sourceprops = json_extract(json_scenario, ["source"])
 		Group.set_from_json(self, sourceprops)
 
+	def geometry_dict(self) -> dict:
+		"""Create a dictionary of the source geometry for a CTSimU scenario file.
+
+		Returns
+		-------
+		source_geometry_dict : dict
+			Dictionary with the geometry of this part.
 		"""
-		# Source properties:
-		sourceprops = json_extract(json_scenario, ["source"])
-
-		self.set_parameter_from_key("model",        sourceprops, ["model"])
-		self.set_parameter_from_key("manufacturer", sourceprops, ["manufacturer"])
-
-		self.set_parameter_from_key("voltage", sourceprops, ["voltage"])
-		self.set_parameter_from_key("current", sourceprops, ["current"])
-
-		# Target:
-		self.set_parameter_from_key("target_material_id",     sourceprops, ["target", "material_id"])
-		self.set_parameter_from_key("target_thickness",       sourceprops, ["target", "thickness"])
-		self.set_parameter_from_key("target_angle_incidence", sourceprops, ["target", "angle", "incidence"])
-		self.set_parameter_from_key("target_angle_emission",  sourceprops, ["target", "angle", "emission"])
-		if self.set_parameter_from_key("target_type", sourceprops, ["target", "type"], fail_value=None):
-			# Check if the target type is valid:
-			if not (self.get("target_type") in valid_xray_target_types):
-				raise ValueError(f"Not a valid X-ray source target type: \'{self.get('target_type')}\'. Should be any of {valid_xray_target_types}.")
-
-		# Spot:
-		self.set_parameter_from_key("spot_size_u",  sourceprops, ["spot", "size", "u"])
-		self.set_parameter_from_key("spot_size_v",  sourceprops, ["spot", "size", "v"])
-		self.set_parameter_from_key("spot_size_w",  sourceprops, ["spot", "size", "w"])
-		self.set_parameter_from_key("spot_sigma_u", sourceprops, ["spot", "sigma", "u"])
-		self.set_parameter_from_key("spot_sigma_v", sourceprops, ["spot", "sigma", "v"])
-		self.set_parameter_from_key("spot_sigma_w", sourceprops, ["spot", "sigma", "w"])
-
-		# Intensity map:
-		self.set_parameter_from_key("intensity_map",            sourceprops, ["spot", "intensity_map", "file"])
-		self.set_parameter_from_key("intensity_map_type",       sourceprops, ["spot", "intensity_map", "type"])
-		self.set_parameter_from_key("intensity_map_dim_x",      sourceprops, ["spot", "intensity_map", "dim_x"])
-		self.set_parameter_from_key("intensity_map_dim_y",      sourceprops, ["spot", "intensity_map", "dim_y"])
-		self.set_parameter_from_key("intensity_map_dim_z",      sourceprops, ["spot", "intensity_map", "dim_z"])
-		self.set_parameter_from_key("intensity_map_endian",     sourceprops, ["spot", "intensity_map", "endian"])
-		self.set_parameter_from_key("intensity_map_headersize", sourceprops, ["spot", "intensity_map", "headersize"])
-
-		# Spectrum:
-		self.set_parameter_from_key("spectrum_monochromatic", sourceprops, ["spectrum", "monochromatic"])
-		self.set_parameter_from_key("spectrum_file",          sourceprops, ["spectrum", "file"])
-		self.set_parameter_from_key("spectrum_resolution",    json_scenario, ["simulation", "aRTist", "spectral_resolution"])
-
-		# Windows and filters:
-		self.windows = add_filters_to_list(self.windows, detprops, ["window"])
-		self.filters = add_filters_to_list(self.filters, detprops, ["filters"])
-		"""
+		jd = self.source_geometry_extras.json_dict()
+		jd.update(Part.geometry_dict(self))
+		return jd

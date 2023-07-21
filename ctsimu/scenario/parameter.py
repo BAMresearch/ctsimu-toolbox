@@ -3,6 +3,8 @@
 Parameter value, includes unit conversion and handling of parameter drifts.
 """
 import numbers
+import warnings
+
 from ..helpers import *
 from .drift import Drift
 
@@ -23,6 +25,9 @@ class Parameter:
 		The parameter's native unit.
 		Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
 
+	preferred_unit : str
+		The unit by which the value is represented in a JSON scenario file.
+
 	drifts : list
 		A list of subsequent parameter drifts, all of them
 		are objects of class `ctsimu.scenario.drift.Drift`.
@@ -38,7 +43,7 @@ class Parameter:
 		parameter object.
 	"""
 
-	def __init__(self, standard_value=0, native_unit:str=None, simple=False):
+	def __init__(self, standard_value=0, native_unit:str=None, simple:bool=False, valid_values:list=None):
 		"""A new parameter object must be assigned a valid native unit
 		to enable the JSON parser to convert the drift values from the
 		JSON file, if necessary.
@@ -62,18 +67,29 @@ class Parameter:
 			Set to `True` if the parameter is represented
 			as a single value in the JSON file instead of a
 			parameter object.
+
+		valid_values : list
+			A list of acceptable standard values for the parameter.
 		"""
-		self.standard_value = standard_value
-		self.fail_value = standard_value # used when set_from_json fails
+		self.fail_value = standard_value # used when set_from_json or set_standard_value fails
+
+		self.standard_value = None # is set later in self.set_standard_value()
+		self.current_value = None  # is set later in self.set_standard_value()
 		self.simple = simple # if JSON uses a single value, not a parameter object
 
 		self.native_unit = None
 		self.set_native_unit(native_unit)
 
-		self.drifts = []
-		self.current_value = standard_value
-		self.value_has_changed = True
+		self.preferred_unit = None  # Unit from/for the JSON scenario file.
 
+		self.uncertainty = None
+		self.preferred_uncertainty_unit = None
+
+		self.drifts = []
+		self.value_has_changed = True
+		self.valid_values = valid_values
+
+		self.set_standard_value(standard_value)
 		self.reset()
 
 	def __str__(self):
@@ -91,10 +107,63 @@ class Parameter:
 		"""Delete all drifts and set the parameter's current value
 		to the standard value.
 		"""
-
 		self.drifts = []
 		self.current_value = self.standard_value
 		self.value_has_changed = True
+
+	def json_dict(self) -> dict:
+		"""Create a CTSimU JSON dictionary for this parameter.
+
+		Returns
+		-------
+		json_dict : dict
+		"""
+		if self.simple is True:
+			# Parameter is represented by a single value.
+			return self.standard_value
+		else:
+			jd = dict()
+			jd["value"] = self.standard_value
+
+			# Add unit if necessary
+			unit_factor = 1
+			if self.native_unit not in native_units_to_omit_in_json_file:
+				unit = self.native_unit
+				if self.preferred_unit is not None:
+					unit = self.preferred_unit
+
+					# Convert value to preferred unit:
+					conversion_factor = convert_to_native_unit(given_unit=self.preferred_unit, native_unit=self.native_unit, value=1)
+
+					if conversion_factor != 0:
+						jd["value"] /= conversion_factor
+
+				jd["unit"] = unit
+
+			# Uncertainty
+			if self.uncertainty is not None:
+				jd["uncertainty"] = dict()
+				jd["uncertainty"]["value"] = self.uncertainty
+				if self.native_unit not in native_units_to_omit_in_json_file:
+					uncertainty_unit = self.native_unit
+					if self.preferred_uncertainty_unit is not None:
+						uncertainty_unit = self.preferred_uncertainty_unit
+
+						# Convert value to preferred unit:
+						conversion_factor = convert_to_native_unit(given_unit=self.preferred_uncertainty_unit, native_unit=self.native_unit, value=1)
+
+						if conversion_factor != 0:
+							jd["uncertainty"]["value"] /= conversion_factor
+
+
+					jd["uncertainty"]["unit"] = uncertainty_unit
+
+			if len(self.drifts) > 0:
+				jd["drifts"] = list()
+				for drift in self.drifts:
+					jd["drifts"].append(drift.json_dict())
+
+			return jd
 
 	def changed(self) -> bool:
 		"""Has the parameter changed since the last acknowledged change?
@@ -234,8 +303,27 @@ class Parameter:
 		value : float or str or bool
 			New standard value for the parameter.
 		"""
-		self.standard_value = value
-		self.current_value = value
+		if self.valid_values is None:
+			self.standard_value = value
+			self.current_value = value
+		elif isinstance(self.valid_values, list):
+			if value in self.valid_values:
+				# self.valid_values list contains the value
+				self.standard_value = value
+				self.current_value = value
+			else:
+				warnings.warn(f"Parameter: given value '{value}' not in list of valid values. Must be one of: {self.valid_values}. Using fail value instead: {self.fail_value}", UserWarning)
+				self.standard_value = self.fail_value
+				self.current_value = self.fail_value
+		else:
+			if value == self.valid_values:
+				# self.valid_values seems to be a single value
+				self.standard_value = value
+				self.current_value = value
+			else:
+				warnings.warn(f"Parameter: given value '{value}' not in list of valid values. Must be: {self.valid_values}. Using fail value instead: {self.fail_value}", UserWarning)
+				self.standard_value = self.fail_value
+				self.current_value = self.fail_value
 
 	def get_standard_value(self) -> float | str | bool:
 		"""Get parameter's standard value.
@@ -349,7 +437,7 @@ class Parameter:
 		json_drift_object : dict
 			A CTSimU drift structure, imported from a JSON structure.
 		"""
-		d = Drift(native_unit=self.native_unit)
+		d = Drift(native_unit=self.native_unit, preferred_unit=self.preferred_unit)
 		d.set_from_json(json_drift_object)
 		self.drifts.append(d)
 
@@ -399,6 +487,18 @@ class Parameter:
 
 			self.current_value = self.standard_value
 
+			# Unit
+			if json_exists_and_not_null(json_parameter_object, ["unit"]):
+				self.preferred_unit = json_extract(json_parameter_object, ["unit"])
+
+			# Uncertainty:
+			if json_exists_and_not_null(json_parameter_object, ["uncertainty"]):
+				self.uncertainty = json_convert_to_native_unit(self.native_unit, json_extract(json_parameter_object, ["uncertainty"]))
+				if json_exists_and_not_null(json_parameter_object, ["uncertainty", "unit"]):
+					self.preferred_uncertainty_unit = json_extract(json_parameter_object, ["uncertainty", "unit"])
+			else:
+				self.uncertainty = None
+
 			# Drifts:
 			if json_exists_and_not_null(json_parameter_object, ["drifts"]):
 				drifts = json_extract(json_parameter_object, ["drifts"])
@@ -406,11 +506,11 @@ class Parameter:
 				if isinstance(drifts, list):
 					# An array of drift structures.
 					for d in drifts:
-						self.add_drift(d)
+						self.add_drift_json(d)
 				elif isinstance(drifts, dict):
 					# A single drift structure (apparently).
 					# This is not standard behavior, but let's support it.
-					self.add_drift(drifts)
+					self.add_drift_json(drifts)
 
 		return success
 
