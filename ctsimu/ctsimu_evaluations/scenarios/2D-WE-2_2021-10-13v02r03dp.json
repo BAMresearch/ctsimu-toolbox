@@ -1,13 +1,13 @@
 {
 	"file":
 	{
-		"name": "2D-WE-1",
-		"description": "Brennfleckgröße 100µm, Partialvolumeneffekt",
+		"name": "2D-WE-2",
+		"description": "Verhalten von streifend getroffenen Flächen",
 		
-		"contact": "David Plotzki, Fabrício Borges de Oliveira",
-		"date_created": "2020-04-17",
-		"date_changed": "2021-08-12",
-		"version": {"major": 2, "minor": 0},
+		"contact": "David Plotzki, Fabrício Borges de Oliveira, Tamara Reuter",
+		"date_created": "2020-05-15",
+		"date_changed": "2021-10-13",
+		"version": {"major": 2, "minor": 3},
 
 		"file_type": "CTSimU Scenario",
 		"file_format_version": {"major": 0, "minor": 7}
@@ -23,7 +23,7 @@
 	{
 		"detector":
 		{
-			"center": {
+			"centre": {
 				"x": {"value": 1000, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"y": {"value":    0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"z": {"value":    0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
@@ -55,7 +55,7 @@
 				"v": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"}
 			},
 
-			"center": {
+			"centre": {
 				"x": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"y": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"z": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
@@ -81,7 +81,7 @@
 
 		"stage":
 		{
-			"center": {
+			"centre": {
 				"x": {"value": 500.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"y": {"value":   0.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"z": {"value":   0.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
@@ -172,7 +172,7 @@
 	{
 		"model":        "",
 		"manufacturer": "",
-		"voltage": {"value": 150, "unit": "kV", "uncertainty": 0, "uncertainty_unit": "kV"},
+		"voltage": {"value":  50, "unit": "kV", "uncertainty": 0, "uncertainty_unit": "kV"},
 		"current": {"value": 100, "unit": "uA", "uncertainty": 0, "uncertainty_unit": "uA"},
 		"target":
 		{
@@ -188,19 +188,15 @@
 		"spot":
 		{
 			"size": null,
-			"sigma": {
-				"u": {"value": 24, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"},
-				"v": {"value": 24, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"},
-				"w": {"value":  0.0, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"}
-			},
+			"sigma": null,
 			"intensity_map": null
 		},
 		"spectrum":
 		{
-			"monochromatic": false,
-			"bremsstrahlung": true,
-			"characteristic": true,
-			"file": "2D-WE-1_Spectrum_150kV_4mmAl_2021-05-27v00r00dp.csv"
+			"monochromatic": true,
+			"bremsstrahlung": false,
+			"characteristic": false,
+			"file": null
 		},
 		"window":
 		[
@@ -208,24 +204,23 @@
 				"material_id": "Al",
 				"thickness": {"value": 4.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
 			}
-		],
-		"filters": []
+		]
 	},
 
 	"samples":
 	[
 		{
 			"name": "Halbraumkante",
-			"file": "2021-07-07_Halbraumkante_v03r01ML.stl",
+			"file": "2021-10-11_Halbraumkante_v04r00.stl",
 			"unit": "mm",
 			"scaling_factor": {"r": 1.0, "s": 1.0, "t": 1.0},
 			"material_id": "W",
 			"position":
 			{
-				"center": {
-					"u": {"value":   0.00, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
-					"v": {"value":  75.00, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
-					"w": {"value": -71.0694, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+				"centre": {
+					"u": {"value":  0.00, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"v": {"value":  2.50, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"w": {"value": -2.36898, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
 				},
 
 				"vector_r": {"u": 1, "v": 0, "w": 0},
@@ -311,12 +306,6 @@
 			"name": "Copper",
 			"density": {"value": 8.92, "unit": "g/cm^3", "uncertainty": 0, "uncertainty_unit": "g/cm^3"},
 			"composition": "Cu"
-		},
-		{
-			"id":   "Pt",
-			"name": "Platinum",
-			"density": {"value": 21.45, "unit": "g/cm^3", "uncertainty": 0, "uncertainty_unit": "g/cm^3"},
-			"composition": "Pt"
 		}
 	]
 }

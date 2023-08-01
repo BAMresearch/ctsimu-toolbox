@@ -2,12 +2,12 @@
 	"file":
 	{
 		"name": "2D-WE-1",
-		"description": "Brennfleckgröße 100µm, Partialvolumeneffekt",
+		"description": "Brennfleckgröße 8µm",
 		
-		"contact": "David Plotzki, Fabrício Borges de Oliveira",
+		"contact": "David Plotzki, Fabrício Borges de Oliveira, Tamara Reuter",
 		"date_created": "2020-04-17",
-		"date_changed": "2021-08-12",
-		"version": {"major": 2, "minor": 0},
+		"date_changed": "2021-10-13",
+		"version": {"major": 2, "minor": 4},
 
 		"file_type": "CTSimU Scenario",
 		"file_format_version": {"major": 0, "minor": 7}
@@ -23,7 +23,7 @@
 	{
 		"detector":
 		{
-			"center": {
+			"centre": {
 				"x": {"value": 1000, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"y": {"value":    0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"z": {"value":    0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
@@ -55,7 +55,7 @@
 				"v": {"value": 0, "unit": "rad", "uncertainty": 0.0, "uncertainty_unit": "rad"}
 			},
 
-			"center": {
+			"centre": {
 				"x": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"y": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"z": {"value": 0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
@@ -81,7 +81,7 @@
 
 		"stage":
 		{
-			"center": {
+			"centre": {
 				"x": {"value": 500.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"y": {"value":   0.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
 				"z": {"value":   0.0, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
@@ -189,9 +189,9 @@
 		{
 			"size": null,
 			"sigma": {
-				"u": {"value": 8, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"},
-				"v": {"value": 8, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"},
-				"w": {"value":  0.0, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"}
+				"u": {"value": 8.0, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"},
+				"v": {"value": 8.0, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"},
+				"w": {"value": 0.0, "unit": "um", "uncertainty": 0, "uncertainty_unit": "um"}
 			},
 			"intensity_map": null
 		},
@@ -216,16 +216,16 @@
 	[
 		{
 			"name": "Halbraumkante",
-			"file": "2021-07-07_Halbraumkante_v03r01ML.stl",
+			"file": "2021-10-11_Halbraumkante_v04r00.stl",
 			"unit": "mm",
 			"scaling_factor": {"r": 1.0, "s": 1.0, "t": 1.0},
 			"material_id": "W",
 			"position":
 			{
-				"center": {
-					"u": {"value":   0.00, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
-					"v": {"value":  75.00, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
-					"w": {"value": -71.0694, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
+				"centre": {
+					"u": {"value":  0.00, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"v": {"value":  2.5, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"},
+					"w": {"value": -2.36898, "unit": "mm", "uncertainty": 0.0, "uncertainty_unit": "mm"}
 				},
 
 				"vector_r": {"u": 1, "v": 0, "w": 0},
