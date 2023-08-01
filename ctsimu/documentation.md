@@ -83,7 +83,7 @@ From any of these three options, you will get the complete package source code. 
 
 In the CTSimU toolbox, the tests are performed using JSON files in Python. There are two files (where X. is the current test, detector, subtest, and the date of the last modification of the JSON file):
 
-- `X..json`: defines environment, geometry, materials, source, detector properties, among others, and - references files in the same folder for the description of the object and spectrum: STL file, CSV and XRS files. You can find the `X..json` file in the path: `ctsimu-toolbox\ctsimu\ctsimu_evaluations\scenarios` or on the [BAM research website CTSimu-toolbox scenarios](https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations/scenarios).
+- `X..json`: defines environment, geometry, materials, source, detector properties, among others, and - references files in the same folder for the description of the object and spectrum: STL file and CSV file. You can find the `X..json` file in the path: `ctsimu-toolbox\ctsimu\ctsimu_evaluations\scenarios` or on the [BAM research website CTSimu-toolbox scenarios](https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations/scenarios).
 - `X._metadata.json`: Contains information about the simulation results (type and location) and is created via a simulation program (e.g. aRTist). With this result file, the test can be started and executed in the CTSimU toolbox.
 
 The following is a step-by-step guide using the example of the double wire test to determine the detector unsharpness.
@@ -97,7 +97,7 @@ In this example, a double wire bar measurement is presented to determine the det
 Step 1:	The prerequisite is that the scenario in this example is configured correctly in a*RT*ist.
 
 - For this the following files should be in one folder:
-    - `2D-DW-1_Detektor1_2021-05-26v01r01dp.json` file, the STL of the double wire path and the two files (TXT and XRS) for the description of the spectrum. 
+    - `2D-DW-1_Detektor1_2021-05-26v01r01dp.json` file, the STL of the double wire path and the CSV file for the description of the spectrum. 
 
 Step 2:	Open aRTist and load the JSON file:
 - Load into to the CTSimU-Module the 2D-DW-1_Detector1_2021-05-26v01r01dp.json file, which contains the necessary simulation details, including geometry and spectrum descriptions.
