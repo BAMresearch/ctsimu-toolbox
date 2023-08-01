@@ -84,12 +84,12 @@
 <h1 id="usage-example-of-a-test-implementation">Usage - Example of a test implementation</h1>
 <p>In the CTSimU toolbox, the tests are performed using JSON files in Python. There are two files (where X. is the current test, detector, subtest, and the date of the last modification of the JSON file):</p>
 <ul>
-<li><code>X..json</code>: defines environment, geometry, materials, source, detector properties, among others, and - references files in the same folder for the description of the object and spectrum: STL file, CSV and XRS files. You can find the <code>X..json</code> file in the path: <code>ctsimu-toolbox\ctsimu\ctsimu_evaluations\scenarios</code> or on the <a href="https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations/scenarios">website</a>.</li>
+<li><code>X..json</code>: defines environment, geometry, materials, source, detector properties, among others, and - references files in the same folder for the description of the object and spectrum: STL file, CSV and XRS files. You can find the <code>X..json</code> file in the path: <code>ctsimu-toolbox\ctsimu\ctsimu_evaluations\scenarios</code> or on the <a href="https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations/scenarios">BAM research website CTSimu-toolbox scenarios</a>.</li>
 <li><code>X._metadata.json</code>: Contains information about the simulation results (type and location) and is created via a simulation program (e.g. aRTist). With this result file, the test can be started and executed in the CTSimU toolbox.</li>
 </ul>
 <p>The following is a step-by-step guide using the example of the double wire test to determine the detector unsharpness.</p>
 <h2 id="simulation-for-ctsimu-in-artist">Simulation for CTSimU in a<em>RT</em>ist</h2>
-<p>In this example, a double wire bar measurement is presented to determine the detector unsharpness (the test name is 2D-DW-1). Theoretically, any other simulation programme could be used. We will use the simulation software aRTist to create the necessary projection images for the test. To do this, you need to download and install the appropriate CTSimU module for a<em>RT</em>ist. Instructions on how to install and operate the module, as well as the relevant ARTP installation file, can be found on the <a href="https://github.com/BAMresearch/ctsimu-artist-module">BAM research website</a>. </p>
+<p>In this example, a double wire bar measurement is presented to determine the detector unsharpness (the test name is 2D-DW-1). Theoretically, any other simulation programme could be used. We will use the simulation software aRTist to create the necessary projection images for the test. To do this, you need to download and install the appropriate CTSimU module for a<em>RT</em>ist. Instructions on how to install and operate the module, as well as the relevant ARTP installation file, can be found on the <a href="https://github.com/BAMresearch/ctsimu-artist-module">BAM research website CTSimu-artist-module</a>. </p>
 <h3 id="step-by-step-guide">Step-by-Step Guide</h3>
 <p>Step 1: The prerequisite is that the scenario in this example is configured correctly in a<em>RT</em>ist.</p>
 <ul>
@@ -114,7 +114,7 @@
 <li>CTSimU metadata file: 2D-DW-1_Detector1_2021-05-26v01r01dp_metadata.json, which contains all important information about the two projections and is used for the test execution.</li>
 </ul>
 <h2 id="ctsimu-toolbox-test-execution-from-the-python-console">CTSimU Toolbox Test Execution from the Python Console</h2>
-<p>The test "Double Wire Ridge - Detector Unsharpness" can be found at <a href="https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations">BAM research website in CTSimu Evaluation</a> with the name <code>test2D_DW_1.py</code>. In this Python file, the test name "2D-DW-1" and thus also input name for the Python console can be found in line 43 (as testName="2D-DW-1"):</p>
+<p>The test "Double Wire Ridge - Detector Unsharpness" can be found at <a href="https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations">BAM research website in CTSimu-toolbox evaluation</a> with the name <code>test2D_DW_1.py</code>. In this Python file, the test name "2D-DW-1" and thus also input name for the Python console can be found in line 43 (as testName="2D-DW-1"):</p>
 <pre><code class="language-python">36 class Test2D_DW_1(generalTest):
 37  &quot;&quot;&quot; CTSimU test 2D-DW-1: Detector Unsharpness. &quot;&quot;&quot;
 38
@@ -163,11 +163,15 @@
 </code></pre>
 <p>Step 5: After executing the test, two folders will be saved in the same path as the <code>X._metadata.json</code> file:</p>
 <ul>
-<li>Folder <code>corrected</code>: </li>
+<li>Folder <code>corrected</code>: <ul>
 <li>Contains the flatfield-corrected image.</li>
-<li>Folder <code>2D-DW-1-results</code>: Contains grey value profiles and grey value distribution data for each detector's basic spatial resolution (iSRb) with corresponding measurement values (wire spacing [mm] and modulation depth [%]).</li>
+</ul>
+</li>
+<li>Folder <code>2D-DW-1-results</code>: Contains grey value profiles and grey value distribution data for each detector's basic spatial resolution (iSRb) with corresponding measurement values (wire spacing [mm] and modulation depth [%]).<ul>
 <li>The values of the interpolation function are saved in TXT files.</li>
 <li>Corresponding plots are displayed as PNG images (see figures below), including a histogram (grey value distribution over the horizontal distance in pixels) and a plot of the spatial resolution of the investigated detector with the interpolation function and the determined iSRb value (modulation depth [%] over the wire distance [mm]).</li>
+</ul>
+</li>
 </ul>
 <p><img alt="2D-DW-1 SR75 results" src="C:/Users/jjanczyn/Documents/ctsimu-toolbox/docs/pictures/2D-DW-1_SR75_results.png" title="2D-DW-1 SR75 results"></p>
 <p><img alt="2D-DW-1 SR150 results" src="C:/Users/jjanczyn/Documents/ctsimu-toolbox/docs/pictures/2D-DW-1_SR150_results.png" title="2D-DW-1 SR150 results"></p>
