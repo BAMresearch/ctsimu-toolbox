@@ -81,6 +81,97 @@
 </li>
 </ul>
 <p>From any of these three options, you will get the complete package source code. It contains a folder called <code><a title="ctsimu" href="#ctsimu">ctsimu</a></code>. If you want to use the toolbox from your Python scripts without installing it, you need to copy the folder <code><a title="ctsimu" href="#ctsimu">ctsimu</a></code> to the location of your Python scripts to make the package available.</p>
+<h1 id="usage-example-of-a-test-implementation">Usage - Example of a test implementation</h1>
+<p>In the CTSimU toolbox, the tests are performed using JSON files in Python. There are two files (where X. is the current test, detector, subtest, and the date of the last modification of the JSON file):</p>
+<ul>
+<li><code>X..json</code>: defines environment, geometry, materials, source, detector properties, among others, and - references files in the same folder for the description of the object and spectrum: STL file, CSV and XRS files. You can find the <code>X..json</code> file in the path: <code>ctsimu-toolbox\ctsimu\ctsimu_evaluations\scenarios</code> or on the <a href="https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations/scenarios">website</a>.</li>
+<li><code>X._metadata.json</code>: Contains information about the simulation results (type and location) and is created via a simulation program (e.g. aRTist). With this result file, the test can be started and executed in the CTSimU toolbox.</li>
+</ul>
+<p>The following is a step-by-step guide using the example of the double wire test to determine the detector unsharpness.</p>
+<h2 id="simulation-for-ctsimu-in-artist">Simulation for CTSimU in a<em>RT</em>ist</h2>
+<p>In this example, a double wire bar measurement is presented to determine the detector unsharpness (the test name is 2D-DW-1). Theoretically, any other simulation programme could be used. We will use the simulation software aRTist to create the necessary projection images for the test. To do this, you need to download and install the appropriate CTSimU module for a<em>RT</em>ist. Instructions on how to install and operate the module, as well as the relevant ARTP installation file, can be found on the <a href="https://github.com/BAMresearch/ctsimu-artist-module">BAM research website</a>. </p>
+<h3 id="step-by-step-guide">Step-by-Step Guide</h3>
+<p>Step 1: The prerequisite is that the scenario in this example is configured correctly in a<em>RT</em>ist.</p>
+<ul>
+<li>For this the following files should be in one folder:<ul>
+<li><code>2D-DW-1_Detektor1_2021-05-26v01r01dp.json</code> file, the STL of the double wire path and the two files (TXT and XRS) for the description of the spectrum. </li>
+</ul>
+</li>
+</ul>
+<p>Step 2: Open aRTist and load the JSON file:
+- Load into to the CTSimU-Module the 2D-DW-1_Detector1_2021-05-26v01r01dp.json file, which contains the necessary simulation details, including geometry and spectrum descriptions.</p>
+<p>Step 3: Run the scenario and generate projections:</p>
+<ul>
+<li>Start the scenario by clicking on <strong>Run scenario</strong> in a<em>RT</em>ist</li>
+<li>Once the simulation is complete, the finished projection images will be visible in the Image Viewer (see figure below).</li>
+<li>In the folder where the JSON file is located, a new folder named <code>2D-DW-1_Detector1_2021-05-26v01r01dp</code> will be created, containing a subfolder named <code>projections</code>.</li>
+</ul>
+<p><img alt="aRTist scene for DW_1-test" src="C:/Users/jjanczyn/Documents/ctsimu-toolbox/docs/pictures/scene_DW_1.png" title="aRTist scene for DW_1-test"></p>
+<p>Step 4: Review the contents of the <code>projections</code> folder. The folder will contain the following files:</p>
+<ul>
+<li>Two TIF files: a projection image of the double wire bar according to EN462-5 and the corresponding flatfield image (background noise image). </li>
+<li>Python program: <code>2D-DW-1_Detektor1_2021-05-26v01r01dp_flat.py</code> which includes the code for the flatfield correction.</li>
+<li>CTSimU metadata file: 2D-DW-1_Detector1_2021-05-26v01r01dp_metadata.json, which contains all important information about the two projections and is used for the test execution.</li>
+</ul>
+<h2 id="ctsimu-toolbox-test-execution-from-the-python-console">CTSimU Toolbox Test Execution from the Python Console</h2>
+<p>The test "Double Wire Ridge - Detector Unsharpness" can be found at <a href="https://github.com/BAMresearch/ctsimu-toolbox/tree/main/ctsimu/ctsimu_evaluations">BAM research website in CTSimu Evaluation</a> with the name <code>test2D_DW_1.py</code>. In this Python file, the test name "2D-DW-1" and thus also input name for the Python console can be found in line 43 (as testName="2D-DW-1"):</p>
+<pre><code class="language-python">36 class Test2D_DW_1(generalTest):
+37  &quot;&quot;&quot; CTSimU test 2D-DW-1: Detector Unsharpness. &quot;&quot;&quot;
+38
+39  def __init__(self, resultFileDirectory=&quot;.&quot;, name=None, rawOutput=False):
+40
+41      generalTest.__init__(
+42          self,
+43          testName=&quot;2D-DW-1&quot;,
+44          name=name,
+45          nExpectedRuns=2,
+46          resultFileDirectory=resultFileDirectory,
+47          rawOutput=rawOutput)
+</code></pre>
+<p>The names of the sub-tests can be read in line 80 with "SR75" and in line 82 with "SR150":</p>
+<pre><code class="language-python">77 def prepareRun(self, i):
+78    if i &lt; len(self.subtests):
+79        self.jsonScenarioFile = &quot;scenarios/2D-DW-1_Detektor1_2021-05-26v01r01dp.json&quot;
+80        if self.subtests[i] == &quot;SR75&quot;:
+81            self.jsonScenarioFile = &quot;scenarios/2D-DW-1_Detektor1_2021-05-26v01r01dp.json&quot;
+82        elif self.subtests[i] == &quot;SR150&quot;:
+83            self.jsonScenarioFile = &quot;scenarios/2D-DW-1_Detektor2_2021-05-26v01r01dp.json&quot;
+</code></pre>
+<p>This is similarly structured in the other tests. In some of them there are no sub-tests.</p>
+<p>The tests SR75 and SR150 are the same only they are stored according to their names, here according to the expected spatial resolution. Since we know in advance in which range the resolution is, we can directly choose the test with the appropriate name. In this way, a suitable name is created for the resulting data. Detector1 should have a spatial resolution of iSRb = 75μm and Detector2 should have iSRb = 150μm.</p>
+<h3 id="step-by-step-guide_1">Step-by-Step Guide</h3>
+<p>Running the 2D-DW-1 test in a Python console:</p>
+<p>To run the 2D-DW-1 test, the generated X._metadata.json file from a<em>RT</em>ist is used. The test commands are then executed in the Python console in the following way: </p>
+<p>Step 1: Open the Python Console</p>
+<p>Step 2: Import the CTSimU Toolbox Library:</p>
+<ul>
+<li>In the Python console, import the CTSimU Toolbox library with the following command:</li>
+</ul>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+</code></pre>
+<p>Step 3: Run a Partial Test:</p>
+<ul>
+<li>To execute a partial test for Detector1 with a spatial resolution of 75 microns (SR75), use the following command:</li>
+</ul>
+<pre><code class="language-python">Toolbox(&quot;2D-DW-1&quot;, SR75 = &quot;\\...\\ctsimu-toolbox\\ctsimu\\ctsimu_evaluations\\scenarios\\2D-DW-1_Detektor1_2021-05-26v01r01dp\\projections\\2D-DW-1_Detektor1_2021-05-26v01r01dp_metadata.json&quot;)
+</code></pre>
+<p>Step 4: Run Both Partial Tests Sequentially:</p>
+<ul>
+<li>To execute both partial tests for Detector1 (SR75) and Detector2 (SR150) sequentially, use the following command:</li>
+</ul>
+<pre><code class="language-python">Toolbox(&quot;2D-DW-1&quot;, SR75 = &quot;\\...\\ctsimu-toolbox\\ctsimu\\ctsimu_evaluations\\scenarios\\2D-DW-1_Detektor1_2021-05-26v01r01dp\\projections\\2D-DW-1_Detektor1_2021-05-26v01r01dp_metadata.json&quot;, SR150 = &quot;\\...\\ctsimu-toolbox\\ctsimu\\ctsimu_evaluations\\scenarios\\2D-DW-1_Detektor2_2021-05-26v01r01dp\\projections\\2D-DW-1_Detektor2_2021-05-26v01r01dp_metadata.json&quot;)
+</code></pre>
+<p>Step 5: After executing the test, two folders will be saved in the same path as the <code>X._metadata.json</code> file:</p>
+<ul>
+<li>Folder <code>corrected</code>: </li>
+<li>Contains the flatfield-corrected image.</li>
+<li>Folder <code>2D-DW-1-results</code>: Contains grey value profiles and grey value distribution data for each detector's basic spatial resolution (iSRb) with corresponding measurement values (wire spacing [mm] and modulation depth [%]).</li>
+<li>The values of the interpolation function are saved in TXT files.</li>
+<li>Corresponding plots are displayed as PNG images (see figures below), including a histogram (grey value distribution over the horizontal distance in pixels) and a plot of the spatial resolution of the investigated detector with the interpolation function and the determined iSRb value (modulation depth [%] over the wire distance [mm]).</li>
+</ul>
+<p><img alt="2D-DW-1 SR75 results" src="C:/Users/jjanczyn/Documents/ctsimu-toolbox/docs/pictures/2D-DW-1_SR75_results.png" title="2D-DW-1 SR75 results"></p>
+<p><img alt="2D-DW-1 SR150 results" src="C:/Users/jjanczyn/Documents/ctsimu-toolbox/docs/pictures/2D-DW-1_SR150_results.png" title="2D-DW-1 SR150 results"></p>
+<p>By using these steps, you can run the 2D DW-1 test successfully in the CTSimU Toolbox from the Python console and get the results and data you want.</p>
 <h1 id="about">About</h1>
 <p>The CTSimU toolbox was developed for the <a href="https://www.ctsimu.forschung.fau.de/">CTSimU</a> project for its needs in reproducible image processing and serves as the project's reference software implementation. It provides useful tools for many CT-related tasks, beyond the aims of the CTSimU project.</p>
 <p>The software is released under the <strong>Apache 2.0 license,</strong> its source code is available <a href="https://github.com/BAMresearch/ctsimu-toolbox">on GitHub</a>.</p>
@@ -179,6 +270,17 @@ __pdoc__[&#34;ctsimu_evaluations&#34;] = False</code></pre>
 <li><a href="#getting-started">Getting started</a><ul>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#installation">Installation</a></li>
+</ul>
+</li>
+<li><a href="#usage-example-of-a-test-implementation">Usage - Example of a test implementation</a><ul>
+<li><a href="#simulation-for-ctsimu-in-artist">Simulation for CTSimU in aRTist</a><ul>
+<li><a href="#step-by-step-guide">Step-by-Step Guide</a></li>
+</ul>
+</li>
+<li><a href="#ctsimu-toolbox-test-execution-from-the-python-console">CTSimU Toolbox Test Execution from the Python Console</a><ul>
+<li><a href="#step-by-step-guide_1">Step-by-Step Guide</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#about">About</a><ul>
