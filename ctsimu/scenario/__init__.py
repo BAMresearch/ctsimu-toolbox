@@ -40,10 +40,11 @@ class Scenario:
 		self.stage.set_from_json(json_dict)
 
 		json_samples = json_extract(json_dict, ["samples"])
-		for json_sample in json_samples:
-			s = Sample()
-			s.set_from_json(json_sample, self.stage.coordinate_system)
-			self.samples.append(s)
+		if json_samples is not None:
+			for json_sample in json_samples:
+				s = Sample()
+				s.set_from_json(json_sample, self.stage.coordinate_system)
+				self.samples.append(s)
 
 		self.file.set_from_json(json_extract(json_dict, [self.file.name]))
 		self.environment.set_from_json(json_extract(json_dict, [self.environment.name]))
@@ -58,6 +59,9 @@ class Scenario:
 
 	def write(self, file:str=None):
 		if file is not None:
+			self.file.file_format_version.set("major", 1)
+			self.file.file_format_version.set("minor", 2)
+
 			write_json_file(filename=file, dictionary=self.json_dict())
 
 	def json_dict(self) -> dict:

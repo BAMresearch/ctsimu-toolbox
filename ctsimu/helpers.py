@@ -78,7 +78,7 @@ def read_json_file(filename:str) -> dict:
 
     if os.path.isfile(filename):
         if os.path.exists(filename):
-            with open(filename, 'r') as f:
+            with open(filename, 'r', encoding='utf-8') as f:
                 json_dict = json.load(f)
                 f.close()
                 return json_dict
@@ -99,8 +99,8 @@ def write_json_file(filename:str, dictionary:dict):
 
     folder = touch_directory(filename)
     if os.path.exists(folder):
-        with open(filename, 'w') as f:
-            json.dump(dictionary, f, indent=4)
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(dictionary, f, ensure_ascii=False, indent=4)
             f.close()
     else:
         raise Exception(f"Error writing JSON file. Directory does not exist: {folder}")

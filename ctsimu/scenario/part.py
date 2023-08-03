@@ -333,7 +333,8 @@ class Part(Group):
 						# Legacy_deviations not necessary here
 						# because positional translations are fully
 						# compatible with the new file format:
-						self.deviations.append(pos_dev)
+						if not pos_dev.amount.is_zero():
+							self.deviations.append(pos_dev)
 					else:
 						raise Exception(f"An error occurred when setting a geometrical deviation (translation) for part '{self.name}'.")
 						return False
@@ -359,7 +360,8 @@ class Part(Group):
 					rot_dev.set_known_to_reconstruction(known_to_recon)
 					if rot_dev.amount.set_from_json(json_extract(geo, ["deviation", "rotation", axis])):
 						# success
-						self.legacy_deviations.append(rot_dev)
+						if not rot_dev.amount.is_zero():
+							self.legacy_deviations.append(rot_dev)
 					else:
 						raise Exception(f"An error occurred when setting a geometrical deviation (rotation) for part '{self.name}'.")
 						return False

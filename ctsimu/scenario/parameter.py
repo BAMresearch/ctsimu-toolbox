@@ -177,6 +177,18 @@ class Parameter:
 		"""
 		return value_has_changed
 
+	def is_zero(self) -> bool:
+		"""Check if this parameter is and always will be zero.
+
+		Returns
+		-------
+		is_zero : bool
+		"""
+		if (self.get_standard_value() == 0) and (self.has_drifts() is False):
+			return True
+
+		return False
+
 	def has_drifts(self) -> bool:
 		"""Does the parameter specify any drift?
 
@@ -493,10 +505,32 @@ class Parameter:
 
 			# Uncertainty:
 			if json_exists_and_not_null(json_parameter_object, ["uncertainty"]):
-				self.uncertainty = json_convert_to_native_unit(self.native_unit, json_extract(json_parameter_object, ["uncertainty"]))
-				if json_exists_and_not_null(json_parameter_object, ["uncertainty", "unit"]):
-					self.preferred_uncertainty_unit = json_extract(json_parameter_object, ["uncertainty", "unit"])
+				unc = json_extract(json_parameter_object, ["uncertainty"])
+				if isinstance(unc, dict):
+					# Since file format 1.0, uncertainties are value/unit dicts:
+					self.uncertainty = json_convert_to_native_unit(
+						native_unit=self.native_unit,
+						value_and_unit=unc
+					)
+					if json_exists_and_not_null(json_parameter_object, ["uncertainty", "unit"]):
+						self.preferred_uncertainty_unit = json_extract(json_parameter_object, ["uncertainty", "unit"])
+				elif isinstance(unc, numbers.Number):
+					# Before file format 1.0, "uncertainty" and "uncertainty_unit" where
+					# separate properties of a parameter:
+					if json_exists_and_not_null(json_parameter_object, ["uncertainty_unit"]):
+						self.preferred_uncertainty_unit = json_extract(json_parameter_object, ["uncertainty_unit"])
+
+					self.uncertainty = convert_to_native_unit(
+						given_unit=self.preferred_uncertainty_unit,
+						native_unit=self.native_unit,
+						value=unc
+					)
+				else:
+					self.uncertainty = None
 			else:
+				self.uncertainty = None
+
+			if self.uncertainty == 0:
 				self.uncertainty = None
 
 			# Drifts:

@@ -323,7 +323,7 @@ class Scenevector:
 			# To get the sample coordinates in stage coordinates,
 			# we therefore transform to the world.
 			v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
-			return v_in_local
+			return v_in_stage
 
 	def point_in_sample(self, stage:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for point coordinates
@@ -474,7 +474,7 @@ class Scenevector:
 			# To get the sample coordinates in stage coordinates,
 			# we therefore transform to the world.
 			v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
-			return v_in_local
+			return v_in_stage
 
 	def direction_in_sample(self, stage:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for a direction in terms of the sample
