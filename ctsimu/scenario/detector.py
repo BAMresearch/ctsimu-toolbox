@@ -155,67 +155,6 @@ class Detector(Part):
 		"""
 		return (2**self.get("bit_depth")) - 1
 
-	def set_frame_legacy(self, frame:float, nFrames:int):
-		"""Set all properties of the detector to match
-		the given `frame` number, given a total of `nFrames`.
-
-		All drifts and deviations are obeyed.
-
-		Parameters
-		----------
-		frame : float
-			Current frame number.
-
-		nFrames : int
-			Total number of frames in scan.
-		"""
-
-		# Update window and filter lists:
-		for window in self.windows_front:
-			window.set_frame(frame, nFrames, only_known_to_reconstruction=False)
-
-		for window in self.windows_rear:
-			window.set_frame(frame, nFrames, only_known_to_reconstruction=False)
-
-		for filt in self.filters_front:
-			filt.set_frame(frame, nFrames, only_known_to_reconstruction=False)
-
-		for filt in self.filters_rear:
-			filt.set_frame(frame, nFrames, only_known_to_reconstruction=False)
-
-		Part.set_frame(self, frame, nFrames)
-
-	def set_frame_for_reconstruction_legacy(self, frame:float, nFrames:int):
-		"""Set all properties of the detector to match
-		the given `frame` number, given a total of `nFrames`.
-
-		Only those drifts and deviations are obeyed which are known to the
-		reconstruction software.
-
-		Parameters
-		----------
-		frame : float
-			Current frame number.
-
-		nFrames : int
-			Total number of frames in scan.
-		"""
-
-		# Update window and filter lists:
-		for window in self.windows_front:
-			window.set_frame(frame, nFrames, only_known_to_reconstruction=True)
-
-		for window in self.windows_rear:
-			window.set_frame(frame, nFrames, only_known_to_reconstruction=True)
-
-		for filt in self.filters_front:
-			filt.set_frame(frame, nFrames, only_known_to_reconstruction=True)
-
-		for filt in self.filters_rear:
-			filt.set_frame(frame, nFrames, only_known_to_reconstruction=True)
-
-		Part.set_frame_for_reconstruction(self, frame, nFrames)
-
 	def set_from_json(self, json_scenario:dict):
 		"""Import the detector definition and geometry from the JSON object.
 		The JSON object should contain the complete content
@@ -231,7 +170,7 @@ class Detector(Part):
 
 		# Extract the detector's geometry:
 		geo = json_extract(json_scenario, ["geometry", "detector"])
-		self.set_geometry(geo)
+		self.set_geometry(json_geometry_object=geo, proper_cs="local")
 
 		# Detector properties:
 		detprops = json_extract(json_scenario, ["detector"])

@@ -171,7 +171,7 @@ class Test2D_DW_1(generalTest):
         i = self.currentRun
         subtestName = self.subtests[i]
 
-        self.results[i].lineProfileGV, self.results[i].lineProfilePos, stepsize = image.lineProfile(x0=self.p0.x, y0=self.p0.y, x1=self.p1.x, y1=self.p1.y, width=self.profileWidth, resolution=self.profileRes)
+        self.results[i].lineProfileGV, self.results[i].lineProfilePos, stepsize = image.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
 
         print("Pixel Size: {}, SOD: {}, SDD: {}".format(self.currentPixelSize, self.currentSOD, self.currentSDD))
 

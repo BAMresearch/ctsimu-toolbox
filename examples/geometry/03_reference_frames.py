@@ -6,9 +6,9 @@ world = CoordinateSystem()
 
 # Set up a quick CT geometry with a tilted stage axis:
 myCT = Geometry()
-myCT.stage.center.x = 250  # SOD
+myCT.stage.center.set_x(250)  # SOD
 myCT.stage.rotate_around_u(angle = deg2rad(2.0))
-myCT.detector.center.x = 800  # SDD
+myCT.detector.center.set_x(800)  # SDD
 
 # Assume a specimen in the (tilted) stage
 # coordinate system, shifted 5 mm "upwards"

@@ -3,7 +3,10 @@
 [CTSimU scenarios]: https://bamresearch.github.io/ctsimu-scenarios
 """
 
+import math
+
 from ..helpers import *
+from ..geometry import *
 from . import *
 
 from .detector import Detector
@@ -27,6 +30,8 @@ class Scenario:
 		self.acquisition = Acquisition()
 		self.materials = list()
 		self.simulation = None # simply imported as dict
+
+		self.current_frame = 0
 
 	def read(self, file:str=None, json_dict:dict=None):
 		if file is not None:
@@ -56,6 +61,8 @@ class Scenario:
 			m = Material()
 			m.set_from_json(json_material)
 			self.materials.append(m)
+
+		self.set_frame(0, reconstruction=False)
 
 	def write(self, file:str=None):
 		if file is not None:
@@ -96,3 +103,105 @@ class Scenario:
 		jd["simulation"] = self.simulation
 
 		return jd
+
+	def n_frames(self):
+		"""Number of frames in the scenario.
+
+		Returns
+		-------
+		nFrames : int
+			Number of frames in the scenario.
+		"""
+
+		# 'Frame' is in this context a projection image.
+		# However, if we assume frame averaging, the number of
+		# frames could also be: nFrames = nProjection * nFrameAverages
+		nFrames = self.acquisition.get("number_of_projections")
+		return nFrames
+
+	def get_current_stage_rotation_angle(self):
+		"""Stage rotation angle (in deg) for the current frame.
+
+		Returns
+		-------
+		stage_rotation_angle : float
+			Current stage rotation angle (in deg).
+		"""
+
+		start_angle = float(self.acquisition.get("start_angle"))
+		stop_angle  = float(self.acquisition.get("stop_angle"))
+		nPositions  = float(self.n_frames())
+
+		# If the final projection is taken at the stop angle
+		# (and not one step before), the number of positions
+		# has to be decreased by 1, resulting in one less
+		# angular step being performed.
+		if self.acquisition.get("include_final_angle") is True:
+			if nPositions > 0:
+				nPositions -= 1
+
+		angular_range = 0
+		if start_angle <= stop_angle:
+			angular_range = stop_angle - start_angle
+		else:
+			raise Exception("The start angle cannot be greater than the stop angle. Scan direction must be specified by the acquisition 'direction' keyword (CCW or CW).")
+
+		angular_position = start_angle
+		if nPositions != 0:
+			angular_position = start_angle + self.current_frame*angular_range/nPositions
+
+		# Mathematically negative:
+		if self.acquisition.get("direction") == "CW":
+			angular_position = -angular_position
+
+		return angular_position
+
+	def set_frame(self, frame:float=0, reconstruction:bool=False):
+		self.current_frame = frame
+
+		# Number of frames:
+		nFrames = self.n_frames()
+
+		stage_deg = self.get_current_stage_rotation_angle()
+		print(f"Stage rot angle: {stage_deg}, from {float(self.acquisition.get('start_angle'))} to {float(self.acquisition.get('stop_angle'))}")
+		stage_rot = math.radians(stage_deg)
+
+		# Update materials:
+		for material in self.materials:
+			material.set_frame(frame, nFrames, reconstruction)
+
+		# Update stage, source, detector and other parameters:
+		self.stage.set_frame(frame, nFrames, stage_rot, None, reconstruction)
+		self.source.set_frame(frame, nFrames, 0, None, reconstruction)
+		self.detector.set_frame(frame, nFrames, 0, None, reconstruction)
+
+		self.file.set_frame(frame, nFrames, reconstruction)
+		self.environment.set_frame(frame, nFrames, reconstruction)
+		self.acquisition.set_frame(frame, nFrames, reconstruction)
+
+		# Update samples:
+		stage_cs = self.stage.coordinate_system
+		for sample in self.samples:
+			sample.set_frame(frame, nFrames, 0, stage_cs, reconstruction)
+
+	def current_geometry(self) -> 'ctsimu.geometry.Geometry':
+		"""Return a 'ctsimu.geometry.Geometry' object for the
+		current setup of the scenario.
+
+		Returns
+		-------
+		geometry : ctsimu.geometry.Geometry
+		"""
+		geo = Geometry()
+		geo.detector.copy_cs(self.detector.coordinate_system)
+		geo.source.copy_cs(self.source.coordinate_system)
+		geo.stage.copy_cs(self.stage.coordinate_system)
+
+		geo.detector.set_size(
+			pixels_u=self.detector.get("columns"),
+			pixels_v=self.detector.get("rows"),
+			pitch_u=self.detector.pixel_pitch.get("u"),
+			pitch_v=self.detector.pixel_pitch.get("v")
+		)
+
+		return geo

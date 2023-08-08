@@ -199,7 +199,7 @@ class Parameter:
 		"""
 		return (len(self.drifts) > 0)
 
-	def maximum_value(self, nFrames:int, only_drifts_known_to_reconstruction:bool=False) -> float:
+	def maximum_value(self, nFrames:int, reconstruction:bool=False) -> float:
 		"""Get the parameter's maximum value during the evolution of `nFrames`, given drifts.
 
 		Parameters
@@ -207,7 +207,7 @@ class Parameter:
 		nFrames : int
 			Number of frames in the CT scan.
 
-		only_drifts_known_to_reconstruction : bool
+		reconstruction : bool
 			Obey only those drifts that are labeled as known to
 			the reconstruction software?
 
@@ -222,14 +222,14 @@ class Parameter:
 				total_drift_max = self.get_total_drift_value_for_frame(
 					0,
 					nFrames,
-					only_drifts_known_to_reconstruction
+					reconstruction
 				)
 
 				for f in range(nFrames):
 					total_drift_for_frame = self.get_total_drift_value_for_frame(
 						f,
 						nFrames,
-						only_drifts_known_to_reconstruction
+						reconstruction
 					)
 
 					if total_drift_for_frame > total_drift_max:
@@ -239,7 +239,7 @@ class Parameter:
 
 		return standard_value
 
-	def minimum_value(self, nFrames:int, only_drifts_known_to_reconstruction:bool=False) -> float:
+	def minimum_value(self, nFrames:int, reconstruction:bool=False) -> float:
 		"""Get the parameter's minimum value during the evolution of `nFrames`, given drifts.
 
 		Parameters
@@ -247,7 +247,7 @@ class Parameter:
 		nFrames : int
 			Number of frames in the CT scan.
 
-		only_drifts_known_to_reconstruction : bool
+		reconstruction : bool
 			Obey only those drifts that are labeled as known to
 			the reconstruction software?
 
@@ -262,14 +262,14 @@ class Parameter:
 				total_drift_min = self.get_total_drift_value_for_frame(
 					0,
 					nFrames,
-					only_drifts_known_to_reconstruction
+					reconstruction
 				)
 
 				for f in range(nFrames):
 					total_drift_for_frame = self.get_total_drift_value_for_frame(
 						f,
 						nFrames,
-						only_drifts_known_to_reconstruction
+						reconstruction
 					)
 
 					if total_drift_for_frame < total_drift_min:
@@ -370,7 +370,7 @@ class Parameter:
 		"""
 		self.value_has_changed = new_change_state
 
-	def set_frame_and_get_value(self, frame:float, nFrames:int=1, only_drifts_known_to_reconstruction:bool=False) -> float | str | bool:
+	def set_frame_and_get_value(self, frame:float, nFrames:int=1, reconstruction:bool=False) -> float | str | bool:
 		"""Set the new frame number, return the new current value.
 
 		Parameters
@@ -381,7 +381,7 @@ class Parameter:
 		nFrames : int
 			Total number of frames in scan.
 
-		only_drifts_known_to_reconstruction : bool
+		reconstruction : bool
 			Obey only those drifts that are labeled as known to the
 			reconstruction software?
 
@@ -390,10 +390,10 @@ class Parameter:
 		current_value : float or str or bool
 			The parameter's current value for the given `frame` number.
 		"""
-		self.set_frame(frame, nFrames, only_drifts_known_to_reconstruction)
+		self.set_frame(frame, nFrames, reconstruction)
 		return self.current_value
 
-	def get_total_drift_value_for_frame(self, frame:float, nFrames:int, only_drifts_known_to_reconstruction:bool=False) -> float | str | bool:
+	def get_total_drift_value_for_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> float | str | bool:
 		"""Calculate the total drift value from all drift components,
 		for the given `frame` out of a total of `nFrames`,
 		depending on whether all drifts are applied or only
@@ -407,7 +407,7 @@ class Parameter:
 		nFrames : int
 			Total number of frames in CT scan.
 
-		only_drifts_known_to_reconstruction : bool
+		reconstruction : bool
 			Obey only those drifts that are labeled as known to the
 			reconstruction software?
 
@@ -420,7 +420,7 @@ class Parameter:
 		total_drift = 0
 
 		for d in self.drifts:
-			if only_drifts_known_to_reconstruction is True:
+			if reconstruction is True:
 				if d.known_to_reconstruction is False:
 					# Skip this drift if it is unknown to the reconstruction,
 					# but we only want to obey drifts that are actually known
@@ -600,7 +600,7 @@ class Parameter:
 
 		return False
 
-	def set_frame(self, frame:float, nFrames:int, only_drifts_known_to_reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
 		"""Prepares the `current_value` for the given `frame` number
 		(assuming a total of `nFrames`). This takes into account all drifts
 		(or only the ones known to reconstruction).
@@ -613,7 +613,7 @@ class Parameter:
 		nFrames : int
 			Total number of frames in scan.
 
-		only_drifts_known_to_reconstruction : bool
+		reconstruction : bool
 			`True`: obey only those drifts that are labeled as known to the
 			reconstruction software.
 			`False`: obey all drifts.
@@ -624,7 +624,7 @@ class Parameter:
 			If the value has changed from the previous value (e.g. due to drifts).
 		"""
 		new_value = self.standard_value
-		total_drift = self.get_total_drift_value_for_frame(frame, nFrames, only_drifts_known_to_reconstruction)
+		total_drift = self.get_total_drift_value_for_frame(frame, nFrames, reconstruction)
 
 		if self.native_unit == "string":
 			if isinstance(total_drift, str):

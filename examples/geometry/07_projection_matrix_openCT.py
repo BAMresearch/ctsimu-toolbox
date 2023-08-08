@@ -3,15 +3,15 @@ from ctsimu.geometry import *
 
 # Set up a quick CT geometry:
 myCT = Geometry()
-myCT.stage.center.x    = 250  # SOD
-myCT.detector.center.x = 800  # SDD
+myCT.stage.center.set_x(250)    # SOD
+myCT.detector.center.set_x(800) # SDD
 
 # Set the detector size:
-myCT.detector.setSize(
-	pixelsU = 2000,
-	pixelsV = 1000,
-	pitchU  = 0.2,
-	pitchV  = 0.2)
+myCT.detector.set_size(
+	pixels_u = 2000,
+	pixels_v = 1000,
+	pitch_u  = 0.2,
+	pitch_v  = 0.2)
 
 # Set up a new image coordinate system
 # as a standard coordinate system,
@@ -24,7 +24,7 @@ image = CoordinateSystem()
 volume = CoordinateSystem()
 
 # Calculate the projection matrix:
-P = myCT.projectionMatrix(
+P = myCT.projection_matrix(
 	imageCS = image,
 	volumeCS = volume)
 

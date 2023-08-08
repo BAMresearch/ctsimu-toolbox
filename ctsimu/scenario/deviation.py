@@ -39,7 +39,7 @@ class Deviation:
 		This attribute is obeyed when calculating projection matrices.
 	"""
 
-	def __init__(self):
+	def __init__(self, pivot_reference:str="sample"):
 		# The axis and pivot point are `Scenevector`
 		# objects that can handle vector drifts and
 		# conversion between coordinate systems:
@@ -50,7 +50,7 @@ class Deviation:
 		self.pivot.set_simple(0, 0, 0)
 		# Set "sample" as the "most local" pivot reference.
 		# Will be converted to "local" if necessary:
-		self.pivot.set_reference("sample")
+		self.pivot.set_reference(pivot_reference)
 
 		# The transformation amount is a
 		# `Parameter` that can handle drifts.
@@ -260,7 +260,7 @@ class Deviation:
 
 		return jd
 
-	def deviate(self, coordinate_system:'CoordinateSystem', frame:float, nFrames:int, only_known_to_reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:'CoordinateSystem'=None) -> 'CoordinateSystem':
+	def deviate(self, coordinate_system:'CoordinateSystem', frame:float, nFrames:int, reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:'CoordinateSystem'=None) -> 'CoordinateSystem':
 		"""
 		Apply this deviation to the given coordinate system.
 
@@ -278,7 +278,7 @@ class Deviation:
 		nFrames : int
 			Total number of frames in scan.
 
-		only_known_to_reconstruction : bool
+		reconstruction : bool
 			If `True`, the deviation is only applied if it is
 			known to the reconstruction software. The same applies
 			to whether its drifts are considered or not.
@@ -301,11 +301,11 @@ class Deviation:
 			altered equally.
 		"""
 
-		if (self.known_to_reconstruction is True) or (only_known_to_reconstruction is False):
+		if (self.known_to_reconstruction is True) or (reconstruction is False):
 			amount = self.amount.set_frame_and_get_value(
 				frame=frame,
 				nFrames=nFrames,
-				only_drifts_known_to_reconstruction=only_known_to_reconstruction
+				reconstruction=reconstruction
 			)
 
 			if self.type == "translation":
@@ -322,7 +322,7 @@ class Deviation:
 							sample=ctsimu_world,
 							frame=frame,
 							nFrames=nFrames,
-							only_known_to_reconstruction=only_known_to_reconstruction
+							reconstruction=reconstruction
 						)
 
 						coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
@@ -334,7 +334,7 @@ class Deviation:
 							sample=coordinate_system,
 							frame=frame,
 							nFrames=nFrames,
-							only_known_to_reconstruction=only_known_to_reconstruction
+							reconstruction=reconstruction
 						)
 
 						coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
@@ -350,14 +350,14 @@ class Deviation:
 							sample=ctsimu_world,
 							frame=frame,
 							nFrames=nFrames,
-							only_known_to_reconstruction=only_known_to_reconstruction
+							reconstruction=reconstruction
 						)
 						pivot_point = self.pivot.point_in_world(
 							local=coordinate_system,
 							sample=ctsimu_world,
 							frame=frame,
 							nFrames=nFrames,
-							only_known_to_reconstruction=only_known_to_reconstruction
+							reconstruction=reconstruction
 						)
 
 						coordinate_system.rotate_around_pivot_point(
@@ -371,14 +371,14 @@ class Deviation:
 							sample=coordinate_system,
 							frame=frame,
 							nFrames=nFrames,
-							only_known_to_reconstruction=only_known_to_reconstruction
+							reconstruction=reconstruction
 						)
 						pivot_point = self.pivot.point_in_local(
 							local=stage_coordinate_system,
 							sample=coordinate_system,
 							frame=frame,
 							nFrames=nFrames,
-							only_known_to_reconstruction=only_known_to_reconstruction
+							reconstruction=reconstruction
 						)
 
 						coordinate_system.rotate_around_pivot_point(

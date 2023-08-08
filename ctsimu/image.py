@@ -849,12 +849,12 @@ class Image:
         """
 
         if seedPoint != None:
-            seedX = int(round(seedPoint.x))
-            seedY = int(round(seedPoint.y))
+            seedX = int(round(seedPoint.x()))
+            seedY = int(round(seedPoint.y()))
         else:
             # Start at point p1 of shape:
-            seedX = int(shape.points[0].x)
-            seedY = int(shape.points[0].y)
+            seedX = int(shape.points[0].x())
+            seedY = int(shape.points[0].y())
 
         # Make a map of visited pixels. A visited pixel will get value 1:
         visited = numpy.zeros_like(a=self.px, dtype=numpy.dtype('uint8'))
@@ -971,12 +971,12 @@ class Image:
         # Shift by half a pixel, because they must represent
         # pixel centers in shape coordinate system. Also,
         # origin should be the bin center:
-        roi_gridx = roi_gridx + 0.5 - binCenter.x
-        roi_gridy = roi_gridy + 0.5 - binCenter.y
+        roi_gridx = roi_gridx + 0.5 - binCenter.x()
+        roi_gridy = roi_gridy + 0.5 - binCenter.y()
 
         # Transform coordinates into bin coordinate system (s and t axes):
-        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x + roi_gridy*sUnit.y)
-        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x + roi_gridy*tUnit.y)
+        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x() + roi_gridy*sUnit.y())
+        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x() + roi_gridy*tUnit.y())
 
         # Set those that are too far from bin center in s and t direction to zero:
         bin_grid_dist_s = numpy.where(bin_grid_dist_s < sBoundary, bin_grid_dist_s, 0)
@@ -1020,12 +1020,12 @@ class Image:
         # Shift by half a pixel, because they must represent
         # pixel centers in shape coordinate system. Also,
         # origin should be the bin center:
-        roi_gridx = roi_gridx + 0.5 - binCenter.x
-        roi_gridy = roi_gridy + 0.5 - binCenter.y
+        roi_gridx = roi_gridx + 0.5 - binCenter.x()
+        roi_gridy = roi_gridy + 0.5 - binCenter.y()
 
         # Transform coordinates into bin coordinate system (s and t axes):
-        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x + roi_gridy*sUnit.y)
-        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x + roi_gridy*tUnit.y)
+        bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x() + roi_gridy*sUnit.y())
+        #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x() + roi_gridy*tUnit.y())
 
         # Set those that are too far from bin center in s and t direction to zero:
         #bin_grid_dist_s = numpy.where(bin_grid_dist_s < sBoundary, bin_grid_dist_s, 0)
@@ -1111,10 +1111,10 @@ class Image:
             # Find bin where this grey value should be counted:
             binPos = int(math.floor(sPos / sStepSize))
 
-            #print("({x}, {y}): sPos: {spos}, binPos: {binpos}".format(x=p.x, y=p.y, spos=sPos, binpos=binPos))
+            #print("({x}, {y}): sPos: {spos}, binPos: {binpos}".format(x=p.x(), y=p.y(), spos=sPos, binpos=binPos))
 
             sCounts[binPos] += 1
-            sSum[binPos] += self.getPixel(int(pixel.x), int(pixel.y))
+            sSum[binPos] += self.getPixel(int(pixel.x()), int(pixel.y()))
 
         # Replace zero counts by 1 to avoid div by zero:
         sCounts[sCounts==0] = 1
@@ -1146,8 +1146,8 @@ class Image:
         t.make_unit_vector()
 
         # Convert to 2D vectors:
-        s = Vector2D(s.x, s.y)
-        t = Vector2D(t.x, t.y)
+        s = Vector2D(s.x(), s.y())
+        t = Vector2D(t.x(), t.y())
 
         tUnit = copy.deepcopy(t)
 
@@ -1193,8 +1193,8 @@ class Image:
             sPos = resolution*b
 
             # Construct a vector to the left point of the bin on the s axis:
-            rectPos.setx(sUnit.x)
-            rectPos.sety(sUnit.y)
+            rectPos.setx(sUnit.x())
+            rectPos.sety(sUnit.y())
             rectPos.scale(sPos)
             rectPos.add(origin)
 

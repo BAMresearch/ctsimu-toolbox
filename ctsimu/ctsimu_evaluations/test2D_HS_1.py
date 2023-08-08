@@ -172,7 +172,7 @@ class ballCollector():
             if self.circlesInOrder[i] is None:
                 text += "Not found!"
             else:
-                text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self.circlesInOrder[i].x, self.circlesInOrder[i].y)
+                text += "   cx = {:.3f} px,\tcy = {:.3f} px".format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
 
             text += "\n"
 
@@ -185,7 +185,7 @@ class ballCollector():
             if self.circlesInOrder[i] is None:
                 text += "Not found!"
             else:
-                text += "{:.3f}\t{:.3f}".format(self.circlesInOrder[i].x, self.circlesInOrder[i].y)
+                text += "{:.3f}\t{:.3f}".format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
 
             text += "\n"
 
@@ -466,8 +466,8 @@ class Test2D_HS_1(generalTest):
                 translation = Vector.connection(self.nominalCircles.getCircle(i), self.circleCollection.getCircle(i))
                 summaryText += "Translation hole {i:02d} [px]: {vec}\n".format(i=i, vec=translation)
 
-                translationsX.append(translation.x)
-                translationsY.append(translation.y)
+                translationsX.append(translation.x())
+                translationsY.append(translation.y())
 
             meanTranslationX, stdDevTranslationX = list_mean_and_stddev(translationsX)
             meanTranslationY, stdDevTranslationY = list_mean_and_stddev(translationsY)
@@ -482,7 +482,7 @@ class Test2D_HS_1(generalTest):
 
             # Special Summary Line:
             #summaryText += "\n\n"
-            #summaryText += "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(meanScaleDeviation, stdDevScaleDeviation, meanAngle, stdDevAngle, meanTranslation.x, stdDevTranslation.x, meanTranslation.y, stdDevTranslation.y
+            #summaryText += "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(meanScaleDeviation, stdDevScaleDeviation, meanAngle, stdDevAngle, meanTranslation.x(), stdDevTranslation.x(), meanTranslation.y(), stdDevTranslation.y()
 
 
             resultFileName = "{}/{}_summary.txt".format(self.resultFileDirectory, self.name)

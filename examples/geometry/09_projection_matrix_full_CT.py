@@ -3,15 +3,15 @@ from ctsimu.geometry import *
 
 # Set up a quick CT geometry:
 myCT = Geometry()
-myCT.stage.center.x    = 250  # SOD
-myCT.detector.center.x = 800  # SDD
+myCT.stage.center.set_x(250)     # SOD in mm
+myCT.detector.center.set_x(800)  # SDD in mm
 
 # Set the detector size:
-myCT.detector.setSize(
-	pixelsU = 2000,
-	pixelsV = 1000,
-	pitchU  = 0.2,
-	pitchV  = 0.2)
+myCT.detector.set_size(
+	pixels_u = 2000,
+	pixels_v = 1000,
+	pitch_u  = 0.2,
+	pitch_v  = 0.2)
 
 myCT.update() # signals that we made manual changes
 myCT.store()  # backups the initial configuration
@@ -45,8 +45,8 @@ for p in range(projections):
 	myCT.update()
 
 	# Calculate a projection matrix for this frame:
-	P_openCT = myCT.projectionMatrix(mode="openCT")
-	P_CERA   = myCT.projectionMatrix(mode="CERA")
+	P_openCT = myCT.projection_matrix(mode="openCT")
+	P_CERA   = myCT.projection_matrix(mode="CERA")
 
 	# Add to list of projection matrices:
 	matrices_openCT.append(P_openCT)
@@ -62,12 +62,12 @@ for p in range(projections):
 # in mm:
 
 voxelSize = 0.0625
-bounding_box_x = voxelSize * myCT.detector.pixelsU
-bounding_box_y = voxelSize * myCT.detector.pixelsU
-bounding_box_z = voxelSize * myCT.detector.pixelsV
+bounding_box_x = voxelSize * myCT.detector.pixels_u
+bounding_box_y = voxelSize * myCT.detector.pixels_u
+bounding_box_z = voxelSize * myCT.detector.pixels_v
 
 # Write the openCT configuration file, including the projection matrices:
-writeOpenCTFile(
+write_openCT_file(
 	geo=myCT,
 	totalAngle=scan_range,
 	boundingBoxX=bounding_box_x,
@@ -81,14 +81,14 @@ writeOpenCTFile(
 
 # CERA configuration:
 # -------------------
-writeCERAconfig(
+write_cera_config(
 	geo=myCT,
 	totalAngle=scan_range,
 	projectionFilePattern=projectionFilePattern,
 	matrices=matrices_CERA,
 	basename="recon_CERA",
-	voxelsX=myCT.detector.pixelsU,
-    voxelsY=myCT.detector.pixelsU,
-    voxelsZ=myCT.detector.pixelsV,
+	voxelsX=myCT.detector.pixels_u,
+    voxelsY=myCT.detector.pixels_u,
+    voxelsZ=myCT.detector.pixels_v,
     i0max=44000  # the average free-beam intensity
 )

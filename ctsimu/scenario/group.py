@@ -100,7 +100,7 @@ class Group:
 		current_value : float or str or bool
 			Current value of the requested property.
 		"""
-		return self.parameter(key).current_value()
+		return self.parameter(key).current_value
 
 	def standard_value(self, key:str) -> float | str | bool:
 		"""The standard value for a given property `key`
@@ -116,7 +116,7 @@ class Group:
 		standard_value : float or str or bool
 			Standard value of the requested property.
 		"""
-		return self.parameter(key).standard_value()
+		return self.parameter(key).standard_value
 
 	def changed(self, key:str) -> bool:
 		"""Has the property changed its value since the last acknowledgment?
@@ -437,7 +437,7 @@ class Group:
 				raise f"Error setting key '{key}' of '{self.name}': {e}"
 
 		for subgroup in self.subgroups:
-			json_subobj = dict()
+			json_subobj = None
 
 			# Check if subgroup's name is in json_obj,
 			# extract if found:
@@ -452,7 +452,7 @@ class Group:
 
 			subgroup.set_from_json(json_subobj)
 
-	def set_frame(self, frame:float, nFrames:int):
+	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False):
 		"""
 		Set up the group for the given `frame` number, obeying all drifts.
 
@@ -463,6 +463,10 @@ class Group:
 
 		nFrames : int
 			Total number of frames in scan.
+
+		reconstruction : bool
+			If `True`, set frame as seen by reconstruction software.
+			Default: `False`.
 		"""
 
 		# Set the frame for all elements of the properties dictionary:
@@ -470,36 +474,11 @@ class Group:
 			self.properties[key].set_frame(
 				frame=frame,
 				nFrames=nFrames,
-				only_drifts_known_to_reconstruction=False
+				reconstruction=reconstruction
 			)
 
 		for subgroup in self.subgroups:
-			subgroup.set_frame(frame, nFrames)
-
-	def set_frame_for_reconstruction(self, frame:float, nFrames:int):
-		"""
-		Set up the group for the given `frame` number, obeying only those
-		deviations and drifts that are known to the reconstruction software.
-
-		Parameters
-		----------
-		frame : float
-			Current frame number.
-
-		nFrames : int
-			Total number of frames in scan.
-		"""
-
-		# Set the frame for all elements of the properties dictionary:
-		for key in self.properties:
-			self.properties[key].set_frame(
-				frame=frame,
-				nFrames=nFrames,
-				only_drifts_known_to_reconstruction=True
-			)
-
-		for subgroup in self.subgroups:
-			subgroup.set_frame(frame, nFrames)
+			subgroup.set_frame(frame, nFrames, reconstruction)
 
 class Array(Group):
 	"""Array of objects that are all of the same kind, such as
@@ -548,10 +527,22 @@ class Array(Group):
 			else:
 				raise TypeError("Array: set_from_json: given object is neither a list nor a single JSON dictionary.")
 
-	def set_frame(self, frame:float, nFrames:int):
-		for element in self.elements:
-			element.set_frame(frame, nFrames)
+	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False):
+		"""
+		Set up the group for the given `frame` number.
 
-	def set_frame_for_reconstruction(self, frame:float, nFrames:int):
+		Parameters
+		----------
+		frame : float
+			Current frame number.
+
+		nFrames : int
+			Total number of frames in scan.
+
+		reconstruction : bool
+			If `True`, set frame as seen by reconstruction software.
+			Default: `False`.
+		"""
+
 		for element in self.elements:
-			element.set_frame_for_reconstruction(frame, nFrames)
+			element.set_frame(frame, nFrames, reconstruction)

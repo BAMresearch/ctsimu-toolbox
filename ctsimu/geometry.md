@@ -143,7 +143,7 @@ The final projection matrix is a 3×4 matrix that results from a multiplication 
 
 ## Generating Projection Matrices
 
-You can call the function `Geometry.projectionMatrix()` to get a projection matrix for the geometry's current configuration.
+You can call the function `Geometry.projection_matrix()` to get a projection matrix for the geometry's current configuration.
 
 ```python
 .. include:: ../examples/geometry/04_projection_matrix.py
@@ -153,7 +153,7 @@ You can call the function `Geometry.projectionMatrix()` to get a projection matr
 
 The toolbox provides two pre-configured modes to calculate projection matrices for openCT (which can be used in VGSTUDIO MAX) and for SIEMENS CERA. Each software needs slightly different projection matrices, because they define their detector coordinate system in different ways. See the next section about the image and volume coordinate system for details.
 
-In the following example, we calculate a projection matrix for each software by defining the `mode` when calling the `Geometry.projectionMatrix()` function.
+In the following example, we calculate a projection matrix for each software by defining the `mode` when calling the `Geometry.projection_matrix()` function.
 
 ```python
 .. include:: ../examples/geometry/05_projection_matrix_modes.py
@@ -178,7 +178,7 @@ Even though we have a pre-defined more for CERA, we will use its image coordinat
 
 CERA's volume coordinate system matches our stage coordinate system, so we won't have to create our own volume coordinate system.
 
-CERA's image coordinate system has its origin in the center of the lower left pixel of the detector. This means we have to move its origin by half the detector's physical width to the left and half the detector's physical height downwards from the origin of the detector coordinate system, and then back by half a physical pixel size (the detector pitch). We can use the attributes `physWidth` and `physHeight`, which are automatically calculated when calling `setSize()`.
+CERA's image coordinate system has its origin in the center of the lower left pixel of the detector. This means we have to move its origin by half the detector's physical width to the left and half the detector's physical height downwards from the origin of the detector coordinate system, and then back by half a physical pixel size (the detector pitch). We can use the attributes `phys_width` and `phys_height`, which are automatically calculated when calling `set_size()`.
 
 ```python
 .. include:: ../examples/geometry/06_projection_matrix_cera.py
@@ -186,7 +186,7 @@ CERA's image coordinate system has its origin in the center of the lower left pi
 
 #### Example 2: openCT
 
-In the case of openCT, the image coordinate system matches our detector coordinate system. Also, the volume coordinate system matches our definition of the stage coordinate system. In this case, we can simply call the `projectionMatrix()` function without any parameters.
+In the case of openCT, the image coordinate system matches our detector coordinate system. Also, the volume coordinate system matches our definition of the stage coordinate system. In this case, we can simply call the `projection_matrix()` function without any parameters.
 
 However, for the sake of clarity, we create a standard coordinate system for both the image and volume coordinate system. Because they are expressed in terms of their respective reference coordinate systems (detector and stage), they exactly represent their respective reference CS as seen from the outside world.
 
@@ -210,7 +210,7 @@ We also scale the basis vectors of the volume coordinate system by the voxel siz
 
 A single projection matrix is not enough to describe a full CT scan. We need one projection matrix for each frame (i.e., for each projection image).
 
-We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `writeOpenCTFile()` or `writeCERAconfig()` to create specific reconstruction configuration files for each reconstruction software.
+We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `write_openCT_file()` or `write_cera_config()` to create specific reconstruction configuration files for each reconstruction software.
 
 In the loop, it is advisable not to rotate the stage incrementally for each frame by a certain angular increment. This could lead to the accumulation of small floating-point rounding inaccuracies. Instead, we create a backup of the initial setup (at frame zero) using the `Geometry.store()` function. In each step of the loop, we restore this initial configuration by calling `Geometry.restore()` and then rotate the stage to its current absolute angle. This approach of parameterizing the whole CT trajectory as a deterministic function that only depends on the initial configuration and the current frame number is preferred over incremental changes in a loop, but might not always be feasible.
 

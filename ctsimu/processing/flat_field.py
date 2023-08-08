@@ -111,7 +111,7 @@ class Step_FlatFieldCorrection(Step):
                 elif(self.analyticalCorrection): # Analytical flat field
                     if(self.jsonScene != None):
                         ctsimuGeometry = Geometry(self.jsonScene)
-                        self.gainImage = ctsimuGeometry.createDetectorFlatField_analytical()
+                        self.gainImage = ctsimuGeometry.create_detector_flat_field_analytical()
                         if self.flatFieldRescaleFactor != 1:
                             print("WARNING: For analytical correction, a rescale factor of 1 is recommended. Your current choice: {}".format(self.flatFieldRescaleFactor))
                     else:

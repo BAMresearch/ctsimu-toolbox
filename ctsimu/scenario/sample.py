@@ -55,7 +55,7 @@ class Sample(Part):
 
 		# Extract the sample's geometry:
 		geo = json_extract(json_object, ["position"])
-		self.set_geometry(geo, stage_coordinate_system)
+		self.set_geometry(geo, stage_coordinate_system, "sample")
 
 		Group.set_from_json(self, json_object)
 

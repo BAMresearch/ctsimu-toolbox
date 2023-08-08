@@ -13,15 +13,15 @@ pixelRows = 1000
 myCT = Geometry()
 
 # Stage:
-myCT.stage.center.x = SOD
+myCT.stage.center.set_x(SOD)
 
 # Detector:
-myCT.detector.center.x = SDD
-myCT.detector.setSize(
-    pixelsU = pixelColumns,
-    pixelsV = pixelRows,
-    pitchU = pixelSize,
-    pitchV = pixelSize
+myCT.detector.center.set_x(SDD)
+myCT.detector.set_size(
+    pixels_u = pixelColumns,
+    pixels_v = pixelRows,
+    pitch_u = pixelSize,
+    pitch_v = pixelSize
     )
 
 myCT.update() # calculates derived geometry parameters

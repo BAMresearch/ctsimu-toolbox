@@ -25,7 +25,7 @@ class Matrix:
         NumPy array that contains the matrix values.
     """
 
-    def __init__(self, cols:int = None, rows:int = None, numpy_data = None):
+    def __init__(self, cols:int = None, rows:int = None, values:list=None, numpy_data = None):
         """Initialize matrix by given size or numpy data array.
 
         If `cols` and `rows` are not `None`, a matrix of the given size
@@ -40,11 +40,17 @@ class Matrix:
         rows : int, optional
             Number of matrix rows.
 
+        values : list, optional
+            List of lists to initialize matrix.
+
         numpy_data : numpy.ndarray, optional
             2-dimensional NumPy array. The number of columns and rows is determined from the array.
         """
 
-        if numpy_data is not None:
+        if values is not None:
+            npda = numpy.array(values)
+            self.set_numpy_data_array(npda)
+        elif numpy_data is not None:
             self.set_numpy_data_array(numpy_data)
         elif (cols is not None) and (rows is not None):
             self.reset(cols=cols, rows=rows)
@@ -381,6 +387,8 @@ class Vector:
         self._unit_vector = None  # the unit vector that corresponds to this vector
         self._length = None  # vector's length
 
+        self.n_entries = 3 # default: three-component vector
+
         if numpy_data is not None:
             # Initialize from given numpy data array:
             self.set_numpy_data_array(numpy_data)
@@ -551,7 +559,7 @@ class Vector:
         return self.value[i]
 
     def get_copy(self) -> 'Vector':
-        """Get copy of this `Vector` object.
+        """Get a copy of this `Vector` object.
 
         Returns
         -------
@@ -1267,7 +1275,7 @@ class Polygon:
     def __str__(self):
         s = ""
         for i, p in enumerate(self.points):
-            s += "P{i}: ({x}, {y})\n".format(i=i, x=p.x, y=p.y)
+            s += "P{i}: ({x}, {y})\n".format(i=i, x=p.x(), y=p.y())
 
         return s
 
@@ -1282,7 +1290,7 @@ class Polygon:
         """
 
         for i, p in enumerate(self.points):
-            newPoint = Vector(x=p.x, y=p.y, z=z_component, n=3)
+            newPoint = Vector(x=p.x(), y=p.y(), z=z_component, n=3)
             self.points[i] = newPoint
 
     def set(self, *points:'Vector'):

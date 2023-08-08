@@ -67,7 +67,7 @@ class Source(Part):
 
 		# Spectrum
 		self.spectrum = Group("spectrum")
-		self.spectrum.set(key="monochromatic", value=False, native_unit="bool")
+		self.spectrum.set(key="monochromatic", value=False, native_unit="bool", simple=True)
 		self.spectrum.set(key="file",          value=None,  native_unit="string")
 		self.add_subgroup(self.spectrum)
 
@@ -91,65 +91,6 @@ class Source(Part):
 
 		return True
 
-	def set_frame_legacy(self, frame:float, nFrames:int, w_rotation:float=0):
-		"""Set all properties of the X-ray source to match
-		the given `frame` number, given a total of `nFrames`.
-
-		All drifts and deviations are obeyed.
-
-		Parameters
-		----------
-		frame : float
-			Current frame number.
-
-		nFrames : int
-			Total number of frames in scan.
-
-		w_rotation : float
-			An additional rotation (in rad) around the stage's w axis
-			for this frame. Used for the sample stage, which
-			rotates during a CT scan.
-		"""
-
-		# Update window and filter lists:
-		for window in self.windows:
-			window.set_frame(frame, nFrames, only_known_to_reconstruction=False)
-
-		for filt in self.filters:
-			filt.set_frame(frame, nFrames, only_known_to_reconstruction=False)
-
-		Part.set_frame(self, frame, nFrames, w_rotation)
-
-	def set_frame_for_reconstruction_legacy(self, frame:float, nFrames:int, w_rotation:float=0):
-		"""Set all properties of the X-ray source to match
-		the given `frame` number, given a total of `nFrames`.
-
-		Only those drifts and deviations are obeyed which are known to the
-		reconstruction software.
-
-		Parameters
-		----------
-		frame : float
-			Current frame number.
-
-		nFrames : int
-			Total number of frames in scan.
-
-		w_rotation : float
-			An additional rotation (in rad) around the stage's w axis
-			for this frame. Used for the sample stage, which
-			rotates during a CT scan.
-		"""
-
-		# Update window and filter lists:
-		for window in self.windows:
-			window.set_frame(frame, nFrames, only_known_to_reconstruction=True)
-
-		for filt in self.filters:
-			filt.set_frame(frame, nFrames, only_known_to_reconstruction=True)
-
-		Part.set_frame_for_reconstruction(self, frame, nFrames, w_rotation)
-
 	def set_from_json(self, json_scenario:dict):
 		"""Import the X-ray source definition and geometry from the JSON object.
 		The JSON object should contain the complete content
@@ -165,7 +106,7 @@ class Source(Part):
 
 		# Extract the X-ray source's geometry:
 		geo = json_extract(json_scenario, ["geometry", "source"])
-		self.set_geometry(geo)
+		self.set_geometry(json_geometry_object=geo, proper_cs="local")
 
 		self.source_geometry_extras.set_from_json(geo)
 

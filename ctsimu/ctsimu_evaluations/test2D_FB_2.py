@@ -39,8 +39,8 @@ class Test2D_FB_2(generalTest):
             self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-FB-2_2021-03-24v06r00dp.json"
 
             if(self.jsonScenarioFile != None):
-                self.geometry = Geometry(jsonFileFromPkg=self.jsonScenarioFile)
-                self.analyticalIntensityProfileImage = self.geometry.createDetectorFlatField_analytical()
+                self.geometry = Geometry(json_file_from_pkg=self.jsonScenarioFile)
+                self.analyticalIntensityProfileImage = self.geometry.create_detector_flat_field_analytical()
 
                 # Raise normalized image to maximum grey value of 60000,
                 # as demanded by test 2D-FB-2:
@@ -55,7 +55,7 @@ class Test2D_FB_2(generalTest):
         self.prepare()
         self.currentRun += 1
 
-        self.lineNr = int(round(self.geometry.brightestSpotDetector.y))
+        self.lineNr = int(round(self.geometry.brightest_spot_detector.y))
         log("Getting horizontal profile for detector row {l}.".format(l=self.lineNr))
 
         # Horizontal profile of the analytical image along the central line:

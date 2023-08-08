@@ -13,7 +13,7 @@ class Step_Median(Step):
         Step.__init__(self, "Median")
         self.size = medianSize
 
-    def setSize(self, medianSize=3):
+    def set_size(self, medianSize=3):
         self.setPrepared(False)
         self.size = medianSize
 

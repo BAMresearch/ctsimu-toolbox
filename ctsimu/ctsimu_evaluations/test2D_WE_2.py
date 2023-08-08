@@ -57,8 +57,8 @@ class Test2D_WE_2(generalTest):
 
             # Calculate the analytical image of an edge covering the image:
             if(self.jsonScenarioFile != None):
-                self.geometry = Geometry(jsonFileFromPkg=self.jsonScenarioFile)
-                self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.createDetectorFlatField_sphere(self.clippingRectangle)
+                self.geometry = Geometry(json_file_from_pkg=self.jsonScenarioFile)
+                self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
                 self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
                 self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)
 

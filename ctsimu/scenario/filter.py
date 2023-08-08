@@ -61,7 +61,7 @@ class Filter:
 		else:
 			raise TypeError(f"CTSimU Filter: set_thickness: invalid type of given thickness: '{type(density)}'. Must be 'float' or 'Parameter'.")
 
-	def set_frame(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
 		"""Prepare the thickness parameter for the given `frame`
 		number (out of a total of `nFrames`). Handles possible drifts.
 
@@ -73,7 +73,7 @@ class Filter:
 		nFrames : int
 			Total number of frames in scan.
 
-		only_known_to_reconstruction : bool
+		reconstruction : bool
 			`True` if only those drifts known to the reconstruction software
 			must be taken into account, `False` if all drifts are taken
 			into account.
@@ -85,7 +85,7 @@ class Filter:
 			previous state, `False` if not.
 		"""
 
-		changed = self.thickness.set_frame(frame, nFrames, only_known_to_reconstruction)
+		changed = self.thickness.set_frame(frame, nFrames, reconstruction)
 		return changed
 
 	def set_from_json(self, json_object:dict):

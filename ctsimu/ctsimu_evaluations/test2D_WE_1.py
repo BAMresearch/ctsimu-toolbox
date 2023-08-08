@@ -181,10 +181,10 @@ class Test2D_WE_1(generalTest):
                 self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-WE-1_Spot1_2021-10-07v02r02rtr.json"
 
                 if(self.jsonScenarioFile != None):
-                    self.geometry = Geometry(jsonFileFromPkg=self.jsonScenarioFile)
+                    self.geometry = Geometry(json_file_from_pkg=self.jsonScenarioFile)
 
                     print("Computing an analytical image for an ideal point source...")
-                    self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.createDetectorFlatField_sphere(self.clippingRectangle)
+                    self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
                     self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
                     self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)
 
@@ -207,7 +207,7 @@ class Test2D_WE_1(generalTest):
 
                     print("Calculating the fundamental LSF and MTF from the ideal edge image...")
                     # Calculate the edge spread function (using a line profile across the edge):
-                    self.results_idealPointSource.lineProfileGV, self.results_idealPointSource.lineProfilePos, stepsize = self.analyticalEdgeImageFF.lineProfile(x0=self.p0.x, y0=self.p0.y, x1=self.p1.x, y1=self.p1.y, width=self.profileWidth, resolution=self.profileRes)
+                    self.results_idealPointSource.lineProfileGV, self.results_idealPointSource.lineProfilePos, stepsize = self.analyticalEdgeImageFF.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
 
                     # Nyquist frequency determines center of MTF frequency range:
                     self.results_idealPointSource.fnyq = 1.0 / (2.0*stepsize)
@@ -471,7 +471,7 @@ class Test2D_WE_1(generalTest):
         print("Calculating the LSF and MTF of the projection image...")
 
         # Calculate the edge spread function (using a line profile across the edge):
-        self.results[i].lineProfileGV, self.results[i].lineProfilePos, stepsize = image.lineProfile(x0=self.p0.x, y0=self.p0.y, x1=self.p1.x, y1=self.p1.y, width=self.profileWidth, resolution=self.profileRes)
+        self.results[i].lineProfileGV, self.results[i].lineProfilePos, stepsize = image.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
 
         ESFmax = numpy.amax(self.results[i].lineProfileGV)
         if ESFmax != 0:

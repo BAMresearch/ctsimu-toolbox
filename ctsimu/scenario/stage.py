@@ -29,4 +29,4 @@ class Stage(Part):
 
 		# Extract the stage's geometry:
 		geo = json_extract(json_scenario, ["geometry", "stage"])
-		self.set_geometry(geo)
+		self.set_geometry(json_geometry_object=geo, proper_cs="local")

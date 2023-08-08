@@ -72,7 +72,7 @@ class MaterialComponent:
 		jd["mass_fraction"] = self.mass_fraction.json_dict()
 		return jd
 
-	def set_frame(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
 		"""Prepare the material component for the given `frame` number,
 		considering potential drifts.
 
@@ -84,7 +84,7 @@ class MaterialComponent:
 		nFrames : int
 			Total number of frames in scan.
 
-		only_known_to_reconstruction : bool
+		reconstruction : bool
 			`True` if only those drifts known to the reconstruction software
 			must be taken into account, `False` if all drifts are taken
 			into account.
@@ -96,7 +96,7 @@ class MaterialComponent:
 			(due to drifts).
 		"""
 
-		value_changed = self.formula.set_frame(frame, nFrames, only_known_to_reconstruction) or self.mass_fraction.set_frame(frame, nFrames, only_known_to_reconstruction)
+		value_changed = self.formula.set_frame(frame, nFrames, reconstruction) or self.mass_fraction.set_frame(frame, nFrames, reconstruction)
 		return value_changed
 
 	def set_from_json(self, json_object:dict):
@@ -221,7 +221,7 @@ class Material:
 
 		return jd
 
-	def set_frame(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
 		"""Prepare the material for the given `frame` number,
 		considering potential drifts.
 
@@ -234,11 +234,11 @@ class Material:
 			Total number of frames in scan.
 		"""
 
-		density_changed = self.density.set_frame(frame, nFrames, only_known_to_reconstruction)
+		density_changed = self.density.set_frame(frame, nFrames, reconstruction)
 
 		composition_changed = False
 		for comp in self.composition:
-			composition_changed = composition_changed or comp.set_frame(frame, nFrames, only_known_to_reconstruction)
+			composition_changed = composition_changed or comp.set_frame(frame, nFrames, reconstruction)
 
 		changed = density_changed or composition_changed
 		return changed

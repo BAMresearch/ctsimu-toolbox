@@ -63,144 +63,6 @@ class CoordinateSystem:
         self.v      = Vector(0, 1, 0)
         self.w      = Vector(0, 0, 1)
 
-    def json_import(self, geometry:dict):
-        """Set up geometry from a JSON dictionary.
-
-        Parameters
-        ----------
-        geometry : dict
-            A parsed JSON dictionary from a [CTSimU scenario description] file.
-
-        [CTSimU scenario description]: https://bamresearch.github.io/ctsimu-scenarios/
-
-        Raises
-        ------
-        KeyError
-            When expected JSON keys for center and vector x, y, z
-            components are not found in the dictionary.
-        """
-
-        # Get center position from JSON dict:
-        if "center" in geometry:
-            if "x" in geometry["center"]:
-                cx = in_mm_json(geometry["center"]["x"])
-            else:
-                raise KeyError("No \"x\" coordinate found for the center.")
-
-            if "y" in geometry["center"]:
-                cy = in_mm_json(geometry["center"]["y"])
-            else:
-                raise KeyError("No \"y\" coordinate found for the center.")
-
-            if "z" in geometry["center"]:
-                cz = in_mm_json(geometry["center"]["z"])
-            else:
-                raise KeyError("No \"z\" coordinate found for the center.")
-
-            self.center.set(cx, cy, cz)
-        # Try old British spelling (up to file format v0.9)
-        elif "centre" in geometry:
-            if "x" in geometry["centre"]:
-                cx = in_mm_json(geometry["centre"]["x"])
-            else:
-                raise KeyError("No \"x\" coordinate found for the center.")
-
-            if "y" in geometry["centre"]:
-                cy = in_mm_json(geometry["centre"]["y"])
-            else:
-                raise KeyError("No \"y\" coordinate found for the center.")
-
-            if "z" in geometry["centre"]:
-                cz = in_mm_json(geometry["centre"]["z"])
-            else:
-                raise KeyError("No \"z\" coordinate found for the center.")
-
-            self.center.set(cx, cy, cz)
-        else:
-            raise KeyError("JSON file is missing a geometry \"center\" section.")
-
-        # Get vector u from JSON dict:
-        if "vector_u" in geometry:
-            if "x" in geometry["vector_u"]:
-                ux = geometry["vector_u"]["x"]
-            else:
-                raise KeyError("No \"x\" component found for vector u.")
-
-            if "y" in geometry["vector_u"]:
-                uy = geometry["vector_u"]["y"]
-            else:
-                raise KeyError("No \"y\" component found for vector u.")
-
-            if "z" in geometry["vector_u"]:
-                uz = geometry["vector_u"]["z"]
-            else:
-                raise KeyError("No \"z\" component found for vector u.")
-        else:
-            raise KeyError("JSON file is missing a geometry \"vector_u\" section.")
-
-        # Get vector w from JSON dict:
-        if "vector_w" in geometry:
-            if "x" in geometry["vector_w"]:
-                wx = geometry["vector_w"]["x"]
-            else:
-                raise KeyError("No \"x\" component found for vector w.")
-
-            if "y" in geometry["vector_w"]:
-                wy = geometry["vector_w"]["y"]
-            else:
-                raise KeyError("No \"y\" component found for vector w.")
-
-            if "z" in geometry["vector_w"]:
-                wz = geometry["vector_w"]["z"]
-            else:
-                raise KeyError("No \"z\" component found for vector w.")
-        else:
-            raise KeyError("JSON file is missing a geometry \"vector_w\" section.")
-
-        # Set up the geometry from the information given in the JSON file:
-        c = Vector(cx, cy, cz)  # center
-        u = Vector(ux, uy, uz)  # u basis vector
-        w = Vector(wx, wy, wz)  # w basis vector
-        v = w.cross(u)
-        self.setup(c, u, v, w)
-        self.make_unit_coordinate_system()
-
-        # Apply deviations from the now-ideal geometry:
-        if "deviation" in geometry:
-            # Positional deviations:
-            if "position" in geometry["deviation"]:
-                if "x" in geometry["deviation"]["position"]:
-                    if geometry["deviation"]["position"]["x"] != None:
-                        translationX = in_mm_json(geometry["deviation"]["position"]["x"])
-                        self.translate_X(translationX)
-
-                if "y" in geometry["deviation"]["position"]:
-                    if geometry["deviation"]["position"]["y"] != None:
-                        translationY = in_mm_json(geometry["deviation"]["position"]["y"])
-                        self.translate_y(translationY)
-
-                if "z" in geometry["deviation"]["position"]:
-                    if geometry["deviation"]["position"]["z"] != None:
-                        translationZ = in_mm_json(geometry["deviation"]["position"]["z"])
-                        self.translate_z(translationZ)
-
-            # Rotations according to w''v'u convention:
-            if "rotation" in geometry["deviation"]:
-                if "w" in geometry["deviation"]["rotation"]:
-                    if geometry["deviation"]["rotation"]["w"] != None:
-                        angleAroundW = in_rad_json(geometry["deviation"]["rotation"]["w"])
-                        self.rotate_around_w(angleAroundW)
-
-                if "v" in geometry["deviation"]["rotation"]:
-                    if geometry["deviation"]["rotation"]["v"] != None:
-                        angleAroundV = in_rad_json(geometry["deviation"]["rotation"]["v"])
-                        self.rotate_around_v(angleAroundV)
-
-                if "u" in geometry["deviation"]["rotation"]:
-                    if geometry["deviation"]["rotation"]["u"] != None:
-                        angleAroundU = in_rad_json(geometry["deviation"]["rotation"]["u"])
-                        self.rotate_around_u(angleAroundU)
-
     def make_unit_coordinate_system(self):
         """Convert all basis vectors into unit vectors."""
         self.u.make_unit_vector()
@@ -291,6 +153,19 @@ class CoordinateSystem:
         new_cs.v      = Vector(self.v.x(), self.v.y(), self.v.z())
         new_cs.w      = Vector(self.w.x(), self.w.y(), self.w.z())
         return new_cs
+
+    def copy_cs(self, other:'CoordinateSystem'):
+        """Make this CoordinateSystem a copy of the `other` coordinate system.
+
+        Parameters
+        ----------
+        other : CoordinateSystem
+            Another coordinate system to copy.
+        """
+        self.center = other.center.get_copy()
+        self.u      = other.u.get_copy()
+        self.v      = other.v.get_copy()
+        self.w      = other.w.get_copy()
 
     def update(self):
         """Signal a manual update to the center position or orientation vectors."""
@@ -721,7 +596,7 @@ def change_reference_frame_of_point(point:'Vector', csFrom:'CoordinateSystem', c
     return point_in_to
 
 
-class Detector(CoordinateSystem):
+class DetectorGeometry(CoordinateSystem):
     """Detector as geometrical object.
 
     With additional attributes for the spatial extension and
@@ -729,41 +604,41 @@ class Detector(CoordinateSystem):
 
     Attributes
     ----------
-    pixelsU : int
+    pixels_u : int
         Number of pixels in u direction.
 
-    pixelsV : int
+    pixels_v : int
         Number of pixels in v direction.
 
-    pitchU : float
+    pitch_u : float
         Size of a pixel in u direction.
         In units of the reference coordinate system.
 
-    pitchV : float
+    pitch_v : float
         Size of a pixel in v direction.
         In units of the reference coordinate system.
 
-    physWidth : float
+    phys_width : float
         Physical size in u direction.
         In units of the reference coordinate system.
-        Computed automatically after calling `setSize()`.
+        Computed automatically after calling `set_size()`.
 
-    physHeight : float
+    phys_height : float
         Physical size in v direction.
         In units of the reference coordinate system.
-        Computed automatically after calling `setSize()`.
+        Computed automatically after calling `set_size()`.
 
-    pixelOrigin : Vector
+    pixel_origin : Vector
         Origin of the pixel coordinate system in terms of the reference
         coordinate system. This is the outermost corner of the
         (0,0) pixel of the detector (often the "upper left" corner).
-        Computed automatically after calling `setSize()`.
+        Computed automatically after calling `set_size()`.
 
     Notes
     -----
-    Use `setSize()` to set the size of the detector, given its number of pixels
+    Use `set_size()` to set the size of the detector, given its number of pixels
     and the pitch. This function automatically computes the physical dimensions
-    `physWidth` and `physHeight` and the origin of the pixel coordinate system.
+    `phys_width` and `phys_height` and the origin of the pixel coordinate system.
     """
 
     def __init__(self):
@@ -775,54 +650,54 @@ class Detector(CoordinateSystem):
         # Call init from parent class:
         CoordinateSystem.__init__(self)
 
-        self.pixelsU     = None  # Detector pixels in u direction
-        self.pixelsV     = None  # Detector pixels in v direction
-        self.pitchU = None  # Size of a pixel in u direction in units of reference coordinate system
-        self.pitchV = None  # Size of a pixel in v direction in units of reference coordinate system
-        self.physWidth   = 0    # Physical width in units of reference coordinate system
-        self.physHeight  = 0    # Physical height in units of reference coordinate system
+        self.pixels_u     = None  # Detector pixels in u direction
+        self.pixels_v     = None  # Detector pixels in v direction
+        self.pitch_u      = None  # Size of a pixel in u direction in units of reference coordinate system
+        self.pitch_v      = None  # Size of a pixel in v direction in units of reference coordinate system
+        self.phys_width   = 0    # Physical width in units of reference coordinate system
+        self.phys_height  = 0    # Physical height in units of reference coordinate system
 
-        self.pixelOrigin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
+        self.pixel_origin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
 
-    def sizeIsSet(self):
-        if (self.pixelsU is None) or (self.pixelsV is None) or (self.pitchU is None) or (self.pitchV is None):
+    def size_is_set(self):
+        if (self.pixels_u is None) or (self.pixels_v is None) or (self.pitch_u is None) or (self.pitch_v is None):
             return False
 
         return True
 
-    def setSize(self, pixelsU:int = None, pixelsV:int = None, pitchU:float = None, pitchV:float = None):
+    def set_size(self, pixels_u:int = None, pixels_v:int = None, pitch_u:float = None, pitch_v:float = None):
         """Set the physical size of the detector.
 
         From the given parameters (number of pixels and pitch), the physical
         size of the detector and the position of the origin of the pixel
         coordinate system will be calculated. Make sure that the orientation
         vectors and position of the detector are correct before calling
-        `setSize()`, or call `computeGeometryParameters()` if you update
+        `set_size()`, or call `compute_geometry_parameters()` if you update
         the detector orientation or position later on.
 
         Parameters
         ----------
-        pixelsU : int
+        pixels_u : int
             Number of pixels in u direction.
 
-        pixelsV : int
+        pixels_v : int
             Number of pixels in v direction.
 
-        pitchU : float
+        pitch_u : float
             Pixel pitch in u direction.
 
-        pitchV : float
+        pitch_v : float
             Pixel pitch in v direction.
         """
 
-        self.pixelsU = int(pixelsU)
-        self.pixelsV = int(pixelsV)
-        self.pitchU = float(pitchU)
-        self.pitchV = float(pitchV)
+        self.pixels_u = int(pixels_u)
+        self.pixels_v = int(pixels_v)
+        self.pitch_u = float(pitch_u)
+        self.pitch_v = float(pitch_v)
 
-        self.computeGeometryParameters()
+        self.compute_geometry_parameters()
 
-    def computeGeometryParameters(self):
+    def compute_geometry_parameters(self):
         """Calculate the physical width and height, and the position of the
         pixel coordinate system origin.
 
@@ -832,45 +707,45 @@ class Detector(CoordinateSystem):
         Results are assigned to their member variables (attributes).
         """
 
-        if self.sizeIsSet():
+        if self.size_is_set():
             # Physical width and height:
-            self.physWidth  = self.pixelsU * self.pitchU
-            self.physHeight = self.pixelsV * self.pitchV
+            self.phys_width  = self.pixels_u * self.pitch_u
+            self.phys_height = self.pixels_v * self.pitch_v
 
             # Vectors of the detector coordinate system:
-            ux = self.u.unit_vector().x
-            uy = self.u.unit_vector().y
-            uz = self.u.unit_vector().z
-            vx = self.v.unit_vector().x
-            vy = self.v.unit_vector().y
-            vz = self.v.unit_vector().z
+            ux = self.u.unit_vector().x()
+            uy = self.u.unit_vector().y()
+            uz = self.u.unit_vector().z()
+            vx = self.v.unit_vector().x()
+            vy = self.v.unit_vector().y()
+            vz = self.v.unit_vector().z()
 
             # World coordinates of origin (0,0) of detector's pixel coordinate system:
-            self.pixelOrigin.x = self.center.x - 0.5*(ux*self.physWidth + vx*self.physHeight)
-            self.pixelOrigin.y = self.center.y - 0.5*(uy*self.physWidth + vy*self.physHeight)
-            self.pixelOrigin.z = self.center.z - 0.5*(uz*self.physWidth + vz*self.physHeight)
+            self.pixel_origin.set_x(self.center.x() - 0.5*(ux*self.phys_width + vx*self.phys_height))
+            self.pixel_origin.set_y(self.center.y() - 0.5*(uy*self.phys_width + vy*self.phys_height))
+            self.pixel_origin.set_z(self.center.z() - 0.5*(uz*self.phys_width + vz*self.phys_height))
 
     def cols(self) -> int:
         """Returns the number of detector columns (i.e., pixels in u direction).
 
         Returns
         -------
-        pixelsU : int
+        pixels_u : int
             Number of detector columns (i.e., pixels in u direction).
         """
-        return self.pixelsU
+        return self.pixels_u
 
     def rows(self) -> int:
         """Returns the number of detector rows (i.e., pixels in v direction).
 
         Returns
         -------
-        pixelsV : int
+        pixels_v : int
             Number of detector rows (i.e., pixels in v direction).
         """
-        return self.pixelsV
+        return self.pixels_v
 
-    def pixelVector(self, x: float, y: float) -> Vector:
+    def pixel_vector(self, x: float, y: float) -> Vector:
         """World position vector for given pixel coordinate.
 
         The pixel coordinate system has its origin at the detector corner with
@@ -884,7 +759,7 @@ class Detector(CoordinateSystem):
         (0.5, 0.5).
 
         To get the center coordinates for a given integer pixel location,
-        `pixelVectorCenter()` may be used.
+        `pixel_vector_center()` may be used.
 
         Parameters
         ----------
@@ -896,19 +771,19 @@ class Detector(CoordinateSystem):
 
         Returns
         -------
-        pixelVector : Vector
+        pixel_vector : Vector
             Pixel position in reference coordinate system (usually world)
             as a 3D vector.
         """
 
         # x, y are coordinates in pixel coordinates system
-        px = self.pixelOrigin.x + self.u.x*x*self.pitchU + self.v.x*y*self.pitchV
-        py = self.pixelOrigin.y + self.u.y*x*self.pitchU + self.v.y*y*self.pitchV
-        pz = self.pixelOrigin.z + self.u.z*x*self.pitchU + self.v.z*y*self.pitchV
-        pixelVector = Vector(px, py, pz)
-        return pixelVector
+        px = self.pixel_origin.x() + self.u.x()*x*self.pitch_u + self.v.x()*y*self.pitch_v
+        py = self.pixel_origin.y() + self.u.y()*x*self.pitch_u + self.v.y()*y*self.pitch_v
+        pz = self.pixel_origin.z() + self.u.z()*x*self.pitch_u + self.v.z()*y*self.pitch_v
+        pixel_vector = Vector(px, py, pz)
+        return pixel_vector
 
-    def pixelVectorCenter(self, x: float, y: float) -> Vector:
+    def pixel_vector_center(self, x: float, y: float) -> Vector:
         """World position vector of pixel center, for a pixel given in integer coordinates.
 
         Parameters
@@ -921,7 +796,7 @@ class Detector(CoordinateSystem):
 
         Returns
         -------
-        pixelVector : Vector
+        pixel_vector : Vector
             Position of the pixel center in the reference coordinate system
             (usually world) as a 3D vector.
 
@@ -930,7 +805,7 @@ class Detector(CoordinateSystem):
         If `float` coordinates are passed (non-integer),
         they are converted to integers using `math.floor`.
         """
-        return self.pixelVector(float(math.floor(x))+0.5, float(math.floor(y))+0.5)
+        return self.pixel_vector(float(math.floor(x))+0.5, float(math.floor(y))+0.5)
 
 
 class Geometry:
@@ -941,7 +816,7 @@ class Geometry:
 
     Attributes
     ----------
-    detector : Detector
+    detector : DetectorGeometry
         The detector geometry.
 
     source : CoordinateSystem
@@ -962,32 +837,19 @@ class Geometry:
         Shortest distance between stage center and detector plane.
         Calculated automatically by `update()`.
 
-    brightestSpotWorld : Vector
+    brightest_spot_world : Vector
         Location of the intensity maximum on the detector, in world coordinates.
         Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
 
-    brightestSpotDetector : Vector
+    brightest_spot_detector : Vector
         Location of the intensity maximum on the detector, in terms of
         detector coordinate system. Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
     """
 
-    def __init__(self, jsonFile:str = None, jsonFileFromPkg:str = None):
-        """Initialize using the provided JSON geometry specification.
-
-        Parameters
-        ----------
-        jsonFile : str, optional
-            Location of a CTSimU scenario description file to
-            import the geometry.
-
-        jsonFileFromPkg : str, optional
-            Load the geometry from a JSON file included in the package,
-            usually for internal purposes only.
-
-        """
-        self.detector    = Detector()
+    def __init__(self):
+        self.detector    = DetectorGeometry()
         self.source      = CoordinateSystem()
         self.stage       = CoordinateSystem()
 
@@ -1007,70 +869,8 @@ class Geometry:
         self.SDD = None
         self.SOD = None
         self.ODD = None
-        self.brightestSpotWorld = None
-        self.brightestSpotDetector = None
-
-        jsonText = None
-        if jsonFileFromPkg is not None:  # from package
-            jsonFile = jsonFileFromPkg
-            jsonText = pkgutil.get_data(__name__, jsonFileFromPkg).decode()
-        elif jsonFile is not None:  # from file
-            if os.path.isfile(jsonFile):
-                log("JSON File: {}".format(jsonFile))
-                jsonFilePtr = open(jsonFile, "r")
-                jsonText = jsonFilePtr.read()
-                jsonFilePtr.close()
-            else:
-                raise Exception("Can't find " + jsonFile)
-        else:
-            return
-
-        if(jsonText is not None):
-            try:
-                jsonDict = json.loads(jsonText)
-            except:
-                raise Exception("Error parsing JSON file: {}".format(jsonFile))
-
-            # Detector size and pixel pitch:
-            pixelsU = get_value_or_none(jsonDict, "detector", "columns", "value")
-            pixelsV = get_value_or_none(jsonDict, "detector", "rows", "value")
-            pitchU = get_value_or_none(jsonDict, "detector", "pixel_pitch", "u", "value")
-            pitchV = get_value_or_none(jsonDict, "detector", "pixel_pitch", "v", "value")
-
-            try:
-                detectorGeometry = get_value_or_none(jsonDict, "geometry", "detector")
-                if detectorGeometry != None:
-                    self.detector.json_import(detectorGeometry)
-                    self.detector.setSize(pixelsU, pixelsV, pitchU, pitchV)
-                else:
-                    raise Exception("JSON file does not contain a valid \"detector\" section in \"geometry\".")
-            except Exception as e:
-                log("Something went wrong when setting up the detector geometry using the JSON file description.")
-                raise Exception(e)
-
-            try:
-                sourceGeometry = get_value_or_none(jsonDict, "geometry", "source")
-                if sourceGeometry != None:
-                    self.source.json_import(sourceGeometry)
-                else:
-                    raise Exception("JSON file does not contain a valid \"source\" section in \"geometry\".")
-            except Exception as e:
-                log("Something went wrong when setting up the source geometry using the JSON file description.")
-                raise Exception(e)
-
-            try:
-                stageGeometry = get_value_or_none(jsonDict, "geometry", "stage")
-                if stageGeometry != None:
-                    self.stage.json_import(stageGeometry)
-                else:
-                    raise Exception("JSON file does not contain a valid \"stage\" section in \"geometry\".")
-            except Exception as e:
-                log("Something went wrong when setting up the stage geometry using the JSON file description.")
-                raise Exception(e)
-
-            self.update()
-        else:
-            raise Exception("JSON scenario file not available.")
+        self.brightest_spot_world = None
+        self.brightest_spot_detector = None
 
     def __str__(self):
         return self.info()
@@ -1089,10 +889,10 @@ class Geometry:
 
         ODD: Shortest distance between stage center and detector plane.
 
-        brightestSpotWorld: Location of the intensity maximum on the detector,
+        brightest_spot_world: Location of the intensity maximum on the detector,
             in world coordinates.  Assuming an isotropically radiating source.
 
-        brightestSpotDetector: Location of the intensity maximum on the
+        brightest_spot_detector: Location of the intensity maximum on the
             detector, in terms of detector coordinate system.
             Assuming an isotropically radiating source.
         """
@@ -1114,20 +914,20 @@ class Geometry:
         self.SOD = self.source.center.distance(self.stage.center)
 
         ## Brightest Spot in World Coordinate System:
-        self.brightestSpotWorld = copy.deepcopy(self.detector.w)
-        self.brightestSpotWorld.scale(self.SDD)
-        self.brightestSpotWorld.add(self.source.center)
+        self.brightest_spot_world = copy.deepcopy(self.detector.w)
+        self.brightest_spot_world.scale(self.SDD)
+        self.brightest_spot_world.add(self.source.center)
 
         ## Brightest Spot in Detector Coordinate System:
-        self.brightestSpotDetector = copy.deepcopy(self.brightestSpotWorld)
-        self.brightestSpotDetector.subtract(self.detector.center)
+        self.brightest_spot_detector = copy.deepcopy(self.brightest_spot_world)
+        self.brightest_spot_detector.subtract(self.detector.center)
 
-        pxU = self.brightestSpotDetector.dot(self.detector.u) / self.detector.pitchU + self.detector.cols()/2.0
-        pxV = self.brightestSpotDetector.dot(self.detector.v) / self.detector.pitchV + self.detector.rows()/2.0
+        pxU = self.brightest_spot_detector.dot(self.detector.u) / self.detector.pitch_u + self.detector.cols()/2.0
+        pxV = self.brightest_spot_detector.dot(self.detector.v) / self.detector.pitch_v + self.detector.rows()/2.0
 
-        self.brightestSpotDetector = Vector(pxU, pxV, 0)
+        self.brightest_spot_detector = Vector(pxU, pxV, 0)
 
-        self.detector.computeGeometryParameters()
+        self.detector.compute_geometry_parameters()
 
     def store(self):
         """Store the current configuration in a backup buffer.
@@ -1176,12 +976,12 @@ class Geometry:
         txt += "v:               {}\n".format(self.detector.v)
         txt += "w:               {}\n".format(self.detector.w)
         txt += "Pixels:          {cols} x {rows}\n".format(cols=self.detector.cols(), rows=self.detector.rows())
-        txt += "Pitch:           {pitchU} x {pitchV}\n".format(pitchU=self.detector.pitchU, pitchV=self.detector.pitchV)
-        txt += "Physical Size:   {width} x {height}\n".format(width=self.detector.physWidth, height=self.detector.physHeight)
+        txt += "Pitch:           {pitch_u} x {pitch_v}\n".format(pitch_u=self.detector.pitch_u, pitch_v=self.detector.pitch_v)
+        txt += "Physical Size:   {width} x {height}\n".format(width=self.detector.phys_width, height=self.detector.phys_height)
 
         txt += "Brightest Spot:\n"
-        txt += "  World:         {}\n".format(self.brightestSpotWorld)
-        txt += "  Pixels:        {}\n".format(self.brightestSpotDetector)
+        txt += "  World:         {}\n".format(self.brightest_spot_world)
+        txt += "  Pixels:        {}\n".format(self.brightest_spot_detector)
 
         txt += "\n"
         txt += "Source:\n"
@@ -1209,11 +1009,10 @@ class Geometry:
 
         return txt
 
-    def projectionMatrix(self,
+    def projection_matrix(self,
                          volumeCS:CoordinateSystem=None,
                          imageCS:CoordinateSystem=None,
-                         mode:str=None,
-                         mirror:bool=True):
+                         mode:str=None):
         """Calculate a projection matrix for the current geometry.
 
         Parameters
@@ -1234,12 +1033,6 @@ class Geometry:
             Pre-defined modes. Either `"openCT"` or `"CERA"` are supported.
             They override the `volumeCS` and `imageCS`, which can be set
             to `None` when using one of the pre-defined modes.
-
-        mirror : bool, optional
-            Whether or not a mirror operation should be applied to the
-            reconstruction volume. For many 3D processing softwares,
-            this parameter should be set to `True` to avoid having to
-            mirror the volume after loading it into the software.
 
         Returns
         -------
@@ -1290,13 +1083,21 @@ class Geometry:
             if mode in validModes:  # Override imageCS
                 image = CoordinateSystem()
 
+                if volumeCS is not None:
+                    volume = copy.deepcopy(volumeCS)
+                    # The given volume CS would be given in terms of the stage CS.
+                    # Transform to world CS:
+                    volume.change_reference_frame(self.stage, ctsimu_world)
+                else:
+                    volume = copy.deepcopy(self.stage)
+
                 if mode == "openCT":
                     """openCT places the origin of the image CS at the detector
                     center. The constructor places it at (0,0,0) automatically,
                     so there is nothing to do. Comments for illustration."""
-                    # image.center.x = 0
-                    # image.center.y = 0
-                    # image.center.z = 0
+                    # image.center.set_x(0)
+                    # image.center.set_y(0)
+                    # image.center.set_z(0)
 
                     """openCT's image CS is in mm units. We assume that all
                     other coordinate systems are in mm as well here (at least
@@ -1305,43 +1106,43 @@ class Geometry:
                     # image.v.scale(1.0)
                     # image.w.scale(1.0)
 
+                    volume.w.invert() # mirror reconstruction volume
+
                 elif mode == "CERA":
-                    if self.detector.sizeIsSet():
+                    if self.detector.size_is_set():
                         """CERA places the origin of the image CS in the center
                         of the lower left pixel of the projection image."""
-                        image.center.x = -self.detector.physWidth  / 2.0 + 0.5*self.detector.pitchU
-                        image.center.y =  self.detector.physHeight / 2.0 - 0.5*self.detector.pitchV
-                        # image.center.z = 0
+                        image.center.set_x(-self.detector.phys_width  / 2.0 + 0.5*self.detector.pitch_u)
+                        image.center.set_y( self.detector.phys_height / 2.0 - 0.5*self.detector.pitch_v)
+                        # image.center.set_z(0)
 
                         """CERA's unit of the image CS is in px, so we need to
                         scale the image CS basis vectors by the pixel size.
                         Also, v points up instead of down."""
-                        image.u.scale( self.detector.pitchU)
-                        image.v.scale(-self.detector.pitchV)
-                        image.w.scale(-1.0)
+                        image.u.scale( self.detector.pitch_u)
+                        image.v.scale(-self.detector.pitch_v)
+
+                        volume.w.invert() # mirror reconstruction volume
                     else:
-                        raise RuntimeError("Detector size not set. To calculate a projection matrix for CERA, you need to set the size of the detector. Use the setSize() function of your detector object.")
+                        raise RuntimeError("Detector size not set. To calculate a projection matrix for CERA, you need to set the size of the detector. Use the set_size() function of your detector object.")
             else:
                 raise RuntimeError("Unsupported mode for projection matrix: \"{}\"".format(mode))
-        elif imageCS is not None:
-            image = copy.deepcopy(imageCS)
         else:
-             # Set a standard coordinate system. Results in pure
-             # detector coordinate system after transformation.
-            image = CoordinateSystem()
+            if imageCS is not None:
+                image = copy.deepcopy(imageCS)
+            else:
+                # Set a standard coordinate system. Results in pure
+                # detector coordinate system after transformation.
+                image = CoordinateSystem()
 
-        world    = CoordinateSystem()
-        source   = copy.deepcopy(self.source)
+            if volumeCS is not None:
+                volume = copy.deepcopy(volumeCS)
+            else:
+                volume = CoordinateSystem()
 
-        # The 3D volume (reconstruction space).
-        volume = None
-        if volumeCS is not None:
-            volume = copy.deepcopy(volumeCS)
-            volume.change_reference_frame(self.stage, world)
-        else:
-            volume = copy.deepcopy(self.stage)
+        source = copy.deepcopy(self.source)
 
-        """The scale factors are derived from the lengths of the basis
+        """The volume scale factors are derived from the lengths of the basis
         vectors of the volume CS ."""
         scale_volume_u = volume.u.length()
         scale_volume_v = volume.v.length()
@@ -1349,9 +1150,9 @@ class Geometry:
 
         # Detach the image CS from the detector CS and
         # express it in terms of the world CS:
-        image.change_reference_frame(self.detector, world)
+        image.change_reference_frame(self.detector, ctsimu_world)
 
-        """The scale factors are derived from the lengths of the basis
+        """The image scale factors are derived from the lengths of the basis
         vectors of the image CS."""
         scale_image_u = image.u.length()
         scale_image_v = image.v.length()
@@ -1360,51 +1161,59 @@ class Geometry:
         # Save a source CS as seen from the detector CS. This is convenient to
         # later get the SDD, ufoc and vfoc:
         source_from_image = copy.deepcopy(self.source)
-        source_from_image.change_reference_frame(world, image)
+        source_from_image.change_reference_frame(ctsimu_world, image)
 
         # Make the volume CS the new world CS:
-        source.change_reference_frame(world, volume)
-        image.change_reference_frame(world, volume)
-        volume.change_reference_frame(world, volume)
+        source.change_reference_frame(ctsimu_world, volume)
+        image.change_reference_frame(ctsimu_world, volume)
+        volume.change_reference_frame(ctsimu_world, volume)
 
         # Translation vector from volume to source:
-        rfoc = source.center - volume.center
-        xfoc = rfoc.x
-        yfoc = rfoc.y
-        zfoc = rfoc.z
-        SOD = rfoc.length()
+        xfoc = source.center.x()
+        yfoc = source.center.y()
+        zfoc = source.center.z()
 
         # Focus point on detector: principal, perpendicular ray.
         # In the detector coordinate system, ufoc and vfoc are the u and v coordinates
         # of the source center; SDD (perpendicular to detector plane) is source w coordinate.
-        ufoc = source_from_image.center.x / scale_image_u
-        vfoc = source_from_image.center.y / scale_image_v
-        wfoc = source_from_image.center.z / scale_image_w
-        SDD  = abs(source_from_image.center.z)
-
-        # Mirror volume:
-        if mirror:
-            M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]])
-        else:
-            M = Matrix(values=[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0,  1, 0], [0, 0, 0, 1]])
+        ufoc = source_from_image.center.x() / scale_image_u
+        vfoc = source_from_image.center.y() / scale_image_v
+        SDD  = abs(source_from_image.center.z())
 
         # Scale: volume units -> world units
-        A = Matrix(values=[[scale_volume_u, 0, 0, 0], [0, scale_volume_v, 0, 0], [0, 0, scale_volume_w, 0], [0, 0, 0, 1]])
+        A = Matrix(values=[
+            [scale_volume_u, 0, 0, 0],
+            [0, scale_volume_v, 0, 0],
+            [0, 0, scale_volume_w, 0],
+            [0, 0, 0, 1]
+        ])
 
         # Move origin to source (the origin of the camera CS)
-        F = Matrix(values=[[1, 0, 0, -xfoc], [0, 1, 0, -yfoc], [0, 0, 1, -zfoc]])
+        F = Matrix(values=[
+            [1, 0, 0, xfoc],
+            [0, 1, 0, yfoc],
+            [0, 0, 1, zfoc]
+        ])
 
         # Rotations:
         R = basis_transform_matrix(volume, image)
 
         # Projection onto detector and scaling (world units -> volume units):
-        S = Matrix(values=[[SDD/scale_image_u, 0, 0], [0, SDD/scale_image_v, 0], [0, 0, 1.0/scale_image_w]])
+        S = Matrix(values=[
+            [-SDD/scale_image_u, 0, 0],
+            [0, -SDD/scale_image_v, 0],
+            [0, 0, -1.0/scale_image_w]
+        ])
 
         # Shift in detector CS: (ufoc and vfoc must be in scaled units)
-        T = Matrix(values=[[1, 0, ufoc], [0, 1, vfoc], [0, 0, 1]])
+        T = Matrix(values=[
+            [1, 0, ufoc],
+            [0, 1, vfoc],
+            [0, 0, 1]
+        ])
 
         # Multiply all together:
-        P = T * (S * (R * (F * (A*M))))
+        P = T * (S * (R * (F * A)))
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
@@ -1414,14 +1223,14 @@ class Geometry:
 
         return P
 
-    def createDetectorFlatField_rays(self):
+    def create_detector_flat_field_rays(self):
         """ Calculate an analytical free beam intensity distribution
             picture for the given detector, to be used for an
             ideal flat field correction. """
         width      = self.detector.cols()
         height     = self.detector.rows()
-        pixelSizeU = self.detector.pitchU
-        pixelSizeV = self.detector.pitchV
+        pixelSizeU = self.detector.pitch_u
+        pixelSizeV = self.detector.pitch_v
 
         if(width is None):
             raise Exception("The detector width (in pixels) must be provided through a valid CTSimU JSON file.")
@@ -1436,26 +1245,26 @@ class Geometry:
         flatField.shape(width, height, 0, flatField.getInternalDataType())
 
         # Positions of detector and source center:
-        dx = self.detector.center.x
-        dy = self.detector.center.y
-        dz = self.detector.center.z
+        dx = self.detector.center.x()
+        dy = self.detector.center.y()
+        dz = self.detector.center.z()
 
-        sx = self.source.center.x
-        sy = self.source.center.y
-        sz = self.source.center.z
+        sx = self.source.center.x()
+        sy = self.source.center.y()
+        sz = self.source.center.z()
 
         # Vectors of the detector coordinate system:
-        ux = self.detector.u.x
-        uy = self.detector.u.y
-        uz = self.detector.u.z
+        ux = self.detector.u.x()
+        uy = self.detector.u.y()
+        uz = self.detector.u.z()
 
-        vx = self.detector.v.x
-        vy = self.detector.v.y
-        vz = self.detector.v.z
+        vx = self.detector.v.x()
+        vy = self.detector.v.y()
+        vz = self.detector.v.z()
 
-        wx = self.detector.w.x
-        wy = self.detector.w.y
-        wz = self.detector.w.z
+        wx = self.detector.w.x()
+        wy = self.detector.w.y()
+        wz = self.detector.w.z()
 
 
         # Angle 'alpha' between detector normal and connection line [detector center -- source]:
@@ -1484,7 +1293,7 @@ class Geometry:
    Connection Vector: {}, {}, {}\n\
    Detector Vector U: {}, {}, {}\n\
    Detector Vector V: {}, {}, {}\n\
-   Detector Vector W: {}, {}, {}".format(alpha, dist, SDD, width, height, pixelSizeU, pixelSizeV, sx, sy, sz, dx, dy, dz, connectionLine.x, connectionLine.y, connectionLine.z, ux, uy, uz, vx, vy, vz, wx, wy, wz))
+   Detector Vector W: {}, {}, {}".format(alpha, dist, SDD, width, height, pixelSizeU, pixelSizeV, sx, sy, sz, dx, dy, dz, connectionLine.x(), connectionLine.y(), connectionLine.z(), ux, uy, uz, vx, vy, vz, wx, wy, wz))
 
         maxIntensity = 0
         maxX = 0
@@ -1503,19 +1312,19 @@ class Geometry:
                         # Calculate coordinates of pixel center in mm:
                         # Grid with margin:
                         stepSize = 1.0 / (gridSize+1)
-                        pixel = self.detector.pixelVector(x+(gx+1)*stepSize, y+(gy+1)*stepSize)
+                        pixel = self.detector.pixel_vector(x+(gx+1)*stepSize, y+(gy+1)*stepSize)
 
                         # Grid with no margin:
                         #if gridSize > 1:
                         #    stepSize = 1.0 / (gridSize-1)
-                        #    pixel = self.detector.pixelVector(x+gx*stepSize, y+gy*stepSize)
+                        #    pixel = self.detector.pixel_vector(x+gx*stepSize, y+gy*stepSize)
                         #else:
-                        #    pixel = self.detector.pixelVectorCenter(x, y)
+                        #    pixel = self.detector.pixel_vector_center(x, y)
 
                         distToSource = self.source.center.distance(pixel)
 
                         # Angle of incident rays:
-                        vecSourceToPixel = Vector(pixel.x-sx, pixel.y-sy, pixel.z-sz)
+                        vecSourceToPixel = Vector(pixel.x()-sx, pixel.y()-sy, pixel.z()-sz)
                         incidenceAngle = abs(self.detector.w.angle(vecSourceToPixel))
                         if incidenceAngle > (math.pi/2):
                             incidenceAngle = math.pi - incidenceAngle
@@ -1545,7 +1354,7 @@ class Geometry:
 
         return flatField
 
-    def pixelAreaOnUnitSphere(self, A, B, C, D):
+    def pixel_area_on_unit_sphere(self, A, B, C, D):
         # Source must be at (0, 0, 0) relative to given detector,
         # and A, B, C, D must be vectors pointing to pixel corners in
         # world coordinate system.
@@ -1584,7 +1393,7 @@ class Geometry:
 
         return pxSphericalArea
 
-    def triangleAreaOnUnitSphere(self, A, B, C):
+    def triangle_area_on_unit_sphere(self, A, B, C):
         # Source must be at (0, 0, 0) relative to given detector,
         # and A, B, C must be vectors pointing to ´triangle corners in
         # world coordinate system.
@@ -1607,7 +1416,7 @@ class Geometry:
 
         return areaABC
 
-    def polygonAreaOnUnitSphere(self, polygon):
+    def polygon_area_on_unit_sphere(self, polygon):
         # Source must be at (0, 0, 0) relative to given detector,
         # and A, B, C must be vectors pointing to triangle corners in
         # world coordinate system.
@@ -1622,108 +1431,13 @@ class Geometry:
                 p2 = polygon.points[i]
                 p3 = polygon.points[i+1]
 
-                area += self.triangleAreaOnUnitSphere(p1, p2, p3)
+                area += self.triangle_area_on_unit_sphere(p1, p2, p3)
 
             return area
         else:
             return 0
 
-    """
-    def createDetectorFlatField_sphere_old(self, clippingPolygon=None):
-        # Positions of detector and source center:
-        dx = self.detector.center.x
-        dy = self.detector.center.y
-        dz = self.detector.center.z
-
-        sx = self.source.center.x
-        sy = self.source.center.y
-        sz = self.source.center.z
-
-        # Angle 'alpha' between detector normal and connection line [detector center -- source]:
-        connectionLine = Vector(dx-sx, dy-sy, dz-sz)
-
-        alpha = abs(self.detector.w.angle(connectionLine))
-        if alpha > (math.pi/2):
-            alpha = math.pi - alpha
-
-        # Distance between source center and detector center:
-        dist = self.detector.center.distance(self.source.center)
-
-        # Source - Detector distance (SDD) defined by shortest distance between source and detector,
-        # or distance between source and spot of highest intensity on detector.
-        SDD = dist * math.cos(alpha)
-
-        # Create a new detector in a coordinate system where source is at (0, 0, 0):
-        det = copy.deepcopy(self.detector)
-        translationVector = Vector(-sx, -sy, -sz)
-        det.translate(translationVector)
-        det.computeGeometryParameters()
-
-        # Calculate the area of the theoretical "brightest pixel" on the unit sphere:
-        hpu = 0.5*det.pitchU
-        hpv = 0.5*det.pitchV
-        A = Vector(SDD,  hpu,  hpv)
-        B = Vector(SDD, -hpu,  hpv)
-        C = Vector(SDD, -hpu, -hpv)
-        D = Vector(SDD,  hpu, -hpv)
-        areaOfBrightestPixel = self.pixelAreaOnUnitSphere(A, B, C, D)
-
-        print("SDD: {}".format(SDD))
-        print("Pitch: {}, {}".format(hpu, hpv))
-        #print("Brightest Pixel Area: {}".format(areaOfBrightestPixel))
-
-        flatField = Image()
-        flatField.shape(det.cols(), det.rows(), 0, flatField.getInternalDataType())
-
-        maxArea = 0
-        maxX = 0
-        maxY = 0
-        maxCenter = 0
-        # Go through pixels:
-        for x in range(det.cols()):
-            for y in range(det.rows()):
-                # Define Pixel corners:
-                A = det.pixelVector(x,   y)
-                B = det.pixelVector(x+1, y)
-                C = det.pixelVector(x+1, y+1)
-                D = det.pixelVector(x,   y+1)
-
-                pxSphericalArea = self.pixelAreaOnUnitSphere(A, B, C, D)
-                flatField.setPixel(x, y, pxSphericalArea)
-
-                if pxSphericalArea > maxArea:
-                    maxArea = pxSphericalArea
-                    maxX = x
-                    maxY = y
-
-            progress = 100*(float(x+1)/float(det.cols()))
-            print("\rCalculating analytical intensity profile... {:0.1f}%    ".format(progress), end='')
-
-        # Method #1: renormalize to area of theoretically brightest pixel:
-        flatField.divide(areaOfBrightestPixel)
-
-        # Method #2: rescale maximum of actual brightest pixel to 1.0:
-        #flatField.renormalize(newMin=0, newMax=1.0, currentMin=0)
-
-        #flatField.save("ff.tif", numpy.dtype('float32'))
-
-        print("\rCalculating analytical intensity profile... 100%  ")
-
-
-        maxCenter = det.pixelVectorCenter(maxX, maxY)
-        distToSource = maxCenter.length()
-        incidenceAngle = abs(self.detector.w.angle(maxCenter))
-
-        #print("Brightest Pixel: {}, {}".format(maxX, maxY))
-        print("  Vector: {}, {}, {}".format(maxCenter.x, maxCenter.y, maxCenter.z))
-        print("  Distance to Source: {}".format(distToSource))
-        print("  Spherical Area: {}".format(maxArea))
-        print("  Angle: {} rad = {} deg".format(incidenceAngle, 180*incidenceAngle/math.pi))
-
-        return flatField
-    """
-
-    def createDetectorFlatField_sphere(self, *coverPolygons):
+    def create_detector_flat_field_sphere(self, *coverPolygons):
         """ Calculate an analytical free beam intensity distribution
             picture for the given detector, to be used for an
             ideal flat field correction.
@@ -1737,15 +1451,15 @@ class Geometry:
 
         S.change_reference_frame(world, D)
         D.change_reference_frame(world, D)
-        D.computeGeometryParameters()
+        D.compute_geometry_parameters()
 
         # Source - Detector distance (SDD) defined by shortest distance between source and detector,
         # or distance between source and spot of highest intensity on detector.
         SDD = abs(S.center.z)
 
         # Calculate the area of the theoretical "brightest pixel" on the unit sphere:
-        pu = D.pitchU
-        pv = D.pitchV
+        pu = D.pitch_u
+        pv = D.pitch_v
         nRows = D.rows()
         nCols = D.cols()
 
@@ -1755,7 +1469,7 @@ class Geometry:
         pB = Vector(SDD, -hpu,  hpv)
         pC = Vector(SDD, -hpu, -hpv)
         pD = Vector(SDD,  hpu, -hpv)
-        areaOfBrightestPixel = self.pixelAreaOnUnitSphere(pA, pB, pC, pD)
+        areaOfBrightestPixel = self.pixel_area_on_unit_sphere(pA, pB, pC, pD)
 
         # Full flat field image (without any clipping bodies):
         flatField = Image()
@@ -1768,7 +1482,7 @@ class Geometry:
             clippedFlatField.shape(D.cols(), D.rows(), 0, flatField.getInternalDataType())
 
         # Upper left detector corner in world coordinates (remember: world is now the detector CS)
-        p00 = D.pixelVector(0, 0)
+        p00 = D.pixel_vector(0, 0)
 
         stepRight      = Vector(pu, 0,  0)
         stepDown       = Vector(0,  pv, 0)
@@ -1799,7 +1513,7 @@ class Geometry:
                 pD = pD - S.center
 
                 pixelPolygon = Polygon(pA, pB, pC, pD)
-                pxSphericalArea  = self.polygonAreaOnUnitSphere(pixelPolygon)
+                pxSphericalArea  = self.polygon_area_on_unit_sphere(pixelPolygon)
 
                 flatField.setPixel(x, y, pxSphericalArea)
 
@@ -1809,7 +1523,7 @@ class Geometry:
 
                     # Remove the intensity covered by the clipping polygon:
                     pixelPolygon.make_3D(zComponent=SDD)
-                    subarea = self.polygonAreaOnUnitSphere(pixelPolygon)
+                    subarea = self.polygon_area_on_unit_sphere(pixelPolygon)
                     pxSphericalArea -= subarea
 
                     clippedFlatField.setPixel(x, y, pxSphericalArea)
@@ -1831,14 +1545,14 @@ class Geometry:
 
         return flatField, clippedFlatField
 
-    def solidAngle(self, l, m):
+    def solid_angle(self, l, m):
         """ Solid angle helper function for intensity profile. Approach by Florian Wohlgemuth. """
         if l != 0:
             return (l/abs(l)) * math.atan(abs(l)*m/math.sqrt(1.0+l**2+m**2))
         else:
             return 0
 
-    def createDetectorFlatField_analytical(self):
+    def create_detector_flat_field_analytical(self):
         """ Calculate an analytical free beam intensity distribution
             picture for the given detector, to be used for an
             ideal flat field correction.
@@ -1847,42 +1561,42 @@ class Geometry:
 
         width  = self.detector.cols()
         height = self.detector.rows()
-        pitchU = self.detector.pitchU
-        pitchV = self.detector.pitchV
+        pitch_u = self.detector.pitch_u
+        pitch_v = self.detector.pitch_v
 
         if(width is None):
             raise Exception("The detector width (in pixels) must be provided through a valid CTSimU JSON file.")
         if(height is None):
             raise Exception("The detector height (in pixels) must be provided through a valid CTSimU JSON file.")
-        if(pitchU is None):
+        if(pitch_u is None):
             raise Exception("The pixel size (in mm) in u direction must be provided through a valid CTSimU JSON file.")
-        if(pitchV is None):
+        if(pitch_v is None):
             raise Exception("The pixel size (in mm) in v direction must be provided through a valid CTSimU JSON file.")
 
         flatField = Image()
         flatField.shape(width, height, 0, flatField.getInternalDataType())
 
         # Positions of detector and source center:
-        dx = self.detector.center.x
-        dy = self.detector.center.y
-        dz = self.detector.center.z
+        dx = self.detector.center.x()
+        dy = self.detector.center.y()
+        dz = self.detector.center.z()
 
-        sx = self.source.center.x
-        sy = self.source.center.y
-        sz = self.source.center.z
+        sx = self.source.center.x()
+        sy = self.source.center.y()
+        sz = self.source.center.z()
 
         # Vectors of the detector coordinate system:
-        ux = self.detector.u.x
-        uy = self.detector.u.y
-        uz = self.detector.u.z
+        ux = self.detector.u.x()
+        uy = self.detector.u.y()
+        uz = self.detector.u.z()
 
-        vx = self.detector.v.x
-        vy = self.detector.v.y
-        vz = self.detector.v.z
+        vx = self.detector.v.x()
+        vy = self.detector.v.y()
+        vz = self.detector.v.z()
 
-        wx = self.detector.w.x
-        wy = self.detector.w.y
-        wz = self.detector.w.z
+        wx = self.detector.w.x()
+        wy = self.detector.w.y()
+        wz = self.detector.w.z()
 
 
         # Angle 'alpha' between detector normal and connection line [detector center -- source]:
@@ -1906,23 +1620,23 @@ class Geometry:
         det = copy.deepcopy(self.detector)
         translationVector = Vector(-sx, -sy, -sz)
         det.translate(translationVector)
-        det.computeGeometryParameters()
+        det.compute_geometry_parameters()
 
-        upperLeft_u = det.pixelVector(0, 0).dot(self.detector.u)
-        upperLeft_v = det.pixelVector(0, 0).dot(self.detector.v)
-        upperLeft_w = det.pixelVector(0, 0).dot(self.detector.w)
+        upperLeft_u = det.pixel_vector(0, 0).dot(self.detector.u)
+        upperLeft_v = det.pixel_vector(0, 0).dot(self.detector.v)
+        upperLeft_w = det.pixel_vector(0, 0).dot(self.detector.w)
 
         if upperLeft_w != 0:   # check if detector is not facing its edge towards the source
             for x in range(width):
                 for y in range(height):
                     nu = x
                     nv = y
-                    lambda0 = (upperLeft_u + nu*pitchU) / upperLeft_w
-                    lambda1 = (upperLeft_u + (nu+1)*pitchU) / upperLeft_w
-                    mu0     = (upperLeft_v + nv*pitchV) / upperLeft_w
-                    mu1     = (upperLeft_v + (nv+1)*pitchV) / upperLeft_w
+                    lambda0 = (upperLeft_u + nu*pitch_u) / upperLeft_w
+                    lambda1 = (upperLeft_u + (nu+1)*pitch_u) / upperLeft_w
+                    mu0     = (upperLeft_v + nv*pitch_v) / upperLeft_w
+                    mu1     = (upperLeft_v + (nv+1)*pitch_v) / upperLeft_w
 
-                    omega = self.solidAngle(lambda0, mu0) + self.solidAngle(lambda1, mu1) - self.solidAngle(lambda0, mu1) - self.solidAngle(lambda1, mu0)
+                    omega = self.solid_angle(lambda0, mu0) + self.solid_angle(lambda1, mu1) - self.solid_angle(lambda0, mu1) - self.solid_angle(lambda1, mu0)
 
                     if omega > maxIntensity:
                         maxIntensity = omega
@@ -1942,13 +1656,13 @@ class Geometry:
 
         # Method #1: find hypothetical brightest pixel
         # Calculate the area of the theoretical "brightest pixel" on the unit sphere:
-        hpu = 0.5*det.pitchU
-        hpv = 0.5*det.pitchV
+        hpu = 0.5*det.pitch_u
+        hpv = 0.5*det.pitch_v
         A = Vector(SDD,  hpu,  hpv)
         B = Vector(SDD, -hpu,  hpv)
         C = Vector(SDD, -hpu, -hpv)
         D = Vector(SDD,  hpu, -hpv)
-        areaOfBrightestPixel = self.pixelAreaOnUnitSphere(A, B, C, D)
+        areaOfBrightestPixel = self.pixel_area_on_unit_sphere(A, B, C, D)
         flatField.divide(areaOfBrightestPixel)
 
         # Method #2: rescale actual maximum to 1.
@@ -1958,10 +1672,10 @@ class Geometry:
         return flatField
 
 
-    def createDetectorFlatField(self):
-        return createDetectorFlatField_analytical()
+    def create_detector_flat_field(self):
+        return create_detector_flat_field_analytical()
 
-def writeCERAconfig(geo, totalAngle, projectionFilePattern, matrices, basename, voxelsX, voxelsY, voxelsZ, i0max=60000):
+def write_cera_config(geo, totalAngle, projectionFilePattern, matrices, basename, voxelsX, voxelsY, voxelsZ, i0max=60000):
     now = datetime.now()
 
     nProjections = len(matrices)
@@ -2003,8 +1717,8 @@ def writeCERAconfig(geo, totalAngle, projectionFilePattern, matrices, basename, 
         f.write(projTableString)
         f.close()
 
-    voxelSizeXY = geo.detector.pitchU * geo.SOD / geo.SDD
-    voxelSizeZ  = geo.detector.pitchV * geo.SOD / geo.SDD
+    voxelSizeXY = geo.detector.pitch_u * geo.SOD / geo.SDD
+    voxelSizeZ  = geo.detector.pitch_v * geo.SOD / geo.SDD
 
     configFileString = """#CERACONFIG
 
@@ -2079,8 +1793,8 @@ GlobalI0Value = {i0max}
     basename=basename,
     nCols=int(geo.detector.cols()),
     nRows=int(geo.detector.rows()),
-    psu=geo.detector.pitchU,
-    psv=geo.detector.pitchV,
+    psu=geo.detector.pitch_u,
+    psv=geo.detector.pitch_v,
     volx=int(voxelsX),
     voly=int(voxelsY),
     volz=int(voxelsZ),
@@ -2109,7 +1823,7 @@ GlobalI0Value = {i0max}
         f.close()
 
 
-def writeOpenCTFile(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, matrices, filename, volumename, projectionFilenames):
+def write_openCT_file(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, matrices, filename, volumename, projectionFilenames):
     nProjections = len(matrices)
     matrixString = ""
 
@@ -2235,8 +1949,8 @@ def writeOpenCTFile(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, m
     matrixString=matrixString,
     nPixelsX=int(geo.detector.cols()),
     nPixelsY=int(geo.detector.rows()),
-    detectorSizeX=geo.detector.physWidth,
-    detectorSizeY=geo.detector.physHeight,
+    detectorSizeX=geo.detector.phys_width,
+    detectorSizeY=geo.detector.phys_height,
     SOD=geo.SOD,
     ODD=geo.ODD,
     totalAngle=totalAngle,

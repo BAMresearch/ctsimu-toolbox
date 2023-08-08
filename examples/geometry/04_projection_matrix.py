@@ -3,11 +3,11 @@ from ctsimu.geometry import *
 
 # Set up a quick CT geometry:
 myCT = Geometry()
-myCT.stage.center.x    = 250  # SOD
-myCT.detector.center.x = 800  # SDD
+myCT.stage.center.set_x(250)    # SOD
+myCT.detector.center.set_x(800) # SDD
 
 # Calculate the projection matrix:
-P = myCT.projectionMatrix()
+P = myCT.projection_matrix()
 
 print("Projection Matrix:")
 print(P)

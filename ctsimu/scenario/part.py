@@ -186,7 +186,7 @@ class Part(Group):
 
 			self._static = True
 
-	def set_geometry(self, json_geometry_object:dict, stage_coordinate_system:'CoordinateSystem'=None) -> bool:
+	def set_geometry(self, json_geometry_object:dict, stage_coordinate_system:'CoordinateSystem'=None, proper_cs:str="local") -> bool:
 		"""
 		Set up the part from a CTSimU JSON geometry definition.
 		The `stage_coordinate_system` must only be provided if this
@@ -196,6 +196,14 @@ class Part(Group):
 		----------
 		json_geometry_object : dict
 			A CTSimU geometry object, as imported from a JSON structure.
+
+		stage_coordinate_system : CoordinateSystem
+			Stage coordinate system. Only necessary for samples attached
+			to the stage.
+
+		proper_cs : str
+			Which is the proper coordinate system of this object?
+			Either `"world"` (x, y, z), `"local"` (u, v, w) or `"sample"` (r, s, t).
 
 		Returns
 		-------
@@ -290,7 +298,7 @@ class Part(Group):
 				# Go through all elements in the deviations array
 				# and add them to this part's list of deviations.
 				for dev in devs:
-					new_deviation = Deviation()
+					new_deviation = Deviation(pivot_reference=proper_cs)
 					if new_deviation.set_from_json(dev):
 						self.deviations.append(new_deviation)
 					else:
@@ -300,7 +308,7 @@ class Part(Group):
 				# Only one drift defined directly as a JSON object?
 				# Actually not supported by file format,
 				# but let's be generous and try...
-				new_deviation = Deviation()
+				new_deviation = Deviation(pivot_reference=proper_cs)
 				if new_deviation.set_from_json(devs):
 					self.deviations.append(new_deviation)
 				else:
@@ -325,7 +333,7 @@ class Part(Group):
 				# prior to version 0.9, but we still add them here
 				# because now we easily can... ;-)
 				if json_exists_and_not_null(geo, ["deviation", "position", axis]):
-					pos_dev = Deviation()
+					pos_dev = Deviation(pivot_reference=proper_cs)
 					pos_dev.set_type("translation")
 					pos_dev.set_axis(axis)
 					pos_dev.set_known_to_reconstruction(known_to_recon)
@@ -350,7 +358,7 @@ class Part(Group):
 				# also add support for x, y, z (zy'x''),
 				# just because we can.
 				if json_exists_and_not_null(geo, ["deviation", "rotation", axis]):
-					rot_dev = Deviation()
+					rot_dev = Deviation(pivot_reference=proper_cs)
 					rot_dev.set_type("rotation")
 
 					# Prior to 0.9, all deviations were meant to take place
@@ -390,15 +398,24 @@ class Part(Group):
 		elif self.w.reference == "local":
 			jd["vector_t"] = self.w.json_dict()
 
-		if self.deviations is not None:
-			if len(self.deviations) > 0:
+		# Assemble deviations and legacy deviations:
+		devs = None
+		if isinstance(self.deviations, list) and isinstance(self.legacy_deviations, list):
+			devs = self.deviations + self.legacy_deviations
+		elif isinstance(self.deviations, list):
+			devs = self.deviations
+		elif isinstance(self.legacy_deviations, list):
+			devs = self.legacy_deviations
+
+		if devs is not None:
+			if len(devs) > 0:
 				jd["deviations"] = list()
-				for dev in self.deviations:
+				for dev in devs:
 					jd["deviations"].append(dev.json_dict())
 
 		return jd
 
-	def _set_frame_coordinate_system(self, frame:float, nFrames:int, only_known_to_reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
+	def _set_frame_coordinate_system(self, frame:float, nFrames:int, reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
 		"""
 		Set up the part's current coordinate system such that
 		it complies with the `frame` number and all necessary
@@ -415,7 +432,7 @@ class Part(Group):
 		nFrames : int
 			Total number of frames in scan.
 
-		only_known_to_reconstruction : bool
+		reconstruction : bool
 			Set up the coordinate system as it
 			would be presented to the reconstruction software.
 			Ignores deviations and drifts that should not
@@ -448,7 +465,7 @@ class Part(Group):
 				coordinate_system=self.coordinate_system,
 				frame=frame,
 				nFrames=nFrames,
-				only_known_to_reconstruction=only_known_to_reconstruction,
+				reconstruction=reconstruction,
 				attached_to_stage=self.attached_to_stage,
 				stage_coordinate_system=stage_coordinate_system,
 			)
@@ -466,7 +483,7 @@ class Part(Group):
 				coordinate_system=self.coordinate_system,
 				frame=frame,
 				nFrames=nFrames,
-				only_known_to_reconstruction=only_known_to_reconstruction,
+				reconstruction=reconstruction,
 				attached_to_stage=self.attached_to_stage,
 				stage_coordinate_system=stage_coordinate_system,
 			)
@@ -480,13 +497,13 @@ class Part(Group):
 			 center_drift = self.center.drift_vector(
 			 	frame=frame,
 			 	nFrames=nFrames,
-			 	only_known_to_reconstruction=only_known_to_reconstruction
+			 	reconstruction=reconstruction
 			 )
 			 self.coordinate_system.translate(translation_vector=center_drift)
 
 		if self.u.has_drifts() or self.w.has_drifts():
-			new_u = self.u.vector_for_frame(frame, nFrames, only_known_to_reconstruction)
-			new_w = self.w.vector_for_frame(frame, nFrames, only_known_to_reconstruction)
+			new_u = self.u.vector_for_frame(frame, nFrames, reconstruction)
+			new_w = self.w.vector_for_frame(frame, nFrames, reconstruction)
 
 			self.coordinate_system.make_from_vectors(
 				center=coordinate_system.center,
@@ -495,7 +512,7 @@ class Part(Group):
 			)
 			self.coordinate_system.make_unit_coordinate_system()
 
-	def set_frame(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
+	def set_frame(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None, reconstruction:bool=False):
 		"""
 		Set up the part for the given `frame` number, obeying all
 		deviations and drifts.
@@ -517,6 +534,10 @@ class Part(Group):
 			If this part is attached to the sample stage,
 			the stage coordinate system for the given `frame`
 			must be passed.
+
+		reconstruction : bool
+			If `True`, set frame as seen by reconstruction software.
+			Default: `False`.
 		"""
 
 		# Set up the current coordinate system obeying all drifts:
@@ -524,50 +545,11 @@ class Part(Group):
 			self._set_frame_coordinate_system(
 				frame=frame,
 				nFrames=nFrames,
-				only_known_to_reconstruction=False,
+				reconstruction=reconstruction,
 				w_rotation=w_rotation,
 				stage_coordinate_system=stage_coordinate_system
 			)
-			self._cs_initialized_real  = True
-			self._cs_initialized_recon = False
+			self._cs_initialized_real  = not reconstruction
+			self._cs_initialized_recon = reconstruction
 
-		Group.set_frame(self, frame, nFrames)
-
-	def set_frame_for_reconstruction(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
-		"""
-		Set up the part for the given `frame` number, obeying only those
-		deviations and drifts that are known to the reconstruction software.
-
-		Parameters
-		----------
-		frame : float
-			Current frame number.
-
-		nFrames : int
-			Total number of frames in scan.
-
-		w_rotation : float
-			An additional rotation (in rad) around the part's w axis
-			for this frame. Used for the sample stage, which
-			rotates during a CT scan.
-
-		stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
-			If this part is attached to the sample stage,
-			the stage coordinate system for the given `frame`
-			must be passed.
-		"""
-
-		# Set up the current coordinate system obeying only
-		# recon-known drifts:
-		if (self._cs_initialized_recon is False) or (self._static is False):
-			self._set_frame_coordinate_system(
-				frame=frame,
-				nFrames=nFrames,
-				only_known_to_reconstruction=True,
-				w_rotation=w_rotation,
-				stage_coordinate_system=stage_coordinate_system
-			)
-			self._cs_initialized_real  = False
-			self._cs_initialized_recon = True
-
-		Group.set_frame_for_reconstruction(self, frame, nFrames)
+		Group.set_frame(self, frame, nFrames, reconstruction)
