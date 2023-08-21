@@ -28,10 +28,22 @@ image.center.set_y( (myCT.detector.phys_height / 2.0) - 0.5*myCT.detector.pitch_
 # the w axis to keep a right-handed coordinate system.
 image.u.scale( myCT.detector.pitch_u)
 image.v.scale(-myCT.detector.pitch_v)
-image.w.scale(-1.0)
+
+# CERA's volume coordinate system is equivalent to the CTSimU stage coordinate
+# coordinate system, but flipped vertically. Therefore, we need to
+# invert the volume's w axis.
+volume = CoordinateSystem()
+volume.w.invert()
 
 # Calculate the projection matrix:
-P = myCT.projection_matrix(imageCS=image)
+P = myCT.projection_matrix(imageCS=image, volumeCS=volume)
 
 print("CERA projection matrix:")
 print(P)
+
+"""
+CERA projection matrix:
+[[-3.998e+00  1.600e+01  0.000e+00  9.995e+02]
+ [-1.998e+00  0.000e+00  1.600e+01  4.995e+02]
+ [-4.000e-03  0.000e+00  0.000e+00  1.000e+00]]
+"""

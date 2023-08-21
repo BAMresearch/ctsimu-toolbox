@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import math
 from ctsimu.geometry import *
 
 # Set up a quick CT geometry:
@@ -23,7 +24,7 @@ scan_range  = 360.0  # degrees. One full CT rotation.
 # We assume that the projections are stored in single TIFF image files,
 # sequentially numbered with four digits, starting at "img_0000.tif".
 projectionFilename    = "img_{:04d}.tif" # for openCT
-projectionFilePattern = "img_%04d.tif"   # for CERA
+projection_file_pattern = "img_%04d.tif" # for CERA
 
 # The following two lists will store the projection matrices
 # for openCT and for CERA:
@@ -41,7 +42,7 @@ for p in range(projections):
 
 	# Rotate the stage to its current angle:
 	current_angle = float(p) * float(scan_range) / float(projections)
-	myCT.stage.rotate_around_w(angle = deg2rad(current_angle))
+	myCT.stage.rotate_around_w(angle=math.radians(current_angle))
 	myCT.update()
 
 	# Calculate a projection matrix for this frame:
@@ -67,9 +68,9 @@ bounding_box_y = voxelSize * myCT.detector.pixels_u
 bounding_box_z = voxelSize * myCT.detector.pixels_v
 
 # Write the openCT configuration file, including the projection matrices:
-write_openCT_file(
+write_openCT_config(
 	geo=myCT,
-	totalAngle=scan_range,
+	total_angle=scan_range,
 	boundingBoxX=bounding_box_x,
 	boundingBoxY=bounding_box_y,
 	boundingBoxZ=bounding_box_z,
@@ -81,14 +82,15 @@ write_openCT_file(
 
 # CERA configuration:
 # -------------------
-write_cera_config(
+write_CERA_config(
 	geo=myCT,
-	totalAngle=scan_range,
-	projectionFilePattern=projectionFilePattern,
+	total_angle=scan_range,
+	projection_file_pattern=projection_file_pattern,
 	matrices=matrices_CERA,
 	basename="recon_CERA",
-	voxelsX=myCT.detector.pixels_u,
-    voxelsY=myCT.detector.pixels_u,
-    voxelsZ=myCT.detector.pixels_v,
-    i0max=44000  # the average free-beam intensity
+	save_dir="example09",
+	voxels_x=myCT.detector.pixels_u,
+    voxels_y=myCT.detector.pixels_u,
+    voxels_z=myCT.detector.pixels_v,
+    i0max=44000  # maximum free-beam intensity
 )

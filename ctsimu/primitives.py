@@ -25,7 +25,7 @@ class Matrix:
         NumPy array that contains the matrix values.
     """
 
-    def __init__(self, cols:int = None, rows:int = None, values:list=None, numpy_data = None):
+    def __init__(self, cols:int=None, rows:int=None, values:list=None, numpy_data=None):
         """Initialize matrix by given size or numpy data array.
 
         If `cols` and `rows` are not `None`, a matrix of the given size

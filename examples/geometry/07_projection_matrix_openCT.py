@@ -13,20 +13,21 @@ myCT.detector.set_size(
 	pitch_u  = 0.2,
 	pitch_v  = 0.2)
 
-# Set up a new image coordinate system
-# as a standard coordinate system,
-# relative to the detector coordinate system:
-image = CoordinateSystem()
-
 # Set up a new volume coordinate system
 # as a standard coordinate system,
 # relative to the stage coordinate system:
 volume = CoordinateSystem()
+volume.w.invert()  # mirror reconstruction volume
 
 # Calculate the projection matrix:
-P = myCT.projection_matrix(
-	imageCS = image,
-	volumeCS = volume)
+P = myCT.projection_matrix(volumeCS = volume)
 
 print("openCT projection matrix:")
 print(P)
+
+"""
+openCT projection matrix:
+[[ 0.     3.2    0.     0.   ]
+ [ 0.     0.    -3.2    0.   ]
+ [-0.004  0.     0.     1.   ]]
+"""

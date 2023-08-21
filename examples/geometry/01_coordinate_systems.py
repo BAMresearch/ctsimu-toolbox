@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
+import math
 from ctsimu.geometry import *
-from ctsimu.helpers  import *  # provides deg2rad()
 
 mySpecimen = CoordinateSystem()
 
@@ -11,17 +11,18 @@ mySpecimen.v = Vector(0,  0, -1)
 mySpecimen.w = Vector(1,  0,  0)
 
 # Manipulate:
-mySpecimen.translate(translationVector=Vector(5.2, 0, 4.3))
-mySpecimen.rotate_around_u(angle=deg2rad(2.0))
-mySpecimen.rotate(axis=Vector(1, 1, 1), angle=deg2rad(5.0))
+mySpecimen.translate(translation_vector=Vector(5.2, 0, 4.3))
+mySpecimen.rotate_around_u(angle=math.radians(2.0))
+mySpecimen.rotate(axis=Vector(1, 1, 1), angle=math.radians(5.0))
 
 print("My specimen's new location and orientation:")
 print(mySpecimen)
 
 """
 My specimen's new location and orientation:
-Center: ( 255.2000000,  0.0000000,  4.3000000)
-u:      ( 0.0490510, -0.9974631, -0.0515878)
-v:      (-0.0167454,  0.0508215, -0.9985674)
-w:      ( 0.9986559,  0.0498445, -0.0142101)
+Center: [255.2   0.    4.3]
+u:      [ 0.04905096 -0.99746313 -0.05158783]
+v:      [-0.01674544  0.05082147 -0.99856736]
+w:      [ 0.99865589  0.04984455 -0.01421012]
+
 """

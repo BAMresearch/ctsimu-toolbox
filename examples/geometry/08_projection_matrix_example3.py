@@ -54,3 +54,10 @@ P = myCT.projection_matrix(imageCS=image, volumeCS=volume)
 
 print("My projection matrix:")
 print(P)
+
+"""
+My projection matrix:
+[[-3.33333333e-01  1.33333333e+00  0.00000000e+00  2.33333333e+03]
+ [-1.66666667e-01  0.00000000e+00  1.33333333e+00  1.16666667e+03]
+ [-3.33333333e-04  0.00000000e+00  0.00000000e+00  1.00000000e+00]]
+"""

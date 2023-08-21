@@ -1,13 +1,13 @@
 # -*- coding: UTF-8 -*-
+import math
 from ctsimu.geometry import *
-from ctsimu.helpers  import *  # provides deg2rad()
 
 world = CoordinateSystem()
 
 # Set up a quick CT geometry with a tilted stage axis:
 myCT = Geometry()
 myCT.stage.center.set_x(250)  # SOD
-myCT.stage.rotate_around_u(angle = deg2rad(2.0))
+myCT.stage.rotate_around_u(angle = math.radians(2.0))
 myCT.detector.center.set_x(800)  # SDD
 
 # Assume a specimen in the (tilted) stage

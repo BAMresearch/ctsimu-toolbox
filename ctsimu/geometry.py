@@ -27,17 +27,17 @@ class CoordinateSystem:
 
     Attributes
     ----------
-    center : Vector
+    center : ctsimu.primitives.Vector
         The location of the center point in a reference
         coordinate system (usually world or stage).
 
-    u : Vector
+    u : ctsimu.primitives.Vector
         Basis vector for the u axis.
 
-    v : Vector
+    v : ctsimu.primitives.Vector
         Basis vector for the v axis.
 
-    w : Vector
+    w : ctsimu.primitives.Vector
         Basis vector for the w axis.
     """
 
@@ -138,6 +138,21 @@ class CoordinateSystem:
         self.v      = self.w.cross(self.u)
 
         self.update()
+
+    def set_u_w(self, u:'Vector', w:'Vector'):
+        """Set u and w vector, calculate v from cross product (right-handed).
+
+        Parameters
+        ----------
+        u : ctsimu.primitives.Vector
+            Basis vector for u direction.
+
+        v : ctsimu.primitives.Vector
+            Basis vector for v direction.
+        """
+        self.u = u
+        self.w = w
+        self.v = w.cross(u)
 
     def get_copy(self) -> 'CoordinateSystem':
         """Get a copy of this coordinate system.
@@ -654,10 +669,28 @@ class DetectorGeometry(CoordinateSystem):
         self.pixels_v     = None  # Detector pixels in v direction
         self.pitch_u      = None  # Size of a pixel in u direction in units of reference coordinate system
         self.pitch_v      = None  # Size of a pixel in v direction in units of reference coordinate system
-        self.phys_width   = 0    # Physical width in units of reference coordinate system
-        self.phys_height  = 0    # Physical height in units of reference coordinate system
+        self.phys_width   = 0     # Physical width in units of reference coordinate system
+        self.phys_height  = 0     # Physical height in units of reference coordinate system
 
         self.pixel_origin = Vector()  # origin of pixel coordinate system in terms of reference coordinate system
+
+    def get_copy(self):
+        new_detector = DetectorGeometry()
+
+        new_detector.center = Vector(self.center.x(), self.center.y(), self.center.z())
+        new_detector.u      = Vector(self.u.x(), self.u.y(), self.u.z())
+        new_detector.v      = Vector(self.v.x(), self.v.y(), self.v.z())
+        new_detector.w      = Vector(self.w.x(), self.w.y(), self.w.z())
+
+        new_detector.pixels_u     = self.pixels_u
+        new_detector.pixels_v     = self.pixels_v
+        new_detector.pitch_u      = self.pitch_u
+        new_detector.pitch_v      = self.pitch_v
+        new_detector.phys_width   = self.phys_width
+        new_detector.phys_height  = self.phys_height
+        new_detector.pixel_origin = self.pixel_origin.get_copy()
+
+        return new_detector
 
     def size_is_set(self):
         if (self.pixels_u is None) or (self.pixels_v is None) or (self.pitch_u is None) or (self.pitch_v is None):
@@ -809,9 +842,9 @@ class DetectorGeometry(CoordinateSystem):
 
 
 class Geometry:
-    """Bundles geometry information about the complete CT setup.
+    """Geometry information about the complete CT setup.
 
-    Keeps the source, stage and detector as a set and provides methods
+    Keeps the source, stage and detector in one bundle and provides methods
     to calculate geometry parameters and projection matrices.
 
     Attributes
@@ -909,8 +942,8 @@ class Geometry:
         source_from_image.change_reference_frame(world, self.detector)
         stage_from_detector.change_reference_frame(world, self.detector)
 
-        self.SDD = abs(source_from_image.center.z)
-        self.ODD = abs(stage_from_detector.center.z)
+        self.SDD = abs(source_from_image.center.z())
+        self.ODD = abs(stage_from_detector.center.z())
         self.SOD = self.source.center.distance(self.stage.center)
 
         ## Brightest Spot in World Coordinate System:
@@ -1009,6 +1042,260 @@ class Geometry:
 
         return txt
 
+    def get_CERA_standard_circular_parameters(self, start_angle:float=0) -> dict:
+        """Calculate all parameters for an ideal circular trajectory
+        reconstruction in CERA without projection matrices.
+
+        These can be added to the reconstruction config file for CERA.
+
+        Parameters
+        ----------
+        start_angle : float
+            Reconstruction start angle (in degrees). The start angle can be
+            tuned to change the in-plane rotation of the reconstruction images.
+            Depending on the current stage rotation in this geometry, the
+            start angle will be adjusted. Consider this parameter more like
+            an offset to the start angle of stage rotation.
+
+        Returns
+        -------
+        cera_parameters : dict
+            The dictionary contains the following keys:
+
+            + `"R"`: CERA's source-object distance (SOD)
+
+            + `"D"`: CERA's source-detector distance (SDD)
+
+            + `"ODD"`: object-detector distance (ODD = SDD - SOD)
+
+            + `"a"`: CERA's a tilt
+
+            + `"b"`: CERA's b tilt
+
+            + `"c"`: CERA's c tilt
+
+            + `"u0"`: Detector u offset (px)
+
+            + `"v0"`: Detector v offset (px)
+
+            + `"start_angle"`
+
+            + `"volume_midpoint"`: dict
+
+                - `"x"`, `"y"` and `"z"`
+
+            + `"voxel_size"`: dict
+
+                - `"u"` and `"v"`
+        """
+
+        cera_detector = self.detector.get_copy()
+
+        # Number and size of pixels:
+        nu  = cera_detector.pixels_u
+        nv  = cera_detector.pixels_v
+        psu = cera_detector.pitch_u
+        psv = cera_detector.pitch_v
+
+        # Default number of voxels for the reconstruction volume
+        # is based on the detector size:
+        n_voxels_x = nu
+        n_voxels_y = nu
+        n_voxels_z = nv
+
+        # CERA's detector CS has its origin in the lower left corner instead of the center.
+        # Let's move there:
+        half_width  = psu*nu / 2.0
+        half_height = psv*nv / 2.0
+
+        cera_detector.center -= cera_detector.u.scaled(half_width) # add half a pixel in u direction??
+        cera_detector.center += cera_detector.v.scaled(half_height) # subtract half a pixel in v direction??
+
+        # The v axis points up instead of down:
+        cera_detector.rotate_around_u(angle=math.pi)
+
+        # Construct the CERA world coordinate system:
+        # --------------------------------------------------
+        # z axis points in v direction of our detector CS:
+        cera_z = cera_detector.v.get_copy()
+        cera_z.make_unit_vector()
+
+        z0 = cera_z.x()
+        z1 = cera_z.y()
+        z2 = cera_z.z()
+
+        O0 = self.stage.center.x()
+        O1 = self.stage.center.y()
+        O2 = self.stage.center.z()
+
+        S0 = self.source.center.x()
+        S1 = self.source.center.y()
+        S2 = self.source.center.z()
+
+        w0 = self.stage.w.x()
+        w1 = self.stage.w.y()
+        w2 = self.stage.w.z()
+
+        # x axis points from source to stage (inverted), and perpendicular to cera_z (det v):
+        t = -(z0*(O0-S0) + z1*(O1-S1) + z2*(O2-S2))/(z0*w0 + z1*w1 + z2*w2)
+        d = self.source.center.distance(self.stage.center)
+        SOD = math.sqrt(d*d - t*t)
+
+        if SOD > 0:
+            x0 = -(O0 - S0 + t*w0)/SOD
+            x1 = -(O1 - S1 + t*w1)/SOD
+            x2 = -(O2 - S2 + t*w2)/SOD
+        else:
+            # SOD == 0
+            x0 = -1
+            x1 = 0
+            x2 = 0
+
+        cera_x = Vector(x0, x1, x2)
+        cera_x.make_unit_vector()
+
+        cs_CERA = CoordinateSystem()
+        cs_CERA.center = self.source.center.get_copy()
+        cs_CERA.set_u_w(cera_x, cera_z)
+
+        stage_in_CERA    = self.stage.get_copy()
+        detector_in_CERA = cera_detector.get_copy()
+        source_in_CERA   = self.source.get_copy()
+
+        stage_in_CERA.change_reference_frame(ctsimu_world, cs_CERA)
+        detector_in_CERA.change_reference_frame(ctsimu_world, cs_CERA)
+        source_in_CERA.change_reference_frame(ctsimu_world, cs_CERA)
+
+        # Source:
+        xS = source_in_CERA.center.x()
+        yS = source_in_CERA.center.y()
+        zS = source_in_CERA.center.z()
+
+        # Stage:
+        xO = stage_in_CERA.center.x()
+        yO = stage_in_CERA.center.y()
+        zO = stage_in_CERA.center.z()
+        uO = stage_in_CERA.u.unit_vector()
+        vO = stage_in_CERA.v.unit_vector()
+        wO = stage_in_CERA.w.unit_vector()
+
+        # Detector:
+        xD = detector_in_CERA.center.x()
+        yD = detector_in_CERA.center.y()
+        zD = detector_in_CERA.center.z()
+        uD = detector_in_CERA.u.unit_vector()
+        vD = detector_in_CERA.v.unit_vector()
+        wD = detector_in_CERA.w.unit_vector()
+
+        # Detector normal:
+        nx = wD.x()
+        ny = wD.y()
+        nz = wD.z()
+
+        # Intersection of CERA's x axis with the stage rotation axis = ceraVolumeMidpoint (new center of stage)
+        xaxis = Vector(SOD, 0, 0)
+        cera_volume_midpoint = source_in_CERA.center.get_copy()
+        cera_volume_midpoint.subtract(xaxis)
+        xaxis.make_unit_vector()
+
+        world_volume_midpoint = change_reference_frame_of_point(cera_volume_midpoint, cs_CERA, ctsimu_world)
+
+        cera_volume_relative_midpoint = cera_volume_midpoint.to(stage_in_CERA.center)
+        midpoint_x = cera_volume_relative_midpoint.x()
+        midpoint_y = cera_volume_relative_midpoint.y()
+        midpoint_z = cera_volume_relative_midpoint.z()
+
+        c = uD.x()   # x component of detector u vector is c-tilt
+        a = wO.x()   # x component of stage w vector is a-tilt
+        b = wO.y()   # y component of stage w vector is b-tilt
+
+        # Intersection of x axis with detector (in px):
+        efoc_x = xaxis.x() # 1
+        efoc_y = xaxis.y() # 0
+        efoc_z = xaxis.z() # 0
+
+        E = nx*xD + ny*yD + nz*zD
+        dv = nx*efoc_x + ny*efoc_y + nz*efoc_z
+
+        if dv > 0:
+            SDD_cera = abs((E - xS*nx - yS*ny - zS*nz)/dv)
+        else:
+            SDD_cera = 1
+
+        SOD_cera = source_in_CERA.center.distance(cera_volume_midpoint)
+
+        if SDD_cera != 0:
+            voxel_size_u = psu * SOD_cera / SDD_cera
+            voxel_size_v = psv * SOD_cera / SDD_cera
+        else:
+            voxel_size_u = 1
+            voxel_size_v = 1
+
+        # Intersection point of principal ray with detector:
+        detector_intersection_point = xaxis.get_copy()
+        detector_intersection_point.scale(-SDD_cera)
+
+        stage_on_detector = detector_in_CERA.center.to(detector_intersection_point)
+        ufoc = stage_on_detector.dot(uD)
+        vfoc = stage_on_detector.dot(vD)
+        wfoc = stage_on_detector.dot(wD)
+
+        if psu > 0:
+            ufoc_px = ufoc / psu
+        else:
+            ufoc_px = 0
+
+        if psv > 0:
+            vfoc_px = vfoc / psv
+        else:
+            vfoc_px = 0
+
+        offset_u = ufoc_px - 0.5
+        offset_v = vfoc_px - 0.5
+
+        # Detector rotation relative to stage:
+        cera_x = Vector(1, 0, 0)
+        cera_y = Vector(0, 1, 0)
+        cera_x.scale(vO.dot(cera_x))
+        cera_y.scale(vO.dot(cera_y))
+
+        v_in_xy_plane = cera_x.get_copy()
+        v_in_xy_plane.add(cera_y)
+
+        rot = v_in_xy_plane.angle(cera_y)
+
+        # Add this start angle to the user-defined start angle:
+        start_angle += (180.0 - math.degrees(rot))
+
+        cera_parameters = {
+            "R": SOD_cera,
+            "D": SDD_cera,
+            "ODD": SDD_cera - SOD_cera,
+            "a": a,
+            "b": b,
+            "c": c,
+            "u0": offset_u,
+            "v0": offset_v,
+            "start_angle": start_angle,
+            "volume_midpoint": {
+                "x": midpoint_x,
+                "y": midpoint_y,
+                "z": midpoint_z
+            },
+            "voxels": {
+                "x": n_voxels_x,
+                "y": n_voxels_y,
+                "z": n_voxels_z
+            },
+            "voxel_size": {
+                "x": voxel_size_u,
+                "y": voxel_size_u,
+                "z": voxel_size_v
+            }
+        }
+
+        return cera_parameters
+
     def projection_matrix(self,
                          volumeCS:CoordinateSystem=None,
                          imageCS:CoordinateSystem=None,
@@ -1082,14 +1369,7 @@ class Geometry:
         if mode is not None:
             if mode in validModes:  # Override imageCS
                 image = CoordinateSystem()
-
-                if volumeCS is not None:
-                    volume = copy.deepcopy(volumeCS)
-                    # The given volume CS would be given in terms of the stage CS.
-                    # Transform to world CS:
-                    volume.change_reference_frame(self.stage, ctsimu_world)
-                else:
-                    volume = copy.deepcopy(self.stage)
+                volume = CoordinateSystem()
 
                 if mode == "openCT":
                     """openCT places the origin of the image CS at the detector
@@ -1138,19 +1418,25 @@ class Geometry:
             if volumeCS is not None:
                 volume = copy.deepcopy(volumeCS)
             else:
+                # Set a standard coordinate system. Results in pure
+                # stage coordinate system after transformation.
                 volume = CoordinateSystem()
 
         source = copy.deepcopy(self.source)
+
+        # Detach the image CS from the detector CS and
+        # express it in terms of the world CS:
+        image.change_reference_frame(self.detector, ctsimu_world)
+
+        # Detach the volume CS from the stage CS and
+        # express it in terms of the world CS:
+        volume.change_reference_frame(self.stage, ctsimu_world)
 
         """The volume scale factors are derived from the lengths of the basis
         vectors of the volume CS ."""
         scale_volume_u = volume.u.length()
         scale_volume_v = volume.v.length()
         scale_volume_w = volume.w.length()
-
-        # Detach the image CS from the detector CS and
-        # express it in terms of the world CS:
-        image.change_reference_frame(self.detector, ctsimu_world)
 
         """The image scale factors are derived from the lengths of the basis
         vectors of the image CS."""
@@ -1618,8 +1904,8 @@ class Geometry:
 
         # Create a new detector in a coordinate system where source is at (0, 0, 0):
         det = copy.deepcopy(self.detector)
-        translationVector = Vector(-sx, -sy, -sz)
-        det.translate(translationVector)
+        translation_vector = Vector(-sx, -sy, -sz)
+        det.translate(translation_vector)
         det.compute_geometry_parameters()
 
         upperLeft_u = det.pixel_vector(0, 0).dot(self.detector.u)
@@ -1675,51 +1961,262 @@ class Geometry:
     def create_detector_flat_field(self):
         return create_detector_flat_field_analytical()
 
-def write_cera_config(geo, totalAngle, projectionFilePattern, matrices, basename, voxelsX, voxelsY, voxelsZ, i0max=60000):
+def _cera_bool(truth:bool) -> str:
+    """Convert a Pythonian boolean into a CERA boolean string.
+
+    Parameters
+    ----------
+    truth : bool
+        Python boolean.
+
+    Returns
+    -------
+    _cera_boolean : str
+        Either `"true"` or `"false"`.
+    """
+    if isinstance(truth, str):
+        # Catch if truth is already a string
+        if truth == "true" or truth == "false":
+            return truth
+        else:
+            raise Exception(f"Cannot convert '{truth}' into the CERA boolean 'true' or 'false'.")
+
+    if truth:
+        return "true"
+
+    return "false"
+
+def write_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=".", n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float", matrices:list=None):
+    """Write a CERA config file for the given geometry.
+
+    A circular trajectory for the given angular range is assumed, all parameters
+    of the output config file will reflect a circular behaviour (obeying static tilts).
+    For non-circular trajectories, provide a list of projection matrices.
+
+    Parameters
+    ----------
+    geo : ctsimu.geometry.Geometry
+        A geometry that should represent the CT setup at frame zero, as seen
+        by the reconstruction software.
+
+    projection_file_pattern : str
+        Pattern for the sequential projection files.
+
+        Example: `"../projections/corrected/example_%04d.tif"`
+
+    basename : str
+        Base name for the configuration files and table of projection matrices.
+
+    save_dir : str
+        Directory where the configuration files will be stored.
+
+        Standard value: `"."` (local script directory)
+
+    n_projections : int
+        Number of projections. Set to `None` if number of projections
+        should be inferred from the number of provided projection matrices.
+
+        Standard value: `None`
+
+    projection_file_type : str
+        Projection file type: `"tiff"`, `"raw_uint16"` or `"raw_float"`.
+
+        Standard value: `"tiff"`
+
+    start_angle : float
+        Reconstruction start angle (in degrees). The start angle can be
+        tuned to change the in-plane rotation of the reconstruction images.
+        Depending on the current stage rotation in this geometry, the
+        start angle will be adjusted. Consider this parameter more like
+        an offset to the start angle of stage rotation.
+
+        Standard value: `0`
+
+    total_angle : float
+        Total angular range of the CT scan (in degrees).
+
+        Standard value: `360`
+
+    scan_direction : str
+        Direction of stage rotation, either `"CCW"` for counter-clockwise
+        or `"CW"` for clockwise rotation.
+
+        Standard value: `"CCW"`
+
+    voxels_x : int
+        Number of voxels in x direction for the reconstruction volume.
+        Set to `None` for a default value based on the detector pixels.
+
+        Standard value: `None`
+
+    voxels_y : int
+        Number of voxels in y direction for the reconstruction volume.
+        Set to `None` for a default value based on the detector pixels.
+
+        Standard value: `None`
+
+    voxels_z : int
+        Number of voxels in z direction for the reconstruction volume.
+        Set to `None` for a default value based on the detector pixels.
+
+        For helix scans, this parameter should be increased because the
+        default voxel size in z direction corresponds to the detector height.
+
+        Standard value: `None`
+
+    voxel_size_x : float
+        Voxel size in x direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixel size
+        and magnification.
+
+        Standard value: `None`
+
+    voxel_size_y : float
+        Voxel size in y direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixel size
+        and magnification.
+
+        Standard value: `None`
+
+    voxel_size_z : float
+        Voxel size in z direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixel size
+        and magnification.
+
+        Standard value: `None`
+
+    i0max : float
+        Grey value for the maximum free-beam intensity in the
+        projection images.
+
+        Standard value: `60000`
+
+    flip_u : bool
+        Flip projection images horizontally before reconstruction?
+
+        Standard value: `False`
+
+    flip_v : bool
+        Flip projection images vertically before reconstruction?
+
+        Standard value: `True`
+
+    big_endian : bool
+        If projection images are given in RAW, big-endian format, this parameter
+        should be set to `True`.
+
+        Standard value: `False`
+
+    raw_header_size : int
+        For RAW projection images: header size (in bytes).
+
+        Standard value: `0`
+
+    output_datatype : str
+        Data type for the reconstruction volume output file.
+        Either `"float"` or `"uint16"`.
+
+        Standard value: `"float"`
+
+    matrices : list
+        List of projection matrices of type `ctsimu.primitives.Matrix`.
+        One matrix for each projection image is required. If this parameter
+        is set to `None`, the configuration will be set up for a circular scan
+        trajectory (obeying static tilts).
+    """
+
     now = datetime.now()
 
-    nProjections = len(matrices)
-    projTableString = """projtable.txt version 3
+    cera_parameters = geo.get_CERA_standard_circular_parameters(start_angle=start_angle)
+    cera_config_filename = f"{save_dir}/{basename}.config"
+    cera_projtable_filename = f"{save_dir}/{basename}_projtable.txt"
+    touch_directory(cera_config_filename)
+    touch_directory(cera_projtable_filename)
+
+    # Use default number of voxels if none is given:
+    if voxels_x is None:
+        voxels_x = cera_parameters["voxels"]["x"]
+    if voxels_y is None:
+        voxels_y = cera_parameters["voxels"]["y"]
+    if voxels_z is None:
+        voxels_z = cera_parameters["voxels"]["z"]
+
+    # Use default voxel size if none is given:
+    if voxel_size_x is None:
+        voxel_size_x = cera_parameters["voxel_size"]["x"]
+    if voxel_size_y is None:
+        voxel_size_y = cera_parameters["voxel_size"]["y"]
+    if voxel_size_z is None:
+        voxel_size_z = cera_parameters["voxel_size"]["z"]
+
+    # Flip scan direction:
+    # we assume object scan direction, CERA assumes gantry scan direction.
+    if scan_direction == "CW":
+        cera_scan_direction = "CCW"
+    else:
+        cera_scan_direction = "CW"
+
+    midpoint_comment = ""
+
+    # Projection matrix file
+    # -------------------------------
+    if isinstance(matrices, list):
+        nMatrices = len(matrices)
+        if n_projections is None:
+            n_projections = nMatrices
+
+        if nMatrices != n_projections:
+            raise Exception("Error in write_CERA_config: given number of projections does not match number of projection matrices.")
+
+        # Volume midpoints will be set to zero when using projection matrices,
+        # their values for circular trajectory reconstructions is commented
+        # so they can be easily activated again if the user decides not to
+        # use projection matrices.
+        midpoint_comment = "0 # "
+
+        projTableString = """projtable.txt version 3
 {timestring}
 
 # format: angle / entries of projection matrices
-{nProjections}
+{nMatrices}
 """.format(
-    nProjections=nProjections,
-    timestring=now.strftime("%a %b %d %H:%M:%S %Y")
-    )
+        nMatrices=nMatrices,
+        timestring=now.strftime("%a %b %d %H:%M:%S %Y")
+        )
 
-    for i in range(nProjections):
-        m=matrices[i]
-        projTableString += """@{nr}
+        for i in range(nMatrices):
+            m=matrices[i]
+            projTableString += """@{nr}
 0.0 0.0
 {c00} {c01} {c02} {c03}
 {c10} {c11} {c12} {c13}
 {c20} {c21} {c22} {c23}
 
 """.format(
-        nr=(i+1),
-        c00=m.get(col=0, row=0),
-        c01=m.get(col=1, row=0),
-        c02=m.get(col=2, row=0),
-        c03=m.get(col=3, row=0),
-        c10=m.get(col=0, row=1),
-        c11=m.get(col=1, row=1),
-        c12=m.get(col=2, row=1),
-        c13=m.get(col=3, row=1),
-        c20=m.get(col=0, row=2),
-        c21=m.get(col=1, row=2),
-        c22=m.get(col=2, row=2),
-        c23=m.get(col=3, row=2)
-    )
+            nr=(i+1),
+            c00=m.get(col=0, row=0),
+            c01=m.get(col=1, row=0),
+            c02=m.get(col=2, row=0),
+            c03=m.get(col=3, row=0),
+            c10=m.get(col=0, row=1),
+            c11=m.get(col=1, row=1),
+            c12=m.get(col=2, row=1),
+            c13=m.get(col=3, row=1),
+            c20=m.get(col=0, row=2),
+            c21=m.get(col=1, row=2),
+            c22=m.get(col=2, row=2),
+            c23=m.get(col=3, row=2)
+        )
 
-    with open("{}_projtable.txt".format(basename), 'w') as f:
-        f.write(projTableString)
-        f.close()
+        with open(cera_projtable_filename, 'w') as f:
+            f.write(projTableString)
+            f.close()
 
-    voxelSizeXY = geo.detector.pitch_u * geo.SOD / geo.SDD
-    voxelSizeZ  = geo.detector.pitch_v * geo.SOD / geo.SDD
+    if n_projections is None:
+        raise Exception("write_CERA_config: Please provide the number of projection images in the parameter `n_projections`.")
 
+    # CERA config file
+    # ---------------------
     configFileString = """#CERACONFIG
 
 [Projections]
@@ -1728,10 +2225,10 @@ NumRows = {nRows}
 PixelSizeU = {psu}
 PixelSizeV = {psv}
 Rotation = None
-FlipU = false
-FlipV = true
+FlipU = {flip_u}
+FlipV = {flip_v}
 Padding = 0
-BigEndian = false
+BigEndian = {big_endian}
 CropBorderRight = 0
 CropBorderLeft = 0
 CropBorderTop = 0
@@ -1739,7 +2236,7 @@ CropBorderBottom = 0
 BinningFactor = None
 SkipProjectionInterval = 1
 ProjectionDataDomain = Intensity
-RawHeaderSize = 0
+RawHeaderSize = {raw_header_size}
 
 [Volume]
 SizeX = {volx}
@@ -1747,17 +2244,17 @@ SizeY = {voly}
 SizeZ = {volz}
 # Midpoints are only necessary for reconstructions
 # without projection matrices.
-MidpointX = {midpointx}
-MidpointY = {midpointy}
-MidpointZ = {midpointz}
+MidpointX = {midpoint_comment}{midpointx}
+MidpointY = {midpoint_comment}{midpointy}
+MidpointZ = {midpoint_comment}{midpointz}
 VoxelSizeX = {vsx}
 VoxelSizeY = {vsy}
 VoxelSizeZ = {vsz}
-Datatype = float
+OutputDatatype = {output_datatype}
 
 [CustomKeys]
 NumProjections = {nProjections}
-ProjectionFileType = tiff
+ProjectionFileType = {projection_file_type}
 VolumeOutputPath = {basename}.raw
 ProjectionStartNum = 0
 ProjectionFilenameMask = {projFilePattern}
@@ -1769,7 +2266,7 @@ DetectorOffsetU = {offu}
 DetectorOffsetV = {offv}
 StartAngle = {startAngle}
 ScanAngle = {scanAngle}
-AquisitionDirection = CW
+AquisitionDirection = {scanDirection}
 a = {a}
 b = {b}
 c = {c}
@@ -1795,35 +2292,43 @@ GlobalI0Value = {i0max}
     nRows=int(geo.detector.rows()),
     psu=geo.detector.pitch_u,
     psv=geo.detector.pitch_v,
-    volx=int(voxelsX),
-    voly=int(voxelsY),
-    volz=int(voxelsZ),
-    midpointx=0, #!
-    midpointy=0, #!
-    midpointz=0, #!
-    vsx=voxelSizeXY,
-    vsy=voxelSizeXY,
-    vsz=voxelSizeZ,
-    nProjections=int(nProjections),
-    projFilePattern=projectionFilePattern,
-    SOD=geo.SOD,
-    SDD=geo.SDD,
-    offu=0, #!
-    offv=0, #!
-    startAngle=0, #!
-    scanAngle=totalAngle,
-    a=0, #!
-    b=0, #!
-    c=0, #!
+    flip_u=_cera_bool(flip_u),
+    flip_v=_cera_bool(flip_v),
+    big_endian=_cera_bool(big_endian),
+    raw_header_size=raw_header_size,
+    volx=int(voxels_x),
+    voly=int(voxels_y),
+    volz=int(voxels_z),
+    midpoint_comment=midpoint_comment,
+    midpointx=cera_parameters["volume_midpoint"]["x"],
+    midpointy=cera_parameters["volume_midpoint"]["y"],
+    midpointz=cera_parameters["volume_midpoint"]["z"],
+    vsx=voxel_size_x,
+    vsy=voxel_size_y,
+    vsz=voxel_size_z,
+    output_datatype=output_datatype,
+    nProjections=int(n_projections),
+    projection_file_type=projection_file_type,
+    projFilePattern=projection_file_pattern,
+    SOD=cera_parameters["R"],
+    SDD=cera_parameters["D"],
+    offu=cera_parameters["u0"],
+    offv=cera_parameters["v0"],
+    startAngle=cera_parameters["start_angle"],
+    scanAngle=total_angle,
+    scanDirection=cera_scan_direction,
+    a=cera_parameters["a"],
+    b=cera_parameters["b"],
+    c=cera_parameters["c"],
     i0max=i0max
     )
 
-    with open("{}.config".format(basename), 'w') as f:
+    with open(cera_config_filename, 'w') as f:
         f.write(configFileString)
         f.close()
 
 
-def write_openCT_file(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ, matrices, filename, volumename, projectionFilenames):
+def write_openCT_config(geo, total_angle, boundingBoxX, boundingBoxY, boundingBoxZ, matrices, filename, volumename, projectionFilenames):
     nProjections = len(matrices)
     matrixString = ""
 
@@ -1885,7 +2390,7 @@ def write_openCT_file(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ,
         ]
     }},
     "geometry":    {{
-        "totalAngle":           {totalAngle},
+        "total_angle":           {total_angle},
         "skipAngle":            0,
         "detectorPixel":        [
             {nPixelsX},
@@ -1953,7 +2458,7 @@ def write_openCT_file(geo, totalAngle, boundingBoxX, boundingBoxY, boundingBoxZ,
     detectorSizeY=geo.detector.phys_height,
     SOD=geo.SOD,
     ODD=geo.ODD,
-    totalAngle=totalAngle,
+    total_angle=total_angle,
     bbx=boundingBoxX,
     bby=boundingBoxY,
     bbz=boundingBoxZ,
