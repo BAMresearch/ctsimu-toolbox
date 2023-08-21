@@ -2044,23 +2044,24 @@ def write_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str,
         Standard value: `"CCW"`
 
     voxels_x : int
-        Number of voxels in x direction for the reconstruction volume.
+        Number of voxels in x direction of the reconstruction volume.
         Set to `None` for a default value based on the detector pixels.
 
         Standard value: `None`
 
     voxels_y : int
-        Number of voxels in y direction for the reconstruction volume.
+        Number of voxels in y direction of the reconstruction volume.
         Set to `None` for a default value based on the detector pixels.
 
         Standard value: `None`
 
     voxels_z : int
-        Number of voxels in z direction for the reconstruction volume.
+        Number of voxels in z direction of the reconstruction volume.
         Set to `None` for a default value based on the detector pixels.
 
         For helix scans, this parameter should be increased because the
-        default voxel size in z direction corresponds to the detector height.
+        default voxel size in z direction corresponds to the detector height,
+        whereas a helix scan usually covers much more than the detector height.
 
         Standard value: `None`
 
@@ -2102,7 +2103,7 @@ def write_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str,
         Standard value: `True`
 
     big_endian : bool
-        If projection images are given in RAW, big-endian format, this parameter
+        If projection images are given in RAW big-endian format, this parameter
         should be set to `True`.
 
         Standard value: `False`
@@ -2129,9 +2130,9 @@ def write_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str,
 
     cera_parameters = geo.get_CERA_standard_circular_parameters(start_angle=start_angle)
     cera_config_filename = f"{save_dir}/{basename}.config"
-    cera_projtable_filename = f"{save_dir}/{basename}_projtable.txt"
+    projtable_filename = ""
+
     touch_directory(cera_config_filename)
-    touch_directory(cera_projtable_filename)
 
     # Use default number of voxels if none is given:
     if voxels_x is None:
@@ -2208,6 +2209,10 @@ def write_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str,
             c23=m.get(col=3, row=2)
         )
 
+        projtable_filename = f"{basename}_projtable.txt"
+        cera_projtable_filename = f"{save_dir}/{projtable_filename}"
+        touch_directory(cera_projtable_filename)
+
         with open(cera_projtable_filename, 'w') as f:
             f.write(projTableString)
             f.close()
@@ -2270,7 +2275,7 @@ AquisitionDirection = {scanDirection}
 a = {a}
 b = {b}
 c = {c}
-ProjectionMatrixFilename = {basename}_projtable.txt
+ProjectionMatrixFilename = {projtable_filename}
 
 [Backprojection]
 ClearOutOfRegionVoxels = false
@@ -2320,6 +2325,7 @@ GlobalI0Value = {i0max}
     a=cera_parameters["a"],
     b=cera_parameters["b"],
     c=cera_parameters["c"],
+    projtable_filename=projtable_filename,
     i0max=i0max
     )
 

@@ -14,8 +14,8 @@ myCT.detector.set_size(
 	pitch_u  = 0.2,
 	pitch_v  = 0.2)
 
-myCT.update() # signals that we made manual changes
-myCT.store()  # backups the initial configuration
+myCT.update() # signal that we made manual changes
+myCT.store()  # backup the initial configuration
 
 # Scan configuration:
 projections = 3000   # number of projections or angular steps
@@ -23,7 +23,7 @@ scan_range  = 360.0  # degrees. One full CT rotation.
 
 # We assume that the projections are stored in single TIFF image files,
 # sequentially numbered with four digits, starting at "img_0000.tif".
-projectionFilename    = "img_{:04d}.tif" # for openCT
+projectionFilename = "img_{:04d}.tif"    # for openCT
 projection_file_pattern = "img_%04d.tif" # for CERA
 
 # The following two lists will store the projection matrices
@@ -67,6 +67,9 @@ bounding_box_x = voxelSize * myCT.detector.pixels_u
 bounding_box_y = voxelSize * myCT.detector.pixels_u
 bounding_box_z = voxelSize * myCT.detector.pixels_v
 
+# Restore CT setup for frame zero:
+myCT.restore()
+
 # Write the openCT configuration file, including the projection matrices:
 write_openCT_config(
 	geo=myCT,
@@ -88,9 +91,6 @@ write_CERA_config(
 	projection_file_pattern=projection_file_pattern,
 	matrices=matrices_CERA,
 	basename="recon_CERA",
-	save_dir="example09",
-	voxels_x=myCT.detector.pixels_u,
-    voxels_y=myCT.detector.pixels_u,
-    voxels_z=myCT.detector.pixels_v,
+	save_dir="example_09",
     i0max=44000  # maximum free-beam intensity
 )
