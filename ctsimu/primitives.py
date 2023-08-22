@@ -189,6 +189,18 @@ class Matrix:
         self.n_entries = self.cols * self.rows
         self.value = numpy_data.astype(float)
 
+    def update_rows_cols(self):
+        """Update the numbers of rows and columns based on the current shape of `self.value`."""
+
+        # Update number of rows and columns
+        sh = self.value.shape
+        self.rows = sh[0]
+        if len(sh) > 1:
+            self.cols = sh[1]
+        else:
+            # Created a vector
+            self.cols = 1
+
     def copy(self, x:'Matrix'):
         """Make this matrix a copy of the given matrix `x`.
 
@@ -284,6 +296,9 @@ class Matrix:
             # 'x' is another matrix or a vector:
             self.value = numpy.matmul(self.value, x.value)
             self.n_entries = self.value.size
+
+            self.update_rows_cols()
+
         elif isinstance(x, numbers.Number):
             # 'x' is a scalar:
             self.value = numpy.multiply(self.value, x)
