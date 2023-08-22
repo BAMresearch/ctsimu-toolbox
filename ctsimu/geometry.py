@@ -13,6 +13,7 @@ import json
 import math
 import copy
 import pkgutil
+import warnings
 from datetime import datetime
 
 from .primitives import *
@@ -1986,7 +1987,7 @@ def _cera_bool(truth:bool) -> str:
 
     return "false"
 
-def write_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=".", n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float", matrices:list=None):
+def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=".", n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float", matrices:list=None):
     """Write a CERA config file for the given geometry.
 
     A circular trajectory for the given angular range is assumed, all parameters
@@ -2334,144 +2335,286 @@ GlobalI0Value = {i0max}
         f.close()
 
 
-def write_openCT_config(geo, total_angle, boundingBoxX, boundingBoxY, boundingBoxZ, matrices, filename, volumename, projectionFilenames):
-    nProjections = len(matrices)
-    matrixString = ""
+def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:list=None, projection_dir:str=".", flip_u:bool=False, flip_v:bool=False, datatype:str="Float32", filetype:str="TIFF", skip_bytes:int=0, endianness:str="Little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
+    """Create an openCT free trajectory CBCT configuration and optionally write to file.
 
-    i = 0
-    for m in matrices:
-        if i>0:
-            matrixString += ",\n\n            "
+    Parameters
+    ----------
+    geo : ctsimu.geometry.Geometry
+        A geometry that should represent the CT setup at frame zero, as seen
+        by the reconstruction software.
 
-        matrixString += "[ "
-        for row in range(m.rows):
-            if row > 0:
-                matrixString += ",\n              "
-            matrixString += "["
-            for col in range(m.cols):
-                if col > 0:
-                    matrixString += ", "
+    filename : str
+        Path and filename for the openCT configuration file to be written.
+        If no file should be written, set this to `None`.
 
-                matrixString += "{}".format(m.get(col=col, row=row))
-            matrixString += "]"
-        matrixString += " ]"
-        i += 1
+        Standard value: `None`
 
-    filesString = ""
-    if len(matrices) == len(projectionFilenames):
-        for i in range(len(matrices)):
-            if i > 0:
-                filesString += ",\n                "
-            #filesString += '"{:05d}.tif"'.format(i)
-            filesString += '"{}"'.format(projectionFilenames[i])
+    projection_files : list
+        List of projection file names.
+
+    projection_dir : str
+        Path where the projection images are stored.
+
+        Standard value: `"."` (local script directory)
+
+    flip_u : bool
+        Flip projection images horizontally before reconstruction?
+
+        Standard value: `False`
+
+    flip_v : bool
+        Flip projection images vertically before reconstruction?
+
+        Standard value: `False`
+
+    datatype : str
+        Data type of the projection images, as well as possible bright and dark
+        images and the bad pixel map.
+
+        Allowed values: `"UInt8"`, `"UInt16"`, `"UInt32"`, `"Int8"`, `"Int16"`, `"Int32"`, `"Float32"`
+
+        Standard value: `"Float32"`
+
+    filetype : str
+        File type of the projection images, as well as possible bright and dark
+        images and the bad pixel map.
+
+        Allowed values: `"RAW"` or `"TIFF"`
+
+        Standard value: `"TIFF"`
+
+    skip_bytes : int
+        For RAW projection images: header size to skip (in bytes).
+
+        Standard value: `0`
+
+    endianness : str
+        For RAW projection images: endianness of the files.
+
+        Allowed values: `"Little"` or `"Big"`
+
+        Standard value: `"Little"`
+
+    detector_coordinate_frame : str
+        A string that defines the orientation of the detector coordinate system
+        with respect to the projection images.
+
+        Possible values:
+
+        + `"OriginAtDetectorCenter.VerticalAxisRunningUpwards"`
+        + `"OriginAtDetectorCenter.VerticalAxisRunningDownwards"`
+        + `"OriginAtDetectorTopLeftCorner"`
+        + `"OriginAtDetectorBottomLeftCorner"`
+
+        Standard value: `"OriginAtDetectorCenter.VerticalAxisRunningDownwards"`
+
+    detector_coordinate_dimension : str
+        A string that defines the unit of the detector coordinate system.
+
+        Possible values:
+
+        + `"Length"` for physical length units (usually mm).
+        + `"PixelCount"` if projection matrices refer to a pixel coordinate system.
+
+        Standard value: `"Length"`
+
+    matrices : list
+        List of projection matrices of type `ctsimu.primitives.Matrix`.
+        One matrix for each projection image is required.
+
+        Standard value: `None`
+
+    volumename : str
+        Optional name for the reconstruction volume.
+
+        Standard value: `None`
+
+    bb_center_x : float
+        Position (in x direction) of the reconstruction volume bounding box.
+        Center position in respect to the stage coordinate system.
+
+        Standard value: `0`
+
+    bb_center_y : float
+        Position (in y direction) of the reconstruction volume bounding box.
+        Center position in respect to the stage coordinate system.
+
+        Standard value: `0`
+
+    bb_center_z : float
+        Position (in z direction) of the reconstruction volume bounding box.
+        Center position in respect to the stage coordinate system.
+
+        Standard value: `0`
+
+    bb_size_x : float
+        Physical size (in mm, x direction) of the reconstruction volume bounding box.
+        If `None` is given, a meaningful size will be calculated from the
+        detector size and magnification.
+
+        Standard value: `None`
+
+    bb_size_y : float
+        Physical size (in mm, y direction) of the reconstruction volume bounding box.
+        If `None` is given, a meaningful size will be calculated from the
+        detector size and magnification.
+
+        Standard value: `None`
+
+    bb_size_y : float
+        Physical size (in mm, z direction) of the reconstruction volume bounding box.
+        If `None` is given, a meaningful size will be calculated from the
+        detector size and magnification.
+
+        Standard value: `None`
+
+    bright_image_dir : str
+        Optional directory where bright correction images are stored.
+
+        Standard value: `None`
+
+    bright_images : list
+        List of file names of bright correction images.
+
+        Standard value: `None`
+
+    dark_image : str
+        Path to a dark correction image.
+
+        Standard value: `None`
+
+    bad_pixel_mask : str
+        Path to a bad pixel mask for correction.
+
+        Standard value: `None`
+
+    Returns
+    -------
+    openct_config : dict
+        Dictionary that represents the JSON structure of the openCT file.
+    """
+
+    n_projections = 0
+    if projection_files is not None:
+        n_projections = len(projection_files)
     else:
-        raise Exception("The number of projection matrices ({}) does not match the number of projection file names ({}).".format(len(matrices), len(projectionFilenames)))
+        # Initialize as an empty list:
+        projection_files = list()
 
+    n_matrices = 0
+    openct_matrices = list()
+    if matrices is not None:
+        if isinstance(matrices, list):
+            n_matrices = len(matrices)
+            if n_matrices != n_projections:
+                warnings.warn(f"In write_openCT_config: Number of projection matrices ({n_matrices}) does not match number of projection images ({n_projections}).")
 
-    content = """{{
-    "version": {{"major":1, "minor":0}},
-    "openCTJSON":     {{
-        "versionMajor": 1,
-        "versionMinor": 0,
-        "revisionNumber": 0,
-        "variant": "FreeTrajectoryCBCTScan"
-    }},
-    "units": {{
-        "length": "Millimeter"
-    }},
-    "volumeName":  "{volumeName}",
-    "projections": {{
-        "numProjections":  {nProjections},
-        "intensityDomain": true,
-        "images":          {{
-            "directory": ".",
-            "dataType":  "UInt16",
-            "fileType":  "TIFF",
-            "files":     [
-                {filesString}
-            ]
-        }},
-        "matrices": [
-            {matrixString}
-        ]
-    }},
-    "geometry":    {{
-        "total_angle":           {total_angle},
-        "skipAngle":            0,
-        "detectorPixel":        [
-            {nPixelsX},
-            {nPixelsY}
-        ],
-        "detectorSize":         [
-            {detectorSizeX},
-            {detectorSizeY}
-        ],
-        "mirrorDetectorAxis":   "",
-        "distanceSourceObject": {SOD},
-        "distanceObjectDetector": {ODD},
-        "objectBoundingBox":    [
-            [
-                {bbx},
-                0.0,
-                0.0,
-                0.0
-            ],
-            [
-                0.0,
-                {bby},
-                0.0,
-                0.0
-            ],
-            [
-                0.0,
-                0.0,
-                {bbz},
-                0.0
-            ],
-            [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        ]
-    }},
-    "corrections": {{
-        "brightImages": {{
-            "directory": "",
-            "dataType":  "",
-            "fileType":  "",
-            "files":     []
-        }},
-        "darkImage":    {{
-            "file":     "",
-            "dataType": "",
-            "fileType": ""
-        }},
-        "badPixelMask": {{
-            "file":     "",
-            "dataType": "",
-            "fileType": ""
-        }},
-        "intensities":  []
-    }}
-}}""".format(
-    nProjections=nProjections,
-    matrixString=matrixString,
-    nPixelsX=int(geo.detector.cols()),
-    nPixelsY=int(geo.detector.rows()),
-    detectorSizeX=geo.detector.phys_width,
-    detectorSizeY=geo.detector.phys_height,
-    SOD=geo.SOD,
-    ODD=geo.ODD,
-    total_angle=total_angle,
-    bbx=boundingBoxX,
-    bby=boundingBoxY,
-    bbz=boundingBoxZ,
-    filesString=filesString,
-    volumeName=volumename
-    )
+            for m in matrices:
+                openct_matrices.append(m.value.tolist())
+        else:
+            raise Exception("Error in write_openCT_config: 'matrices' must be a list.")
 
-    with open(filename, 'w') as f:
-        f.write(content)
-        f.close()
+    mirror_detector_axis = ""
+    if (flip_u is True) and (flip_v is False):
+        mirror_detector_axis = "U"
+    elif (flip_u is False) and (flip_v is True):
+        mirror_detector_axis = "V"
+    elif (flip_u is True) and (flip_v is True):
+        mirror_detector_axis = "UV"
+
+    # ### Geometry parameters
+    # Take some standard parameters from CERA:
+    cera_parameters = geo.get_CERA_standard_circular_parameters()
+
+    if bb_size_x is None:
+        bb_size_x = geo.detector.cols() * cera_parameters["voxel_size"]["x"]
+    if bb_size_y is None:
+        bb_size_y = geo.detector.cols() * cera_parameters["voxel_size"]["y"]
+    if bb_size_z is None:
+        bb_size_z = geo.detector.rows() * cera_parameters["voxel_size"]["z"]
+
+    openct_config = {
+        "openCTJSON": {
+            "versionMajor": 1,
+            "versionMinor": 0,
+            "revisionNumber": 0,
+            "variant": "FreeTrajectoryCBCTScan"
+        },
+        "hints": None,
+        "units": {
+            "length": "Millimeter"
+        },
+        "volumeName":  volumename,
+        "projections": {
+            "numProjections":  n_projections,
+            "intensityDomain": True,
+            "images": {
+                "dataType":  datatype,
+                "fileType":  filetype,
+                "skipBytes": skip_bytes,
+                "endianness": endianness,
+                "directory": projection_dir,
+                "files": projection_files
+            },
+            "detectorCoordinateFrame": detector_coordinate_frame,
+            "detectorCoordinateDimension": detector_coordinate_dimension,
+            "matrices": openct_matrices
+        },
+        "geometry": {
+            "detectorPixel": [
+                int(geo.detector.cols()),
+                int(geo.detector.rows())
+            ],
+            "detectorSize": [
+                geo.detector.phys_width,
+                geo.detector.phys_height
+            ],
+            "mirrorDetectorAxis": mirror_detector_axis,
+            "objectBoundingBox": {
+                "centerXYZ": [bb_center_x, bb_center_y, bb_center_z],
+                "sizeXYZ": [bb_size_x, bb_size_y, bb_size_z]
+            }
+        },
+        "corrections": {
+            "brightImages": {
+                "dataType":  datatype,
+                "fileType":  filetype,
+                "skipBytes": skip_bytes,
+                "endianness": endianness,
+                "directory": bright_image_dir,
+                "files":     []
+            },
+            "darkImage": {
+                "file":     dark_image,
+                "dataType": datatype,
+                "fileType": filetype,
+                "skipBytes": skip_bytes,
+                "endianness": endianness
+            },
+            "badPixelMask": {
+                "file":     bad_pixel_mask,
+                "dataType": datatype,
+                "fileType": filetype,
+                "skipBytes": skip_bytes,
+                "endianness": endianness
+            }
+        }
+    }
+
+    # Clean up corrections if they are not needed:
+    if (bright_images is None) and (dark_image is None) and (bad_pixel_mask is None):
+        # Set all corrections to null if none are required.
+        openct_config["corrections"] = None
+    else:
+        if bright_images is None:
+            openct_config["corrections"]["brightImages"] = None
+        if dark_image is None:
+            openct_config["corrections"]["darkImage"] = None
+        if bad_pixel_mask is None:
+            openct_config["corrections"]["badPixelMask"] = None
+
+    if filename is not None:
+        write_json_file(filename=filename, dictionary=openct_config)
+
+    return openct_config

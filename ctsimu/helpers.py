@@ -100,7 +100,7 @@ def write_json_file(filename:str, dictionary:dict):
     folder = touch_directory(filename)
     if os.path.exists(folder):
         with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(dictionary, f, ensure_ascii=False, indent=4)
+            json.dump(dictionary, f, ensure_ascii=False, indent="\t")
             f.close()
     else:
         raise Exception(f"Error writing JSON file. Directory does not exist: {folder}")

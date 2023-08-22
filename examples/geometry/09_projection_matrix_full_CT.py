@@ -56,36 +56,21 @@ for p in range(projections):
 	# Store the current projection filename for openCT:
 	projectionFilenames.append(projectionFilename.format(p))
 
-
-# openCT configuration:
-# ----------------------
-# We need the bounding box dimensions of the reconstruction volume
-# in mm:
-
-voxelSize = 0.0625
-bounding_box_x = voxelSize * myCT.detector.pixels_u
-bounding_box_y = voxelSize * myCT.detector.pixels_u
-bounding_box_z = voxelSize * myCT.detector.pixels_v
-
 # Restore CT setup for frame zero:
 myCT.restore()
 
 # Write the openCT configuration file, including the projection matrices:
-write_openCT_config(
+create_openCT_config(
 	geo=myCT,
-	total_angle=scan_range,
-	boundingBoxX=bounding_box_x,
-	boundingBoxY=bounding_box_y,
-	boundingBoxZ=bounding_box_z,
+	filename="example_09/recon_openCT.json",
+	projection_files=projectionFilenames,
 	matrices=matrices_openCT,
-	volumename="recon_openCT",
-	filename="recon_openCT.json",
-    projectionFilenames=projectionFilenames
+	volumename="recon_openCT"
 )
 
 # CERA configuration:
 # -------------------
-write_CERA_config(
+create_CERA_config(
 	geo=myCT,
 	total_angle=scan_range,
 	projection_file_pattern=projection_file_pattern,
