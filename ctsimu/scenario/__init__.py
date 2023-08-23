@@ -17,6 +17,7 @@ from .file import File
 from .environment import Environment
 from .acquisition import Acquisition
 from .material import Material
+from .metadata import Metadata
 
 class Scenario:
 	def __init__(self):
@@ -30,6 +31,21 @@ class Scenario:
 		self.acquisition = Acquisition(_root=self)
 		self.materials = list()
 		self.simulation = None # simply imported as dict
+
+		# CTSimU metadata structure:
+		# Necessary for generation of reconstruction configs.
+		self.metadata = Metadata(_root=self)
+
+		# Subgroups are necessary for the 'get' and 'set' command:
+		self.subgroups = [
+			self.detector,
+			self.source,
+			self.stage,
+			self.file,
+			self.environment,
+			self.acquisition,
+			self.metadata
+		]
 
 		self.current_frame = 0
 		self.current_json_file = None
@@ -67,6 +83,18 @@ class Scenario:
 			self.materials.append(m)
 
 		self.set_frame(0, reconstruction=False)
+
+	def read_metadata(self, metadata_file:str=None):
+		"""Import metadata from a CTSimU metadata file.
+
+		Parameters
+		----------
+		metadata_file : str
+			Path to a CTSimU metadata file.
+		"""
+		if metadata_file is not None:
+			json_dict = read_json_file(filename=metadata_file)
+			self.metadata.set_from_json(json_dict)
 
 	def write(self, file:str=None):
 		if file is not None:
