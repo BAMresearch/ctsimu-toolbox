@@ -3,6 +3,7 @@
 import os
 import json
 import math
+import csv
 import numpy
 from scipy import optimize, fft
 
@@ -104,6 +105,51 @@ def write_json_file(filename:str, dictionary:dict):
             f.close()
     else:
         raise Exception(f"Error writing JSON file. Directory does not exist: {folder}")
+
+def read_csv_file(filename:str) -> dict:
+    """Read a CSV file.
+
+    Parameters
+    ----------
+    filename : str
+        Filename of the CSV file to read.
+
+    Returns
+    -------
+    data : list
+        Each item in the returned list contains the values of one column from the CSV file.
+    """
+
+    values = []
+    n_columns = 0
+
+    with open(filename, newline='') as f:
+        try:
+            # Detect the CSV dialect: comma or tab-separated?
+            dialect = csv.Sniffer().sniff(f.read(1024))
+        except:
+            dialect = None
+
+        # Return to beginning
+        f.seek(0)
+
+        reader = csv.reader(f, dialect)
+        for row in reader:
+            if row[0].startswith('#'):
+                # ignore commented lines
+                continue
+
+            if n_columns == 0:
+                # Number of columns apparently not initialized yet.
+                n_columns = len(row)
+                for i in range(n_columns):
+                    # Append an empty list for each column:
+                    values.append([])
+
+            for col, entry in enumerate(row):
+                values[col].append(entry)
+
+    return values
 
 def value_is_null(value) -> bool:
     """Check if a specific JSON value is set to `null`.
@@ -959,44 +1005,6 @@ def get_value_in_native_unit(native_unit:str, dictionary:dict, keys:list, fail_v
                 return value
 
     return fail_value
-
-def add_filters_to_list(filter_list:list, json_object:dict, keys:list) -> list:
-    """Add filters from a given key sequence in the json object
-    to the given filter list.
-
-    Parameters
-    ----------
-    filter_list : list
-        List of `ctsimu.scenario.filter.Filter` objects.
-
-    json_object : dict
-        A dictionary that contains an array of filter definitions
-        at a certain location (key sequence).
-
-    keys : list
-        List of strings that identifies the location of the
-        array of filters in the dictionary.
-
-    Returns
-    -------
-    appended_filter_list : list
-        Previously given list, with the new filters appended at the end.
-    """
-    if json_exists_and_not_null(json_object, keys):
-        filters = json_extract(json_object, keys)
-        if isinstance(filters, list):
-            for f in filters:
-                new_filter = Filter()
-                new_filter.set_from_json(f)
-                filter_list.append(new_filter)
-        elif isinstance(filters, dict):
-            # If no array is given, maybe just
-            # one filter is defined as an object.
-            new_filter = Filter()
-            new_filter.set_from_json(f)
-            filter_list.append(new_filter)
-
-    return filter_list
 
 # -----------------------
 # Further little helpers
