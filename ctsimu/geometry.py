@@ -2334,8 +2334,7 @@ GlobalI0Value = {i0max}
         f.write(configFileString)
         f.close()
 
-
-def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:list=None, projection_dir:str=".", flip_u:bool=False, flip_v:bool=False, datatype:str="Float32", filetype:str="TIFF", skip_bytes:int=0, endianness:str="Little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
+def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, datatype:str="Float32", filetype:str="TIFF", skip_bytes:int=0, endianness:str="Little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
     """Create an openCT free trajectory CBCT configuration and optionally write to file.
 
     Parameters
@@ -2356,7 +2355,7 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
     projection_dir : str
         Path where the projection images are stored.
 
-        Standard value: `"."` (local script directory)
+        Standard value: `None`
 
     flip_u : bool
         Flip projection images horizontally before reconstruction?
@@ -2583,7 +2582,7 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
                 "skipBytes": skip_bytes,
                 "endianness": endianness,
                 "directory": bright_image_dir,
-                "files":     []
+                "files":     bright_images
             },
             "darkImage": {
                 "file":     dark_image,

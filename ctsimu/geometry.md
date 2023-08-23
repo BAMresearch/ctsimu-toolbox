@@ -210,7 +210,7 @@ We also scale the basis vectors of the volume coordinate system by the voxel siz
 
 A single projection matrix is not enough to describe a full CT scan. We need one projection matrix for each frame (i.e., for each projection image).
 
-We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `write_openCT_config()` or `write_cera_config()` to create specific reconstruction configuration files for each reconstruction software.
+We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `create_openCT_config()` or `create_CERA_config()` to create specific reconstruction configuration files for each reconstruction software.
 
 In the loop, it is advisable not to rotate the stage incrementally for each frame by a certain angular increment. This could lead to the accumulation of small floating-point rounding inaccuracies. Instead, we create a backup of the initial setup (at frame zero) using the `Geometry.store()` function. In each step of the loop, we restore this initial configuration by calling `Geometry.restore()` and then rotate the stage to its current absolute angle. This approach of parameterizing the whole CT trajectory as a deterministic function that only depends on the initial configuration and the current frame number is preferred over incremental changes in a loop, but might not always be feasible.
 
