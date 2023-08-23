@@ -87,22 +87,42 @@ class Group:
 		if key in self.properties:
 			return self.properties[key]
 		else:
-			raise Exception(f"Part '{self.name}'' does not have a property called '{key}'.")
+			raise Exception(f"Part '{self.name}' does not have a property called '{key}'.")
 
 	def get(self, key:str) -> float | str | bool:
 		"""The current value for a given property `key`.
 
 		Parameters
 		----------
-		key : str
-			Identifier for the requested property.
+		key : str or list
+			If key is a string: identifier for the local requested property.
+			If key is a list of strings: key sequence to identify an
+			item in a subgroup.
 
 		Returns
 		-------
 		current_value : float or str or bool
 			Current value of the requested property.
 		"""
-		return self.parameter(key).current_value
+		if isinstance(key, str):
+			return self.parameter(key).current_value
+		elif isinstance(key, list):
+			if len(key) == 1:
+				# Only one item in the list: return parameter value.
+				return self.parameter(key[0]).current_value
+			elif len(key) == 0:
+				raise Exception("Get: empty list does not identify a valid key.")
+			else:
+				next_in_line = key[0]
+				# Identify the subgroup that is meant by the next keyword in line:
+				for s in self.subgroups:
+					if s.name == next_in_line:
+						# Get the key element from the subgroup, remove
+						# this 'next_in_line' from the front of the list:
+						return s.get(key[1:])
+
+		raise Exception("Get: please give a valid key string or list of strings")
+
 
 	def standard_value(self, key:str) -> float | str | bool:
 		"""The standard value for a given property `key`
@@ -503,8 +523,20 @@ class Array(Group):
 		return jd
 
 	def get(self, i:int):
-		if i < len(self.elements):
-			return self.elements[i]
+		if isinstance(i, int):
+			if i < len(self.elements):
+				return self.elements[i]
+		elif isinstance(i, list):
+			pos = i[0]
+			if isinstance(pos, int):
+				return self.elements[pos].get(i[1:])
+			else:
+				raise Exception(f"'{pos}' does not identify a position in the array '{self.name}'. Please provide an integer.")
+
+		raise Exception(f"Array '{self.name}': cannot get element at key sequence {i}.")
+
+	def n_elements(self):
+		return len(self.elements)
 
 	def add_element(self, json_obj:dict):
 		# Create new group:

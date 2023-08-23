@@ -75,6 +75,34 @@ class Scenario:
 
 			write_json_file(filename=file, dictionary=self.json_dict())
 
+	def get(self, key:list) -> float | str | bool:
+		"""Get a parameter value identified by a list of key strings.
+
+		Parameters
+		----------
+		key : list
+			List of strings that identify the key of the requested
+			parameter within the CTSimU scenario structure.
+
+		Returns
+		-------
+		value : float or str or bool
+			Current value of the requested parameter.
+		"""
+		if isinstance(key, list):
+			# Special treatment for the source geometry extras: type or beam_divergence:
+			if len(key) > 2:
+				if key[0:2] == ["geometry", "source"]:
+					return self.source.source_geometry_extras.get(key[2:])
+
+			# Standard treatment:
+			if len(key) > 1:
+				for s in self.subgroups:
+					if s.name == key[0]:
+						return s.get(key[1:])
+
+		raise Exception(f"Error in get: key not found: {key}")
+
 	def path_of_external_file(self, filename:str) -> str:
 	    """Get the path of an external file referred to in the currently
 	    imported JSON scenario.
@@ -194,7 +222,6 @@ class Scenario:
 		nFrames = self.n_frames()
 
 		stage_deg = self.get_current_stage_rotation_angle()
-		print(f"Stage rot angle: {stage_deg}, from {float(self.acquisition.get('start_angle'))} to {float(self.acquisition.get('stop_angle'))}")
 		stage_rot = math.radians(stage_deg)
 
 		# Update materials:
