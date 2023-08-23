@@ -11,7 +11,7 @@ from .group import Group
 
 class Sample(Part):
 	"""Generic sample."""
-	def __init__(self, name:str=""):
+	def __init__(self, name:str="", _root=None):
 		"""A name can be passed when initializing the sample.
 
 		Parameters
@@ -19,7 +19,7 @@ class Sample(Part):
 		name : str
 			Sample name.
 		"""
-		Part.__init__(self, name)
+		Part.__init__(self, name=name, _root=_root)
 
 		self.set(key="name", value=name, native_unit="string", simple=True)
 		self.set(key="file", value=None, native_unit="string")  # surface mesh file

@@ -39,12 +39,14 @@ class Deviation:
 		This attribute is obeyed when calculating projection matrices.
 	"""
 
-	def __init__(self, pivot_reference:str="sample"):
+	def __init__(self, pivot_reference:str="sample", _root=None):
+		self._root = _root  # root scenario object
+
 		# The axis and pivot point are `Scenevector`
 		# objects that can handle vector drifts and
 		# conversion between coordinate systems:
-		self.axis  = Scenevector(native_unit=None)
-		self.pivot = Scenevector(native_unit="mm")
+		self.axis  = Scenevector(native_unit=None, _root=self._root)
+		self.pivot = Scenevector(native_unit="mm", _root=self._root)
 
 		# Set a standard pivot which refers to the object's center:
 		self.pivot.set_simple(0, 0, 0)
@@ -54,7 +56,7 @@ class Deviation:
 
 		# The transformation amount is a
 		# `Parameter` that can handle drifts.
-		self.amount = Parameter(native_unit=None, standard_value=0)
+		self.amount = Parameter(native_unit=None, standard_value=0, _root=self._root)
 
 		self.set_type("translation")
 		self.known_to_reconstruction = False

@@ -43,7 +43,7 @@ class Parameter:
 		parameter object.
 	"""
 
-	def __init__(self, standard_value=0, native_unit:str=None, simple:bool=False, valid_values:list=None):
+	def __init__(self, standard_value=0, native_unit:str=None, simple:bool=False, valid_values:list=None, _root=None):
 		"""A new parameter object must be assigned a valid native unit
 		to enable the JSON parser to convert the drift values from the
 		JSON file, if necessary.
@@ -71,6 +71,8 @@ class Parameter:
 		valid_values : list
 			A list of acceptable standard values for the parameter.
 		"""
+		self._root = _root  # root scenario object
+
 		self.fail_value = standard_value # used when set_from_json or set_standard_value fails
 
 		self.standard_value = None # is set later in self.set_standard_value()
@@ -449,7 +451,7 @@ class Parameter:
 		json_drift_object : dict
 			A CTSimU drift structure, imported from a JSON structure.
 		"""
-		d = Drift(native_unit=self.native_unit, preferred_unit=self.preferred_unit)
+		d = Drift(native_unit=self.native_unit, preferred_unit=self.preferred_unit, _root=self._root)
 		d.set_from_json(json_drift_object)
 		self.drifts.append(d)
 

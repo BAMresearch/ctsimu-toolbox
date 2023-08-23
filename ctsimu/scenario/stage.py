@@ -11,8 +11,8 @@ from .group import Group, Array
 
 class Stage(Part):
 	"""CTSimU sample stage."""
-	def __init__(self):
-		Part.__init__(self, "stage")
+	def __init__(self, _root=None):
+		Part.__init__(self, name="stage", _root=_root)
 
 	def set_from_json(self, json_scenario:dict):
 		"""Import the stage definition and geometry from the JSON object.

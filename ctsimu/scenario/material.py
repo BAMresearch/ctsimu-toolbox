@@ -33,7 +33,7 @@ class MaterialComponent:
 		Trivial name of the parent material.
 	"""
 
-	def __init__(self, formula:str="Fe", mass_fraction:float=1, parent_material_id:str="", parent_material_name:str=""):
+	def __init__(self, formula:str="Fe", mass_fraction:float=1, parent_material_id:str="", parent_material_name:str="", _root=None):
 		"""All four attributes can be set when the material
 		component is initialized.
 
@@ -54,11 +54,12 @@ class MaterialComponent:
 		parent_material_name : str
 			Trivial name of the parent material.
 		"""
+		self._root = _root  # root scenario object
 
 		self.parent_material_id = parent_material_id
 		self.parent_material_name = parent_material_name
-		self.formula = Parameter(native_unit="string", standard_value=formula)
-		self.mass_fraction = Parameter(native_unit=None, standard_value=mass_fraction)
+		self.formula = Parameter(native_unit="string", standard_value=formula, _root=self._root)
+		self.mass_fraction = Parameter(native_unit=None, standard_value=mass_fraction, _root=self._root)
 
 	def json_dict(self) -> dict:
 		"""Create a CTSimU JSON dictionary for this material component.
@@ -170,7 +171,7 @@ class Material:
 		the material.
 	"""
 
-	def __init__(self, material_id:str=None, name:str=None, density:float=0):
+	def __init__(self, material_id:str=None, name:str=None, density:float=0, _root=None):
 		"""The init constructor takes the following optional arguments.
 
 		Parameters
@@ -191,10 +192,11 @@ class Material:
 			If the material has changed from its previous state
 			(due to drifts).
 		"""
+		self._root = _root  # root scenario object
 
 		self.material_id = material_id
 		self.name = name
-		self.density = Parameter(native_unit="g/cm^3", standard_value=density)
+		self.density = Parameter(native_unit="g/cm^3", standard_value=density, _root=self._root)
 		self.composition = list()
 
 	def reset(self):
@@ -323,7 +325,8 @@ class Material:
 				for json_component in json_components:
 					new_component = MaterialComponent(
 						parent_material_id=self.material_id,
-						parent_material_name=self.name
+						parent_material_name=self.name,
+						_root=self._root
 					)
 					new_component.set_from_json(json_component)
 					self.add_component(new_component)
@@ -332,7 +335,8 @@ class Material:
 				# Try composition given as single string.
 				new_component = MaterialComponent(
 					parent_material_id=self.material_id,
-					parent_material_name=self.name
+					parent_material_name=self.name,
+					_root=self._root
 				)
 				new_component.set_from_json_legacy(json_object)
 				self.add_component(new_component)

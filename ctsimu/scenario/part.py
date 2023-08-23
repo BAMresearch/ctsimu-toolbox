@@ -53,7 +53,7 @@ class Part(Group):
 		with the new geometric deviation format and must be
 		treated differently.
 	"""
-	def __init__(self, name:str="Part"):
+	def __init__(self, name:str="Part", _root=None):
 		"""The part's name can be set upon initialization.
 
 		Parameters
@@ -61,14 +61,14 @@ class Part(Group):
 		name : str
 			Name for the part.
 		"""
-		Group.__init__(self)
+		Group.__init__(self, _root=_root)
 		self.name = name
 
 		self.attached_to_stage = False
 		self.coordinate_system = CoordinateSystem()
-		self.center = Scenevector(native_unit="mm")
-		self.u = Scenevector(native_unit=None)
-		self.w = Scenevector(native_unit=None)
+		self.center = Scenevector(native_unit="mm", _root=self._root)
+		self.u = Scenevector(native_unit=None, _root=self._root)
+		self.w = Scenevector(native_unit=None, _root=self._root)
 		self.deviations = list()
 		self.legacy_deviations = list() # for deviations prior to file format 1.0
 
@@ -298,7 +298,7 @@ class Part(Group):
 				# Go through all elements in the deviations array
 				# and add them to this part's list of deviations.
 				for dev in devs:
-					new_deviation = Deviation(pivot_reference=proper_cs)
+					new_deviation = Deviation(pivot_reference=proper_cs, _root=self._root)
 					if new_deviation.set_from_json(dev):
 						self.deviations.append(new_deviation)
 					else:
@@ -308,7 +308,7 @@ class Part(Group):
 				# Only one drift defined directly as a JSON object?
 				# Actually not supported by file format,
 				# but let's be generous and try...
-				new_deviation = Deviation(pivot_reference=proper_cs)
+				new_deviation = Deviation(pivot_reference=proper_cs, _root=self._root)
 				if new_deviation.set_from_json(devs):
 					self.deviations.append(new_deviation)
 				else:
@@ -333,7 +333,7 @@ class Part(Group):
 				# prior to version 0.9, but we still add them here
 				# because now we easily can... ;-)
 				if json_exists_and_not_null(geo, ["deviation", "position", axis]):
-					pos_dev = Deviation(pivot_reference=proper_cs)
+					pos_dev = Deviation(pivot_reference=proper_cs, _root=self._root)
 					pos_dev.set_type("translation")
 					pos_dev.set_axis(axis)
 					pos_dev.set_known_to_reconstruction(known_to_recon)
@@ -358,7 +358,7 @@ class Part(Group):
 				# also add support for x, y, z (zy'x''),
 				# just because we can.
 				if json_exists_and_not_null(geo, ["deviation", "rotation", axis]):
-					rot_dev = Deviation(pivot_reference=proper_cs)
+					rot_dev = Deviation(pivot_reference=proper_cs, _root=self._root)
 					rot_dev.set_type("rotation")
 
 					# Prior to 0.9, all deviations were meant to take place

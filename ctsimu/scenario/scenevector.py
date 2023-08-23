@@ -36,7 +36,7 @@ class Scenevector:
 		Value of the third vector component.
 	"""
 
-	def __init__(self, native_unit:str=None):
+	def __init__(self, native_unit:str=None, _root=None):
 		"""For initialization, the native unit can be given.
 
 		Parameters
@@ -46,9 +46,11 @@ class Scenevector:
 			but `"mm"` would make sense for positions in space.
 			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
 		"""
-		self.c0 = Parameter(native_unit=native_unit) # 1st vector component
-		self.c1 = Parameter(native_unit=native_unit) # 2nd vector component
-		self.c2 = Parameter(native_unit=native_unit) # 3rd vector component
+		self._root = _root  # root scenario object
+		
+		self.c0 = Parameter(native_unit=native_unit, _root=self._root) # 1st vector component
+		self.c1 = Parameter(native_unit=native_unit, _root=self._root) # 2nd vector component
+		self.c2 = Parameter(native_unit=native_unit, _root=self._root) # 3rd vector component
 
 		# Reference coordinate system:
 		self.reference = "world" # "world", local", "sample"

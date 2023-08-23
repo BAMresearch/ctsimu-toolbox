@@ -36,7 +36,7 @@ class Drift:
 		the number of frames in the CT scan?
 	"""
 
-	def __init__(self, native_unit:str, preferred_unit:str=None):
+	def __init__(self, native_unit:str, preferred_unit:str=None, _root=None):
 		"""A new drift object must be assigned a valid native unit
 		to enable the JSON parser to convert the drift values from the
 		JSON file, if necessary.
@@ -52,6 +52,8 @@ class Drift:
 			Preferred unit to represent these drift values in the JSON file.
 			If set to 'None', the native unit will be used.
 		"""
+		self._root = _root  # root scenario object
+
 		self.trajectory = []
 		self.native_unit = native_unit
 
@@ -210,7 +212,14 @@ class Drift:
 			filename = json_extract(json_drift_object, ["file"])
 			if isinstance(filename, str):
 				# Read drift values from a file
-				values = read_csv_file(filename)
+				if self._root is not None:
+					# Get path relative to JSON file:
+					rel_filename = self._root.path_of_external_file(filename)
+				else:
+					rel_filename = filename
+
+				values = read_csv_file(rel_filename)
+
 				firstColumn = values[0]
 				for v in firstColumn:
 					self.add_drift_component(float(v))
@@ -278,7 +287,7 @@ class Drift:
 							# We return a weighted average of the two drift
 							# values where the current frame is "in between".
 							# Weight for the right bin is frac(trajectoryIndex).
-							rightWeight = math.remainder(trajectoryIndex, 1)
+							rightWeight = float(trajectoryIndex) - float(math.floor(trajectoryIndex))
 
 							# Weight for the left bin is 1-rightWeight.
 							leftWeight = 1.0 - rightWeight

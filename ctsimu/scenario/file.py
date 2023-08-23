@@ -10,8 +10,8 @@ from .parameter import Parameter
 
 class File(Group):
 	"""CTSimU file properties."""
-	def __init__(self):
-		Group.__init__(self, "file")
+	def __init__(self, _root=None):
+		Group.__init__(self, name="file", _root=_root)
 
 		self.set(key="file_type", value="CTSimU Scenario", native_unit="string", simple=True)
 

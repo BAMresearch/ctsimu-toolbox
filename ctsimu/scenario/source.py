@@ -11,10 +11,10 @@ from .group import Group, Array
 
 class Source(Part):
 	"""CTSimU X-ray source."""
-	def __init__(self):
-		Part.__init__(self, "source")
+	def __init__(self, _root=None):
+		Part.__init__(self, name="source", _root=_root)
 
-		self.source_geometry_extras = Group()
+		self.source_geometry_extras = Group("geometry_source")
 		self.source_geometry_extras.set(key="type", value="cone", native_unit="string",
 			valid_values=[None, "cone", "parallel"])
 		self.beam_divergence = Group("beam_divergence")

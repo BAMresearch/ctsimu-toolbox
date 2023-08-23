@@ -20,22 +20,26 @@ from .material import Material
 
 class Scenario:
 	def __init__(self):
-		self.detector = Detector()
-		self.source   = Source()
-		self.stage    = Stage()
+		self.detector = Detector(_root=self)
+		self.source   = Source(_root=self)
+		self.stage    = Stage(_root=self)
 		self.samples  = list()
 
-		self.file = File()
-		self.environment = Environment()
-		self.acquisition = Acquisition()
+		self.file = File(_root=self)
+		self.environment = Environment(_root=self)
+		self.acquisition = Acquisition(_root=self)
 		self.materials = list()
 		self.simulation = None # simply imported as dict
 
 		self.current_frame = 0
+		self.current_json_file = None
 
 	def read(self, file:str=None, json_dict:dict=None):
+		self.current_json_file = None
+
 		if file is not None:
 			json_dict = read_json_file(filename=file)
+			self.current_json_file = file
 		elif not isinstance(json_dict, dict):
 			raise Exception("Scenario: read() function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
 			return False
@@ -47,7 +51,7 @@ class Scenario:
 		json_samples = json_extract(json_dict, ["samples"])
 		if json_samples is not None:
 			for json_sample in json_samples:
-				s = Sample()
+				s = Sample(_root=self)
 				s.set_from_json(json_sample, self.stage.coordinate_system)
 				self.samples.append(s)
 
@@ -58,7 +62,7 @@ class Scenario:
 
 		json_materials = json_extract(json_dict, ["materials"])
 		for json_material in json_materials:
-			m = Material()
+			m = Material(_root=self)
 			m.set_from_json(json_material)
 			self.materials.append(m)
 
@@ -70,6 +74,33 @@ class Scenario:
 			self.file.file_format_version.set("minor", 2)
 
 			write_json_file(filename=file, dictionary=self.json_dict())
+
+	def path_of_external_file(self, filename:str) -> str:
+	    """Get the path of an external file referred to in the currently
+	    imported JSON scenario.
+
+	    Parameters
+	    ----------
+	    filename : str
+	        Possibly relative file path from JSON scenario file.
+
+	    Returns
+	    -------
+	    abs_path : str
+	        Absolute path to the referred external file.
+	    """
+
+	    if os.path.isabs(filename):
+	        # Already absolute path?
+	        return filename
+
+	    if self.current_json_file is not None:
+	        if isinstance(self.current_json_file, str):
+	            json_dirname = os.path.dirname(self.current_json_file)
+	            filename = f"{json_dirname}/{filename}"
+
+	    # On fail, simply return the filename.
+	    return filename
 
 	def json_dict(self) -> dict:
 		"""Create a CTSimU JSON dictionary from the scenario.

@@ -11,8 +11,8 @@ from .group import Group, Array
 
 class Detector(Part):
 	"""CTSimU detector."""
-	def __init__(self):
-		Part.__init__(self, "detector")
+	def __init__(self, _root=None):
+		Part.__init__(self, name="detector", _root=_root)
 
 		# Detector parameters
 		self.set(key="model",            value=None,    native_unit="string", simple=True)

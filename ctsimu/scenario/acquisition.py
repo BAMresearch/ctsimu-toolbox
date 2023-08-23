@@ -4,14 +4,13 @@ Collection of parameters that describe the scan acquisition.
 """
 
 from ..helpers import *
-from ..geometry import *
 from .group import Group
 from .parameter import Parameter
 
 class Acquisition(Group):
 	"""CTSimU acquisition properties."""
-	def __init__(self):
-		Group.__init__(self, "acquisition")
+	def __init__(self, _root=None):
+		Group.__init__(self, name="acquisition", _root=_root)
 
 		self.set(key="start_angle", value=None, native_unit="deg")
 		self.set(key="stop_angle",  value=None, native_unit="deg")

@@ -21,7 +21,9 @@ class Group:
 		The dictionary elements are usually
 		`ctsimu.scenario.parameter.Parameter` objects.
 	"""
-	def __init__(self, name:str=""):
+	def __init__(self, name:str="", _root=None):
+		self._root = _root  # root scenario object
+
 		self.name = name
 		self.properties = dict() # Properties of class Parameter.
 		self.subgroups = list()
@@ -180,7 +182,7 @@ class Group:
 				native_unit = None
 
 			# Create new parameter:
-			new_parameter = Parameter(native_unit=native_unit, standard_value=value, simple=simple, valid_values=valid_values)
+			new_parameter = Parameter(native_unit=native_unit, standard_value=value, simple=simple, valid_values=valid_values, _root=self._root)
 			self.properties[key] = new_parameter
 
 	def check(self):
@@ -266,7 +268,7 @@ class Group:
 		if key not in self.properties:
 			# If not, create a new parameter object
 			# and insert it into the properties dictionary:
-			new_param = Parameter(native_unit=native_unit, standard_value=None)
+			new_param = Parameter(native_unit=native_unit, standard_value=None, _root=self._root)
 			self.properties[key] = new_param
 
 		# Extract the value and set it as standard value:
@@ -334,7 +336,7 @@ class Group:
 		if key not in self.properties:
 			# If not, create a new parameter object
 			# and insert it into the properties dictionary:
-			new_param = Parameter(native_unit=native_unit, standard_value=fail_value)
+			new_param = Parameter(native_unit=native_unit, standard_value=fail_value, _root=self._root)
 			self.properties[key] = new_param
 
 		# Try to set up the parameter:
@@ -397,7 +399,7 @@ class Group:
 		if key not in self.properties:
 			# If not, create a new parameter object
 			# and insert it into the properties dictionary:
-			new_param = Parameter(native_unit=native_unit, standard_value=fail_value)
+			new_param = Parameter(native_unit=native_unit, standard_value=fail_value, _root=self._root)
 			self.properties[key] = new_param
 
 		if not self.properties[key].set_parameter_from_possible_keys(dictionary, key_sequences):
@@ -434,7 +436,7 @@ class Group:
 			try:
 				self.set_parameter_from_key(key, json_obj, [key], fail_value=self.parameter(key).fail_value)
 			except Exception as e:
-				raise f"Error setting key '{key}' of '{self.name}': {e}"
+				raise Exception(f"Error setting key '{key}' of '{self.name}': {e}")
 
 		for subgroup in self.subgroups:
 			json_subobj = None
@@ -483,8 +485,10 @@ class Group:
 class Array(Group):
 	"""Array of objects that are all of the same kind, such as
 	the CTSimU materials list."""
-	def __init__(self, name:str=""):
-		Group.__init__(self, name)
+	def __init__(self, name:str="", _root=None):
+		self._root = _root  # root scenario object
+
+		Group.__init__(self, name, _root)
 		self.elements = []
 
 	def reset(self):
