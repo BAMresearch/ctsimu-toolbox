@@ -502,8 +502,7 @@ class Parameter:
 			self.current_value = self.standard_value
 
 			# Unit
-			if json_exists_and_not_null(json_parameter_object, ["unit"]):
-				self.preferred_unit = json_extract(json_parameter_object, ["unit"])
+			self.preferred_unit = get_value(json_parameter_object, ["unit"], self.native_unit)
 
 			# Uncertainty:
 			if json_exists_and_not_null(json_parameter_object, ["uncertainty"]):
@@ -512,15 +511,14 @@ class Parameter:
 					# Since file format 1.0, uncertainties are value/unit dicts:
 					self.uncertainty = json_convert_to_native_unit(
 						native_unit=self.native_unit,
-						value_and_unit=unc
+						value_and_unit=unc,
+						fallback_json_unit=self.preferred_unit
 					)
-					if json_exists_and_not_null(json_parameter_object, ["uncertainty", "unit"]):
-						self.preferred_uncertainty_unit = json_extract(json_parameter_object, ["uncertainty", "unit"])
+					self.preferred_uncertainty_unit = get_value(json_parameter_object, ["uncertainty", "unit"], self.preferred_unit)
 				elif isinstance(unc, numbers.Number):
 					# Before file format 1.0, "uncertainty" and "uncertainty_unit" where
 					# separate properties of a parameter:
-					if json_exists_and_not_null(json_parameter_object, ["uncertainty_unit"]):
-						self.preferred_uncertainty_unit = json_extract(json_parameter_object, ["uncertainty_unit"])
+					self.preferred_uncertainty_unit = get_value(json_parameter_object, ["uncertainty_unit"], self.preferred_unit)
 
 					self.uncertainty = convert_to_native_unit(
 						given_unit=self.preferred_uncertainty_unit,
