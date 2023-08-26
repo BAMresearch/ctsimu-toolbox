@@ -1987,7 +1987,7 @@ def _cera_bool(truth:bool) -> str:
 
     return "false"
 
-def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=".", n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float", matrices:list=None):
+def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=".", n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float32", matrices:list=None):
     """Write a CERA config file for the given geometry.
 
     A circular trajectory for the given angular range is assumed, all parameters
@@ -2116,9 +2116,9 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
 
     output_datatype : str
         Data type for the reconstruction volume output file.
-        Either `"float"` or `"uint16"`.
+        Either `"float32"` or `"uint16"`.
 
-        Standard value: `"float"`
+        Standard value: `"float32"`
 
     matrices : list
         List of projection matrices of type `ctsimu.primitives.Matrix`.
@@ -2334,7 +2334,7 @@ GlobalI0Value = {i0max}
         f.write(configFileString)
         f.close()
 
-def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, datatype:str="Float32", filetype:str="TIFF", skip_bytes:int=0, endianness:str="Little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
+def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, datatype:str="float32", filetype:str="TIFF", skip_bytes:int=0, endian:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
     """Create an openCT free trajectory CBCT configuration and optionally write to file.
 
     Parameters
@@ -2371,9 +2371,9 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
         Data type of the projection images, as well as possible bright and dark
         images and the bad pixel map.
 
-        Allowed values: `"UInt8"`, `"UInt16"`, `"UInt32"`, `"Int8"`, `"Int16"`, `"Int32"`, `"Float32"`
+        Allowed values: `"uint8"`, `"uint16"`, `"uint32"`, `"int8"`, `"int16"`, `"int32"`, `"float32"`
 
-        Standard value: `"Float32"`
+        Standard value: `"float32"`
 
     filetype : str
         File type of the projection images, as well as possible bright and dark
@@ -2388,12 +2388,12 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
 
         Standard value: `0`
 
-    endianness : str
+    endian : str
         For RAW projection images: endianness of the files.
 
-        Allowed values: `"Little"` or `"Big"`
+        Allowed values: `"little"` or `"big"`
 
-        Standard value: `"Little"`
+        Standard value: `"little"`
 
     detector_coordinate_frame : str
         A string that defines the orientation of the detector coordinate system
@@ -2494,6 +2494,10 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
         Dictionary that represents the JSON structure of the openCT file.
     """
 
+    # Convert some settings to openCT keywords:
+    datatype = convert(openct_converter["datatype"], datatype)
+    endian = convert(openct_converter["endian"], endian)
+
     n_projections = 0
     if projection_files is not None:
         n_projections = len(projection_files)
@@ -2552,7 +2556,7 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
                 "dataType":  datatype,
                 "fileType":  filetype,
                 "skipBytes": skip_bytes,
-                "endianness": endianness,
+                "endianness": endian,
                 "directory": projection_dir,
                 "files": projection_files
             },
@@ -2580,7 +2584,7 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
                 "dataType":  datatype,
                 "fileType":  filetype,
                 "skipBytes": skip_bytes,
-                "endianness": endianness,
+                "endianness": endian,
                 "directory": bright_image_dir,
                 "files":     bright_images
             },
@@ -2589,14 +2593,14 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
                 "dataType": datatype,
                 "fileType": filetype,
                 "skipBytes": skip_bytes,
-                "endianness": endianness
+                "endianness": endian
             },
             "badPixelMask": {
                 "file":     bad_pixel_mask,
                 "dataType": datatype,
                 "fileType": filetype,
                 "skipBytes": skip_bytes,
-                "endianness": endianness
+                "endianness": endian
             }
         }
     }

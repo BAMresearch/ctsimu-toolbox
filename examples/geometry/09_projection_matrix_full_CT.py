@@ -23,7 +23,7 @@ scan_range  = 360.0  # degrees. One full CT rotation.
 
 # We assume that the projections are stored in single TIFF image files,
 # sequentially numbered with four digits, starting at "img_0000.tif".
-projectionFilename = "img_{:04d}.tif"    # for openCT
+projection_filename = "img_{:04d}.tif"    # for openCT
 projection_file_pattern = "img_%04d.tif" # for CERA
 
 # The following two lists will store the projection matrices
@@ -32,7 +32,7 @@ matrices_openCT = []
 matrices_CERA   = []
 
 # For openCT, we also need to create a list of projection file names:
-projectionFilenames = []
+projection_filenames = []
 
 # Loop over each frame:
 for p in range(projections):
@@ -54,22 +54,25 @@ for p in range(projections):
 	matrices_CERA.append(P_CERA)
 
 	# Store the current projection filename for openCT:
-	projectionFilenames.append(projectionFilename.format(p))
+	projection_filenames.append(projection_filename.format(p))
 
 # Restore CT setup for frame zero:
 myCT.restore()
 
+# openCT configuration:
+# ----------------------
 # Write the openCT configuration file, including the projection matrices:
 create_openCT_config(
 	geo=myCT,
 	filename="example_09/recon_openCT.json",
-	projection_files=projectionFilenames,
+	projection_files=projection_filenames,
 	matrices=matrices_openCT,
 	volumename="recon_openCT"
 )
 
 # CERA configuration:
 # -------------------
+# Write the CERA configuration file, including the projection matrices:
 create_CERA_config(
 	geo=myCT,
 	total_angle=scan_range,

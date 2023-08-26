@@ -13,6 +13,29 @@ ctsimu_world_axis_designations  = ["x", "y", "z"]
 ctsimu_local_axis_designations  = ["u", "v", "w"]
 ctsimu_sample_axis_designations = ["r", "s", "t"]
 
+openct_converter = {
+    "datatype": {
+        "uint8": "UInt8",
+        "uint16": "UInt16",
+        "uint32": "UInt32",
+        "int8": "Int8",
+        "int16": "Int16",
+        "int32": "Int32",
+        "float32": "Float32"
+    },
+    "endian": {
+        "little": "Little",
+        "big": "Big"
+    }
+}
+
+cera_converter = {
+    "datatype": {
+        "uint16": "uint16",
+        "float32": "float"
+    }
+}
+
 def log(message:str):
     """Print an output message.
 
@@ -53,6 +76,14 @@ def is_valid_native_unit(native_unit:str) -> bool:
     return False
 
 def touch_directory(filename:str):
+    """Create folder if it doesn't exist.
+
+    Parameters
+    ----------
+    filename : str
+        Complete path to a file. Can include filename.
+    """
+
     folder = os.path.dirname(filename)
 
     if folder == "" or folder is None:
@@ -85,6 +116,30 @@ def read_json_file(filename:str) -> dict:
                 return json_dict
 
     raise Exception(f"Cannot read scenario file: '{filename}'")
+
+def convert(converter_dict:dict, key:str) -> str:
+    """Map a string to a different (converted) string.
+
+    Parameters
+    ----------
+    converter_dict : dict
+        Mapping dictionary.
+
+    key : str
+        Key to be converted.
+
+    Returns
+    -------
+    mapped_value : str
+        String that's mapped to the key.
+    """
+    if key is None:
+        return None
+
+    if key in converter_dict:
+        return converter_dict[key]
+    else:
+        raise Exception(f"Cannot convert: key '{key}' not found in converter dictionary.")
 
 def write_json_file(filename:str, dictionary:dict):
     """Write a JSON file from a given Python dictionary.

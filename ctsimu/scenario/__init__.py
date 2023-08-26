@@ -84,17 +84,20 @@ class Scenario:
 
 		self.set_frame(0, reconstruction=False)
 
-	def read_metadata(self, metadata_file:str=None):
+	def read_metadata(self, file:str=None, json_dict:dict=None):
 		"""Import metadata from a CTSimU metadata file.
 
 		Parameters
 		----------
-		metadata_file : str
+		file : str
 			Path to a CTSimU metadata file.
 		"""
-		if metadata_file is not None:
-			json_dict = read_json_file(filename=metadata_file)
-			self.metadata.set_from_json(json_dict)
+		if file is not None:
+			json_dict = read_json_file(filename=file)
+
+		if json_dict is not None:
+			if isinstance(json_dict, dict):
+				self.metadata.set_from_json(json_dict)
 
 	def write(self, file:str=None):
 		if file is not None:
@@ -291,3 +294,153 @@ class Scenario:
 		)
 
 		return geo
+
+	def create_recon_VGI(self, name:str="", volume_filename:str="", vgi_filename:str=None):
+		"""Write a VGI file for the reconstruction volume such that it can be loaded with VGSTUDIO."""
+
+		voxels_x = self.metadata.output.get(["tomogram", "dimensions", "x"])
+		voxels_y = self.metadata.output.get(["tomogram", "dimensions", "y"])
+		voxels_z = self.metadata.output.get(["tomogram", "dimensions", "z"])
+
+		voxelsize_x = self.metadata.output.get(["tomogram", "voxelsize", "x"])
+		voxelsize_y = self.metadata.output.get(["tomogram", "voxelsize", "y"])
+		voxelsize_z = self.metadata.output.get(["tomogram", "voxelsize", "z"])
+
+		output_datatype = self.metadata.output.get(["tomogram", "datatype"])
+		if output_datatype == "uint16":
+			dataTypeOutput = "unsigned integer"
+			bits = 16
+			datarangelower = 0
+			datarangeupper = -1
+		else:
+			dataTypeOutput = "float"
+			bits = 32
+			datarangelower = -1
+			datarangeupper = 1
+
+		vgi_content = f"""{{volume1}}
+[representation]
+size = {voxels_x} {voxels_y} {voxels_z}
+datatype = {dataTypeOutput}
+datarange = {datarangelower} {datarangeupper}
+bitsperelement = {bits}
+[file1]
+SkipHeader = 0
+FileFormat = raw
+Size = {voxels_x} {voxels_y} {voxels_z}
+Name = {volume_filename}
+Datatype = {dataTypeOutput}
+datarange = {datarangelower} {datarangeupper}
+BitsPerElement = {bits}
+{{volumeprimitive12}}
+[geometry]
+resolution = {voxelsize_x} {voxelsize_y} {voxelsize_z}
+unit = mm
+[volume]
+volume = volume1
+[description]
+text = {name}"""
+
+		if vgi_filename is not None:
+			touch_directory(vgi_filename)
+			with open(vgi_filename, 'w') as f:
+				f.write(vgi_content)
+				f.close()
+
+		return vgi_content
+
+	def write_CERA_config(self, save_dir:str=".", basename=None, metadata:dict=None, metadata_file:str=None, create_vgi:bool=False):
+		"""Write CERA reconstruction config files.
+
+		Parameters
+		----------
+		save_dir : str
+			Folder where to place the CERA config files. This is meant to be the
+			same directory where the reconstruction metadata file is located,
+			such that relative paths will match.
+
+		metadata : dict
+			A CTSimU metadata dictionary that defines the tomogram output parameters.
+			Only necessary if no metadata has been loaded yet. Alternatively,
+			a path to a metadata file can be provided (see below).
+
+			Default value: `None`
+
+		metadata_file : str
+			Path to a CTSimU metadata file that defines the tomogram output parameters.
+			Only necessary if no metadata has been loaded yet. Alternatively,
+			a path to a metadata dictionary can be provided (see above).
+
+			Default value: `None`
+		"""
+
+		matrices = []
+
+		if metadata_file is not None:
+			metadata = read_json_file(metadata_file)
+
+		if metadata is not None:
+			self.metadata.set_from_json(metadata)
+
+		if basename is None:
+			# Extract base name from metadata
+			basename = self.metadata.get(["file", "name"])
+			basename += "_recon_cera"
+
+		# Projection files
+		n_projections = self.acquisition.get("number_of_projections")
+		projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
+		projection_file_datatype = self.metadata.get(["output", "projections", "datatype"])
+		projection_file_byteorder = self.metadata.get(["output", "projections", "byteorder"])
+		projection_file_headersize = self.metadata.get(["output", "projections", "headersize", "file"])
+
+		projection_file_type = "tiff"
+		if projection_file_pattern.lower().endswith(".raw"):
+			if projection_file_datatype == "uint16":
+				projection_file_type = "raw_uint16"
+			elif projection_file_datatype == "float32":
+				projection_file_type = "raw_float"
+			else:
+				raise Exception(f"Projection datatype not supported by CERA: {projection_file_datatype}. Supported datatypes: 'uint16' and 'float32'.")
+
+		big_endian = False
+		if projection_file_byteorder == "big":
+			big_endian = True
+
+		# Acquisition
+		start_angle = self.acquisition.get("start_angle")
+		stop_angle  = self.acquisition.get("stop_angle")
+		total_angle = stop_angle - start_angle
+
+		for p in range(n_projections):
+			self.set_frame(frame=p, reconstruction=True)
+
+			# CERA projection matrix for projection p:
+			m = self.current_geometry().projection_matrix(mode="CERA")
+			matrices.append(m)
+
+		# Go back to frame zero:
+		self.set_frame(frame=0, reconstruction=True)
+
+		if create_vgi:
+			vgi_filename = f"{save_dir}/{basename}.vgi"
+			volume_filename = f"{basename}.raw"
+
+			self.create_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
+
+		create_CERA_config(
+			geo=self.current_geometry(),
+			projection_file_pattern=projection_file_pattern,
+			basename=basename,
+			save_dir=save_dir,
+			n_projections=n_projections,
+			projection_file_type=projection_file_type,
+			start_angle=0,  # do not compensate the scenario start angle in the reconstruction
+			total_angle=total_angle,
+			scan_direction=self.acquisition.get("direction"),
+			i0max=self.metadata.output.get(["projections", "max_intensity"]),
+			big_endian=big_endian,
+			raw_header_size=projection_file_headersize,
+			output_datatype=convert(cera_converter["datatype"], self.metadata.output.get(["tomogram", "datatype"])),
+			matrices=matrices
+		)
