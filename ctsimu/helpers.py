@@ -7,6 +7,17 @@ import csv
 import numpy
 from scipy import optimize, fft
 
+
+ctsimu_supported_scenario_version = {
+    "major": 1,
+    "minor": 2
+}
+
+ctsimu_supported_metadata_version = {
+    "major": 1,
+    "minor": 2
+}
+
 ctsimu_valid_axes   = ["z", "y", "x", "w", "v", "u", "t", "s", "r"]
 ctsimu_axis_strings = ["r", "s", "t", "u", "v", "w", "x", "y", "z"]
 ctsimu_world_axis_designations  = ["x", "y", "z"]
@@ -35,6 +46,35 @@ cera_converter = {
         "float32": "float"
     }
 }
+
+def is_version_supported(supported_version:dict, version_to_test:dict) -> bool:
+    """Test if the given version is supported by the toolbox.
+
+    Parameters
+    ----------
+    supported_version : dict
+        The version against which should be tested: a dictionary with the keys
+        `"major"` and `"minor"`. Pass the global variable
+        `ctsimu_supported_scenario_version` or `ctsimu_supported_metadata_version`.
+
+    version_to_test : dict
+        The version to test if it is supported. Must be a dictionary with
+        the keys `"major"` and `"minor"`.
+
+    Returns
+    -------
+    is_supported : bool
+        If the given version number is supported by the toolbox scenario module.
+    """
+
+    if supported_version["major"] > version_to_test["major"]:
+        return True
+
+    if supported_version["major"] == version_to_test["major"]:
+        if supported_version["minor"] >= version_to_test["minor"]:
+            return True
+
+    return False
 
 def log(message:str):
     """Print an output message.
@@ -114,8 +154,12 @@ def read_json_file(filename:str) -> dict:
                 json_dict = json.load(f)
                 f.close()
                 return json_dict
+        else:
+            raise Exception(f"File not found: '{filename}'")
+    else:
+        raise Exception(f"File not found: '{filename}'")
 
-    raise Exception(f"Cannot read scenario file: '{filename}'")
+    raise Exception(f"Cannot read JSON file: '{filename}'")
 
 def convert(converter_dict:dict, key:str) -> str:
     """Map a string to a different (converted) string.
