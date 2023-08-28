@@ -374,7 +374,7 @@ class Part(Group):
 						raise Exception(f"An error occurred when setting a geometrical deviation (rotation) for part '{self.name}'.")
 						return False
 
-		self.set_frame(frame=0, nFrames=1, w_rotation=0, stage_coordinate_system=stage_coordinate_system)
+		self.set_frame(frame=0, n_frames=1, w_rotation=0, stage_coordinate_system=stage_coordinate_system)
 		return True
 
 	def geometry_dict(self) -> dict:
@@ -415,11 +415,11 @@ class Part(Group):
 
 		return jd
 
-	def _set_frame_coordinate_system(self, frame:float, nFrames:int, reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
+	def _set_frame_coordinate_system(self, frame:float, n_frames:int, reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None):
 		"""
 		Set up the part's current coordinate system such that
 		it complies with the `frame` number and all necessary
-		drifts and deviations (assuming a total number of `nFrames`).
+		drifts and deviations (assuming a total number of `n_frames`).
 
 		This function is used by `set_frame` and `set_frame_for_reconstruction`
 		and is usually not called from outside the object.
@@ -429,7 +429,7 @@ class Part(Group):
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -464,7 +464,7 @@ class Part(Group):
 			self.coordinate_system = legacy_dev.deviate(
 				coordinate_system=self.coordinate_system,
 				frame=frame,
-				nFrames=nFrames,
+				n_frames=n_frames,
 				reconstruction=reconstruction,
 				attached_to_stage=self.attached_to_stage,
 				stage_coordinate_system=stage_coordinate_system,
@@ -482,7 +482,7 @@ class Part(Group):
 			self.coordinate_system = dev.deviate(
 				coordinate_system=self.coordinate_system,
 				frame=frame,
-				nFrames=nFrames,
+				n_frames=n_frames,
 				reconstruction=reconstruction,
 				attached_to_stage=self.attached_to_stage,
 				stage_coordinate_system=stage_coordinate_system,
@@ -496,14 +496,14 @@ class Part(Group):
 		if self.center.has_drifts():
 			 center_drift = self.center.drift_vector(
 			 	frame=frame,
-			 	nFrames=nFrames,
+			 	n_frames=n_frames,
 			 	reconstruction=reconstruction
 			 )
 			 self.coordinate_system.translate(translation_vector=center_drift)
 
 		if self.u.has_drifts() or self.w.has_drifts():
-			new_u = self.u.vector_for_frame(frame, nFrames, reconstruction)
-			new_w = self.w.vector_for_frame(frame, nFrames, reconstruction)
+			new_u = self.u.vector_for_frame(frame, n_frames, reconstruction)
+			new_w = self.w.vector_for_frame(frame, n_frames, reconstruction)
 
 			self.coordinate_system.make_from_vectors(
 				center=coordinate_system.center,
@@ -512,7 +512,7 @@ class Part(Group):
 			)
 			self.coordinate_system.make_unit_coordinate_system()
 
-	def set_frame(self, frame:float, nFrames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None, reconstruction:bool=False):
+	def set_frame(self, frame:float, n_frames:int, w_rotation:float=0, stage_coordinate_system:'CoordinateSystem'=None, reconstruction:bool=False):
 		"""
 		Set up the part for the given `frame` number, obeying all
 		deviations and drifts.
@@ -522,7 +522,7 @@ class Part(Group):
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		w_rotation : float
@@ -544,7 +544,7 @@ class Part(Group):
 		if (self._cs_initialized_real is False) or (self._static is False):
 			self._set_frame_coordinate_system(
 				frame=frame,
-				nFrames=nFrames,
+				n_frames=n_frames,
 				reconstruction=reconstruction,
 				w_rotation=w_rotation,
 				stage_coordinate_system=stage_coordinate_system
@@ -552,4 +552,4 @@ class Part(Group):
 			self._cs_initialized_real  = not reconstruction
 			self._cs_initialized_recon = reconstruction
 
-		Group.set_frame(self, frame, nFrames, reconstruction)
+		Group.set_frame(self, frame, n_frames, reconstruction)

@@ -228,12 +228,12 @@ class Drift:
 
 		return False
 
-	def get_value_for_frame(self, frame:float, nFrames:int) -> float | str | bool:
+	def get_value_for_frame(self, frame:float, n_frames:int) -> float | str | bool:
 		"""Return a drift value for the given `frame` number,
-		assuming a total number of `nFrames` in the CT scan.
+		assuming a total number of `n_frames` in the CT scan.
 		If interpolation is activated, linear interpolation will
 		take place between drift values, but also for frame numbers
-		outside of the expected range: (frame < 0) and (frame >= nFrames).
+		outside of the expected range: (frame < 0) and (frame >= n_frames).
 		Note that the frame number starts at 0.
 
 		Parameters
@@ -241,7 +241,7 @@ class Drift:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		Returns
@@ -253,14 +253,14 @@ class Drift:
 		nTrajectoryPoints = len(self.trajectory)
 		if nTrajectoryPoints is not None:
 			if nTrajectoryPoints > 1:
-				if nFrames > 1:
+				if n_frames > 1:
 					# We know that we have at least two drift values, so we are
 					# on the safe side for linear interpolations.
 					# We also know that we have at least two frames in the scan,
 					# and can therefore map our "scan progress" (the current
 					# frame number) to the array of drift values.
 
-					lastFrameNr = nFrames - 1 # frames start counting at 0
+					lastFrameNr = n_frames - 1 # frames start counting at 0
 
 					# Frame progress on a scale between 0 and 1.
 					# 0: first frame (start), 1: last frame (finish).
@@ -343,7 +343,7 @@ class Drift:
 
 						return driftValue
 				else:
-					# nFrames <= 1
+					# n_frames <= 1
 					# If "scan" only has 1 or 0 frames,
 					# simply return the first trajectory value.
 					return self.trajectory[0]

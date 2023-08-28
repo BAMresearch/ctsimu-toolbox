@@ -27,11 +27,10 @@ class Sample(Part):
 		# Mesh file unit of length:
 		self.set(key="unit", value="mm", native_unit="string", simple=True)
 
-		self.scaling_factor = Group("scaling_factor")
+		self.new_subgroup("scaling_factor")
 		self.scaling_factor.set(key="r", value=1.0, native_unit=None)
 		self.scaling_factor.set(key="s", value=1.0, native_unit=None)
 		self.scaling_factor.set(key="t", value=1.0, native_unit=None)
-		self.add_subgroup(self.scaling_factor)
 
 		self.set(key="material_id", value=None, native_unit="string", simple=True)
 

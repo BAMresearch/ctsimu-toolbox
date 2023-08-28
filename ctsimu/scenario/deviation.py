@@ -262,7 +262,7 @@ class Deviation:
 
 		return jd
 
-	def deviate(self, coordinate_system:'CoordinateSystem', frame:float, nFrames:int, reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:'CoordinateSystem'=None) -> 'CoordinateSystem':
+	def deviate(self, coordinate_system:'CoordinateSystem', frame:float, n_frames:int, reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:'CoordinateSystem'=None) -> 'CoordinateSystem':
 		"""
 		Apply this deviation to the given coordinate system.
 
@@ -277,7 +277,7 @@ class Deviation:
 		frame : float
 			Frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -306,7 +306,7 @@ class Deviation:
 		if (self.known_to_reconstruction is True) or (reconstruction is False):
 			amount = self.amount.set_frame_and_get_value(
 				frame=frame,
-				nFrames=nFrames,
+				n_frames=n_frames,
 				reconstruction=reconstruction
 			)
 
@@ -323,7 +323,7 @@ class Deviation:
 							local=coordinate_system,
 							sample=ctsimu_world,
 							frame=frame,
-							nFrames=nFrames,
+							n_frames=n_frames,
 							reconstruction=reconstruction
 						)
 
@@ -335,7 +335,7 @@ class Deviation:
 							local=stage_coordinate_system,
 							sample=coordinate_system,
 							frame=frame,
-							nFrames=nFrames,
+							n_frames=n_frames,
 							reconstruction=reconstruction
 						)
 
@@ -351,14 +351,14 @@ class Deviation:
 							local=coordinate_system,
 							sample=ctsimu_world,
 							frame=frame,
-							nFrames=nFrames,
+							n_frames=n_frames,
 							reconstruction=reconstruction
 						)
 						pivot_point = self.pivot.point_in_world(
 							local=coordinate_system,
 							sample=ctsimu_world,
 							frame=frame,
-							nFrames=nFrames,
+							n_frames=n_frames,
 							reconstruction=reconstruction
 						)
 
@@ -372,14 +372,14 @@ class Deviation:
 							local=stage_coordinate_system,
 							sample=coordinate_system,
 							frame=frame,
-							nFrames=nFrames,
+							n_frames=n_frames,
 							reconstruction=reconstruction
 						)
 						pivot_point = self.pivot.point_in_local(
 							local=stage_coordinate_system,
 							sample=coordinate_system,
 							frame=frame,
-							nFrames=nFrames,
+							n_frames=n_frames,
 							reconstruction=reconstruction
 						)
 

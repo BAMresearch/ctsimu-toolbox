@@ -172,7 +172,7 @@ class Scenevector:
 			z=self.c2.get_standard_value()
 		)
 
-	def drift_vector(self, frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def drift_vector(self, frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` that represents
 		only the drift values for the given `frame` number.
 
@@ -184,7 +184,7 @@ class Scenevector:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in CT scan.
 
 		reconstruction : bool
@@ -198,12 +198,12 @@ class Scenevector:
 		"""
 
 		return Vector(
-			x=self.c0.get_total_drift_value_for_frame(frame, nFrames, reconstruction),
-			y=self.c1.get_total_drift_value_for_frame(frame, nFrames, reconstruction),
-			z=self.c2.get_total_drift_value_for_frame(frame, nFrames, reconstruction)
+			x=self.c0.get_total_drift_value_for_frame(frame, n_frames, reconstruction),
+			y=self.c1.get_total_drift_value_for_frame(frame, n_frames, reconstruction),
+			z=self.c2.get_total_drift_value_for_frame(frame, n_frames, reconstruction)
 		)
 
-	def vector_for_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def vector_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for the given `frame` number,
 		respecting all drifts.
 
@@ -212,7 +212,7 @@ class Scenevector:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in CT scan.
 
 		reconstruction : bool
@@ -225,12 +225,12 @@ class Scenevector:
 			Vector for the given `frame` number.
 		"""
 		return Vector(
-			x=self.c0.set_frame_and_get_value(frame, nFrames, reconstruction),
-			y=self.c1.set_frame_and_get_value(frame, nFrames, reconstruction),
-			z=self.c2.set_frame_and_get_value(frame, nFrames, reconstruction)
+			x=self.c0.set_frame_and_get_value(frame, n_frames, reconstruction),
+			y=self.c1.set_frame_and_get_value(frame, n_frames, reconstruction),
+			z=self.c2.set_frame_and_get_value(frame, n_frames, reconstruction)
 		)
 
-	def point_in_world(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def point_in_world(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for point coordinates
 		in terms of the world coordinate system for the given `frame` number,
 		respecting all relevant drifts.
@@ -249,7 +249,7 @@ class Scenevector:
 		frame : float
 			The number of the current frame.
 
-		nFrames : int
+		n_frames : int
 			The total number of frames in the CT scan.
 
 		reconstruction : bool
@@ -261,7 +261,7 @@ class Scenevector:
 			A vector in terms of the world coordinate system.
 		"""
 
-		v = self.vector_for_frame(frame, nFrames, reconstruction)
+		v = self.vector_for_frame(frame, n_frames, reconstruction)
 
 		if self.reference == "world":
 			# Already in world.
@@ -280,7 +280,7 @@ class Scenevector:
 			v_in_world = change_reference_frame_of_point(v_in_stage, local, ctsimu_world)
 			return v_in_world
 
-	def point_in_local(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def point_in_local(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for point coordinates
 		in terms of the local coordinate system for the given `frame` number,
 		respecting all relevant drifts.
@@ -299,7 +299,7 @@ class Scenevector:
 		frame : float
 			The number of the current frame.
 
-		nFrames : int
+		n_frames : int
 			The total number of frames in the CT scan.
 
 		reconstruction : bool
@@ -311,7 +311,7 @@ class Scenevector:
 			A vector in terms of the local coordinate system.
 		"""
 
-		v = self.vector_for_frame(frame, nFrames, reconstruction)
+		v = self.vector_for_frame(frame, n_frames, reconstruction)
 
 		if self.reference == "world":
 			# Convert from world to local.
@@ -327,7 +327,7 @@ class Scenevector:
 			v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
 			return v_in_stage
 
-	def point_in_sample(self, stage:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def point_in_sample(self, stage:'CoordinateSystem', sample:'CoordinateSystem', frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for point coordinates
 		in terms of the sample coordinate system for the given `frame` number,
 		respecting all relevant drifts.
@@ -352,7 +352,7 @@ class Scenevector:
 		frame : float
 			The number of the current frame.
 
-		nFrames : int
+		n_frames : int
 			The total number of frames in the CT scan.
 
 		reconstruction : bool
@@ -364,7 +364,7 @@ class Scenevector:
 			A vector in terms of the sample coordinate system.
 		"""
 
-		v = self.vector_for_frame(frame, nFrames, reconstruction)
+		v = self.vector_for_frame(frame, n_frames, reconstruction)
 
 		if self.reference == "world":
 			# From world to stage...
@@ -383,7 +383,7 @@ class Scenevector:
 			# Already in sample coordinate system:
 			return v
 
-	def direction_in_world(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def direction_in_world(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for a direction in terms of the world
 		coordinate system for the given `frame` number, respecting all relevant drifts.
 
@@ -401,7 +401,7 @@ class Scenevector:
 		frame : float
 			The number of the current frame.
 
-		nFrames : int
+		n_frames : int
 			The total number of frames in the CT scan.
 
 		reconstruction : bool
@@ -413,7 +413,7 @@ class Scenevector:
 			A vector in terms of the world coordinate system.
 		"""
 
-		v = self.vector_for_frame(frame, nFrames, reconstruction)
+		v = self.vector_for_frame(frame, n_frames, reconstruction)
 
 		if self.reference == "world":
 			# Already in world.
@@ -432,7 +432,7 @@ class Scenevector:
 			v_in_world = change_reference_frame_of_direction(v_in_stage, local, ctsimu_world)
 			return v_in_world
 
-	def direction_in_local(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def direction_in_local(self, local:'CoordinateSystem', sample:'CoordinateSystem', frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for a direction in terms of the local
 		coordinate system for the given `frame` number, respecting all relevant drifts.
 
@@ -450,7 +450,7 @@ class Scenevector:
 		frame : float
 			The number of the current frame.
 
-		nFrames : int
+		n_frames : int
 			The total number of frames in the CT scan.
 
 		reconstruction : bool
@@ -462,7 +462,7 @@ class Scenevector:
 			A vector in terms of the local coordinate system.
 		"""
 
-		v = self.vector_for_frame(frame, nFrames, reconstruction)
+		v = self.vector_for_frame(frame, n_frames, reconstruction)
 
 		if self.reference == "world":
 			# Convert from world to local.
@@ -478,7 +478,7 @@ class Scenevector:
 			v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
 			return v_in_stage
 
-	def direction_in_sample(self, stage:'CoordinateSystem', sample:'CoordinateSystem', frame:float, nFrames:int, reconstruction:bool=False) -> 'Vector':
+	def direction_in_sample(self, stage:'CoordinateSystem', sample:'CoordinateSystem', frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
 		"""A `ctsimu.primitives.Vector` for a direction in terms of the sample
 		coordinate system for the given `frame` number, respecting all relevant drifts.
 
@@ -502,7 +502,7 @@ class Scenevector:
 		frame : float
 			The number of the current frame.
 
-		nFrames : int
+		n_frames : int
 			The total number of frames in the CT scan.
 
 		reconstruction : bool
@@ -514,7 +514,7 @@ class Scenevector:
 			A vector in terms of the sample coordinate system.
 		"""
 
-		v = self.vector_for_frame(frame, nFrames, reconstruction)
+		v = self.vector_for_frame(frame, n_frames, reconstruction)
 
 		if self.reference == "world":
 			# From world to stage...

@@ -73,7 +73,7 @@ class MaterialComponent:
 		jd["mass_fraction"] = self.mass_fraction.json_dict()
 		return jd
 
-	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> bool:
 		"""Prepare the material component for the given `frame` number,
 		considering potential drifts.
 
@@ -82,7 +82,7 @@ class MaterialComponent:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -97,7 +97,7 @@ class MaterialComponent:
 			(due to drifts).
 		"""
 
-		value_changed = self.formula.set_frame(frame, nFrames, reconstruction) or self.mass_fraction.set_frame(frame, nFrames, reconstruction)
+		value_changed = self.formula.set_frame(frame, n_frames, reconstruction) or self.mass_fraction.set_frame(frame, n_frames, reconstruction)
 		return value_changed
 
 	def set_from_json(self, json_object:dict):
@@ -223,7 +223,7 @@ class Material:
 
 		return jd
 
-	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> bool:
 		"""Prepare the material for the given `frame` number,
 		considering potential drifts.
 
@@ -232,15 +232,15 @@ class Material:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 		"""
 
-		density_changed = self.density.set_frame(frame, nFrames, reconstruction)
+		density_changed = self.density.set_frame(frame, n_frames, reconstruction)
 
 		composition_changed = False
 		for comp in self.composition:
-			composition_changed = composition_changed or comp.set_frame(frame, nFrames, reconstruction)
+			composition_changed = composition_changed or comp.set_frame(frame, n_frames, reconstruction)
 
 		changed = density_changed or composition_changed
 		return changed

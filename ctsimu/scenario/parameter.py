@@ -201,12 +201,12 @@ class Parameter:
 		"""
 		return (len(self.drifts) > 0)
 
-	def maximum_value(self, nFrames:int, reconstruction:bool=False) -> float:
-		"""Get the parameter's maximum value during the evolution of `nFrames`, given drifts.
+	def maximum_value(self, n_frames:int, reconstruction:bool=False) -> float:
+		"""Get the parameter's maximum value during the evolution of `n_frames`, given drifts.
 
 		Parameters
 		----------
-		nFrames : int
+		n_frames : int
 			Number of frames in the CT scan.
 
 		reconstruction : bool
@@ -223,14 +223,14 @@ class Parameter:
 			if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value != None):
 				total_drift_max = self.get_total_drift_value_for_frame(
 					0,
-					nFrames,
+					n_frames,
 					reconstruction
 				)
 
-				for f in range(nFrames):
+				for f in range(n_frames):
 					total_drift_for_frame = self.get_total_drift_value_for_frame(
 						f,
-						nFrames,
+						n_frames,
 						reconstruction
 					)
 
@@ -241,12 +241,12 @@ class Parameter:
 
 		return standard_value
 
-	def minimum_value(self, nFrames:int, reconstruction:bool=False) -> float:
-		"""Get the parameter's minimum value during the evolution of `nFrames`, given drifts.
+	def minimum_value(self, n_frames:int, reconstruction:bool=False) -> float:
+		"""Get the parameter's minimum value during the evolution of `n_frames`, given drifts.
 
 		Parameters
 		----------
-		nFrames : int
+		n_frames : int
 			Number of frames in the CT scan.
 
 		reconstruction : bool
@@ -263,14 +263,14 @@ class Parameter:
 			if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value != None):
 				total_drift_min = self.get_total_drift_value_for_frame(
 					0,
-					nFrames,
+					n_frames,
 					reconstruction
 				)
 
-				for f in range(nFrames):
+				for f in range(n_frames):
 					total_drift_for_frame = self.get_total_drift_value_for_frame(
 						f,
-						nFrames,
+						n_frames,
 						reconstruction
 					)
 
@@ -372,7 +372,7 @@ class Parameter:
 		"""
 		self.value_has_changed = new_change_state
 
-	def set_frame_and_get_value(self, frame:float, nFrames:int=1, reconstruction:bool=False) -> float | str | bool:
+	def set_frame_and_get_value(self, frame:float, n_frames:int=1, reconstruction:bool=False) -> float | str | bool:
 		"""Set the new frame number, return the new current value.
 
 		Parameters
@@ -380,7 +380,7 @@ class Parameter:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -392,12 +392,12 @@ class Parameter:
 		current_value : float or str or bool
 			The parameter's current value for the given `frame` number.
 		"""
-		self.set_frame(frame, nFrames, reconstruction)
+		self.set_frame(frame, n_frames, reconstruction)
 		return self.current_value
 
-	def get_total_drift_value_for_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> float | str | bool:
+	def get_total_drift_value_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> float | str | bool:
 		"""Calculate the total drift value from all drift components,
-		for the given `frame` out of a total of `nFrames`,
+		for the given `frame` out of a total of `n_frames`,
 		depending on whether all drifts are applied or only
 		drifts known to the reconstruction software.
 
@@ -406,7 +406,7 @@ class Parameter:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in CT scan.
 
 		reconstruction : bool
@@ -434,10 +434,10 @@ class Parameter:
 				# nothing is added, and the drifts array should only
 				# contain one element. Otherwise, the last drift is the
 				# one that has precedence. Same for bool.
-				total_drift = d.get_value_for_frame(frame=frame, nFrames=nFrames)
+				total_drift = d.get_value_for_frame(frame=frame, n_frames=n_frames)
 			else:
 				# Add up all drift values for requested frame:
-				total_drift += d.get_value_for_frame(frame=frame, nFrames=nFrames)
+				total_drift += d.get_value_for_frame(frame=frame, n_frames=n_frames)
 
 		return total_drift
 
@@ -449,7 +449,7 @@ class Parameter:
 		Parameters
 		----------
 		json_drift_object : dict
-			A CTSimU drift structure, imported from a JSON structure.
+			Dictionary for a CTSimU drift structure.
 		"""
 		d = Drift(native_unit=self.native_unit, preferred_unit=self.preferred_unit, _root=self._root)
 		d.set_from_json(json_drift_object)
@@ -463,7 +463,7 @@ class Parameter:
 		Parameters
 		----------
 		json_parameter_object : dict
-			A CTSimU parameter structure, as imported from a JSON structure.
+			A CTSimU parameter structure.
 
 		Returns
 		-------
@@ -600,9 +600,9 @@ class Parameter:
 
 		return False
 
-	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False) -> bool:
+	def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> bool:
 		"""Prepares the `current_value` for the given `frame` number
-		(assuming a total of `nFrames`). This takes into account all drifts
+		(assuming a total of `n_frames`). This takes into account all drifts
 		(or only the ones known to reconstruction).
 
 		Parameters
@@ -610,7 +610,7 @@ class Parameter:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -624,7 +624,7 @@ class Parameter:
 			If the value has changed from the previous value (e.g. due to drifts).
 		"""
 		new_value = self.standard_value
-		total_drift = self.get_total_drift_value_for_frame(frame, nFrames, reconstruction)
+		total_drift = self.get_total_drift_value_for_frame(frame, n_frames, reconstruction)
 
 		if self.native_unit == "string":
 			if isinstance(total_drift, str):

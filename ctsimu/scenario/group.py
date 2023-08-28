@@ -65,11 +65,19 @@ class Group:
 		else:
 			raise TypeError("add_alternative_name: given alternative is not a string.")
 
-	def add_subgroup(self, subgroup:'Group'):
-		if isinstance(subgroup, Group):
+	def new_subgroup(self, subgroup_name:str, array=False) -> 'Group':
+		if isinstance(subgroup_name, str):
+			if not array:
+				subgroup = Group(name=subgroup_name, _root=self._root)
+			else:
+				subgroup = Array(name=subgroup_name, _root=self._root)
+
 			self.subgroups.append(subgroup)
+			self.__setattr__(subgroup_name, subgroup)
+
+			return subgroup
 		else:
-			raise TypeError("add_subgroup: given subgroup is not an object of class 'Group'.")
+			raise TypeError("new_subgroup: given subgroup_name is not a string.")
 
 	def parameter(self, key:str) -> 'Parameter':
 		"""The parameter object behind a given property `key`.
@@ -204,6 +212,9 @@ class Group:
 			# Create new parameter:
 			new_parameter = Parameter(native_unit=native_unit, standard_value=value, simple=simple, valid_values=valid_values, _root=self._root)
 			self.properties[key] = new_parameter
+
+			# Make the new parameter an attribute of self:
+			self.__setattr__(key, new_parameter)
 
 	def check(self):
 		# Virtual function for consistency checks.
@@ -474,7 +485,7 @@ class Group:
 
 			subgroup.set_from_json(json_subobj)
 
-	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False):
+	def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False):
 		"""
 		Set up the group for the given `frame` number, obeying all drifts.
 
@@ -483,7 +494,7 @@ class Group:
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -495,12 +506,12 @@ class Group:
 		for key in self.properties:
 			self.properties[key].set_frame(
 				frame=frame,
-				nFrames=nFrames,
+				n_frames=n_frames,
 				reconstruction=reconstruction
 			)
 
 		for subgroup in self.subgroups:
-			subgroup.set_frame(frame, nFrames, reconstruction)
+			subgroup.set_frame(frame, n_frames, reconstruction)
 
 class Array(Group):
 	"""Array of objects that are all of the same kind, such as
@@ -563,7 +574,7 @@ class Array(Group):
 			else:
 				raise TypeError("Array: set_from_json: given object is neither a list nor a single JSON dictionary.")
 
-	def set_frame(self, frame:float, nFrames:int, reconstruction:bool=False):
+	def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False):
 		"""
 		Set up the group for the given `frame` number.
 
@@ -572,7 +583,7 @@ class Array(Group):
 		frame : float
 			Current frame number.
 
-		nFrames : int
+		n_frames : int
 			Total number of frames in scan.
 
 		reconstruction : bool
@@ -581,4 +592,4 @@ class Array(Group):
 		"""
 
 		for element in self.elements:
-			element.set_frame(frame, nFrames, reconstruction)
+			element.set_frame(frame, n_frames, reconstruction)

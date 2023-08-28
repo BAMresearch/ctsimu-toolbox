@@ -22,13 +22,11 @@ class File(Group):
 		self.set(key="date_changed", value=None, native_unit="string", simple=True)
 
 		# version
-		self.version = Group(name="version")
+		self.new_subgroup("version")
 		self.version.set(key="major", value=None, native_unit=None, simple=True)
 		self.version.set(key="minor", value=None, native_unit=None, simple=True)
-		self.add_subgroup(self.version)
 
 		# file format version
-		self.file_format_version = Group(name="file_format_version")
+		self.new_subgroup("file_format_version")
 		self.file_format_version.set(key="major", value=1, native_unit=None, simple=True)
 		self.file_format_version.set(key="minor", value=2, native_unit=None, simple=True)
-		self.add_subgroup(self.file_format_version)

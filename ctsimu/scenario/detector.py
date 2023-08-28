@@ -21,10 +21,9 @@ class Detector(Part):
 		self.set(key="columns",          value=1000,    native_unit="px")
 		self.set(key="rows",             value=1000,    native_unit="px")
 
-		self.pixel_pitch = Group("pixel_pitch")
+		self.new_subgroup("pixel_pitch")
 		self.pixel_pitch.set(key="u",    value=0.1,     native_unit="mm")
 		self.pixel_pitch.set(key="v",    value=0.1,     native_unit="mm")
-		self.add_subgroup(self.pixel_pitch)
 
 		self.set(key="bit_depth",        value=16,      native_unit=None)
 		self.set(key="integration_time", value=1.0,     native_unit="s")
@@ -33,7 +32,7 @@ class Detector(Part):
 		self.set(key="gain",             value=None,    native_unit=None)
 
 		# Properties for gray value reproduction:
-		self.gray_value = Group("gray_value")
+		self.new_subgroup("gray_value")
 		self.gray_value.add_alternative_name("grey_value")
 		self.gray_value.set(key="imin",   value=0,     native_unit=None)
 		self.gray_value.set(key="imax",   value=60000, native_unit=None)
@@ -41,23 +40,20 @@ class Detector(Part):
 		self.gray_value.set(key="offset", value=None,  native_unit=None)
 		self.gray_value.set(key="intensity_characteristics_file",  value=None, native_unit="string")
 		self.gray_value.set(key="efficiency_characteristics_file", value=None, native_unit="string")
-		self.add_subgroup(self.gray_value)
 
 		# Noise:
-		self.noise = Group("noise")
+		self.new_subgroup("noise")
 		self.noise.set(key="snr_at_imax",                value=None, native_unit=None)
 		self.noise.set(key="noise_characteristics_file", value=None, native_unit="string")
-		self.add_subgroup(self.noise)
 
 		# Unsharpness:
-		self.unsharpness = Group("unsharpness")
+		self.new_subgroup("unsharpness")
 		self.unsharpness.add_alternative_name("sharpness")
 		self.unsharpness.set(key="basic_spatial_resolution", value=None, native_unit="mm")
 		self.unsharpness.set(key="mtf", value=None, native_unit="string")
-		self.add_subgroup(self.unsharpness)
 
 		# Bad pixel map:
-		self.bad_pixel_map = Group("bad_pixel_map")
+		self.new_subgroup("bad_pixel_map")
 		self.bad_pixel_map.set(key="file",       value=None, native_unit="string")
 		# dim_x and dim_y not necessary. Must match detector columns/rows.
 		#self.bad_pixel_map.set(key="dim_x",      value=None, simple=True)
@@ -65,37 +61,29 @@ class Detector(Part):
 		self.bad_pixel_map.set(key="type",       value="int16",  native_unit="string", simple=True)
 		self.bad_pixel_map.set(key="endian",     value="little", native_unit="string", simple=True)
 		self.bad_pixel_map.set(key="headersize", value=0, simple=True)
-		self.add_subgroup(self.bad_pixel_map)
 
 		# Scintillator
-		self.scintillator = Group("scintillator")
+		self.new_subgroup("scintillator")
 		self.scintillator.set(key="material_id", value=None, native_unit="string", simple=True)
 		self.scintillator.set(key="thickness",   value=None, native_unit="mm")
-		self.add_subgroup(self.scintillator)
 
 		# Window
-		self.window = Group("window")
-		self.window_front = Array("front")
-		self.window_front.set(key="material_id", value=None, native_unit="string", simple=True)
-		self.window_front.set(key="thickness",   value=None, native_unit="mm")
-		self.window.add_subgroup(self.window_front)
-		self.window_rear = Array("rear")
-		self.window_rear.set(key="material_id", value=None, native_unit="string", simple=True)
-		self.window_rear.set(key="thickness",   value=None, native_unit="mm")
-		self.window.add_subgroup(self.window_rear)
-		self.add_subgroup(self.window)
+		self.new_subgroup("window")
+		self.window.new_subgroup("front", array=True)
+		self.window.front.set(key="material_id", value=None, native_unit="string", simple=True)
+		self.window.front.set(key="thickness",   value=None, native_unit="mm")
+		self.window.new_subgroup("rear", array=True)
+		self.window.rear.set(key="material_id", value=None, native_unit="string", simple=True)
+		self.window.rear.set(key="thickness",   value=None, native_unit="mm")
 
 		# Filters
-		self.filters = Group("filters")
-		self.filters_front = Array("front")
-		self.filters_front.set(key="material_id", value=None, native_unit="string", simple=True)
-		self.filters_front.set(key="thickness",   value=None, native_unit="mm")
-		self.filters.add_subgroup(self.filters_front)
-		self.filters_rear = Array("rear")
-		self.filters_rear.set(key="material_id", value=None, native_unit="string", simple=True)
-		self.filters_rear.set(key="thickness",   value=None, native_unit="mm")
-		self.filters.add_subgroup(self.filters_rear)
-		self.add_subgroup(self.filters)
+		self.new_subgroup("filters")
+		self.filters.new_subgroup("front", array=True)
+		self.filters.front.set(key="material_id", value=None, native_unit="string", simple=True)
+		self.filters.front.set(key="thickness",   value=None, native_unit="mm")
+		self.filters.new_subgroup("rear", array=True)
+		self.filters.rear.set(key="material_id", value=None, native_unit="string", simple=True)
+		self.filters.rear.set(key="thickness",   value=None, native_unit="mm")
 
 	def check(self):
 		# Check if the detector type is valid:
