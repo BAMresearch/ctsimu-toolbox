@@ -1085,7 +1085,7 @@ class Geometry:
 
                 - `"x"`, `"y"` and `"z"`
 
-            + `"voxel_size"`: dict
+            + `"voxelsize"`: dict
 
                 - `"x"`, `"y"` and `"z"`
         """
@@ -1226,11 +1226,11 @@ class Geometry:
         SOD_cera = source_in_CERA.center.distance(cera_volume_midpoint)
 
         if SDD_cera != 0:
-            voxel_size_u = psu * SOD_cera / SDD_cera
-            voxel_size_v = psv * SOD_cera / SDD_cera
+            voxelsize_u = psu * SOD_cera / SDD_cera
+            voxelsize_v = psv * SOD_cera / SDD_cera
         else:
-            voxel_size_u = 1
-            voxel_size_v = 1
+            voxelsize_u = 1
+            voxelsize_v = 1
 
         # Intersection point of principal ray with detector:
         detector_intersection_point = xaxis.get_copy()
@@ -1288,10 +1288,10 @@ class Geometry:
                 "y": n_voxels_y,
                 "z": n_voxels_z
             },
-            "voxel_size": {
-                "x": voxel_size_u,
-                "y": voxel_size_u,
-                "z": voxel_size_v
+            "voxelsize": {
+                "x": voxelsize_u,
+                "y": voxelsize_u,
+                "z": voxelsize_v
             }
         }
 
@@ -1987,7 +1987,7 @@ def _cera_bool(truth:bool) -> str:
 
     return "false"
 
-def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=None, n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float32", matrices:list=None):
+def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=None, n_projections:int=None, flip_u:bool=False, flip_v:bool=True, projection_datatype:str="float32", projection_filetype:str="tiff", projection_byteorder:str="little", projection_headersize:int=0, start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxelsize_x:float=None, voxelsize_y:float=None, voxelsize_z:float=None, i0max:float=60000, output_datatype:str="float32", matrices:list=None):
     """Write a CERA config file for the given geometry.
 
     A circular trajectory for the given angular range is assumed, all parameters
@@ -2019,10 +2019,43 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
 
         Standard value: `None`
 
-    projection_file_type : str
-        Projection file type: `"tiff"`, `"raw_uint16"` or `"raw_float"`.
+    flip_u : bool
+        Flip projection images horizontally before reconstruction?
+
+        Standard value: `False`
+
+    flip_v : bool
+        Flip projection images vertically before reconstruction?
+
+        Standard value: `True`
+
+    projection_datatype : str
+        Data type of the projection images, as well as possible bright and dark
+        images and the bad pixel map.
+
+        Allowed values: `"uint16"`, `"float32"`
+
+        Standard value: `"float32"`
+
+    projection_filetype : str
+        File type of the projection images, as well as possible bright and dark
+        images and the bad pixel map.
+
+        Allowed values: `"raw"` or `"tiff"`
 
         Standard value: `"tiff"`
+
+    projection_headersize : int
+        For RAW projection images: header size to skip (in bytes).
+
+        Standard value: `0`
+
+    projection_byteorder : str
+        For RAW projection images: endianness of the files.
+
+        Allowed values: `"little"` or `"big"`
+
+        Standard value: `"little"`
 
     start_angle : float
         Reconstruction start angle (in degrees). The start angle can be
@@ -2066,21 +2099,21 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
 
         Standard value: `None`
 
-    voxel_size_x : float
+    voxelsize_x : float
         Voxel size in x direction of the reconstruction volume.
         Set to `None` for a default value based on the detector pixel size
         and magnification.
 
         Standard value: `None`
 
-    voxel_size_y : float
+    voxelsize_y : float
         Voxel size in y direction of the reconstruction volume.
         Set to `None` for a default value based on the detector pixel size
         and magnification.
 
         Standard value: `None`
 
-    voxel_size_z : float
+    voxelsize_z : float
         Voxel size in z direction of the reconstruction volume.
         Set to `None` for a default value based on the detector pixel size
         and magnification.
@@ -2092,27 +2125,6 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
         projection images.
 
         Standard value: `60000`
-
-    flip_u : bool
-        Flip projection images horizontally before reconstruction?
-
-        Standard value: `False`
-
-    flip_v : bool
-        Flip projection images vertically before reconstruction?
-
-        Standard value: `True`
-
-    big_endian : bool
-        If projection images are given in RAW big-endian format, this parameter
-        should be set to `True`.
-
-        Standard value: `False`
-
-    raw_header_size : int
-        For RAW projection images: header size (in bytes).
-
-        Standard value: `0`
 
     output_datatype : str
         Data type for the reconstruction volume output file.
@@ -2134,6 +2146,19 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
     cera_config_filename = join_dir_and_filename(save_dir, f"{basename}.config")
     touch_directory(cera_config_filename)
 
+    big_endian = False
+    if projection_byteorder == "big":
+        big_endian = True
+
+    cera_projection_filetype = "tiff"
+    if projection_filetype == "raw":
+        if projection_datatype == "uint16":
+            cera_projection_filetype = "raw_uint16"
+        elif projection_datatype == "float32":
+            cera_projection_filetype = "raw_float"
+        else:
+            raise Exception(f"Projection datatype not supported by CERA: {projection_datatype}. Supported datatypes: 'uint16' and 'float32'.")
+
     # Use default number of voxels if none is given:
     if voxels_x is None:
         voxels_x = cera_parameters["voxels"]["x"]
@@ -2143,12 +2168,12 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
         voxels_z = cera_parameters["voxels"]["z"]
 
     # Use default voxel size if none is given:
-    if voxel_size_x is None:
-        voxel_size_x = cera_parameters["voxel_size"]["x"]
-    if voxel_size_y is None:
-        voxel_size_y = cera_parameters["voxel_size"]["y"]
-    if voxel_size_z is None:
-        voxel_size_z = cera_parameters["voxel_size"]["z"]
+    if voxelsize_x is None:
+        voxelsize_x = cera_parameters["voxelsize"]["x"]
+    if voxelsize_y is None:
+        voxelsize_y = cera_parameters["voxelsize"]["y"]
+    if voxelsize_z is None:
+        voxelsize_z = cera_parameters["voxelsize"]["z"]
 
     # Flip scan direction:
     # we assume object scan direction, CERA assumes gantry scan direction.
@@ -2241,7 +2266,7 @@ CropBorderBottom = 0
 BinningFactor = None
 SkipProjectionInterval = 1
 ProjectionDataDomain = Intensity
-RawHeaderSize = {raw_header_size}
+RawHeaderSize = {projection_headersize}
 
 [Volume]
 SizeX = {volx}
@@ -2259,7 +2284,7 @@ OutputDatatype = {output_datatype}
 
 [CustomKeys]
 NumProjections = {nProjections}
-ProjectionFileType = {projection_file_type}
+ProjectionFileType = {projection_filetype}
 VolumeOutputPath = {basename}.raw
 ProjectionStartNum = 0
 ProjectionFilenameMask = {projFilePattern}
@@ -2300,7 +2325,7 @@ GlobalI0Value = {i0max}
     flip_u=_cera_bool(flip_u),
     flip_v=_cera_bool(flip_v),
     big_endian=_cera_bool(big_endian),
-    raw_header_size=raw_header_size,
+    projection_headersize=projection_headersize,
     volx=int(voxels_x),
     voly=int(voxels_y),
     volz=int(voxels_z),
@@ -2308,12 +2333,12 @@ GlobalI0Value = {i0max}
     midpointx=cera_parameters["volume_midpoint"]["x"],
     midpointy=cera_parameters["volume_midpoint"]["y"],
     midpointz=cera_parameters["volume_midpoint"]["z"],
-    vsx=voxel_size_x,
-    vsy=voxel_size_y,
-    vsz=voxel_size_z,
+    vsx=voxelsize_x,
+    vsy=voxelsize_y,
+    vsz=voxelsize_z,
     output_datatype=output_datatype,
     nProjections=int(n_projections),
-    projection_file_type=projection_file_type,
+    projection_filetype=cera_projection_filetype,
     projFilePattern=projection_file_pattern,
     SOD=cera_parameters["R"],
     SDD=cera_parameters["D"],
@@ -2333,7 +2358,7 @@ GlobalI0Value = {i0max}
         f.write(configFileString)
         f.close()
 
-def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, datatype:str="float32", filetype:str="TIFF", skip_bytes:int=0, endian:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", total_angle:float=None, matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
+def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, projection_datatype:str="float32", projection_filetype:str="tiff", projection_headersize:int=0, projection_byteorder:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", total_angle:float=None, matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxelsize_x:float=None, voxelsize_y:float=None, voxelsize_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
     """Create an OpenCT free trajectory CBCT configuration and optionally write to file.
 
     Parameters
@@ -2372,7 +2397,7 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
 
         Standard value: `False`
 
-    datatype : str
+    projection_datatype : str
         Data type of the projection images, as well as possible bright and dark
         images and the bad pixel map.
 
@@ -2380,20 +2405,20 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
 
         Standard value: `"float32"`
 
-    filetype : str
+    projection_filetype : str
         File type of the projection images, as well as possible bright and dark
         images and the bad pixel map.
 
-        Allowed values: `"RAW"` or `"TIFF"`
+        Allowed values: `"raw"` or `"tiff"`
 
-        Standard value: `"TIFF"`
+        Standard value: `"tiff"`
 
-    skip_bytes : int
+    projection_headersize : int
         For RAW projection images: header size to skip (in bytes).
 
         Standard value: `0`
 
-    endian : str
+    projection_byteorder : str
         For RAW projection images: endianness of the files.
 
         Allowed values: `"little"` or `"big"`
@@ -2461,24 +2486,46 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
 
         Standard value: `0`
 
-    bb_size_x : float
-        Physical size (in mm, x direction) of the reconstruction volume bounding box.
-        If `None` is given, a meaningful size will be calculated from the
-        detector size and magnification.
+    voxels_x : int
+        Number of voxels in x direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixels.
 
         Standard value: `None`
 
-    bb_size_y : float
-        Physical size (in mm, y direction) of the reconstruction volume bounding box.
-        If `None` is given, a meaningful size will be calculated from the
-        detector size and magnification.
+    voxels_y : int
+        Number of voxels in y direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixels.
 
         Standard value: `None`
 
-    bb_size_y : float
-        Physical size (in mm, z direction) of the reconstruction volume bounding box.
-        If `None` is given, a meaningful size will be calculated from the
-        detector size and magnification.
+    voxels_z : int
+        Number of voxels in z direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixels.
+
+        For helix scans, this parameter should be increased because the
+        default voxel size in z direction corresponds to the detector height,
+        whereas a helix scan usually covers much more than the detector height.
+
+        Standard value: `None`
+
+    voxelsize_x : float
+        Voxel size in x direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixel size
+        and magnification.
+
+        Standard value: `None`
+
+    voxelsize_y : float
+        Voxel size in y direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixel size
+        and magnification.
+
+        Standard value: `None`
+
+    voxelsize_z : float
+        Voxel size in z direction of the reconstruction volume.
+        Set to `None` for a default value based on the detector pixel size
+        and magnification.
 
         Standard value: `None`
 
@@ -2509,8 +2556,8 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
     """
 
     # Convert some settings to openCT keywords:
-    datatype = convert(openct_converter["datatype"], datatype)
-    endian = convert(openct_converter["endian"], endian)
+    projection_datatype = convert(openct_converter["datatype"], projection_datatype)
+    projection_byteorder = convert(openct_converter["endian"], projection_byteorder)
 
     n_projections = 0
     if projection_files is not None:
@@ -2544,12 +2591,26 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
     # Take some standard parameters from CERA:
     cera_parameters = geo.get_CERA_standard_circular_parameters()
 
-    if bb_size_x is None:
-        bb_size_x = geo.detector.cols() * cera_parameters["voxel_size"]["x"]
-    if bb_size_y is None:
-        bb_size_y = geo.detector.cols() * cera_parameters["voxel_size"]["y"]
-    if bb_size_z is None:
-        bb_size_z = geo.detector.rows() * cera_parameters["voxel_size"]["z"]
+    # Use default number of voxels if none is given:
+    if voxels_x is None:
+        voxels_x = cera_parameters["voxels"]["x"]
+    if voxels_y is None:
+        voxels_y = cera_parameters["voxels"]["y"]
+    if voxels_z is None:
+        voxels_z = cera_parameters["voxels"]["z"]
+
+    # Use default voxel size if none is given:
+    if voxelsize_x is None:
+        voxelsize_x = cera_parameters["voxelsize"]["x"]
+    if voxelsize_y is None:
+        voxelsize_y = cera_parameters["voxelsize"]["y"]
+    if voxelsize_z is None:
+        voxelsize_z = cera_parameters["voxelsize"]["z"]
+
+    # Calculate bounding box size:
+    bb_size_x = voxels_x * voxelsize_x
+    bb_size_y = voxels_y * voxelsize_y
+    bb_size_z = voxels_z * voxelsize_z
 
     SOD = cera_parameters["R"]
     SDD = cera_parameters["D"]
@@ -2582,10 +2643,10 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
             "numProjections":  n_projections,
             "intensityDomain": True,
             "images": {
-                "dataType":  datatype,
-                "fileType":  filetype,
-                "skipBytes": skip_bytes,
-                "endianness": endian,
+                "dataType":  projection_datatype,
+                "fileType":  projection_filetype.upper(),
+                "skipBytes": projection_headersize,
+                "endianness": projection_byteorder,
                 "directory": projection_dir,
                 "files": projection_files
             },
@@ -2614,26 +2675,26 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
         },
         "corrections": {
             "brightImages": {
-                "dataType":  datatype,
-                "fileType":  filetype,
-                "skipBytes": skip_bytes,
-                "endianness": endian,
+                "dataType":  projection_datatype,
+                "fileType":  projection_filetype,
+                "skipBytes": projection_headersize,
+                "endianness": projection_byteorder,
                 "directory": bright_image_dir,
                 "files":     bright_images
             },
             "darkImage": {
                 "file":     dark_image,
-                "dataType": datatype,
-                "fileType": filetype,
-                "skipBytes": skip_bytes,
-                "endianness": endian
+                "dataType": projection_datatype,
+                "fileType": projection_filetype,
+                "skipBytes": projection_headersize,
+                "endianness": projection_byteorder
             },
             "badPixelMask": {
                 "file":     bad_pixel_mask,
-                "dataType": datatype,
-                "fileType": filetype,
-                "skipBytes": skip_bytes,
-                "endianness": endian
+                "dataType": projection_datatype,
+                "fileType": projection_filetype,
+                "skipBytes": projection_headersize,
+                "endianness": projection_byteorder
             }
         }
     }
