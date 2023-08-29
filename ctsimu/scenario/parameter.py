@@ -95,15 +95,7 @@ class Parameter:
 		self.reset()
 
 	def __str__(self):
-		if self.simple is True:
-			s = f"{self.standard_value}"
-		else:
-			s  = f"Standard value: {self.standard_value}, "
-			s += f"Current value: {self.current_value}, "
-			s += f"Native unit: {self.native_unit}, "
-			s += f"nDrifts: {len(self.drifts)}"
-
-		return s
+		return f"{self.current_value}"
 
 	def reset(self):
 		"""Delete all drifts and set the parameter's current value

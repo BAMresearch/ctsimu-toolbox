@@ -111,7 +111,7 @@ class Source(Part):
 		-------
 		json_dict : dict
 		"""
-		jd = Group.json_dict()
+		jd = Group.json_dict(self)
 
 		# Remove the geometry section, it was only used to store
 		# the type and beam_divergence. It is not part of the
