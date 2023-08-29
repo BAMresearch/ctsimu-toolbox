@@ -50,11 +50,11 @@ class Drift:
 
 		preferred_unit : str
 			Preferred unit to represent these drift values in the JSON file.
-			If set to 'None', the native unit will be used.
+			If set to `None`, the native unit will be used.
 		"""
 		self._root = _root  # root scenario object
 
-		self.trajectory = []
+		self.value = []
 		self.native_unit = native_unit
 
 		if preferred_unit is not None:
@@ -70,7 +70,7 @@ class Drift:
 	def reset(self):
 		"""Clear the list of drift values, set `known_to_reconstruction` to `True`."""
 		self.known_to_reconstruction = True
-		self.trajectory = []
+		self.value = []
 
 	def json_dict(self) -> dict:
 		"""Create a CTSimU JSON dictionary for this drift.
@@ -80,8 +80,8 @@ class Drift:
 		json_dict : dict
 		"""
 		jd = dict()
-		if len(self.trajectory) > 0:
-			jd["value"] = self.trajectory
+		if len(self.value) > 0:
+			jd["value"] = self.value
 		else:
 			jd["value"] = None
 
@@ -95,7 +95,7 @@ class Drift:
 
 				if conversion_factor != 0:
 					jd["value"] = list()
-					for val in self.trajectory:
+					for val in self.value:
 						jd["value"].append(val/conversion_factor)
 
 			jd["unit"] = unit
@@ -153,7 +153,7 @@ class Drift:
 			For string-type drifts (`str`), this is the string that should replace
 			the parameter's standard value.
 		"""
-		self.trajectory.append(value)
+		self.value.append(value)
 
 	def set_from_json(self, json_drift_object:dict) -> bool:
 		"""Set the drift from a given CTSimU drift structure.
@@ -250,7 +250,7 @@ class Drift:
 			The drift's value for the given `frame` number.
 		"""
 
-		nTrajectoryPoints = len(self.trajectory)
+		nTrajectoryPoints = len(self.value)
 		if nTrajectoryPoints is not None:
 			if nTrajectoryPoints > 1:
 				if n_frames > 1:
@@ -278,7 +278,7 @@ class Drift:
 						if float(leftIndex) == float(trajectoryIndex):
 							# We are exactly at one trajectory point;
 							# no need for interpolation.
-							return self.trajectory[leftIndex]
+							return self.value[leftIndex]
 
 						if self.interpolation is True:
 							# Linear interpolation:
@@ -292,21 +292,21 @@ class Drift:
 							# Weight for the left bin is 1-rightWeight.
 							leftWeight = 1.0 - rightWeight
 
-							return leftWeight*self.trajectory[leftIndex] \
-								+ rightWeight*self.trajectory[rightIndex]
+							return leftWeight*self.value[leftIndex] \
+								+ rightWeight*self.value[rightIndex]
 						else:
 							# No interpolation.
 							# Return the value at the last drift value index
 							# that would apply to this frame position.
-							return self.trajectory[leftIndex]
+							return self.value[leftIndex]
 					else:
 						# Linear interpolation beyond provided trajectory data.
 						if progress > 1.0:
 							# We are beyond the expected last frame.
 							if self.interpolation is True:
 								# Linear interpolation beyond last two drift values:
-								trajectoryValue0 = self.trajectory[int(lastTrajectoryIndex-1)]
-								trajectoryValue1 = self.trajectory[int(lastTrajectoryIndex)]
+								trajectoryValue0 = self.value[int(lastTrajectoryIndex-1)]
+								trajectoryValue1 = self.value[int(lastTrajectoryIndex)]
 								offsetValue = trajectoryValue1
 
 								# We assume a linear interpolation function beyond the two
@@ -316,12 +316,12 @@ class Drift:
 								xTraj = trajectoryIndex - float(lastTrajectoryIndex)
 							else:
 								# No interpolation. Return last trajectory value:
-								return self.trajectory[lastTrajectoryIndex]
+								return self.value[lastTrajectoryIndex]
 						else:
 							# We are before the first frame (i.e., before frame 0).
 							if self.interpolation is True:
-								trajectoryValue0 = self.trajectory[0]
-								trajectoryValue1 = self.trajectory[1]
+								trajectoryValue0 = self.value[0]
+								trajectoryValue1 = self.value[1]
 								offsetValue = trajectoryValue0
 
 								# We assume a linear interpolation function beyond the two
@@ -331,7 +331,7 @@ class Drift:
 								xTraj = trajectoryIndex # is negative in this case
 							else:
 								# No interpolation. Return first trajectory value:
-								return self.trajectory[0]
+								return self.value[0]
 
 						# m = the slope of our linear interpolation function.
 						# We are on the axis of trajectory drift values:
@@ -346,13 +346,13 @@ class Drift:
 					# n_frames <= 1
 					# If "scan" only has 1 or 0 frames,
 					# simply return the first trajectory value.
-					return self.trajectory[0]
+					return self.value[0]
 			else:
 				# trajectory points <= 1:
 				if nTrajectoryPoints > 0:
 					# Simply check if the trajectory consists of at least
 					# 1 point and return this value:
-					return self.trajectory[0]
+					return self.value[0]
 
 		# Drifts are per-frame absolute deviations from the standard value,
 		# so 0 is a sane default value for no drift components:
