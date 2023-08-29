@@ -232,20 +232,22 @@ class Scenario:
         # Prepare filename for dark fields:
         n_darks = self.acquisition.dark_field.get("number")
         dark_filename = None
-        if n_darks > 0:
-            if n_darks > 1:
-                dark_filename = f"{basename}_dark_{counter_format(n_darks)}.raw"
-            else:
-                dark_filename = f"{basename}_dark.raw"
+        if n_darks is not None:
+            if n_darks > 0:
+                if n_darks > 1:
+                    dark_filename = f"{basename}_dark_{counter_format(n_darks)}.raw"
+                else:
+                    dark_filename = f"{basename}_dark.raw"
 
         # Prepare filename for flat fields:
         n_flats = self.acquisition.flat_field.get("number")
         flat_filename = None
-        if n_flats > 0:
-            if n_flats > 1:
-                flat_filename = f"{basename}_flat_{counter_format(n_flats)}.raw"
-            else:
-                flat_filename = f"{basename}_flat.raw"
+        if n_flats is not None:
+            if n_flats > 0:
+                if n_flats > 1:
+                    flat_filename = f"{basename}_flat_{counter_format(n_flats)}.raw"
+                else:
+                    flat_filename = f"{basename}_flat.raw"
 
 
         n_cols = self.detector.get("columns")
@@ -257,9 +259,9 @@ class Scenario:
         voxels_y = n_cols
         voxels_z = n_rows
 
-        voxel_size_x = cera_parameters["voxel_size"]["x"]
-        voxel_size_y = cera_parameters["voxel_size"]["y"]
-        voxel_size_z = cera_parameters["voxel_size"]["z"]
+        voxelsize_x = cera_parameters["voxelsize"]["x"]
+        voxelsize_y = cera_parameters["voxelsize"]["y"]
+        voxelsize_z = cera_parameters["voxelsize"]["z"]
 
         now = datetime.now()
 
@@ -333,9 +335,9 @@ class Scenario:
                         "z": {"value": voxels_z, "unit": "px"}
                     },
                     "voxelsize": {
-                        "x": {"value": voxel_size_x, "unit": "mm"},
-                        "y": {"value": voxel_size_y, "unit": "mm"},
-                        "z": {"value": voxel_size_z, "unit": "mm"}
+                        "x": {"value": voxelsize_x, "unit": "mm"},
+                        "y": {"value": voxelsize_y, "unit": "mm"},
+                        "z": {"value": voxelsize_z, "unit": "mm"}
                     }
                 }
             },
@@ -657,6 +659,8 @@ text = {name}"""
 
             Default value: `None`
 
+        create_vgi : bool
+            Write VGI file for future reconstruction volume?
         """
 
         matrices = []
@@ -672,22 +676,13 @@ text = {name}"""
         # Projection files
         n_projections = self.acquisition.get("number_of_projections")
         projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
-        projection_file_datatype = self.metadata.get(["output", "projections", "datatype"])
+        projection_datatype = self.metadata.get(["output", "projections", "datatype"])
         projection_file_byteorder = self.metadata.get(["output", "projections", "byteorder"])
-        projection_file_headersize = self.metadata.get(["output", "projections", "headersize", "file"])
+        projection_headersize = self.metadata.get(["output", "projections", "headersize", "file"])
 
-        projection_file_type = "tiff"
+        projection_filetype = "tiff"
         if projection_file_pattern.lower().endswith(".raw"):
-            if projection_file_datatype == "uint16":
-                projection_file_type = "raw_uint16"
-            elif projection_file_datatype == "float32":
-                projection_file_type = "raw_float"
-            else:
-                raise Exception(f"Projection datatype not supported by CERA: {projection_file_datatype}. Supported datatypes: 'uint16' and 'float32'.")
-
-        big_endian = False
-        if projection_file_byteorder == "big":
-            big_endian = True
+            projection_filetype = "raw"
 
         # Acquisition
         start_angle = self.acquisition.get("start_angle")
@@ -716,18 +711,25 @@ text = {name}"""
             basename=basename,
             save_dir=save_dir,
             n_projections=n_projections,
-            projection_file_type=projection_file_type,
+            projection_datatype=projection_datatype,
+            projection_filetype=projection_filetype,
+            projection_byteorder=projection_file_byteorder,
+            projection_headersize=projection_headersize,
             start_angle=0,  # do not compensate the scenario start angle in the reconstruction
             total_angle=total_angle,
             scan_direction=self.acquisition.get("direction"),
+            voxels_x=self.metadata.output.tomogram.dimensions.x.get(),
+            voxels_y=self.metadata.output.tomogram.dimensions.y.get(),
+            voxels_z=self.metadata.output.tomogram.dimensions.z.get(),
+            voxelsize_x=self.metadata.output.tomogram.voxelsize.x.get(),
+            voxelsize_y=self.metadata.output.tomogram.voxelsize.y.get(),
+            voxelsize_z=self.metadata.output.tomogram.voxelsize.z.get(),
             i0max=self.metadata.output.get(["projections", "max_intensity"]),
-            big_endian=big_endian,
-            raw_header_size=projection_file_headersize,
             output_datatype=convert(cera_converter["datatype"], self.metadata.output.get(["tomogram", "datatype"])),
             matrices=matrices
         )
 
-    def write_OpenCT_config(self, save_dir:str=None, basename:str=None, variant='free', create_vgi:bool=False):
+    def write_OpenCT_config(self, save_dir:str=None, basename:str=None, create_vgi:bool=False, variant='free', projection_file_list:list=None):
         """Write OpenCT reconstruction config files.
 
         Parameters
@@ -756,6 +758,9 @@ text = {name}"""
 
             Default value: `None`
 
+        create_vgi : bool
+            Write VGI file for future reconstruction volume?
+
         variant : str
             Which variant of the OpenCT file format will be created: free trajectory
             or circular trajectory.
@@ -763,6 +768,13 @@ text = {name}"""
             Possible values: `"free"`, `"circular"`
 
             Default value: `"free"`
+
+        projection_file_list : list
+            List of strings that contain the file names of the projection images.
+            If not set, the list will be generated from the projection file
+            pattern of the scenario's metadata.
+
+            Default value: `None`
         """
 
         matrices = []
@@ -771,31 +783,49 @@ text = {name}"""
             # Extract base name from metadata
             metadata_basename = self.metadata.get(["file", "name"])
             if metadata_basename is not None:
-                basename = f"{metadata_basename}_recon_cera"
+                basename = f"{metadata_basename}_recon_openCT"
             else:
                 basename = f"recon_openCT"
 
         filename = join_dir_and_filename(save_dir, f"{basename}.json")
 
+
         # Projection files
         n_projections = self.acquisition.get("number_of_projections")
-        projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
-        projection_file_datatype = self.metadata.get(["output", "projections", "datatype"])
+        projection_file_pattern = None
+        projection_filedir = None
+        projection_filename = None
+        if n_projections is not None:
+            if n_projections > 0:
+                projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
+                if projection_file_pattern is not None:
+                    projection_filedir, projection_filename = os.path.split(projection_file_pattern)
+                else:
+                    projection_filedir = None
+                    projection_filename = None
+
+                projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
+                if projection_file_pattern is not None:
+                    projection_filedir, projection_filename = os.path.split(projection_file_pattern)
+                else:
+                    projection_filedir = None
+                    projection_filename = None
+
+        projection_datatype = self.metadata.get(["output", "projections", "datatype"])
         projection_file_byteorder = self.metadata.get(["output", "projections", "byteorder"])
-        projection_file_headersize = self.metadata.get(["output", "projections", "headersize", "file"])
+        projection_headersize = self.metadata.get(["output", "projections", "headersize", "file"])
 
-        projection_file_type = "tiff"
+        # Generate list of projection files:
+        projection_file_list = list()
+        if projection_file_list is None:
+            if projection_filename is not None:
+                # Auto-generate projection file list.
+                for p in range(n_projections):
+                    projection_file_list.append(projection_filename % p)
+
+        projection_filetype = "tiff"
         if projection_file_pattern.lower().endswith(".raw"):
-            if projection_file_datatype == "uint16":
-                projection_file_type = "raw_uint16"
-            elif projection_file_datatype == "float32":
-                projection_file_type = "raw_float"
-            else:
-                raise Exception(f"Projection datatype not supported by CERA: {projection_file_datatype}. Supported datatypes: 'uint16' and 'float32'.")
-
-        big_endian = False
-        if projection_file_byteorder == "big":
-            big_endian = True
+            projection_filetype = "raw"
 
         # Acquisition
         start_angle = self.acquisition.get("start_angle")
@@ -820,17 +850,21 @@ text = {name}"""
 
         create_OpenCT_config(
             geo=self.current_geometry(),
-            projection_file_pattern=projection_file_pattern,
-            basename=basename,
-            save_dir=save_dir,
-            n_projections=n_projections,
-            projection_file_type=projection_file_type,
-            start_angle=0,  # do not compensate the scenario start angle in the reconstruction
+            filename=file,
+            variant=variant,
+            projection_files=projection_file_list,
+            projection_dir=projection_filedir,
+            projection_datatype=projection_datatype,
+            projection_filetype=projection_filetype,
+            projection_headersize=projection_headersize,
+            projection_byteorder=projection_file_byteorder,
             total_angle=total_angle,
-            scan_direction=self.acquisition.get("direction"),
-            i0max=self.metadata.output.get(["projections", "max_intensity"]),
-            big_endian=big_endian,
-            raw_header_size=projection_file_headersize,
-            output_datatype=convert(cera_converter["datatype"], self.metadata.output.get(["tomogram", "datatype"])),
-            matrices=matrices
-        )
+            matrices=matrices,
+            volumename=basename,
+            voxels_x=self.metadata.output.tomogram.dimensions.x.get(),
+            voxels_y=self.metadata.output.tomogram.dimensions.y.get(),
+            voxels_z=self.metadata.output.tomogram.dimensions.z.get(),
+            voxelsize_x=self.metadata.output.tomogram.voxelsize.x.get(),
+            voxelsize_y=self.metadata.output.tomogram.voxelsize.y.get(),
+            voxelsize_z=self.metadata.output.tomogram.voxelsize.z.get()
+            )

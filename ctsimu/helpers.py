@@ -243,11 +243,11 @@ def counter_format(n:int, zero_padding:bool=True) -> str:
     if n > 10000:
         digits = int(math.ceil(math.log10(float(n))))
 
-    pad = 0
     if zero_padding:
-        pad = "0"
+        pcformat = f"%0{int(digits)}d"
+    else:
+        pcformat = f"%d"
 
-    pcformat = f"%{pad}{int(digits)}d"
     return pcformat
 
 
