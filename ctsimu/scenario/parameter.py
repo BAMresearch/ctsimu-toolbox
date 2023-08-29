@@ -300,6 +300,17 @@ class Parameter:
 		"""
 		self.simple = simple
 
+	def set(self, value):
+		"""Set the parameter's standard value.
+		Automatically sets the current value to the standard value.
+
+		Parameters
+		----------
+		value : float or str or bool
+			New standard value for the parameter.
+		"""
+		self.set_standard_value(value)
+
 	def set_standard_value(self, value):
 		"""Set the parameter's standard value.
 		Automatically sets the current value to the standard value.
@@ -340,6 +351,16 @@ class Parameter:
 			The parameter's standard value.
 		"""
 		return self.standard_value
+
+	def get(self) -> float | str | bool:
+		"""Get parameter's current value.
+
+		Returns
+		-------
+		current_value : float or str or bool
+			The parameter's current value.
+		"""
+		return self.current_value
 
 	def get_current_value(self) -> float | str | bool:
 		"""Get parameter's current value.
@@ -433,19 +454,32 @@ class Parameter:
 
 		return total_drift
 
-	def add_drift_json(self, json_drift_object:dict):
+	def add_drift(self, drift:'Drift'):
+		"""Add a drift object to this parameter.
+
+		Parameters
+		----------
+		drift : ctsimu.scenario.drift.Drift
+		"""
+		if isinstance(drift, Drift):
+			drift._root = self._root
+			self.drifts.append(drift)
+		else:
+			raise Exception("add_drift: given 'drift' object is not of class 'Drift'.")
+
+	def add_drift_json(self, drift_dict:dict):
 		"""Generate a `ctsimu.scenario.drift.Drift` object from a JSON structure
 		that defines a drift and add it to the parameter's internal list of
 		drifts to handle.
 
 		Parameters
 		----------
-		json_drift_object : dict
+		drift_dict : dict
 			Dictionary for a CTSimU drift structure.
 		"""
 		d = Drift(native_unit=self.native_unit, preferred_unit=self.preferred_unit, _root=self._root)
-		d.set_from_json(json_drift_object)
-		self.drifts.append(d)
+		d.set_from_json(drift_dict)
+		self.add_drift(d)
 
 	def set_from_json(self, json_parameter_object:dict) -> bool:
 		"""Set up this parameter from a CTSimU parameter structure.
