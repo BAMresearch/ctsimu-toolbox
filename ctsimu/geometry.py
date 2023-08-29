@@ -1987,7 +1987,7 @@ def _cera_bool(truth:bool) -> str:
 
     return "false"
 
-def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=".", n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float32", matrices:list=None):
+def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str, save_dir:str=None, n_projections:int=None, projection_file_type:str="tiff", start_angle:float=0, total_angle:float=360, scan_direction="CCW", voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxel_size_x:float=None, voxel_size_y:float=None, voxel_size_z:float=None, i0max:float=60000, flip_u:bool=False, flip_v:bool=True, big_endian:bool=False, raw_header_size:int=0, output_datatype:str="float32", matrices:list=None):
     """Write a CERA config file for the given geometry.
 
     A circular trajectory for the given angular range is assumed, all parameters
@@ -2011,7 +2011,7 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
     save_dir : str
         Directory where the configuration files will be stored.
 
-        Standard value: `"."` (local script directory)
+        Standard value: `None` (local script directory)
 
     n_projections : int
         Number of projections. Set to `None` if number of projections
@@ -2130,9 +2130,8 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
     now = datetime.now()
 
     cera_parameters = geo.get_CERA_standard_circular_parameters(start_angle=start_angle)
-    cera_config_filename = f"{save_dir}/{basename}.config"
-    projtable_filename = ""
 
+    cera_config_filename = join_dir_and_filename(save_dir, f"{basename}.config")
     touch_directory(cera_config_filename)
 
     # Use default number of voxels if none is given:
@@ -2211,7 +2210,7 @@ def create_CERA_config(geo:'Geometry', projection_file_pattern:str, basename:str
         )
 
         projtable_filename = f"{basename}_projtable.txt"
-        cera_projtable_filename = f"{save_dir}/{projtable_filename}"
+        cera_projtable_filename = join_dir_and_filename(save_dir, projtable_filename)
         touch_directory(cera_projtable_filename)
 
         with open(cera_projtable_filename, 'w') as f:

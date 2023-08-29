@@ -134,6 +134,64 @@ def touch_directory(filename:str):
 
     return folder
 
+def join_dir_and_filename(directory:str, filename:str) -> str:
+    """Joins directory and filename into a meaningful path.
+
+    Parameters
+    ----------
+    directory: str
+        Directory part of the path. Set to `None` for no
+        directory.
+
+    filename : str
+        Filename part of the path.
+
+    Returns
+    -------
+    full_path : str
+        Fully joined path.
+    """
+
+    if directory is not None:
+        if directory != "":
+            return os.path.join(directory, filename)
+
+    return filename
+
+def abspath_of_referenced_file(filepath:str, referenced:str) -> str:
+    """Get the absolute path of an external file `referenced` in `file`.
+
+    Parameters
+    ----------
+    filepath : str
+        The path of a file (e.g. scenario or metadata) in which
+        an external file is referenced.
+
+    referenced : str
+        The path (relative to `filepath` or absolute)
+        of the referenced file.
+
+    Returns
+    -------
+    referenced_abs : str
+        Absolute path of the referenced file.
+    """
+    if not os.path.isabs(referenced):
+        if filepath is not None:
+            file_abspath = os.path.abspath(filepath)
+            file_absdir  = os.path.dirname(file_abspath)
+            referenced_abspath = join_dir_and_filename(file_absdir, referenced)
+
+            # Simplify relative dots away:
+            referenced_abspath = os.path.abspath(referenced_abspath)
+            return referenced_abspath
+        else:
+            # Assume that an abspath from the current working
+            # directory is requested:
+            return os.path.abspath(referenced)
+    else:
+        return referenced  # already an absolute path
+
 def read_json_file(filename:str) -> dict:
     """Read a JSON file into a Python dictionary.
 
