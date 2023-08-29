@@ -1087,7 +1087,7 @@ class Geometry:
 
             + `"voxel_size"`: dict
 
-                - `"u"` and `"v"`
+                - `"x"`, `"y"` and `"z"`
         """
 
         cera_detector = self.detector.get_copy()
