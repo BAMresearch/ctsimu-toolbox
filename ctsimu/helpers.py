@@ -219,6 +219,38 @@ def read_json_file(filename:str) -> dict:
 
     raise Exception(f"Cannot read JSON file: '{filename}'")
 
+def counter_format(n:int, zero_padding:bool=True) -> str:
+    """Create a default counter format for sequentially numbered files.
+
+    Parameters
+    ----------
+    n : int
+        Number of files, starting from zero.
+
+    zero_padding : bool
+        Are the files zero-padded from the left?
+
+    Returns
+    -------
+    counter_format : str
+        Counter format string, e.g. '%05d' for `n`=20000 files.
+        At least four digits will be assumed, even if `n` is smaller.
+    """
+    digits = 4
+
+    # For anything bigger than 10000 projections (0000 ... 9999)
+    # we need more filename digits:
+    if n > 10000:
+        digits = int(math.ceil(math.log10(float(n))))
+
+    pad = 0
+    if zero_padding:
+        pad = "0"
+
+    pcformat = f"%{pad}{int(digits)}d"
+    return pcformat
+
+
 def convert(converter_dict:dict, key:str) -> str:
     """Map a string to a different (converted) string.
 
