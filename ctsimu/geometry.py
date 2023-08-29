@@ -2333,14 +2333,20 @@ GlobalI0Value = {i0max}
         f.write(configFileString)
         f.close()
 
-def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, datatype:str="float32", filetype:str="TIFF", skip_bytes:int=0, endian:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
-    """Create an openCT free trajectory CBCT configuration and optionally write to file.
+def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, datatype:str="float32", filetype:str="TIFF", skip_bytes:int=0, endian:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", total_angle:float=None, matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, bb_size_x:float=None, bb_size_y:float=None, bb_size_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
+    """Create an OpenCT free trajectory CBCT configuration and optionally write to file.
 
     Parameters
     ----------
     geo : ctsimu.geometry.Geometry
         A geometry that should represent the CT setup at frame zero, as seen
         by the reconstruction software.
+
+    variant : str
+        Which variant of the OpenCT file format is created.
+        Options: `"free"` and `"circular"`.
+
+        Standard value: `"free"`
 
     filename : str
         Path and filename for the openCT configuration file to be written.
@@ -2417,9 +2423,18 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
 
         Standard value: `"Length"`
 
+    total_angle : float
+        Total angular range (in deg) of the CT scan. This parameter is only
+        really needed for the strict circular trajectory variant of the file
+        format, but not for free trajectories.
+
+        Standard value: `None`
+
     matrices : list
         List of projection matrices of type `ctsimu.primitives.Matrix`.
-        One matrix for each projection image is required.
+        One matrix for each projection image is required for the free trajectory
+        variant of the OpenCT file format. For the circular trajectory variant,
+        the matrices are not required.
 
         Standard value: `None`
 
@@ -2536,16 +2551,31 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
     if bb_size_z is None:
         bb_size_z = geo.detector.rows() * cera_parameters["voxel_size"]["z"]
 
+    SOD = cera_parameters["R"]
+    SDD = cera_parameters["D"]
+    ODD = cera_parameters["ODD"]
+
+    openct_variant = "FreeTrajectoryCBCTScan"
+    if variant == "circular":
+        openct_variant = "CircularTrajectoryCBCTScan"
+
+        # Remove matrices to avoid license issues,
+        # though technically matrices are allowed in the circular
+        # trajectory format.
+        matrices = None
+
     openct_config = {
+        "version": {"major": 1, "minor": 0},
         "openCTJSON": {
             "versionMajor": 1,
             "versionMinor": 0,
             "revisionNumber": 0,
-            "variant": "FreeTrajectoryCBCTScan"
+            "variant": openct_variant
         },
         "hints": None,
         "units": {
-            "length": "Millimeter"
+            "length": "Millimeter",
+            "angle": "Degree"
         },
         "volumeName":  volumename,
         "projections": {
@@ -2572,7 +2602,11 @@ def create_openCT_config(geo:'Geometry', filename:str=None, projection_files:lis
                 geo.detector.phys_width,
                 geo.detector.phys_height
             ],
+            "distanceSourceObject": SOD,
+            "distanceObjectDetector": ODD,
             "mirrorDetectorAxis": mirror_detector_axis,
+            "skipAngle": 0,
+            "totalAngle": total_angle,
             "objectBoundingBox": {
                 "centerXYZ": [bb_center_x, bb_center_y, bb_center_z],
                 "sizeXYZ": [bb_size_x, bb_size_y, bb_size_z]
