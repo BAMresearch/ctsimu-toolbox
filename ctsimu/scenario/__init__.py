@@ -4,6 +4,8 @@
 """
 
 import math
+import os
+from datetime import datetime
 
 from ..helpers import *
 from ..geometry import *
@@ -48,8 +50,14 @@ class Scenario:
         ]
 
         self.current_frame = 0
+        self.current_scenario_path = None
         self.current_scenario_file = None
+        self.current_scenario_basename = None
         self.current_scenario_directory = None
+
+        self.current_metadata_path = None
+        self.current_metadata_file = None
+        self.current_metadata_basename = None
         self.current_metadata_directory = None
         self.metadata_is_set = False
 
@@ -69,11 +77,14 @@ class Scenario:
 
             Default value: `None`
         """
-        self.current_scenario_file = None
+        self.current_scenario_path = None
 
         if file is not None:
             json_dict = read_json_file(filename=file)
-            self.current_scenario_file = file
+            self.current_scenario_path = file
+            self.current_scenario_directory = os.path.dirname(file)
+            self.current_scenario_file = os.path.basename(file)
+            self.current_scenario_basename, extension = os.path.splitext(self.current_scenario_file)
         elif not isinstance(json_dict, dict):
             raise Exception("Scenario: read() function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
             return False
@@ -89,9 +100,9 @@ class Scenario:
                 s.set_from_json(json_sample, self.stage.coordinate_system)
                 self.samples.append(s)
 
-        self.file.set_from_json(json_extract(json_dict, [self.file.name]))
-        self.environment.set_from_json(json_extract(json_dict, [self.environment.name]))
-        self.acquisition.set_from_json(json_extract(json_dict, [self.acquisition.name]))
+        self.file.set_from_json(json_extract(json_dict, [self.file._name]))
+        self.environment.set_from_json(json_extract(json_dict, [self.environment._name]))
+        self.acquisition.set_from_json(json_extract(json_dict, [self.acquisition._name]))
         self.simulation = json_extract(json_dict, ["simulation"])
 
         json_materials = json_extract(json_dict, ["materials"])
@@ -102,13 +113,27 @@ class Scenario:
 
         self.set_frame(0, reconstruction=False)
 
-    def read_metadata(self, filename:str=None, json_dict:dict=None, import_referenced_scenario:bool=False):
+        if not self.metadata_is_set:
+            self.create_default_metadata()
+
+    def reset_metadata(self):
+        """Reset scenario's metadata information."""
+        self.current_metadata_path = None
+        self.current_metadata_file = None
+        self.current_metadata_basename = None
+        self.current_metadata_directory = None
+        self.metadata_is_set = False
+
+        # Create new, empty metadata:
+        self.metadata = Metadata()
+
+    def read_metadata(self, file:str=None, json_dict:dict=None, import_referenced_scenario:bool=False):
         """Import metadata from a CTSimU metadata file or a given
         metadata dictionary.
 
         Parameters
         ----------
-        filename : str
+        file : str
             Path to a CTSimU metadata file.
 
             Default value: `None`
@@ -122,21 +147,35 @@ class Scenario:
             Import the scenario JSON file that's referenced in the metadata file?
             Generates a warning if this fails.
 
+            The scenario definition will be searched at two locations in the following order:
+
+            1. Try to read from external file defined by `acquisition_geometry.path_to_CTSimU_JSON`.
+
+            2. Try to read embedded scenario definition from
+            `simulation.ctsimu_scenario`. Note that external drift files
+            specified in the scenario will likely fail to load. An error
+            will be issued in this case.
+
             Default value: `False`
         """
-        self.metadata_is_set = False
+        self.reset_metadata()
 
-        if filename is not None:
-            json_dict = read_json_file(filename=filename)
+        if file is not None:
+            json_dict = read_json_file(filename=file)
 
             # If a file is read, we want to make sure that it is a valid
             # and supported metadata file:
             if isinstance(json_dict, dict):
                 file_type = get_value(json_dict, ["file", "file_type"])
                 if file_type != "CTSimU Metadata":
-                    raise Exception(f"Invalid metadata structure: the string 'CTSimU Metadata' was not found in 'file.file_type' in the metadata file {filename}.")
+                    raise Exception(f"Invalid metadata structure: the string 'CTSimU Metadata' was not found in 'file.file_type' in the metadata file {file}.")
             else:
-                raise Exception(f"Error when reading the metadata file: {filename}")
+                raise Exception(f"Error when reading the metadata file: {file}")
+
+            self.current_metadata_path = file
+            self.current_metadata_directory = os.path.dirname(file)
+            self.current_metadata_file = os.path.basename(file)
+            self.current_metadata_basename, extension = os.path.splitext(self.current_metadata_file)
 
         if json_dict is not None:
             # If we get a `json_dict` as function parameter, we do not
@@ -145,12 +184,206 @@ class Scenario:
             self.metadata.set_from_json(json_dict)
             self.metadata_is_set = True
 
-    def write(self, file:str=None):
+            if import_referenced_scenario:
+                # Import the scenario that's referenced in the metadata file.
+                ref_file = self.metadata.get(["acquisition_geometry", "path_to_CTSimU_JSON"])
+
+                import_success = False
+
+                try:
+                    if (ref_file is not None) and (ref_file != ""):
+                        if isinstance(ref_file, str):
+                            ref_file = abspath_of_referenced_file(self.current_metadata_path, ref_file)
+                        else:
+                            raise Exception("read_metadata: path_to_CTSimU_JSON is not a string.")
+
+                        # Try to import scenario:
+                        print(f"Import scenario from: {ref_file}")
+                        self.read(file=ref_file)
+                        import_success = True
+                except Exception as e:
+                    warnings.warn(str(e))
+                    import_success = False
+
+                if not import_success:
+                    # Try to import the embedded scenario structure.
+                    if json_exists_and_not_null(json_dict, ["simulation", "ctsimu_scenario"]):
+                        self.read(json_dict=json_dict["simulation"]["ctsimu_scenario"])
+                        print(f"Import embedded scenario from '{file}'.")
+                        import_success = True
+
+
+    def create_default_metadata(self):
+        """Set default metadata from scenario information,
+        to use if no metadata file is available."""
+        self.reset_metadata()
+
+        geo = self.current_geometry()
+        cera_parameters = geo.get_CERA_standard_circular_parameters()
+
+        # Basename:
+        if self.current_scenario_basename is not None:
+            self.current_metadata_basename = self.current_scenario_basename
+
+        basename = self.current_metadata_basename
+        n_projections = self.acquisition.get("number_of_projections")
+        projection_filename = f"{basename}_{counter_format(n_projections)}.raw"
+
+        # Prepare filename for dark fields:
+        n_darks = self.acquisition.dark_field.get("number")
+        dark_filename = None
+        if n_darks > 0:
+            if n_darks > 1:
+                dark_filename = f"{basename}_dark_{counter_format(n_darks)}.raw"
+            else:
+                dark_filename = f"{basename}_dark.raw"
+
+        # Prepare filename for flat fields:
+        n_flats = self.acquisition.flat_field.get("number")
+        flat_filename = None
+        if n_flats > 0:
+            if n_flats > 1:
+                flat_filename = f"{basename}_flat_{counter_format(n_flats)}.raw"
+            else:
+                flat_filename = f"{basename}_flat.raw"
+
+
+        n_cols = self.detector.get("columns")
+        n_rows = self.detector.get("rows")
+        pixel_size_u = self.detector.pixel_pitch.get("u")
+        pixel_size_v = self.detector.pixel_pitch.get("v")
+
+        voxels_x = n_cols
+        voxels_y = n_cols
+        voxels_z = n_rows
+
+        voxel_size_x = cera_parameters["voxel_size"]["x"]
+        voxel_size_y = cera_parameters["voxel_size"]["y"]
+        voxel_size_z = cera_parameters["voxel_size"]["z"]
+
+        now = datetime.now()
+
+        metadata = {
+            "file": {
+                "name": basename,
+                "description": self.file.get("description"),
+
+                "contact": self.file.get("contact"),
+                "date_created": now.strftime("%Y-%m-%d"),
+                "date_changed": now.strftime("%Y-%m-%d"),
+
+                "file_type": "CTSimU Metadata",
+                "file_format_version": {
+                    "major": ctsimu_supported_metadata_version["major"],
+                    "minor": ctsimu_supported_metadata_version["minor"]
+                }
+            },
+
+            "output": {
+                "system": None,
+                "date_measured": None,
+                "projections": {
+                    "filename": projection_filename,
+                    "number": n_projections,
+                    "frame_average": self.acquisition.get("frame_average"),
+                    "max_intensity": self.detector.get(["gray_value", "imax"]),
+                    "datatype": "uint16",
+                    "byteorder": "little",
+                    "headersize": {
+                        "file": 0,
+                        "image": 0
+                    },
+                    "dimensions": {
+                        "x": {"value": n_cols, "unit": "px"},
+                        "y": {"value": n_rows, "unit": "px"}
+                    },
+                    "pixelsize": {
+                        "x": {"value": pixel_size_u, "unit": "mm"},
+                        "y": {"value": pixel_size_v, "unit": "mm"}
+                    },
+                    "dark_field": {
+                        "number": n_darks,
+                        "frame_average": self.acquisition.dark_field.get("frame_average"),
+                        "filename": dark_filename,
+                        "projections_corrected": False
+                    },
+                    "flat_field": {
+                        "number": n_flats,
+                        "frame_average": self.acquisition.flat_field.get("frame_average"),
+                        "filename": flat_filename,
+                        "projections_corrected": False
+                    },
+                    "bad_pixel_map": {
+                        "filename": None,
+                        "projections_corrected": False
+                    }
+                },
+                "tomogram":
+                {
+                    "filename":  f"{basename}_recon.raw",
+                    "datatype":  "float32",
+                    "byteorder": "little",
+                    "headersize": {
+                        "file": 0,
+                        "image": 0
+                    },
+                    "dimensions": {
+                        "x": {"value": voxels_x, "unit": "px"},
+                        "y": {"value": voxels_y, "unit": "px"},
+                        "z": {"value": voxels_z, "unit": "px"}
+                    },
+                    "voxelsize": {
+                        "x": {"value": voxel_size_x, "unit": "mm"},
+                        "y": {"value": voxel_size_y, "unit": "mm"},
+                        "z": {"value": voxel_size_z, "unit": "mm"}
+                    }
+                }
+            },
+
+            "acquisition_geometry": {
+                "path_to_CTSimU_JSON": self.current_scenario_path
+            },
+
+            "reconstruction": {
+                "software": None,
+                "settings": { }
+            },
+
+            "simulation": {
+                "ctsimu_scenario": None
+            }
+        }
+
+        self.read_metadata(json_dict=metadata, import_referenced_scenario=False)
+
+    def write(self, file:str):
+        """Write a scenario JSON file.
+
+        Parameters
+        ----------
+        file : str
+            Filename for the scenario file.
+        """
         if file is not None:
             self.file.file_format_version.set("major", ctsimu_supported_scenario_version["major"])
             self.file.file_format_version.set("minor", ctsimu_supported_scenario_version["minor"])
 
             write_json_file(filename=file, dictionary=self.json_dict())
+
+    def write_metadata(self, file:str):
+        """Write a metadata JSON file for the scenario.
+
+        Parameters
+        ----------
+        file : str
+            Filename for the metadata file.
+        """
+        if file is not None:
+            metadata_dict = self.metadata.json_dict()
+            # potentially add simulation.ctsimu_scenario here:
+            metadata_dict["simulation"]["ctsimu_scenario"] = self.json_dict()
+            write_json_file(filename=file, dictionary=metadata_dict)
+
 
     def get(self, key:list) -> float | str | bool:
         """Get the current value of the parameter identified by a list of keys.
@@ -175,7 +408,7 @@ class Scenario:
             # Standard treatment:
             if len(key) > 1:
                 for s in self.subgroups:
-                    if s.name == key[0]:
+                    if s._name == key[0]:
                         return s.get(key[1:])
 
         raise Exception(f"Error in get: key not found: {key}")
@@ -198,9 +431,9 @@ class Scenario:
             # Already absolute path?
             return filename
 
-        if self.current_scenario_file is not None:
-            if isinstance(self.current_scenario_file, str):
-                json_dirname = os.path.dirname(self.current_scenario_file)
+        if self.current_scenario_path is not None:
+            if isinstance(self.current_scenario_path, str):
+                json_dirname = os.path.dirname(self.current_scenario_path)
                 filename = f"{json_dirname}/{filename}"
 
         # On fail, simply return the filename.
@@ -341,7 +574,7 @@ class Scenario:
 
         return geo
 
-    def create_recon_VGI(self, name:str="", volume_filename:str="", vgi_filename:str=None):
+    def write_recon_VGI(self, name:str="", volume_filename:str="", vgi_filename:str=None):
         """Write a VGI file for the reconstruction volume such that it can be loaded with VGSTUDIO."""
 
         voxels_x = self.metadata.output.get(["tomogram", "dimensions", "x"])
@@ -395,7 +628,7 @@ text = {name}"""
 
         return vgi_content
 
-    def write_CERA_config(self, save_dir:str=None, basename=None, metadata:dict=None, metadata_file:str=None, create_vgi:bool=False):
+    def write_CERA_config(self, save_dir:str=None, basename:str=None, create_vgi:bool=False):
         """Write CERA reconstruction config files.
 
         Parameters
@@ -420,37 +653,21 @@ text = {name}"""
 
         basename : str
             Base name for the created files. If `None` is given, the base
-            name will be inferred from the given metadata.
+            name will be inferred from the scenario's metadata.
 
             Default value: `None`
 
-        metadata : dict
-            A CTSimU metadata dictionary that defines the tomogram output parameters.
-            Only necessary if no metadata has been loaded yet. Alternatively,
-            a path to a metadata file can be provided (see below).
-
-            Default value: `None`
-
-        metadata_file : str
-            Path to a CTSimU metadata file that defines the tomogram output parameters.
-            Only necessary if no metadata has been loaded yet. Alternatively,
-            a path to a metadata dictionary can be provided (see above).
-
-            Default value: `None`
         """
 
         matrices = []
 
-        if metadata_file is not None:
-            metadata = read_json_file(metadata_file)
-
-        if metadata is not None:
-            self.metadata.set_from_json(metadata)
-
         if basename is None:
             # Extract base name from metadata
-            basename = self.metadata.get(["file", "name"])
-            basename += "_recon_cera"
+            metadata_basename = self.metadata.get(["file", "name"])
+            if metadata_basename is not None:
+                basename = f"{metadata_basename}_recon_cera"
+            else:
+                basename = f"recon_cera"
 
         # Projection files
         n_projections = self.acquisition.get("number_of_projections")
@@ -488,10 +705,10 @@ text = {name}"""
         self.set_frame(frame=0, reconstruction=True)
 
         if create_vgi:
-            vgi_filename = f"{save_dir}/{basename}.vgi"
+            vgi_filename = join_dir_and_filename(save_dir, f"{basename}.vgi")
             volume_filename = f"{basename}.raw"
 
-            self.create_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
+            self.write_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
 
         create_CERA_config(
             geo=self.current_geometry(),
@@ -510,33 +727,32 @@ text = {name}"""
             matrices=matrices
         )
 
-    def write_OpenCT_config(self, save_dir:str=".", basename=None, metadata:dict=None, metadata_file:str=None, create_vgi:bool=False, variant='free'):
+    def write_OpenCT_config(self, save_dir:str=None, basename:str=None, variant='free', create_vgi:bool=False):
         """Write OpenCT reconstruction config files.
 
         Parameters
         ----------
         save_dir : str
-            Folder where to place the OpenCT config file. This is meant to be the
+            Folder where to place the CERA config files. This is meant to be the
             same directory where the reconstruction metadata file is located,
             such that relative paths will match.
 
+            If `None` is given, a directory will be inferred:
+
+            - If only a JSON scenario file was imported to set up the scenario,
+            the config files will be stored in a subdirectory next to the
+            JSON scenario file of the following pattern:
+
+                `{json_scenario_basename}/reconstruction`
+
+            - If a reconstruction metadata file was imported, the config files
+            will be stored next to the metadata file.
+
+            Default value: `None`
+
         basename : str
-            Base name for the created files. If `None` is given, the base
-            name will be inferred from the given metadata.
-
-            Default value: `None`
-
-        metadata : dict
-            A CTSimU metadata dictionary that defines the tomogram output parameters.
-            Only necessary if no metadata has been loaded yet. Alternatively,
-            a path to a metadata file can be provided (see below).
-
-            Default value: `None`
-
-        metadata_file : str
-            Path to a CTSimU metadata file that defines the tomogram output parameters.
-            Only necessary if no metadata has been loaded yet. Alternatively,
-            a path to a metadata dictionary can be provided (see above).
+            Base name for the created config file. If `None` is given, the base
+            name will be inferred from the scenario's metadata.
 
             Default value: `None`
 
@@ -551,18 +767,15 @@ text = {name}"""
 
         matrices = []
 
-        if metadata_file is not None:
-            metadata = read_json_file(metadata_file)
-
-        if metadata is not None:
-            self.metadata.set_from_json(metadata)
-
         if basename is None:
             # Extract base name from metadata
-            basename = self.metadata.get(["file", "name"])
-            basename += "_recon_openCT"
+            metadata_basename = self.metadata.get(["file", "name"])
+            if metadata_basename is not None:
+                basename = f"{metadata_basename}_recon_cera"
+            else:
+                basename = f"recon_openCT"
 
-        filename = f"{save_dir}/{basename}.json"
+        filename = join_dir_and_filename(save_dir, f"{basename}.json")
 
         # Projection files
         n_projections = self.acquisition.get("number_of_projections")
@@ -600,10 +813,10 @@ text = {name}"""
         self.set_frame(frame=0, reconstruction=True)
 
         if create_vgi:
-            vgi_filename = f"{save_dir}/{basename}.vgi"
+            vgi_filename = join_dir_and_filename(save_dir, f"{basename}.vgi")
             volume_filename = f"{basename}.raw"
 
-            self.create_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
+            self.write_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
 
         create_OpenCT_config(
             geo=self.current_geometry(),
