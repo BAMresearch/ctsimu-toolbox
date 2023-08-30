@@ -56,7 +56,7 @@ class Toolbox:
             for metafile in metadata:
                 geo = Geometry(jsonFile=metafile)
                 print(geo.info())
-                
+
             return
 
         ffRescaleFactor = float(60000.0)
@@ -146,7 +146,7 @@ class Toolbox:
                 metafileAbsolute = os.path.abspath(metafile)
                 metafileAbsDir   = os.path.dirname(metafileAbsolute)
 
-                projFilename = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
+                projFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
                 if projFilename != None:
                     if not os.path.isabs(projFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -154,28 +154,28 @@ class Toolbox:
 
                 log(&#34;  Projection File(s):    {proj}&#34;.format(proj=projFilename))
 
-                projNumber = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
+                projNumber = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
                 log(&#34;  Number of Projections: {nproj}&#34;.format(nproj=projNumber))
 
-                projDataType = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
+                projDataType = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
                 log(&#34;  Data Type:             {dataType}&#34;.format(dataType=projDataType))
 
-                projByteOrder = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
+                projByteOrder = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
                 log(&#34;  Byte Order:            {byteOrder}&#34;.format(byteOrder=projByteOrder))
 
-                projHeaderSizeFile = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
+                projHeaderSizeFile = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
                 log(&#34;  File Header Size:      {fileHeaderSize}&#34;.format(fileHeaderSize=projHeaderSizeFile))
 
-                projHeaderSizeImage = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
+                projHeaderSizeImage = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
                 log(&#34;  Image Header Size:     {imageHeaderSize}&#34;.format(imageHeaderSize=projHeaderSizeImage))
 
-                width  = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
+                width  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
                 log(&#34;  Projection Width:      {w}&#34;.format(w=width))
 
-                height = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
+                height = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
                 log(&#34;  Projection Height:     {h}&#34;.format(h=height))
 
-                darkFilename  = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
+                darkFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
                 if darkFilename != None:
                     if not os.path.isabs(darkFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -183,13 +183,13 @@ class Toolbox:
 
                 log(&#34;  Dark Field(s):         {df}&#34;.format(df=darkFilename))
 
-                darkNumber    = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;)
+                darkNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;)
                 log(&#34;  Number of Dark Fields: {n}&#34;.format(n=darkNumber))
 
-                darkCorrected = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;)
+                darkCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;)
                 log(&#34;  DF correction applied: {dfapplied}&#34;.format(dfapplied=darkCorrected))
 
-                flatFilename  = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
+                flatFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
                 if flatFilename != None:
                     if not os.path.isabs(flatFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -197,10 +197,10 @@ class Toolbox:
 
                 log(&#34;  Flat Field(s):         {ff}&#34;.format(ff=flatFilename))
 
-                flatNumber    = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;)
+                flatNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;)
                 log(&#34;  Number of Flat Fields: {n}&#34;.format(n=flatNumber))
 
-                flatCorrected = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;)
+                flatCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;)
                 log(&#34;  FF correction applied: {ffapplied}&#34;.format(ffapplied=flatCorrected))
 
                 log(&#34;---&#34;)
@@ -310,7 +310,7 @@ class Toolbox:
             for metafile in metadata:
                 geo = Geometry(jsonFile=metafile)
                 print(geo.info())
-                
+
             return
 
         ffRescaleFactor = float(60000.0)
@@ -400,7 +400,7 @@ class Toolbox:
                 metafileAbsolute = os.path.abspath(metafile)
                 metafileAbsDir   = os.path.dirname(metafileAbsolute)
 
-                projFilename = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
+                projFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
                 if projFilename != None:
                     if not os.path.isabs(projFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -408,28 +408,28 @@ class Toolbox:
 
                 log(&#34;  Projection File(s):    {proj}&#34;.format(proj=projFilename))
 
-                projNumber = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
+                projNumber = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
                 log(&#34;  Number of Projections: {nproj}&#34;.format(nproj=projNumber))
 
-                projDataType = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
+                projDataType = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
                 log(&#34;  Data Type:             {dataType}&#34;.format(dataType=projDataType))
 
-                projByteOrder = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
+                projByteOrder = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
                 log(&#34;  Byte Order:            {byteOrder}&#34;.format(byteOrder=projByteOrder))
 
-                projHeaderSizeFile = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
+                projHeaderSizeFile = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
                 log(&#34;  File Header Size:      {fileHeaderSize}&#34;.format(fileHeaderSize=projHeaderSizeFile))
 
-                projHeaderSizeImage = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
+                projHeaderSizeImage = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
                 log(&#34;  Image Header Size:     {imageHeaderSize}&#34;.format(imageHeaderSize=projHeaderSizeImage))
 
-                width  = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
+                width  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
                 log(&#34;  Projection Width:      {w}&#34;.format(w=width))
 
-                height = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
+                height = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
                 log(&#34;  Projection Height:     {h}&#34;.format(h=height))
 
-                darkFilename  = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
+                darkFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
                 if darkFilename != None:
                     if not os.path.isabs(darkFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -437,13 +437,13 @@ class Toolbox:
 
                 log(&#34;  Dark Field(s):         {df}&#34;.format(df=darkFilename))
 
-                darkNumber    = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;)
+                darkNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;)
                 log(&#34;  Number of Dark Fields: {n}&#34;.format(n=darkNumber))
 
-                darkCorrected = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;)
+                darkCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;)
                 log(&#34;  DF correction applied: {dfapplied}&#34;.format(dfapplied=darkCorrected))
 
-                flatFilename  = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
+                flatFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
                 if flatFilename != None:
                     if not os.path.isabs(flatFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is relative to the location of the metadata file:
@@ -451,10 +451,10 @@ class Toolbox:
 
                 log(&#34;  Flat Field(s):         {ff}&#34;.format(ff=flatFilename))
 
-                flatNumber    = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;)
+                flatNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;)
                 log(&#34;  Number of Flat Fields: {n}&#34;.format(n=flatNumber))
 
-                flatCorrected = getFieldOrNone(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;)
+                flatCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;)
                 log(&#34;  FF correction applied: {ffapplied}&#34;.format(ffapplied=flatCorrected))
 
                 log(&#34;---&#34;)

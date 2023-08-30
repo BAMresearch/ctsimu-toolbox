@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>ctsimu.processing API documentation</title>
-<meta name="description" content="This module provides a pipeline for the batch-processing of images. It loads the projection images, processes each image step by step, and then saves …" />
+<meta name="description" content="Image batch processing tools …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -24,7 +24,8 @@
 <h1 class="title">Module <code>ctsimu.processing</code></h1>
 </header>
 <section id="section-intro">
-<p>This module provides a pipeline for the batch-processing of images. It loads the projection images, processes each image step by step, and then saves it in the desired output format. Processing steps can be freely added to the pipeline. Those have to be configured and set up before running the pipeline.</p>
+<p>Image batch processing tools.</p>
+<p>The image processing pipeline loads the projection images, processes each image step by step, and then saves it in the desired output format. Processing steps can be freely added to the pipeline. Those have to be configured and set up before running the pipeline.</p>
 <h1 id="pipeline-concept">Pipeline Concept</h1>
 <p><img alt="Example for a processing pipeline." src="../pictures/pipeline.png" title="Example for a processing pipeline."></p>
 <p>The required minimum set of parameters are an input file pattern and an output file pattern. As illustrated in the following picture, a file pattern is a string that specifies a single file name (for a single 2D image or a raw chunk of multiple images), or a stack of 2D images using the <code>%[N]d</code> placeholder for a number that contains <code>[N]</code> digits, e.g. <code>%4d</code> for the numbers from 0000 to 9999.</p>
@@ -34,7 +35,9 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># -*- coding: UTF-8 -*-
-&#34;&#34;&#34;This module provides a pipeline for the batch-processing of images. It loads the projection images, processes each image step by step, and then saves it in the desired output format. Processing steps can be freely added to the pipeline. Those have to be configured and set up before running the pipeline.
+&#34;&#34;&#34;Image batch processing tools.
+
+The image processing pipeline loads the projection images, processes each image step by step, and then saves it in the desired output format. Processing steps can be freely added to the pipeline. Those have to be configured and set up before running the pipeline.
 
 .. include:: ./documentation.md
 &#34;&#34;&#34;
