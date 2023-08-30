@@ -134,6 +134,21 @@ def touch_directory(filename:str):
 
     return folder
 
+def backslash_to_slash(s:str) -> str:
+    """Convert backslashed to slashes, used for Windows paths.
+
+    Parameters
+    ----------
+    s : str
+        String in which the replace will take place.
+
+    Returns
+    -------
+    converted : str
+        String where backslashes are replaced by slashes.
+    """
+    return s.replace("\\", "/")
+
 def join_dir_and_filename(directory:str, filename:str) -> str:
     """Joins directory and filename into a meaningful path.
 
@@ -154,9 +169,10 @@ def join_dir_and_filename(directory:str, filename:str) -> str:
 
     if directory is not None:
         if directory != "":
-            return os.path.join(directory, filename)
+            joined = os.path.join(directory, filename)
+            return backslash_to_slash(joined)
 
-    return filename
+    return backslash_to_slash(filename)
 
 def abspath_of_referenced_file(filepath:str, referenced:str) -> str:
     """Get the absolute path of an external file `referenced` in `file`.
@@ -184,13 +200,13 @@ def abspath_of_referenced_file(filepath:str, referenced:str) -> str:
 
             # Simplify relative dots away:
             referenced_abspath = os.path.abspath(referenced_abspath)
-            return referenced_abspath
+            return backslash_to_slash(referenced_abspath)
         else:
             # Assume that an abspath from the current working
             # directory is requested:
-            return os.path.abspath(referenced)
+            return backslash_to_slash(os.path.abspath(referenced))
     else:
-        return referenced  # already an absolute path
+        return backslash_to_slash(referenced)  # already an absolute path
 
 def read_json_file(filename:str) -> dict:
     """Read a JSON file into a Python dictionary.

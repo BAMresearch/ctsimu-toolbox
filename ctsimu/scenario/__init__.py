@@ -22,7 +22,7 @@ from .material import Material
 from .metadata import Metadata
 
 class Scenario:
-    def __init__(self):
+    def __init__(self, filename:str=None):
         self.detector = Detector(_root=self)
         self.source   = Source(_root=self)
         self.stage    = Stage(_root=self)
@@ -61,7 +61,10 @@ class Scenario:
         self.current_metadata_directory = None
         self.metadata_is_set = False
 
-    def read(self, file:str=None, json_dict:dict=None):
+        if filename is not None:
+            self.read(filename=filename)
+
+    def read(self, filename:str=None, json_dict:dict=None):
         """Import a CTSimU scenario from a file or a given
         scenario dictionary.
 
@@ -79,11 +82,11 @@ class Scenario:
         """
         self.current_scenario_path = None
 
-        if file is not None:
-            json_dict = read_json_file(filename=file)
-            self.current_scenario_path = file
-            self.current_scenario_directory = os.path.dirname(file)
-            self.current_scenario_file = os.path.basename(file)
+        if filename is not None:
+            json_dict = read_json_file(filename=filename)
+            self.current_scenario_path = filename
+            self.current_scenario_directory = os.path.dirname(filename)
+            self.current_scenario_file = os.path.basename(filename)
             self.current_scenario_basename, extension = os.path.splitext(self.current_scenario_file)
         elif not isinstance(json_dict, dict):
             raise Exception("Scenario: read() function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
@@ -127,13 +130,13 @@ class Scenario:
         # Create new, empty metadata:
         self.metadata = Metadata()
 
-    def read_metadata(self, file:str=None, json_dict:dict=None, import_referenced_scenario:bool=False):
+    def read_metadata(self, filename:str=None, json_dict:dict=None, import_referenced_scenario:bool=False):
         """Import metadata from a CTSimU metadata file or a given
         metadata dictionary.
 
         Parameters
         ----------
-        file : str
+        filename : str
             Path to a CTSimU metadata file.
 
             Default value: `None`
@@ -158,10 +161,8 @@ class Scenario:
 
             Default value: `False`
         """
-        self.reset_metadata()
-
-        if file is not None:
-            json_dict = read_json_file(filename=file)
+        if filename is not None:
+            json_dict = read_json_file(filename=filename)
 
             # If a file is read, we want to make sure that it is a valid
             # and supported metadata file:
@@ -170,11 +171,11 @@ class Scenario:
                 if file_type != "CTSimU Metadata":
                     raise Exception(f"Invalid metadata structure: the string 'CTSimU Metadata' was not found in 'file.file_type' in the metadata file {file}.")
             else:
-                raise Exception(f"Error when reading the metadata file: {file}")
+                raise Exception(f"Error when reading the metadata file: {filename}")
 
-            self.current_metadata_path = file
-            self.current_metadata_directory = os.path.dirname(file)
-            self.current_metadata_file = os.path.basename(file)
+            self.current_metadata_path = filename
+            self.current_metadata_directory = os.path.dirname(filename)
+            self.current_metadata_file = os.path.basename(filename)
             self.current_metadata_basename, extension = os.path.splitext(self.current_metadata_file)
 
         if json_dict is not None:
@@ -199,7 +200,7 @@ class Scenario:
 
                         # Try to import scenario:
                         print(f"Import scenario from: {ref_file}")
-                        self.read(file=ref_file)
+                        self.read(filename=ref_file)
                         import_success = True
                 except Exception as e:
                     warnings.warn(str(e))
@@ -209,7 +210,7 @@ class Scenario:
                     # Try to import the embedded scenario structure.
                     if json_exists_and_not_null(json_dict, ["simulation", "ctsimu_scenario"]):
                         self.read(json_dict=json_dict["simulation"]["ctsimu_scenario"])
-                        print(f"Import embedded scenario from '{file}'.")
+                        print(f"Import embedded scenario from '{filename}'.")
                         import_success = True
 
 
@@ -358,33 +359,33 @@ class Scenario:
 
         self.read_metadata(json_dict=metadata, import_referenced_scenario=False)
 
-    def write(self, file:str):
+    def write(self, filename:str):
         """Write a scenario JSON file.
 
         Parameters
         ----------
-        file : str
+        filename : str
             Filename for the scenario file.
         """
-        if file is not None:
+        if filename is not None:
             self.file.file_format_version.set("major", ctsimu_supported_scenario_version["major"])
             self.file.file_format_version.set("minor", ctsimu_supported_scenario_version["minor"])
 
-            write_json_file(filename=file, dictionary=self.json_dict())
+            write_json_file(filename=filename, dictionary=self.json_dict())
 
-    def write_metadata(self, file:str):
+    def write_metadata(self, filename:str):
         """Write a metadata JSON file for the scenario.
 
         Parameters
         ----------
-        file : str
+        filename : str
             Filename for the metadata file.
         """
-        if file is not None:
+        if filename is not None:
             metadata_dict = self.metadata.json_dict()
             # potentially add simulation.ctsimu_scenario here:
             metadata_dict["simulation"]["ctsimu_scenario"] = self.json_dict()
-            write_json_file(filename=file, dictionary=metadata_dict)
+            write_json_file(filename=filename, dictionary=metadata_dict)
 
 
     def get(self, key:list) -> float | str | bool:
@@ -729,7 +730,7 @@ text = {name}"""
             matrices=matrices
         )
 
-    def write_OpenCT_config(self, save_dir:str=None, basename:str=None, create_vgi:bool=False, variant='free', projection_file_list:list=None):
+    def write_OpenCT_config(self, save_dir:str=None, basename:str=None, create_vgi:bool=False, variant:str='free', abspaths:bool=False):
         """Write OpenCT reconstruction config files.
 
         Parameters
@@ -769,12 +770,16 @@ text = {name}"""
 
             Default value: `"free"`
 
-        projection_file_list : list
-            List of strings that contain the file names of the projection images.
-            If not set, the list will be generated from the projection file
-            pattern of the scenario's metadata.
+        abspaths : bool
+            Set to `True` if absolute paths should be used in the OpenCT
+            config file.
 
-            Default value: `None`
+            Default value: `False` (relative paths)
+
+        Returns
+        -------
+        openct_dict : dict
+            Dictionary with the OpenCT JSON structure.
         """
 
         matrices = []
@@ -787,45 +792,63 @@ text = {name}"""
             else:
                 basename = f"recon_openCT"
 
-        filename = join_dir_and_filename(save_dir, f"{basename}.json")
+        # Name of config file:
+        openct_config_filename = join_dir_and_filename(save_dir, f"{basename}.json")
 
+        def projections_from_pattern(json_dict:dict):
+            n = get_value(json_dict, ["number"]) # number of images
+            pattern  = None
+            filedir  = None
+            filename = None
+            filelist = list()
+
+            if n is not None:
+                if n > 0:
+                    pattern = get_value(json_dict, ["filename"])
+                    if abspaths is True:
+                        pattern = abspath_of_referenced_file(openct_config_filename, pattern)
+
+                    if pattern is not None:
+                        filedir, filename = os.path.split(pattern)
+
+                    # Generate list of projection files:
+                    if filename is not None:
+                        # Auto-generate projection file list.
+                        # List of sequentially numbered projection images,
+                        # starting at 0000.
+                        for p in range(n):
+                            if '%' in filename:
+                                filelist.append(filename % p)
+                            else:
+                                filelist.append(filename)
+
+            return n, filedir, filename, filelist
 
         # Projection files
-        n_projections = self.acquisition.get("number_of_projections")
-        projection_file_pattern = None
-        projection_filedir = None
-        projection_filename = None
-        if n_projections is not None:
-            if n_projections > 0:
-                projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
-                if projection_file_pattern is not None:
-                    projection_filedir, projection_filename = os.path.split(projection_file_pattern)
-                else:
-                    projection_filedir = None
-                    projection_filename = None
-
-                projection_file_pattern = self.metadata.get(["output", "projections", "filename"])
-                if projection_file_pattern is not None:
-                    projection_filedir, projection_filename = os.path.split(projection_file_pattern)
-                else:
-                    projection_filedir = None
-                    projection_filename = None
+        n_projections, projection_filedir, projection_filename, projection_filelist = projections_from_pattern(self.metadata.output.projections.json_dict())
 
         projection_datatype = self.metadata.get(["output", "projections", "datatype"])
         projection_file_byteorder = self.metadata.get(["output", "projections", "byteorder"])
         projection_headersize = self.metadata.get(["output", "projections", "headersize", "file"])
 
-        # Generate list of projection files:
-        projection_file_list = list()
-        if projection_file_list is None:
-            if projection_filename is not None:
-                # Auto-generate projection file list.
-                for p in range(n_projections):
-                    projection_file_list.append(projection_filename % p)
-
         projection_filetype = "tiff"
-        if projection_file_pattern.lower().endswith(".raw"):
-            projection_filetype = "raw"
+        if projection_filename is not None:
+            if projection_filename.lower().endswith(".raw"):
+                projection_filetype = "raw"
+
+        # Dark files; only is corrections need to be applied.
+        openct_dark_image = None
+        if not self.metadata.output.projections.dark_field.projections_corrected.get() is True:
+            n_darks, dark_filedir, dark_filename, dark_filelist = projections_from_pattern(self.metadata.output.projections.dark_field.json_dict())
+            if isinstance(dark_filelist, list):
+                if len(dark_filelist) > 0:
+                    openct_dark_image = join_dir_and_filename(dark_filedir, dark_filelist[0])
+
+        # Bright files; only is corrections need to be applied.
+        flat_filedir = None
+        flat_filelist = None
+        if not self.metadata.output.projections.flat_field.projections_corrected.get() is True:
+            n_flats, flat_filedir, flat_filename, flat_filelist = projections_from_pattern(self.metadata.output.projections.flat_field.json_dict())
 
         # Acquisition
         start_angle = self.acquisition.get("start_angle")
@@ -836,35 +859,40 @@ text = {name}"""
             self.set_frame(frame=p, reconstruction=True)
 
             # CERA projection matrix for projection p:
-            m = self.current_geometry().projection_matrix(mode="CERA")
+            m = self.current_geometry().projection_matrix(mode="OpenCT")
             matrices.append(m)
 
         # Go back to frame zero:
         self.set_frame(frame=0, reconstruction=True)
 
+        volume_filename = f"{basename}.img"
         if create_vgi:
             vgi_filename = join_dir_and_filename(save_dir, f"{basename}.vgi")
-            volume_filename = f"{basename}.raw"
 
             self.write_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
 
-        create_OpenCT_config(
+        openct_dict = create_OpenCT_config(
             geo=self.current_geometry(),
-            filename=file,
+            filename=openct_config_filename,
             variant=variant,
-            projection_files=projection_file_list,
+            projection_files=projection_filelist,
             projection_dir=projection_filedir,
             projection_datatype=projection_datatype,
             projection_filetype=projection_filetype,
             projection_headersize=projection_headersize,
             projection_byteorder=projection_file_byteorder,
             total_angle=total_angle,
+            scan_direction=self.acquisition.get("direction"),
             matrices=matrices,
-            volumename=basename,
+            volumename=volume_filename,
             voxels_x=self.metadata.output.tomogram.dimensions.x.get(),
             voxels_y=self.metadata.output.tomogram.dimensions.y.get(),
             voxels_z=self.metadata.output.tomogram.dimensions.z.get(),
             voxelsize_x=self.metadata.output.tomogram.voxelsize.x.get(),
             voxelsize_y=self.metadata.output.tomogram.voxelsize.y.get(),
-            voxelsize_z=self.metadata.output.tomogram.voxelsize.z.get()
-            )
+            voxelsize_z=self.metadata.output.tomogram.voxelsize.z.get(),
+            bright_image_dir=flat_filedir,
+            bright_images=flat_filelist,
+            dark_image=openct_dark_image)
+
+        return openct_dict

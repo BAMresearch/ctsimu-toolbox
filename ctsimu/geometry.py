@@ -1318,7 +1318,7 @@ class Geometry:
             See notes for details.
 
         mode : str, optional
-            Pre-defined modes. Either `"openCT"` or `"CERA"` are supported.
+            Pre-defined modes. Either `"OpenCT"` or `"CERA"` are supported.
             They override the `volumeCS` and `imageCS`, which can be set
             to `None` when using one of the pre-defined modes.
 
@@ -1365,22 +1365,22 @@ class Geometry:
         ```
         """
 
-        validModes = ["openCT", "CERA"]
+        validModes = ["OpenCT", "CERA"]
 
         if mode is not None:
             if mode in validModes:  # Override imageCS
                 image = CoordinateSystem()
                 volume = CoordinateSystem()
 
-                if mode == "openCT":
-                    """openCT places the origin of the image CS at the detector
+                if mode == "OpenCT":
+                    """OpenCT places the origin of the image CS at the detector
                     center. The constructor places it at (0,0,0) automatically,
                     so there is nothing to do. Comments for illustration."""
                     # image.center.set_x(0)
                     # image.center.set_y(0)
                     # image.center.set_z(0)
 
-                    """openCT's image CS is in mm units. We assume that all
+                    """OpenCT's image CS is in mm units. We assume that all
                     other coordinate systems are in mm as well here (at least
                     when imported from JSON file). No scaling of the basis vectors is necessary."""
                     # image.u.scale(1.0)
@@ -2358,7 +2358,7 @@ GlobalI0Value = {i0max}
         f.write(configFileString)
         f.close()
 
-def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, projection_datatype:str="float32", projection_filetype:str="tiff", projection_headersize:int=0, projection_byteorder:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", total_angle:float=None, matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxelsize_x:float=None, voxelsize_y:float=None, voxelsize_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
+def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", projection_files:list=None, projection_dir:str=None, flip_u:bool=False, flip_v:bool=False, projection_datatype:str="float32", projection_filetype:str="tiff", projection_headersize:int=0, projection_byteorder:str="little", detector_coordinate_frame="OriginAtDetectorCenter.VerticalAxisRunningDownwards", detector_coordinate_dimension="Length", total_angle:float=None, scan_direction:str="CCW", matrices:list=None, volumename:str=None, bb_center_x:float=0, bb_center_y:float=0, bb_center_z:float=0, voxels_x:int=None, voxels_y:int=None, voxels_z:int=None, voxelsize_x:float=None, voxelsize_y:float=None, voxelsize_z:float=None, bright_image_dir:str=None, bright_images:list=None, dark_image:str=None, bad_pixel_mask:str=None) -> dict:
     """Create an OpenCT free trajectory CBCT configuration and optionally write to file.
 
     Parameters
@@ -2374,7 +2374,7 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
         Standard value: `"free"`
 
     filename : str
-        Path and filename for the openCT configuration file to be written.
+        Path and filename for the OpenCT configuration file to be written.
         If no file should be written, set this to `None`.
 
         Standard value: `None`
@@ -2454,6 +2454,13 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
         format, but not for free trajectories.
 
         Standard value: `None`
+
+    scan_direction : str
+        Direction of stage rotation, either `"CCW"` for counter-clockwise
+        or `"CW"` for clockwise rotation. Only relevant for circular
+        trajectory variant.
+
+        Standard value: `"CCW"`
 
     matrices : list
         List of projection matrices of type `ctsimu.primitives.Matrix`.
@@ -2552,10 +2559,10 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
     Returns
     -------
     openct_config : dict
-        Dictionary that represents the JSON structure of the openCT file.
+        Dictionary that represents the JSON structure of the OpenCT file.
     """
 
-    # Convert some settings to openCT keywords:
+    # Convert some settings to OpenCT keywords:
     projection_datatype = convert(openct_converter["datatype"], projection_datatype)
     projection_byteorder = convert(openct_converter["endian"], projection_byteorder)
 
@@ -2623,11 +2630,16 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
         # Remove matrices to avoid license issues,
         # though technically matrices are allowed in the circular
         # trajectory format.
-        matrices = None
+        openct_matrices = None
+
+        # For clockwise scan direction, the projection filenames
+        # need to be in reverse order:
+        if scan_direction == "CW":
+            projection_files.reverse()
 
     openct_config = {
         "version": {"major": 1, "minor": 0},
-        "openCTJSON": {
+        "OpenCTJSON": {
             "versionMajor": 1,
             "versionMinor": 0,
             "revisionNumber": 0,
@@ -2676,7 +2688,7 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
         "corrections": {
             "brightImages": {
                 "dataType":  projection_datatype,
-                "fileType":  projection_filetype,
+                "fileType":  projection_filetype.upper(),
                 "skipBytes": projection_headersize,
                 "endianness": projection_byteorder,
                 "directory": bright_image_dir,
@@ -2685,14 +2697,14 @@ def create_OpenCT_config(geo:'Geometry', filename:str=None, variant:str="free", 
             "darkImage": {
                 "file":     dark_image,
                 "dataType": projection_datatype,
-                "fileType": projection_filetype,
+                "fileType": projection_filetype.upper(),
                 "skipBytes": projection_headersize,
                 "endianness": projection_byteorder
             },
             "badPixelMask": {
                 "file":     bad_pixel_mask,
                 "dataType": projection_datatype,
-                "fileType": projection_filetype,
+                "fileType": projection_filetype.upper(),
                 "skipBytes": projection_headersize,
                 "endianness": projection_byteorder
             }
