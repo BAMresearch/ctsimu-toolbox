@@ -199,7 +199,6 @@ class Scenario:
                             raise Exception("read_metadata: path_to_CTSimU_JSON is not a string.")
 
                         # Try to import scenario:
-                        print(f"Import scenario from: {ref_file}")
                         self.read(filename=ref_file)
                         import_success = True
                 except Exception as e:
@@ -210,8 +209,13 @@ class Scenario:
                     # Try to import the embedded scenario structure.
                     if json_exists_and_not_null(json_dict, ["simulation", "ctsimu_scenario"]):
                         self.read(json_dict=json_dict["simulation"]["ctsimu_scenario"])
-                        print(f"Import embedded scenario from '{filename}'.")
                         import_success = True
+
+                # Create default metadata in case the original
+                # metadata file did not contain all information that's needed:
+                self.create_default_metadata()
+                # Re-import metadata:
+                self.metadata.set_from_json(json_dict)
 
 
     def create_default_metadata(self):

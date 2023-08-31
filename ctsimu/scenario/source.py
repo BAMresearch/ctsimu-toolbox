@@ -17,7 +17,7 @@ class Source(Part):
 		# Extra geometry parameters:
 		self.new_subgroup("geometry")
 		self.geometry.set(key="type", value="cone", native_unit="string",
-			valid_values=[None, "cone", "parallel"])
+			valid_values=[None, "cone", "parallel"], simple=True)
 		self.geometry.new_subgroup("beam_divergence")
 		self.geometry.beam_divergence.set(key="u", value=0, native_unit="deg")
 		self.geometry.beam_divergence.set(key="v", value=0, native_unit="deg")

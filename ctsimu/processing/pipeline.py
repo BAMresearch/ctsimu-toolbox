@@ -37,10 +37,11 @@ class Pipeline:
         else:
             raise Exception("Processing Pipeline: Requested processing step id (#{i}) exceeds number of stored processing steps ({n}).".format(i=i, n=len(self.processingSteps)))
 
-    def run(self):
+    def run(self, overwrite=True):
         """ Run the processing pipeline with its current configuration. """
         if self.inputFileStack is not None:
             nImagesProcessed = 0
+            nImagesSkipped   = 0
 
             # Build stack if it hasn't been built yet:
             if not self.inputFileStack.built:
@@ -81,13 +82,6 @@ class Pipeline:
                     progress = 100*(float(i+1)/float(self.inputFileStack.nSlices))
 
                     print("\rImage {}/{} ({:0.1f}%)  \r".format((i+1), self.inputFileStack.nSlices, progress), end='')
-                    image = self.inputFileStack.getImage(index=i, outputFile=outputFiles)
-
-                    # Run through processing steps:
-                    for step in self.processingSteps:
-                        image = step.run(image)
-                        if image is None:
-                            raise Exception("Step {i} did not return a valid image from its run() method.".format(i=step.getIdentifier()))
 
                     if saveOutputFiles:
                         # Append if output target is a volume chunk:
@@ -103,7 +97,33 @@ class Pipeline:
                                     fileNameDigit = self.inputFileStack.fileNumbers[i]
 
                             outputPath = "{folder}/{lead}{digits:{fill}{nDigits}}{trail}".format(folder=outputFolder, lead=leadOutputName, digits=fileNameDigit, fill='0', nDigits=nDigitsExpected, trail=trailOutputName)
-               
+
+                            # Check if file already exists:
+                            if os.path.exists(outputPath):
+                                if self.outputFileStack.isVolumeChunk():
+                                    if overwrite is False:
+                                        # If we don't want to overwrite volume
+                                        # chunks, we need to break the loop
+                                        # if the volume chunk already exists.
+                                        nImagesSkipped = self.inputFileStack.nSlices
+                                        break
+                                else:
+                                    # Output stack is not a volume:
+                                    if overwrite is False:
+                                        # Skip this image if it already exists
+                                        # and overwrite is not allowed.
+                                        nImagesSkipped += 1
+                                        continue
+
+                    image = self.inputFileStack.getImage(index=i, outputFile=outputFiles)
+
+                    # Run through processing steps:
+                    for step in self.processingSteps:
+                        image = step.run(image)
+                        if image is None:
+                            raise Exception("Step {i} did not return a valid image from its run() method.".format(i=step.getIdentifier()))
+
+                    if saveOutputFiles:
                         image.save(filename=outputPath, appendChunk=appendMode)
 
                     nImagesProcessed += 1
@@ -113,12 +133,15 @@ class Pipeline:
             else:
                 log("No projection file(s) found that match the given name pattern.")
 
-            if(nImagesProcessed == 0):
-                log("No image files processed.      ")
-            elif(nImagesProcessed == 1):
-                log("1 image file processed.      ")
+            if nImagesProcessed == 1:
+                summary = f"{nImagesProcessed} image file processed"
             else:
-                log("{} image files processed.      ".format(nImagesProcessed))
+                summary = f"{nImagesProcessed} image files processed"
+
+            if nImagesSkipped > 0:
+                summary += f", {nImagesSkipped} skipped because they already exist."
+
+            log(f"{summary}       ")
 
             #if not saveOutputFiles:
             #    log("No output images were saved.")

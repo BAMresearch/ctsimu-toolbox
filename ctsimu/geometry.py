@@ -1004,7 +1004,7 @@ class Geometry:
         self.update()
 
         txt  = "Detector\n"
-        txt += "===========================================================\n"
+        txt += "========\n"
         txt += "Center:          {}\n".format(self.detector.center)
         txt += "u:               {}\n".format(self.detector.u)
         txt += "v:               {}\n".format(self.detector.v)
@@ -1018,24 +1018,24 @@ class Geometry:
         txt += "  Pixels:        {}\n".format(self.brightest_spot_detector)
 
         txt += "\n"
-        txt += "Source:\n"
-        txt += "===========================================================\n"
+        txt += "Source\n"
+        txt += "======\n"
         txt += "Center:          {}\n".format(self.source.center)
         txt += "u:               {}\n".format(self.source.u)
         txt += "v:               {}\n".format(self.source.v)
         txt += "w:               {}\n".format(self.source.w)
 
         txt += "\n"
-        txt += "Stage:\n"
-        txt += "===========================================================\n"
+        txt += "Stage\n"
+        txt += "=====\n"
         txt += "Center:          {}\n".format(self.stage.center)
         txt += "u:               {}\n".format(self.stage.u)
         txt += "v:               {}\n".format(self.stage.v)
         txt += "w:               {}\n".format(self.stage.w)
 
         txt += "\n"
-        txt += "Geometry Parameters:\n"
-        txt += "===========================================================\n"
+        txt += "Geometry Parameters\n"
+        txt += "===================\n"
         # Source - Detector distance (SDD) defined by shortest distance between source and detector:
         txt += "SDD:             {}\n".format(self.SDD)
         txt += "ODD:             {}\n".format(self.ODD)

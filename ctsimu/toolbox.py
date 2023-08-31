@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import os
-import json
+import shutil
 
 from .helpers import *
 from .geometry import Geometry
@@ -21,16 +21,20 @@ from .ctsimu_evaluations.test2D_HS_1 import Test2D_HS_1
 
 class Toolbox:
     """ Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. """
-    def __init__(self, op, *metadata_files, **kwargs):
-        if op == "info":
-            self.info(metadata_files)
-        elif op == "correction":
-            self.correction(*metadata_files, **kwargs)
-        elif op == "post_process_recursive":
-            self.post_process_recursive(kwargs)
-        elif op.startswith("2D-"):
+    def __init__(self, operation, *args, **kwargs):
+        if operation == "info":
+            self.info(*args)
+        elif operation == "correction":
+            self.correction(*args, **kwargs)
+        elif operation == "standardize":
+            self.standardize(*args)
+        elif operation == "recon_config":
+            self.recon_config(*args, **kwargs)
+        elif operation == "post-processing":
+            self.post_processing(*args, **kwargs)
+        elif operation.startswith("2D-"):
             # Possibly a 2D test... try it!
-            self.test_2D(op, *metadata_files, **kwargs)
+            self.test_2D(operation, *args, **kwargs)
 
     def info(self, *scenario_files:str) -> bool:
         """Print geometry information about given scenario files.
@@ -65,40 +69,52 @@ class Toolbox:
 
         **kwargs : float
 
-            + `ffRescaleFactor` : float
+            + `rescaleFactor` : float
 
-                Rescale factor after flat-field division.
+                Rescale factor after flat-field division. If `None`, the value
+                will be imported from key `max_intensity` in metadata file,
+                or set to `60000` if this fails.
 
-                Standard value: `60000`
+                Standard value: `None`
 
-            + `ffRescaleOffset` : float
+            + `offsetAfterRescale` : float
 
                 Offset to be added to all pixels after flat-field correction
                 and rescaling.
 
                 Standard value: `0`
 
+            + `overwrite` : bool
+
+                Overwrite existing, corrected projection images?
+
+                Standard value: `True`
+
         Returns
         -------
         success : bool
         """
-        ffRescaleFactor = float(60000.0)
-        ffRescaleOffset = 0
 
+        # Default values for keyword arguments:
+        settings = {
+            "rescaleFactor": None,
+            "offsetAfterRescale": 0,
+            "overwrite": True
+        }
+
+        # Change default settings for keyword arguments that are set:
         for key, value in kwargs.items():
-            if key == "rescaleFactor":
-                ffRescaleFactor = value
-            elif key == "offsetAfterRescale":
-                ffRescaleOffset = value
+            if key in settings:
+                settings[key] = value
 
         for metadata_file in metadata_files:
             # Prepare a pipeline
-            pipeline = self.get_ff_pipeline_from_metadata(metadata_file, ffRescaleFactor, ffRescaleOffset)
-            pipeline.run()
+            pipeline = self.get_ff_pipeline_from_metadata(metadata_file, settings["rescaleFactor"], settings["offsetAfterRescale"])
+            pipeline.run(overwrite=settings["overwrite"])
 
         return True
 
-    def get_ff_pipeline_from_metadata(self, metadata_file:str, ff_rescale_factor:float=60000, ff_rescale_offset:float=0) -> 'Pipeline':
+    def get_ff_pipeline_from_metadata(self, metadata_file:str, rescaleFactor:float=None, offsetAfterRescale:float=0) -> 'Pipeline':
         """Create a pipeline with a flat-field correction step based on the given metadata file.
 
         Parameters
@@ -106,12 +122,14 @@ class Toolbox:
         metadata_file : str
             Path to a metadata file.
 
-        ff_rescale_factor : float
-            Rescale factor after flat-field division.
+        rescaleFactor : float
+            Rescale factor after flat-field division. If `None`, the value
+            will be imported from key `max_intensity` in metadata file,
+            or set to `60000` if this fails.
 
-            Standard value: `60000`
+            Standard value: `None`
 
-        ff_rescale_offset : float
+        offsetAfterRescale : float
             Offset to be added to all pixels after flat-field correction
             and rescaling.
 
@@ -150,6 +168,9 @@ class Toolbox:
                 width  = get_value_or_none(jsonDict, "output", "projections", "dimensions", "x", "value")
                 height = get_value_or_none(jsonDict, "output", "projections", "dimensions", "y", "value")
 
+                if rescaleFactor is None:
+                    rescaleFactor = get_value(jsonDict, ["output", "projections", "max_intensity"], 60000)
+
                 darkFilename = get_value_or_none(jsonDict, "output", "projections", "dark_field", "filename")
                 if darkFilename is not None:
                     if not os.path.isabs(darkFilename): # Check if an absolute path is provided
@@ -186,7 +207,7 @@ class Toolbox:
                     )
 
                 ffCorrection = Step_FlatFieldCorrection()
-                ffCorrection.setFlatFieldRescaleFactor(ff_rescale_factor, ff_rescale_offset)
+                ffCorrection.setFlatFieldRescaleFactor(rescaleFactor, offsetAfterRescale)
 
                 pipeline = Pipeline()
                 pipeline.setInputFileStack(projections)
@@ -252,50 +273,312 @@ class Toolbox:
             log(f"Invalid metadata file path: {metadata_file}")
             return False
 
-    def post_process_recursive(self, directory:str, correction:bool=True, recon_configs:bool=True, overwrite:bool=False, openct_variant:str='free', openct_abspaths:bool=False, verbose:bool=True):
-        """Run post-processing recursively on a whole directory. Searches for
-        metadata files and automatically runs flat-field corrections and
-        creates reconstruction config files.
+    def standardize(self, *scenario_files, **kwargs):
+        """Standardize CTSimU scenario files to the
+        file format version currently supported by the toolbox.
+
+        The previous version of the file will be kept in a
+        copy called {filename}.json.old
 
         Parameters
         ----------
-        directory : str
-            Directory in which recursive post-processing will take place.
-
-        correction : bool
-            Run flat-field correction where applicable?
-
-            Standard value: `True`
-
-        recon_configs : bool
-            Create reconstruction config files?
-
-            Standard value: `True`
-
-        overwrite : bool
-            Overwrite existing files?
-
-            Standard value: `False`
-
-        openct_variant : str
-            When reconstruction config files are created,
-            the variant of the OpenCT config file.
-
-            Possible values: `"free"`, `"circular"`
-
-            Standard value: `"free"`
-
-        openct_abspaths : bool
-            Use absolute paths in OpenCT config file?
-
-            Standard value: `False`
-
-        verbose : bool
-            Print text output?
-
-            Standard value: `True`
+        *scenario_files : str
+            Scenario files to be standardized.
         """
-        pass
+        settings = {
+
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for scenario_file in scenario_files:
+            if os.path.isfile(scenario_file):
+                if os.path.exists(scenario_file):
+                    scenario_file_old = scenario_file + ".old"
+                    if os.path.exists(scenario_file_old):
+                        # An old version seems to already exist.
+                        # Skip standardization of this file.
+                        log(f"Skipped standardization, old file exists:")
+                        log(f"   {scenario_file_old}")
+                        continue
+                    else:
+                        # Backup previous file:
+                        shutil.copy2(scenario_file, scenario_file_old)
+
+                        # Check if backup exists:
+                        if os.path.exists(scenario_file_old):
+                            s = Scenario(scenario_file)
+                            s.write(scenario_file)
+                            log(f"Standardized:")
+                            log(f"   {scenario_file}")
+                        else:
+                            raise Exception(f"Failed to create scenario backup file: {scenario_file_old}")
+                else:
+                    raise Exception(f"File not found: '{scenario_file}'")
+            else:
+                raise Exception(f"Not a scenario file: '{scenario_file}'")
+
+    def recon_config(self, *metadata_files, **kwargs):
+        """Create reconstruction configuration files for
+        given metadata files.
+
+        Parameters
+        ----------
+        *metadata_files : str
+            Metadata files that describe reconstruction data.
+
+        **kwargs
+
+            + `openct` : `bool`
+
+                Create OpenCT config file?
+
+                Standard value: `True`
+
+            + `cera` : `bool`
+
+                Create CERA config file?
+
+                Standard value: `True`
+
+            + `openct_variant` : `str`
+
+                When reconstruction config files are created,
+                the variant of the OpenCT config file.
+
+                Possible values: `"free"`, `"circular"`
+
+                Standard value: `"free"`
+
+            + `openct_abspaths` : `bool`
+
+                Use absolute paths in OpenCT config file?
+
+                Standard value: `False`
+
+            + `create_vgi` : `bool`
+
+                Create VGI file for the reconstruction volume?
+
+                Standard value: `True`
+
+            + `overwrite` : `bool`
+
+                Overwrite existing output files?
+
+                Standard value: `False`
+        """
+
+        # Default values for keyword arguments:
+        settings = {
+            "openct": True,
+            "cera": True,
+            "openct_variant": "free",
+            "openct_abspaths": False,
+            "create_vgi": True,
+            "overwrite": False
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for metadata in metadata_files:
+            s = Scenario()
+            s.read_metadata(filename=metadata, import_referenced_scenario=True)
+
+            recon_config_dir, recon_config_metafile = os.path.split(metadata)
+
+            basename, extension = os.path.splitext(recon_config_metafile)
+
+            # Remove '_metadata' from basename:
+            basename = basename.replace("_metadata", "")
+
+            if settings["cera"] is True:
+                cera_filename = basename + "_cera.config"
+                cera_filepath = join_dir_and_filename(recon_config_dir, cera_filename)
+                cera_write = True
+                if os.path.exists(cera_filepath):
+                    if settings["overwrite"] is False:
+                        cera_write = False
+
+                if cera_write is True:
+                    log(f"Writing CERA config files to:   '{recon_config_dir}' ...")
+                    s.write_CERA_config(
+                        save_dir=recon_config_dir,
+                        basename=f"{basename}_cera",
+                        create_vgi=settings["create_vgi"]
+                        )
+
+            if settings["openct"] is True:
+                openct_filename = basename + "_openCT.json"
+                openct_filepath = join_dir_and_filename(recon_config_dir, openct_filename)
+                openct_write = True
+                if os.path.exists(openct_filepath):
+                    if settings["overwrite"] is False:
+                        openct_write = False
+
+                if openct_write is True:
+                    log(f"Writing OpenCT config files to: '{recon_config_dir}' ...")
+                    s.write_OpenCT_config(
+                        save_dir=recon_config_dir,
+                        basename=f"{basename}_openCT",
+                        create_vgi=settings["create_vgi"],
+                        variant=settings["openct_variant"],
+                        abspaths=settings["openct_abspaths"]
+                        )
+
+    def post_processing(self, *directories, **kwargs):
+        """Run post-processing recursively on whole directories.
+
+        Searches for metadata files in the given directories
+        (and their subdirectories) and automatically runs
+        flat-field corrections and creates reconstruction config files.
+
+        Parameters
+        ----------
+        *directories : str
+            Directories in which recursive post-processing will take place.
+
+        **kwargs
+
+            + `correction` : `bool`
+
+                Run flat-field correction where applicable?
+
+                Standard value: `False`
+
+            + `rescaleFactor` : `float`
+
+                Rescale factor after flat-field division. If `None`, the value
+                will be imported from key `max_intensity` in metadata file,
+                or set to `60000` if this fails.
+
+                Standard value: `None`
+
+            + `offsetAfterRescale` : `float`
+
+                Offset to be added to all pixels after flat-field correction
+                and rescaling.
+
+                Standard value: `0`
+
+            + `recon_config` : `bool`
+
+                Create reconstruction config files?
+
+                Standard value: `False`
+
+            + `openct_variant` : `str`
+
+                When reconstruction config files are created,
+                the variant of the OpenCT config file.
+
+                Possible values: `"free"`, `"circular"`
+
+                Standard value: `"free"`
+
+            + `openct_abspaths` : `bool`
+
+                Use absolute paths in OpenCT config file?
+
+                Standard value: `False`
+
+            + `standardize` : `bool`
+
+                Standardize CTSimU scenario files to the
+                file format version currently supported by the toolbox.
+
+                The previous version of the file will be kept in a
+                copy called {filename}.json.old
+
+                Standard value: `False`
+
+            + `overwrite` : `bool`
+
+                Overwrite existing output files?
+
+                Does not apply to standardization: the old scenario backup
+                files will never be overwritten.
+
+                Standard value: `False`
+        """
+
+        # Default values for keyword arguments:
+        settings = {
+            "correction": False,
+            "rescaleFactor": None,
+            "offsetAfterRescale": 0,
+            "recon_config": False,
+            "cera": True,
+            "openct": True,
+            "openct_variant": "free",
+            "openct_abspaths": False,
+            "standardize": False,
+            "overwrite": False
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        # Walk through directories and collect paths of scenario files,
+        # projection metadata and reconstruction metadata files.
+        scenario_files = list()
+        metadata_projection = list()
+        metadata_reconstruction = list()
+        for directory in directories:
+            print(f"Searching directory: {directory}")
+            walker = os.walk(directory)
+            for dirpath, dirnames, filenames in walker:
+                json_files = [f for f in filenames if f.endswith(".json")]
+                # Check JSON files:
+                for j in json_files:
+                    try:
+                        jsonpath = join_dir_and_filename(dirpath, j)
+                        jd = read_json_file(jsonpath)
+                        file_type = get_value(jd, ["file", "file_type"])
+
+                        if file_type is not None:
+                            if file_type == "CTSimU Scenario":
+                                scenario_files.append(jsonpath)
+                                log(f"   Found scenario file:           {j}")
+                            elif file_type == "CTSimU Metadata":
+                                if json_exists(jd, ["output", "tomogram", "filename"]):
+                                    # Seems to be a reconstruction file.
+                                    metadata_reconstruction.append(jsonpath)
+                                    log(f"   Found reconstruction metadata: {j}")
+                                else:
+                                    # Assume a projection metadata file.
+                                    metadata_projection.append(jsonpath)
+                                    log(f"   Found projection metadata:     {j}")
+                    except Exception as e:
+                        log(f"Error: {str(e)}")
+
+        if settings["standardize"] is True:
+            # Standardize scenario files.
+            for scenario_file in scenario_files:
+                try:
+                    self.standardize(scenario_file, **settings)
+                except Exception as e:
+                    log(f"Error: {str(e)}")
+
+        if settings["recon_config"] is True:
+            # Create reconstruction configs:
+            for metadata in metadata_reconstruction:
+                self.recon_config(metadata, **settings)
+
+        if settings["correction"] is True:
+            # Run flat-field corrections:
+            for metadata in metadata_projection:
+                self.correction(metadata, **settings)
+
+        print("Done.")
 
     def test_2D(self, test_name:str, *metadata, **kwargs) -> bool:
         """Run a projection-based 2D test on projections
@@ -344,8 +627,8 @@ class Toolbox:
             return False
 
         # The flat-field rescale factor is fixed for all tests:
-        ffRescaleFactor = float(60000.0)
-        ffRescaleOffset = 0
+        rescaleFactor = float(60000.0)
+        offsetAfterRescale = 0
 
         # Evaluate keyword list and see if metadata files are provided
         # together with keywords that might identify subtest scenarios.
@@ -379,7 +662,7 @@ class Toolbox:
 
                     evaluationStep.setResultFileDirectory(resultFileDir)
 
-                    pipeline = self.get_ff_pipeline_from_metadata(metadata_file, ffRescaleFactor, ffRescaleOffset)
+                    pipeline = self.get_ff_pipeline_from_metadata(metadata_file, rescaleFactor, offsetAfterRescale)
                     pipeline.addStep(evaluationStep)
 
                     # Run pipeline: FF-correction and CTSimU test.

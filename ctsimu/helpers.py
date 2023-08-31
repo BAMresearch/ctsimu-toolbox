@@ -1,12 +1,10 @@
 # -*- coding: UTF-8 -*-
-
 import os
 import json
 import math
 import csv
 import numpy
 from scipy import optimize, fft
-
 
 ctsimu_supported_scenario_version = {
     "major": 1,
@@ -222,18 +220,19 @@ def read_json_file(filename:str) -> dict:
         Dictionary representation of the JSON structure.
     """
 
-    if os.path.isfile(filename):
-        if os.path.exists(filename):
-            with open(filename, 'r', encoding='utf-8') as f:
-                json_dict = json.load(f)
-                f.close()
-                return json_dict
+    if isinstance(filename, str):
+        if os.path.isfile(filename):
+            if os.path.exists(filename):
+                with open(filename, 'r', encoding='utf-8') as f:
+                    json_dict = json.load(f)
+                    f.close()
+                    return json_dict
+            else:
+                raise Exception(f"File not found: '{filename}'")
         else:
             raise Exception(f"File not found: '{filename}'")
-    else:
-        raise Exception(f"File not found: '{filename}'")
 
-    raise Exception(f"Cannot read JSON file: '{filename}'")
+    raise Exception(f"Cannot read JSON file: {filename}")
 
 def counter_format(n:int, zero_padding:bool=True) -> str:
     """Create a default counter format for sequentially numbered files.
@@ -579,9 +578,14 @@ def json_exists(dictionary:dict, keys:list) -> bool:
 
     current_element = dictionary
     for key in keys:
-        if key in current_element:
-            current_element = current_element[key]
+        if current_element is not None:
+            if key in current_element:
+                current_element = current_element[key]
+            else:
+                return False
         else:
+            # Current element is 'None' but we still
+            # need to go down at least another 'key'.
             return False
 
     return True
