@@ -303,8 +303,8 @@ class Test2D_SW_2(generalTest):
                 ax.set_title("2D-SW-2, {sub}, {details}".format(sub=self.results[i].longName, details=modeDescription), loc="left", fontsize=10)
                 ax.set_xticks(xValues)
                 ax.xaxis.set_ticklabels(xLabels)
-                ax.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-                ax.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+                ax.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+                ax.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
                 ax.legend(loc='lower left')
 
                 fig.tight_layout(pad=2.5)
@@ -314,5 +314,5 @@ class Test2D_SW_2(generalTest):
                 fig.clf()
                 matplotlib.pyplot.close('all')
 
-        except:
-            log("Warning: Error plotting results for test {name}, {subname} using matplotlib.".format(name=self.name, subname=subtestName))
+        except Exception as e:
+            log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")

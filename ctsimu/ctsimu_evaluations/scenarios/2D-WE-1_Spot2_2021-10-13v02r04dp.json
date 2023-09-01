@@ -1,14 +1,14 @@
 {
 	"file": {
 		"file_type": "CTSimU Scenario",
-		"name": "Lochfolie",
-		"description": "",
-		"contact": "David Plotzki",
-		"date_created": "2021-03-23",
+		"name": "2D-WE-1",
+		"description": "Brennfleckgröße 24µm",
+		"contact": "David Plotzki, Fabrício Borges de Oliveira, Tamara Reuter",
+		"date_created": "2020-04-17",
 		"date_changed": "2023-09-01",
 		"version": {
 			"major": 2,
-			"minor": 0
+			"minor": 4
 		},
 		"file_format_version": {
 			"major": 1,
@@ -26,15 +26,15 @@
 		"detector": {
 			"center": {
 				"x": {
-					"value": 399.5257578,
+					"value": 1000.0,
 					"unit": "mm"
 				},
 				"y": {
-					"value": 17.5530267,
+					"value": 0.0,
 					"unit": "mm"
 				},
 				"z": {
-					"value": 8.4297178,
+					"value": 0.0,
 					"unit": "mm"
 				}
 			},
@@ -59,108 +59,7 @@
 				"z": {
 					"value": 0
 				}
-			},
-			"deviations": [
-				{
-					"type": "rotation",
-					"axis": {
-						"u": {
-							"value": 0
-						},
-						"v": {
-							"value": 0
-						},
-						"w": {
-							"value": 1
-						}
-					},
-					"pivot": {
-						"u": {
-							"value": 0,
-							"unit": "mm"
-						},
-						"v": {
-							"value": 0,
-							"unit": "mm"
-						},
-						"w": {
-							"value": 0,
-							"unit": "mm"
-						}
-					},
-					"amount": {
-						"value": -3.451038434719911,
-						"unit": "deg"
-					},
-					"known_to_reconstruction": true
-				},
-				{
-					"type": "rotation",
-					"axis": {
-						"u": {
-							"value": 0
-						},
-						"v": {
-							"value": 1
-						},
-						"w": {
-							"value": 0
-						}
-					},
-					"pivot": {
-						"u": {
-							"value": 0,
-							"unit": "mm"
-						},
-						"v": {
-							"value": 0,
-							"unit": "mm"
-						},
-						"w": {
-							"value": 0,
-							"unit": "mm"
-						}
-					},
-					"amount": {
-						"value": -2.438461715730154,
-						"unit": "deg"
-					},
-					"known_to_reconstruction": true
-				},
-				{
-					"type": "rotation",
-					"axis": {
-						"u": {
-							"value": 1
-						},
-						"v": {
-							"value": 0
-						},
-						"w": {
-							"value": 0
-						}
-					},
-					"pivot": {
-						"u": {
-							"value": 0,
-							"unit": "mm"
-						},
-						"v": {
-							"value": 0,
-							"unit": "mm"
-						},
-						"w": {
-							"value": 0,
-							"unit": "mm"
-						}
-					},
-					"amount": {
-						"value": 1.356754174099129,
-						"unit": "deg"
-					},
-					"known_to_reconstruction": true
-				}
-			]
+			}
 		},
 		"source": {
 			"type": "cone",
@@ -214,15 +113,15 @@
 		"stage": {
 			"center": {
 				"x": {
-					"value": 9.993138,
+					"value": 500.0,
 					"unit": "mm"
 				},
 				"y": {
-					"value": 0.4390451,
+					"value": 0.0,
 					"unit": "mm"
 				},
 				"z": {
-					"value": 0.2108483,
+					"value": 0.0,
 					"unit": "mm"
 				}
 			},
@@ -255,11 +154,11 @@
 		"manufacturer": "",
 		"type": "ideal",
 		"columns": {
-			"value": 3000.0,
+			"value": 1001.0,
 			"unit": "px"
 		},
 		"rows": {
-			"value": 3000.0,
+			"value": 1001.0,
 			"unit": "px"
 		},
 		"bit_depth": {
@@ -281,11 +180,11 @@
 		},
 		"pixel_pitch": {
 			"u": {
-				"value": 0.15,
+				"value": 0.008,
 				"unit": "mm"
 			},
 			"v": {
-				"value": 0.15,
+				"value": 0.008,
 				"unit": "mm"
 			}
 		},
@@ -355,7 +254,7 @@
 		"model": "",
 		"manufacturer": "",
 		"voltage": {
-			"value": 80.0,
+			"value": 150.0,
 			"unit": "kV"
 		},
 		"current": {
@@ -397,16 +296,16 @@
 			},
 			"sigma": {
 				"u": {
-					"value": 0,
-					"unit": "mm"
+					"value": 24.0,
+					"unit": "um"
 				},
 				"v": {
-					"value": 0,
-					"unit": "mm"
+					"value": 24.0,
+					"unit": "um"
 				},
 				"w": {
-					"value": 0,
-					"unit": "mm"
+					"value": 0.0,
+					"unit": "um"
 				}
 			},
 			"intensity_map": {
@@ -422,9 +321,9 @@
 			}
 		},
 		"spectrum": {
-			"monochromatic": true,
+			"monochromatic": false,
 			"file": {
-				"value": null
+				"value": "2D-WE-1_Spectrum_150kV_4mmAl_2021-05-27v00r00dp.csv"
 			}
 		},
 		"window": [
@@ -440,21 +339,21 @@
 	},
 	"samples": [
 		{
-			"name": "Lochfolie",
+			"name": "Halbraumkante",
 			"file": {
-				"value": "Folie_2020-11-16-v02r02fbomlgom.stl"
+				"value": "2021-10-11_Halbraumkante_v04r00.stl"
 			},
 			"unit": "mm",
 			"material_id": "W",
 			"scaling_factor": {
 				"r": {
-					"value": 1
+					"value": 1.0
 				},
 				"s": {
-					"value": 1
+					"value": 1.0
 				},
 				"t": {
-					"value": 1
+					"value": 1.0
 				}
 			},
 			"position": {
@@ -464,11 +363,11 @@
 						"unit": "mm"
 					},
 					"v": {
-						"value": 0.0,
+						"value": 2.5,
 						"unit": "mm"
 					},
 					"w": {
-						"value": 0.0,
+						"value": -2.36898,
 						"unit": "mm"
 					}
 				},
@@ -493,108 +392,7 @@
 					"w": {
 						"value": 1
 					}
-				},
-				"deviations": [
-					{
-						"type": "rotation",
-						"axis": {
-							"r": {
-								"value": 0
-							},
-							"s": {
-								"value": 0
-							},
-							"t": {
-								"value": 1
-							}
-						},
-						"pivot": {
-							"r": {
-								"value": 0,
-								"unit": "mm"
-							},
-							"s": {
-								"value": 0,
-								"unit": "mm"
-							},
-							"t": {
-								"value": 0,
-								"unit": "mm"
-							}
-						},
-						"amount": {
-							"value": -14.0,
-							"unit": "deg"
-						},
-						"known_to_reconstruction": true
-					},
-					{
-						"type": "rotation",
-						"axis": {
-							"r": {
-								"value": 0
-							},
-							"s": {
-								"value": 1
-							},
-							"t": {
-								"value": 0
-							}
-						},
-						"pivot": {
-							"r": {
-								"value": 0,
-								"unit": "mm"
-							},
-							"s": {
-								"value": 0,
-								"unit": "mm"
-							},
-							"t": {
-								"value": 0,
-								"unit": "mm"
-							}
-						},
-						"amount": {
-							"value": 8.0,
-							"unit": "deg"
-						},
-						"known_to_reconstruction": true
-					},
-					{
-						"type": "rotation",
-						"axis": {
-							"r": {
-								"value": 1
-							},
-							"s": {
-								"value": 0
-							},
-							"t": {
-								"value": 0
-							}
-						},
-						"pivot": {
-							"r": {
-								"value": 0,
-								"unit": "mm"
-							},
-							"s": {
-								"value": 0,
-								"unit": "mm"
-							},
-							"t": {
-								"value": 0,
-								"unit": "mm"
-							}
-						},
-						"amount": {
-							"value": 29.999999999999996,
-							"unit": "deg"
-						},
-						"known_to_reconstruction": true
-					}
-				]
+				}
 			}
 		}
 	],
@@ -700,6 +498,42 @@
 				{
 					"formula": {
 						"value": "CsI"
+					},
+					"mass_fraction": {
+						"value": 1.0
+					}
+				}
+			]
+		},
+		{
+			"id": "Cu",
+			"name": "Copper",
+			"density": {
+				"value": 8.92,
+				"unit": "g/cm^3"
+			},
+			"composition": [
+				{
+					"formula": {
+						"value": "Cu"
+					},
+					"mass_fraction": {
+						"value": 1.0
+					}
+				}
+			]
+		},
+		{
+			"id": "Pt",
+			"name": "Platinum",
+			"density": {
+				"value": 21.45,
+				"unit": "g/cm^3"
+			},
+			"composition": [
+				{
+					"formula": {
+						"value": "Pt"
 					},
 					"mass_fraction": {
 						"value": 1.0

@@ -212,7 +212,7 @@ class Parameter:
 			drifts throughout the CT scan.
 		"""
 		if self.has_drifts():
-			if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value != None):
+			if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value is not None):
 				total_drift_max = self.get_total_drift_value_for_frame(
 					0,
 					n_frames,
@@ -252,7 +252,7 @@ class Parameter:
 			drifts throughout the CT scan.
 		"""
 		if self.has_drifts():
-			if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value != None):
+			if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value is not None):
 				total_drift_min = self.get_total_drift_value_for_frame(
 					0,
 					n_frames,

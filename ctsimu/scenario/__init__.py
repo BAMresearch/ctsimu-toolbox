@@ -22,7 +22,7 @@ from .material import Material
 from .metadata import Metadata
 
 class Scenario:
-    def __init__(self, filename:str=None):
+    def __init__(self, filename:str=None, json_dict:dict=None):
         self.detector = Detector(_root=self)
         self.source   = Source(_root=self)
         self.stage    = Stage(_root=self)
@@ -63,6 +63,8 @@ class Scenario:
 
         if filename is not None:
             self.read(filename=filename)
+        elif json_dict is not None:
+            self.read(json_dict=json_dict)
 
     def read(self, filename:str=None, json_dict:dict=None):
         """Import a CTSimU scenario from a file or a given

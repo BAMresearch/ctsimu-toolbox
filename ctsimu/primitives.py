@@ -1064,6 +1064,20 @@ class Vector:
         result.invert()
         return result
 
+    def rotate_2D_xy(self, angle:float):
+        """ Rotate vector in xy plane.
+
+        Parameters
+        ----------
+        angle : float
+            Rotation angle (in rad).
+        """
+        cs = math.cos(angle)
+        sn = math.sin(angle)
+
+        self.set_x(self.x()*cs - self.y()*sn)
+        self.set_y(self.x()*sn + self.y()*cs)
+
     def rotate(self, axis:'Vector', angle:float):
         """ Rotate vector around given axis by given angle (in rad).
 
@@ -1245,15 +1259,15 @@ class Line2D:
         if m0 != math.inf and m1 != math.inf:
             xs = (n1-n0)/(m0-m1)
             ys = m0*xs + n0
-            return Vector(x=xs, y=ys, n=2)
+            return Vector(x=xs, y=ys)
         elif m0 == math.inf and m1 != math.inf:
             xs = n0
             ys = m1*xs + n1
-            return Vector(x=xs, y=ys, n=2)
+            return Vector(x=xs, y=ys)
         elif m0 != math.inf and m1 == math.inf:
             xs = n1
             ys = m0*xs + n0
-            return Vector(x=xs, y=ys, n=2)
+            return Vector(x=xs, y=ys)
 
 
 class Polygon:
@@ -1262,7 +1276,7 @@ class Polygon:
     Attributes
     ----------
     points : list
-        List of points that make up the polygon, each point represented by a `Vector` (at least 2D).
+        List of points that make up the polygon, each point represented by a `Vector`.
 
     vertex_order_CCW : bool
         `True` if the vertex order is counter-clockwise (standard) or `False` if clockwise.
@@ -1451,8 +1465,8 @@ class Polygon:
             Inside means "to the left" if vertices are in counter-clockwise direction,
             otherwise "to the right". """
 
-        edge  = edgePoint1 - edgePoint0
-        point = vertexToTest - edgePoint0
+        edge  = Vector(edgePoint1.x() - edgePoint0.x(), edgePoint1.y() - edgePoint0.y())
+        point = Vector(vertexToTest.x() - edgePoint0.x(), vertexToTest.y() - edgePoint0.y())
 
         cpz = edge.cross_z(point)
 

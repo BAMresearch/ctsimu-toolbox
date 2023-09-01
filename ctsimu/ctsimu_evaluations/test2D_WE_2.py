@@ -2,6 +2,7 @@
 from ..test import *
 from ..helpers import *
 from ..primitives import Vector, Polygon
+from ..scenario import Scenario
 
 class Test2D_WE_2(generalTest):
     """ CTSimU test 2D-WE-2: Effect of partial pixel coverage. """
@@ -36,12 +37,11 @@ class Test2D_WE_2(generalTest):
         D = Vector(-300,    0, 0)
 
         edgeAngle = 3 * (math.pi/180.0)  # 3 deg edge rotation
-        rotAxis = Vector(0, 0, 1)
 
-        #A.rotate(rotAxis, edgeAngle)
-        B.rotate(rotAxis, edgeAngle)
-        C.rotate(rotAxis, edgeAngle)
-        D.rotate(rotAxis, edgeAngle)
+        #A.rotate_2D_xy(edgeAngle)
+        B.rotate_2D_xy(edgeAngle)
+        C.rotate_2D_xy(edgeAngle)
+        D.rotate_2D_xy(edgeAngle)
 
         self.clippingRectangle = Polygon(A, B, C, D)
 
@@ -53,11 +53,15 @@ class Test2D_WE_2(generalTest):
             raise Exception("Step must be part of a processing pipeline before it can prepare. Current pipeline: {}".format(self.pipe))
 
         if not self.prepared:
-            self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-WE-2_2021-07-07v02r00fbo.json"
+            self.jsonScenarioFile = "2D-WE-2_2021-10-13v02r03dp.json"
 
             # Calculate the analytical image of an edge covering the image:
-            if(self.jsonScenarioFile != None):
-                self.geometry = Geometry(json_file_from_pkg=self.jsonScenarioFile)
+            if(self.jsonScenarioFile is not None):
+                scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                self.geometry = scenario.current_geometry()
+                self.geometry.update()
+                
                 self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
                 self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
                 self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)

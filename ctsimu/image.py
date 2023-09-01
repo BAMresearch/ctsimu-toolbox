@@ -135,7 +135,7 @@ class ImageFile:
 
     def setByteOrder(self, byteOrder: str):
         """ Set endianness, do sanity check before. """
-        if byteOrder=='little' or byteOrder=='big' or byteOrder==None:
+        if byteOrder=='little' or byteOrder=='big' or byteOrder is None:
             self.byteOrder = byteOrder
         else:
             raise Exception("{} is not a valid byte order. Must be 'little' or 'big'.".format(byteOrder))
@@ -380,7 +380,7 @@ class Image:
         """ Return maximum intensity in image. """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.amax(self.px)
 
         return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -389,7 +389,7 @@ class Image:
         """ Return minimum intensity in image. """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.amin(self.px)
 
         return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -398,7 +398,7 @@ class Image:
         """ Return arithmetic mean of the image grey values. """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.mean(self.px)
 
         return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -407,7 +407,7 @@ class Image:
         """ Return the standard deviation of the image grey values. """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.std(self.px)
 
         return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -622,7 +622,7 @@ class Image:
             if dataType is None:
                 if isinstance(self.inputFile, ImageFile):
                     dataType = self.inputFile.getDataType()
-                    if(dataType != None):
+                    if(dataType is not None):
                         self.outputFile.setDataType(dataType)
                     else:
                         raise Exception("Please specify a data type for the output file: {filename}".format(filename=filename))
@@ -649,12 +649,12 @@ class Image:
             self.saveRAW(filename, dataType, byteOrder, appendChunk, clipValues, addInfo=False)
 
     def saveTIFF(self, filename=None, dataType=None, clipValues=True):
-        if (filename != None) and (len(filename) > 0):
+        if (filename is not None) and (len(filename) > 0):
             fileBaseName = os.path.basename(filename)
             if (fileBaseName == "") or (fileBaseName is None):
                 raise Exception("No output file name specified for the image to be saved.")
 
-            if dataType != None:
+            if dataType is not None:
                 if not isTIFF(filename):
                     filename += ".tif"
 
@@ -676,12 +676,12 @@ class Image:
             raise Exception("No output file name specified for the image to be saved.")
 
     def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
-        if (filename != None) and (len(filename) > 0):
+        if (filename is not None) and (len(filename) > 0):
             fileBaseName = os.path.basename(filename)
             if (fileBaseName == "") or (fileBaseName is None):
                 raise Exception("No output file name specified for the image to be saved.")
 
-            if dataType != None:
+            if dataType is not None:
                 if byteOrder is None:
                     byteOrder = "little"
 
@@ -811,7 +811,7 @@ class Image:
 
     def verticalROIProfile(self, ROI):
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -827,7 +827,7 @@ class Image:
 
     def horizontalROIProfile(self, ROI):
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -848,7 +848,7 @@ class Image:
                False     : does not include weights in returned pixel coordinate tuples.
         """
 
-        if seedPoint != None:
+        if seedPoint is not None:
             seedX = int(round(seedPoint.x()))
             seedY = int(round(seedPoint.y()))
         else:
@@ -937,10 +937,10 @@ class Image:
     @staticmethod
     def getPixelWeight(x, y, clipPolygon):
         # Calculate pixel weight from the area of the clipped pixel:
-        upperLeft  = Vector2D(x,   y)
-        upperRight = Vector2D(x+1, y)
-        lowerLeft  = Vector2D(x,   y+1)
-        lowerRight = Vector2D(x+1, y+1)
+        upperLeft  = Vector(x,   y)
+        upperRight = Vector(x+1, y)
+        lowerLeft  = Vector(x,   y+1)
+        lowerRight = Vector(x+1, y+1)
         pixelPolygon = Polygon(upperLeft, upperRight, lowerRight, lowerLeft)  # Clockwise order because pixel CS is y-flipped.
 
         clippedPixel = pixelPolygon.clip(clipPolygon)
@@ -956,7 +956,7 @@ class Image:
             t:   unit vector along width axis
         """
 
-        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
         # Create a map with pixels' distances to the bin:
         # (measured parallel to s vector):
@@ -1005,7 +1005,7 @@ class Image:
             t:   unit vector along width axis
         """
 
-        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
         # Create a map with pixels' distances to the bin:
         # (measured parallel to s vector):
@@ -1146,15 +1146,15 @@ class Image:
         t.make_unit_vector()
 
         # Convert to 2D vectors:
-        s = Vector2D(s.x(), s.y())
-        t = Vector2D(t.x(), t.y())
+        s = Vector(s.x(), s.y())
+        t = Vector(t.x(), t.y())
 
         tUnit = copy.deepcopy(t)
 
         t.scale(0.5*width)  # t points from line origin half way in direction of width
 
         # Define a rectangle along the line and its width.
-        origin = Vector2D(x0, y0)
+        origin = Vector(x0, y0)
 
         nSamples = math.ceil( s.length() / resolution ) #+ 1 # +1 for endpoint
         ceilLength = nSamples * resolution
@@ -1175,7 +1175,7 @@ class Image:
         s.make_unit_vector()
         s.scale(resolution)
 
-        rectPos = Vector2D(0, 0)
+        rectPos = Vector(0, 0)
 
         # A pixel center can be this far from the binPos (bin center)
         # in s and t direction to still be accepted:
@@ -1193,8 +1193,8 @@ class Image:
             sPos = resolution*b
 
             # Construct a vector to the left point of the bin on the s axis:
-            rectPos.setx(sUnit.x())
-            rectPos.sety(sUnit.y())
+            rectPos.set_x(sUnit.x())
+            rectPos.set_y(sUnit.y())
             rectPos.scale(sPos)
             rectPos.add(origin)
 
@@ -1253,7 +1253,7 @@ class Image:
         self.crop(x0, y0, x1, y1)
 
     def cropROIaroundPoint(self, centerX, centerY, roiWidth, roiHeight):
-        """ Crop a region of interest, centerd around given point. """
+        """ Crop a region of interest, centered around given point. """
 
         if roiWidth < 0:
             roiWidth = abs(roiWidth)
@@ -1388,7 +1388,7 @@ class Image:
         """Renormalization of grey values from (currentMin, Max) to (newMin, Max) """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -1497,7 +1497,7 @@ class Image:
         """ Image or ROI statistics. Mean, Standard Deviation """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -1534,7 +1534,7 @@ class Image:
         """ Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000 """
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000
@@ -1579,11 +1579,11 @@ class Image:
             self.erase()
 
             areaMin = 0
-            if(min_patch_area != None):
+            if(min_patch_area is not None):
                 areaMin = min_patch_area
 
             areaMax = self.getWidth() * self.getHeight()
-            if(max_patch_area != None):
+            if(max_patch_area is not None):
                 areaMax = max_patch_area
 
             areaMin = areaMin / (self.getResolution()**2)
@@ -1612,7 +1612,7 @@ class Image:
                         continue
 
                 # An ideal circle should have an aspect ratio of 1:
-                if aspect_ratio_tolerance != None:
+                if aspect_ratio_tolerance is not None:
                     aspectRatio = 0
                     if(top != bottom):
                         aspectRatio = abs(right-left) / abs(bottom-top)
@@ -1640,8 +1640,8 @@ class Image:
         coordinates = numpy.nonzero(self.px)
         circlePixelsX = coordinates[1]
         circlePixelsY = coordinates[0]
+        circlePixels1 = numpy.ones_like(circlePixelsX)
         nPoints = len(circlePixelsX)
-        circlePixels1 = numpy.ones(nPoints)
 
         # Create the matrix B for the system of linear equations:
         matrixB = numpy.array((circlePixelsX, circlePixelsY, circlePixels1))
@@ -1875,8 +1875,8 @@ class ImageStack:
                 self.nSlices  = 1
                 self.files.setDataType(testImage.inputFile.getDataType())
             else:  # treat as raw chunk
-                if (self.width != None) and (self.height != None):
-                    if (self.files.getDataType() != None):
+                if (self.width is not None) and (self.height is not None):
+                    if (self.files.getDataType() is not None):
                         if os.path.isfile(inFilePattern):
                             self._isVolumeChunk = True
 
@@ -1945,7 +1945,7 @@ class ImageStack:
 
 
     def getFilename(self, index=None):
-        if index != None:
+        if index is not None:
             if self._isVolumeChunk:
                 if len(self.fileList) > 0:
                     return self.fileList[0]
@@ -1960,7 +1960,7 @@ class ImageStack:
             return self.files.getFilename()
 
     def getFileBasename(self, index=None):
-        if index != None:
+        if index is not None:
             if self._isVolumeChunk:
                 if len(self.fileList) > 0:
                     return os.path.basename(self.fileList[0])

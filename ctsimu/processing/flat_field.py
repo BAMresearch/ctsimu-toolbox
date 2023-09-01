@@ -35,7 +35,7 @@ class Step_FlatFieldCorrection(Step):
     def setFlatFileStack(self, flatFileStack):
         self.flatFileStack = createImageStack(flatFileStack)
         self.setPrepared(False)
-        if(flatFileStack != None):
+        if(flatFileStack is not None):
             self.setGainCorrection(True)
         else:
             self.setGainCorrection(False)
@@ -43,7 +43,7 @@ class Step_FlatFieldCorrection(Step):
     def setDarkFileStack(self, darkFileStack):
         self.darkFileStack = createImageStack(darkFileStack)
         self.setPrepared(False)
-        if(darkFileStack != None):
+        if(darkFileStack is not None):
             self.setOffsetCorrection(True)
         else:
             self.setOffsetCorrection(False)
@@ -109,7 +109,7 @@ class Step_FlatFieldCorrection(Step):
                         self.gainImage.applyDark(self.darkImage)
 
                 elif(self.analyticalCorrection): # Analytical flat field
-                    if(self.jsonScene != None):
+                    if(self.jsonScene is not None):
                         ctsimuGeometry = Geometry(self.jsonScene)
                         self.gainImage = ctsimuGeometry.create_detector_flat_field_analytical()
                         if self.flatFieldRescaleFactor != 1:

@@ -3,6 +3,7 @@ import os
 import json
 import math
 import csv
+import pkgutil
 import numpy
 from scipy import optimize, fft
 
@@ -233,6 +234,47 @@ def read_json_file(filename:str) -> dict:
             raise Exception(f"File not found: '{filename}'")
 
     raise Exception(f"Cannot read JSON file: {filename}")
+
+def json_from_pkg(filename:str) -> dict:
+    """Read a JSON file included in the package.
+
+    Parameters
+    ----------
+    filename : str
+        Filename of the JSON file.
+
+    Returns
+    -------
+    dictionary : dict
+        Dictionary representation of the JSON structure.
+    """
+    json_text = pkgutil.get_data(__name__, filename).decode()
+    return json.loads(json_text)
+
+def pkg_scenario(filename:str, level:str="root") -> str:
+    """Return path to scenario file included in this package.
+
+    Parameters
+    ----------
+    filename : str
+        Filename of the JSON file.
+
+    level : str
+        From where the file needs to be reached.
+
+        Possible values: `"root"`, `"test"`
+
+    Returns
+    -------
+    scenario_path : dict
+        Path to the scenario within the package.
+    """
+    if level == "root":
+        return f"ctsimu_evaluations/scenarios/{filename}"
+    elif level == "test":
+        return f"scenarios/{filename}"
+
+    raise Exception(f"pkg_scenario: Invalid level: {level}")
 
 def counter_format(n:int, zero_padding:bool=True) -> str:
     """Create a default counter format for sequentially numbered files.
@@ -494,7 +536,7 @@ def get_value_or_none(dictionary:dict, *keys:str) -> float | str | bool | dict |
         return None
     else:
         for key in keys:
-            if current_element != None:
+            if current_element is not None:
                 if key in current_element:
                     current_element = current_element[key]
                 else:

@@ -834,7 +834,7 @@ class tiffSubfile:
 
     def sizeInBytes(self):
         size = 0
-        if self.ifd != None:
+        if self.ifd is not None:
             size += self.ifd.sizeInBytes()
 
         size += self.dataSizeInBytes()
@@ -842,7 +842,7 @@ class tiffSubfile:
         return size
 
     def prepareDataOffsets(self, offset):
-        if self.ifd != None:
+        if self.ifd is not None:
             self.ifd.prepareDataOffsets(offset)
 
             offset += self.ifd.sizeInBytes()
@@ -857,7 +857,7 @@ class tiffSubfile:
             return 0
 
     def printOffset(self):
-        if self.ifd != None:
+        if self.ifd is not None:
             self.ifd.printOffset()
 
         tiffyLog(TIFFY_LOGLEVEL_INFO, "  Image Data            {offset}".format(offset=self.imageDataOffset))
@@ -1242,7 +1242,7 @@ class tiff:
     def read(self, filename=None):
         self.filename = filename
 
-        if self.filename != None:
+        if self.filename is not None:
             if os.path.isfile(self.filename):
                 filesize = os.path.getsize(self.filename)
                 tiffyLog(TIFFY_LOGLEVEL_DEBUG, "Size of {filename}: {size} Bytes.".format(filename=self.filename, size=filesize))

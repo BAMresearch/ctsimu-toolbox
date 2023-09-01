@@ -43,7 +43,7 @@ class generalTest(Step):
 
     def setName(self, name=None):
         """ Set an individual name for the (sub) test. """
-        if name != None:
+        if name is not None:
             self.name = name
         else:
             self.name = self.testName
@@ -53,7 +53,7 @@ class generalTest(Step):
 
     def setResultFileDirectory(self, resultFileDirectory="."):
         """ Set the location where test results should be saved. """
-        self.resultFileDirectory = resultFileDirectory
+        self.resultFileDirectory = resultFileDirectory + "/"
         touch_directory(self.resultFileDirectory)
 
     def setRawOutput(self, rawOutput=False):

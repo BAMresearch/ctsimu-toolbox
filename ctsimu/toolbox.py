@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import os
 import shutil
+from datetime import datetime
 
 from .helpers import *
 from .geometry import Geometry
@@ -182,7 +183,7 @@ class Toolbox:
                 darkCorrected = get_value(jsonDict, ["output", "projections", "dark_field", "projections_corrected"], False)
 
                 flatFilename  = get_value_or_none(jsonDict, "output", "projections", "flat_field", "filename")
-                if flatFilename != None:
+                if flatFilename is not None:
                     if not os.path.isabs(flatFilename): # Check if an absolute path is provided
                         # If a relative path is provided, this path is
                         # relative to the location of the metadata file:
@@ -294,14 +295,17 @@ class Toolbox:
             if key in settings:
                 settings[key] = value
 
+        now = datetime.now()
+
         for scenario_file in scenario_files:
             if os.path.isfile(scenario_file):
                 if os.path.exists(scenario_file):
+                    log(f"Standardizing {scenario_file} ...")
                     scenario_file_old = scenario_file + ".old"
                     if os.path.exists(scenario_file_old):
                         # An old version seems to already exist.
                         # Skip standardization of this file.
-                        log(f"Skipped standardization, old file exists:")
+                        log(f"   Skipped standardization, old file exists:")
                         log(f"   {scenario_file_old}")
                         continue
                     else:
@@ -310,10 +314,14 @@ class Toolbox:
 
                         # Check if backup exists:
                         if os.path.exists(scenario_file_old):
-                            s = Scenario(scenario_file)
-                            s.write(scenario_file)
-                            log(f"Standardized:")
-                            log(f"   {scenario_file}")
+                            try:
+                                s = Scenario(scenario_file)
+                                s.file.date_changed.set(now.strftime("%Y-%m-%d"))
+                                s.file.file_format_version.major.set(ctsimu_supported_scenario_version["major"])
+                                s.file.file_format_version.minor.set(ctsimu_supported_scenario_version["minor"])
+                                s.write(scenario_file)
+                            except Exception as e:
+                                log(f"   Error: {str(e)}")
                         else:
                             raise Exception(f"Failed to create scenario backup file: {scenario_file_old}")
                 else:
@@ -657,8 +665,10 @@ class Toolbox:
                         metafileAbsDir   = os.path.dirname(metafileAbsolute)
 
                     resultFileDir = "{testname}-results".format(testname=test_name)
-                    if metafileAbsDir is not None and len(metafileAbsDir) > 0:
-                        resultFileDir = metafileAbsDir + "/" + resultFileDir
+                    if metafileAbsDir is not None:
+                        if isinstance(metafileAbsDir, str):
+                            if len(metafileAbsDir) > 0:
+                                resultFileDir = metafileAbsDir + "/" + resultFileDir
 
                     evaluationStep.setResultFileDirectory(resultFileDir)
 
@@ -667,12 +677,13 @@ class Toolbox:
 
                     # Run pipeline: FF-correction and CTSimU test.
                     pipeline.run()
-
-                    # Run the follow-up procedure to output the results.
-                    evaluationStep.followUp()
                 else:
                     raise Exception(f"Cannot access metadata file: {metadata_file}")
             else:
                 raise Exception(f"Cannot access metadata file: {metadata_file}")
+
+        # Run the follow-up procedure to output the results.
+        if evaluationStep is not None:
+            evaluationStep.followUp()
 
         return True

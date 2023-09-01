@@ -3,11 +3,10 @@ from ..test import *
 from ..helpers import *
 from ..primitives import *
 from ..image_analysis.isrb import Interpolation, OrderError, ResultError
-import json
-import pkgutil
+from ..scenario import Scenario
 
 class Test2D_DW_1_results:
-    """ Results for one sub test. """
+    """ Results for one sub-test. """
 
     def __init__(self):
         self.lineProfileGV  = None   # Profile positions
@@ -37,7 +36,6 @@ class Test2D_DW_1(generalTest):
     """ CTSimU test 2D-DW-1: Detector Unsharpness. """
 
     def __init__(self, resultFileDirectory=".", name=None, rawOutput=False):
-
         generalTest.__init__(
             self,
             testName="2D-DW-1",
@@ -51,15 +49,15 @@ class Test2D_DW_1(generalTest):
 
         # ROI of imaged duplex wire: (622, 312) -- (1630, 678)
 
-        duplexAngle = 3 * (math.pi/180.0)     # 3 deg duplex wire rotation
-        duplexCenter = Vector2D(1126, 496)    # Center of duplex wire ROI
+        duplexAngle = 3 * (math.pi/180.0)   # 3 deg duplex wire rotation
+        duplexCenter = Vector(1126, 496)    # Center of duplex wire ROI
 
         self.profileLength = 1050
         self.profileRes    = 0.1
         self.profileWidth  = 20
 
-        duplexDirection = Vector2D(self.profileLength/2, 0)   # points "right"
-        duplexDirection.rotate(duplexAngle)   # Rotate by angle of duplex wire arrangement
+        duplexDirection = Vector(self.profileLength/2, 0)   # points "right"
+        duplexDirection.rotate_2D_xy(duplexAngle)   # Rotate by angle of duplex wire arrangement
 
         self.p0 = duplexCenter - duplexDirection
         self.p1 = duplexCenter + duplexDirection
@@ -76,39 +74,31 @@ class Test2D_DW_1(generalTest):
 
     def prepareRun(self, i):
         if i < len(self.subtests):
-            self.jsonScenarioFile = "scenarios/2D-DW-1_Detektor1_2021-05-26v01r01dp.json"
-            if self.subtests[i] == "SR75":
-                self.jsonScenarioFile = "scenarios/2D-DW-1_Detektor1_2021-05-26v01r01dp.json"
-            elif self.subtests[i] == "SR150":
-                self.jsonScenarioFile = "scenarios/2D-DW-1_Detektor2_2021-05-26v01r01dp.json"
-            #else:
-            #    raise Exception("{key} is not a valid subtest identifier for test scenario {test}.".format(key=self.subtests[i], test=self.testName))
+            self.jsonScenarioFile = "2D-DW-1_Detektor1_2021-05-26v01r01dp.json"
+            if self.subtests[i] == "SR150":
+                self.jsonScenarioFile = "2D-DW-1_Detektor2_2021-05-26v01r01dp.json"
 
-            jsonText = pkgutil.get_data(__name__, self.jsonScenarioFile).decode()
+            if self.jsonScenarioFile is not None:
+                scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
 
-            if jsonText != None:
-                jsonDict = json.loads(jsonText)
-
-                self.currentNominalSRb = in_mm_json(get_value_or_none(jsonDict, "detector", "sharpness", "basic_spatial_resolution"))
+                self.currentNominalSRb = scenario.detector.unsharpness.basic_spatial_resolution.get()
 
                 if self.currentNominalSRb is None:
                     raise Exception("Test {name}: Cannot find 'basic_spatial_resolution' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentPixelSize = in_mm_json(get_value_or_none(jsonDict, "detector", "pixel_pitch", "u"))
-
+                self.currentPixelSize = scenario.detector.pixel_pitch.u.get()
                 if self.currentPixelSize is None:
                     raise Exception("Test {name}: Cannot find 'pixel_pitch/u' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
-                self.currentSDD = in_mm_json(get_value_or_none(jsonDict, "geometry", "detector", "center", "x"))
-
+                geo = scenario.current_geometry()
+                geo.update()
+                self.currentSDD = geo.SDD
                 if self.currentSDD is None:
-                    raise Exception("Test {name}: Cannot find 'geometry/detector/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
+                    raise Exception(f"Test {self.name}: Calculation of SDD failed.")
 
-                self.currentSOD = in_mm_json(get_value_or_none(jsonDict, "geometry", "stage", "center", "x"))
-
+                self.currentSOD = geo.SOD
                 if self.currentSOD is None:
-                    raise Exception("Test {name}: Cannot find 'geometry/stage/center/x' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
-
+                    raise Exception(f"Test {self.name}: Calculation of SOD failed.")
             else:
                 raise Exception("Test {name}: Cannot open JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
 
@@ -142,8 +132,6 @@ class Test2D_DW_1(generalTest):
         with open(profileFileName, 'w') as profileFile:
             profileFile.write(profileText)
             profileFile.close()
-
-
 
         resultText  = "# Results\n"
         resultText += "# \n"
@@ -231,8 +219,8 @@ class Test2D_DW_1(generalTest):
             #ax1.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
             ax1.set_title("Grey Value Profile")
             #ax1.xaxis.set_ticklabels([])
-            ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax1.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax1.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax1.legend(loc='best')
 
 
@@ -250,8 +238,8 @@ class Test2D_DW_1(generalTest):
             ax2.set_xlim([0.9, 0])
             ax2.set_title("SRb Interpolation")
             #ax2.xaxis.set_ticklabels([])
-            ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax2.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax2.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax2.legend(loc='best')
 
             ax22 = ax2.twiny()
@@ -267,5 +255,5 @@ class Test2D_DW_1(generalTest):
             matplotlib.pyplot.savefig(plotFilename)
             fig.clf()
             matplotlib.pyplot.close('all')
-        except:
-            log("Warning: Error plotting results for test {name}, {subname} using matplotlib.".format(name=self.name, subname=subtestName))
+        except Exception as e:
+            log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")

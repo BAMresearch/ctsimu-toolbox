@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
 from ..test import *
+from ..helpers import *
+from ..scenario import Scenario
 
 class Test2D_FB_2(generalTest):
     """ CTSimU test 2D-FB-2: 1/r^2 law, cos(alpha) intensity on pixel. """
-
     def __init__(self, resultFileDirectory=".", name=None, rawOutput=False):
-
         generalTest.__init__(
             self,
             testName="2D-FB-2",
@@ -36,10 +36,12 @@ class Test2D_FB_2(generalTest):
             raise Exception("Step must be part of a processing pipeline before it can prepare. Current pipeline: {}".format(self.pipe))
 
         if not self.prepared:
-            self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-FB-2_2021-03-24v06r00dp.json"
+            self.jsonScenarioFile = "2D-FB-2_2021-03-24v06r00dp.json"
 
-            if(self.jsonScenarioFile != None):
-                self.geometry = Geometry(json_file_from_pkg=self.jsonScenarioFile)
+            if(self.jsonScenarioFile is not None):
+                self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+                self.geometry = self.scenario.current_geometry()
+                self.geometry.update()
                 self.analyticalIntensityProfileImage = self.geometry.create_detector_flat_field_analytical()
 
                 # Raise normalized image to maximum grey value of 60000,
@@ -55,7 +57,7 @@ class Test2D_FB_2(generalTest):
         self.prepare()
         self.currentRun += 1
 
-        self.lineNr = int(round(self.geometry.brightest_spot_detector.y))
+        self.lineNr = int(round(self.geometry.brightest_spot_detector.y()))
         log("Getting horizontal profile for detector row {l}.".format(l=self.lineNr))
 
         # Horizontal profile of the analytical image along the central line:
@@ -138,8 +140,8 @@ class Test2D_FB_2(generalTest):
             axUpper.xaxis.set_major_locator(MultipleLocator(100))
             axUpper.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             axUpper.xaxis.set_minor_locator(MultipleLocator(50))
-            axUpper.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            axUpper.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            axUpper.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            axUpper.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             axUpper.legend()
 
             # Absolute Deviation:
@@ -150,8 +152,8 @@ class Test2D_FB_2(generalTest):
             axLower.xaxis.set_major_locator(MultipleLocator(100))
             axLower.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             axLower.xaxis.set_minor_locator(MultipleLocator(50))
-            axLower.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            axLower.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            axLower.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            axLower.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             
             # Relative Deviation:
             axLower2 = axLower.twinx()
@@ -172,5 +174,5 @@ class Test2D_FB_2(generalTest):
             matplotlib.pyplot.savefig(plotFilename)
             fig.clf()
             matplotlib.pyplot.close('all')
-        except:
-            log("Warning: Error plotting results for test {name} using matplotlib.".format(name=self.name, subname=subtestName))
+        except Exception as e:
+            log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")

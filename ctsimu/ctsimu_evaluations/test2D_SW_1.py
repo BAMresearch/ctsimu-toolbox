@@ -438,7 +438,7 @@ class Test2D_SW_1(generalTest):
                 for mode in ("primary", "total"):
                     fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 6))
 
-                    for t in range(0, 4):  # 4 sub tests per detector
+                    for t in range(0, 4):  # 4 sub-tests per detector
                         subDetail = subDetails[t]
 
                         r = dOffset + t
@@ -481,9 +481,9 @@ class Test2D_SW_1(generalTest):
                     ax.set_xticks(xValues, minor=False)
                     ax.set_xticks(mxValues, minor=True)
                     ax.xaxis.set_ticklabels(xLabels)
-                    ax.grid(b=True, which='major', axis='y', color='#d9d9d9', linestyle='dashed')
-                    ax.grid(b=True, which='minor', axis='x', color='#d9d9d9', linestyle='dashed')
-                    ax.grid(b=False, which='major', axis='x')
+                    ax.grid(visible=True, which='major', axis='y', color='#d9d9d9', linestyle='dashed')
+                    ax.grid(visible=True, which='minor', axis='x', color='#d9d9d9', linestyle='dashed')
+                    ax.grid(visible=False, which='major', axis='x')
                     ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 
                     ax.tick_params(axis="x", which="major", length=0, color="#ffffff")
@@ -496,5 +496,5 @@ class Test2D_SW_1(generalTest):
                     fig.clf()
                     matplotlib.pyplot.close('all')
 
-        except:
-            log("Warning: Error plotting results for test {name}, {subname} using matplotlib.".format(name=self.name, subname=subtestName))
+        except Exception as e:
+            log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")

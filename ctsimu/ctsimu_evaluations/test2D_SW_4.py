@@ -138,8 +138,8 @@ class Test2D_SW_4(generalTest):
             ax1.xaxis.set_major_locator(MultipleLocator(20))
             ax1.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             ax1.xaxis.set_minor_locator(MultipleLocator(10))
-            ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax1.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax1.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax1.legend(loc='best')
 
             #ax2.fill_between(xValues, self.results.profiles_nominalfit[1]+tolerance, self.results.profiles_nominalfit[1]-tolerance, facecolor='#ffcc00')
@@ -152,8 +152,8 @@ class Test2D_SW_4(generalTest):
             ax2.xaxis.set_major_locator(MultipleLocator(20))
             ax2.xaxis.set_major_formatter(FormatStrFormatter('%d'))
             ax2.xaxis.set_minor_locator(MultipleLocator(10))
-            ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax2.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax2.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax2.legend(loc='best')
 
             fig.tight_layout()
@@ -162,5 +162,5 @@ class Test2D_SW_4(generalTest):
             matplotlib.pyplot.savefig(plotFilename)
             fig.clf()
             matplotlib.pyplot.close('all')
-        except:
-            log("Warning: Error plotting results for test {name} using matplotlib.".format(name=self.name))
+        except Exception as e:
+            log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")

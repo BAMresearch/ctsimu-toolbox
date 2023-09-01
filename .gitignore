@@ -3,6 +3,7 @@ dist
 ctsimu.egg-info
 docs
 test
+.vscode
 *.log
 *.sublime-project
 *.sublime-workspace

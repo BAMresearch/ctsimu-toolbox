@@ -3,9 +3,8 @@ from ..test import *
 from ..helpers import *
 from ..primitives import *
 from ..image_analysis.mtf import *
+from ..scenario import Scenario
 
-import json
-import pkgutil
 from scipy import optimize
 
 class Test2D_WE_1_results:
@@ -126,18 +125,18 @@ class Test2D_WE_1(generalTest):
         edgeAngle = 3 * (math.pi/180.0)    # 3 deg edge rotation
 
         # point of origin for edge profile (i.e. profile center):
-        edgeOrigin = Vector2D(0, 1)                          # start with unit vector pointing "down"
-        edgeOrigin.rotate(edgeAngle)                         # rotate by edge angle
+        edgeOrigin = Vector(0, 1)                            # start with unit vector pointing "down"
+        edgeOrigin.rotate_2D_xy(edgeAngle)                   # rotate by edge angle
         edgeOrigin.scale(500.5 / math.cos(edgeAngle) / 2.0)  # scale to half of visible edge length
-        edgeOrigin = edgeOrigin + Vector2D(500.5, 500.5)     # move to detector center
+        edgeOrigin = edgeOrigin + Vector(500.5, 500.5)       # move to detector center
 
         #print("Edge origin:")
         #print(edgeOrigin)
 
         self.profileLength = 100.1   # pixels
 
-        edgeDirection = Vector2D(self.profileLength/2, 0)
-        edgeDirection.rotate(edgeAngle)
+        edgeDirection = Vector(self.profileLength/2.0, 0)
+        edgeDirection.rotate_2D_xy(edgeAngle)
 
         self.p0 = edgeOrigin - edgeDirection
         self.p1 = edgeOrigin + edgeDirection
@@ -150,8 +149,6 @@ class Test2D_WE_1(generalTest):
         self.profileWidth = 200  # pixels
         self.profileRes   = 0.1  # pixels
 
-
-
         # Also, prepare the clipping rectangle for the analytical
         # calculation of the ideal edge image. In pixel coordinates.
         A = Vector(   0,    0, 0)
@@ -159,14 +156,12 @@ class Test2D_WE_1(generalTest):
         C = Vector(-300,  300, 0)
         D = Vector(-300,    0, 0)
 
-        rotAxis = Vector(0, 0, 1)
-        #A.rotate(rotAxis, edgeAngle)
-        B.rotate(rotAxis, edgeAngle)
-        C.rotate(rotAxis, edgeAngle)
-        D.rotate(rotAxis, edgeAngle)
+        #A.rotate_2D_xy(edgeAngle)
+        B.rotate_2D_xy(edgeAngle)
+        C.rotate_2D_xy(edgeAngle)
+        D.rotate_2D_xy(edgeAngle)
 
         self.clippingRectangle = Polygon(A, B, C, D)
-
 
     def prepare(self):
         """ Preparations before the test will be run with the images from the pipeline. """
@@ -178,10 +173,13 @@ class Test2D_WE_1(generalTest):
             if not self.prepared:
                 # It doesn't matter which of the sub-scenarios we take here.
                 # They all have the same geometry.
-                self.jsonScenarioFile = "ctsimu_evaluations/scenarios/2D-WE-1_Spot1_2021-10-07v02r02rtr.json"
+                self.jsonScenarioFile = "2D-WE-1_Spot1_2021-10-13v02r04dp.json"
 
-                if(self.jsonScenarioFile != None):
-                    self.geometry = Geometry(json_file_from_pkg=self.jsonScenarioFile)
+                if(self.jsonScenarioFile is not None):
+                    self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                    self.geometry = self.scenario.current_geometry()
+                    self.geometry.update()
 
                     print("Computing an analytical image for an ideal point source...")
                     self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
@@ -230,24 +228,22 @@ class Test2D_WE_1(generalTest):
 
     def prepareRun(self, i):
         if i < len(self.subtests):
-            self.jsonScenarioFile = "scenarios/2D-WE-1_Spot1_2021-10-07v02r02rtr.json"
+            self.jsonScenarioFile = "2D-WE-1_Spot1_2021-10-13v02r04dp.json"
             if self.subtests[i] == "spot1":
-                self.jsonScenarioFile = "scenarios/2D-WE-1_Spot1_2021-10-07v02r02rtr.json"
+                self.jsonScenarioFile = "2D-WE-1_Spot1_2021-10-13v02r04dp.json"
             elif self.subtests[i] == "spot2":
-                self.jsonScenarioFile = "scenarios/2D-WE-1_Spot2_2021-10-07v02r02rtr.json"
+                self.jsonScenarioFile = "2D-WE-1_Spot2_2021-10-13v02r04dp.json"
             else:
                 raise Exception("{key} is not a valid subtest identifier for test scenario {test}".format(key=self.subtests[i], test=self.testName))
 
             results = Test2D_WE_1_results()
 
             # Get the Gaussian spot size and the pixel size from the JSON file:
-            jsonText = pkgutil.get_data(__name__, self.jsonScenarioFile).decode()
+            if self.jsonScenarioFile is not None:
+                scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
 
-            if jsonText != None:
-                jsonDict = json.loads(jsonText)
-
-                results.nominalGaussianSigmaMM = in_mm_json(get_value_or_none(jsonDict, "source", "spot", "sigma", "u"))
-                results.pixelSize = in_mm_json(get_value_or_none(jsonDict, "detector", "pixel_pitch", "u"))
+                results.nominalGaussianSigmaMM = scenario.source.spot.sigma.u.get()
+                results.pixelSize = scenario.detector.pixel_pitch.u.get()
 
                 results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
 
@@ -567,8 +563,8 @@ class Test2D_WE_1(generalTest):
             ax1.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
             ax1.set_title("Edge Spread Function (ESF)")
             #ax1.xaxis.set_ticklabels([])
-            ax1.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax1.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax1.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax1.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax1.legend(loc='best')
 
 
@@ -582,8 +578,8 @@ class Test2D_WE_1(generalTest):
             ax2.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
             ax2.set_title("Line Spread Function (LSF)")
             #ax2.xaxis.set_ticklabels([])
-            ax2.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax2.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax2.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax2.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax2.legend(loc='best')
 
 
@@ -623,8 +619,8 @@ class Test2D_WE_1(generalTest):
             ax3.set_yticks(numpy.array([0, 0.2, 0.4, 0.6, 0.8, 1]))
             ax3.set_title("Modulation Transfer Function (MTF)")
             #ax3.xaxis.set_ticklabels([])
-            ax3.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-            ax3.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+            ax3.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+            ax3.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
             ax3.legend(loc='best')
 
             fig.tight_layout(pad=2.5)
@@ -633,5 +629,5 @@ class Test2D_WE_1(generalTest):
             matplotlib.pyplot.savefig(plotFilename)
             fig.clf()
             matplotlib.pyplot.close('all')
-        except:
-            log("Warning: Error plotting results for test {name}, {subname} using matplotlib.".format(name=self.name, subname=subtestName))
+        except Exception as e:
+            log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")

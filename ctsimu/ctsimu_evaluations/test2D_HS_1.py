@@ -2,8 +2,7 @@
 from ..test import *
 from ..geometry import Vector, in_mm_json
 from ..helpers import *
-import json
-import pkgutil
+from ..scenario import Scenario
 
 class ballCollector():
     """ We will add the circles to the ball collector. It decides which circle is which. """
@@ -38,7 +37,7 @@ class ballCollector():
             ## Create list of connection vectors:
             connectionVectors = []
             for i in range(len(self.circlesUnordered)):
-                connectionVectors.append(Vector.connection(vecFrom=greatCircle, vecTo=self.circlesUnordered[i]))
+                connectionVectors.append(Vector.connection(greatCircle, self.circlesUnordered[i]))
 
             ## Find vector pair with smallest and biggest angle:
             small = None
@@ -97,17 +96,17 @@ class ballCollector():
                 cross = diagonal91.cross(connectionVectors[idx])
 
                 if i < 2: # First vector pair with smallest angle towards diagonal
-                    if cross.z > 0:  # To the "right"
+                    if cross.z() > 0:  # To the "right"
                         self.circlesInOrder[2] = self.circlesUnordered[idx]
                     else:  # To the "left"
                         self.circlesInOrder[4] = self.circlesUnordered[idx]
                 elif i < 4: # Second vector pair with medium-sized angle towards diagonal
-                    if cross.z > 0:  # To the "right"
+                    if cross.z() > 0:  # To the "right"
                         self.circlesInOrder[3] = self.circlesUnordered[idx]
                     else:  # To the "left"
                         self.circlesInOrder[7] = self.circlesUnordered[idx]
                 elif i < 6: # Second vector pair with medium-sized angle towards diagonal
-                    if cross.z > 0:  # To the "right"
+                    if cross.z() > 0:  # To the "right"
                         self.circlesInOrder[6] = self.circlesUnordered[idx]
                     else:  # To the "left"
                         self.circlesInOrder[8] = self.circlesUnordered[idx]
@@ -123,7 +122,7 @@ class ballCollector():
     def nCirclesFound(self):
         n = 0
         for c in self.circlesInOrder:
-            if c != None:
+            if c is not None:
                 n = n+1
 
         return n
@@ -152,11 +151,11 @@ class ballCollector():
                 self.circlesInOrder[i] = connection
 
     def distance(self, a, b):
-        if (a != None) and (b != None):
+        if (a is not None) and (b is not None):
             if (a >= 0) and (a < self.nCircles()):
                 if (b >= 0) and (b < self.nCircles()):
-                    if self.circlesInOrder[a] != None:
-                        if self.circlesInOrder[b] != None:
+                    if self.circlesInOrder[a] is not None:
+                        if self.circlesInOrder[b] is not None:
                             return self.circlesInOrder[a].distance(self.circlesInOrder[b])
                         else:
                             raise Exception("Error: Circle {} not found. Cannot continue with test.".format(b))
@@ -240,19 +239,15 @@ class Test2D_HS_1(generalTest):
 
     def prepare(self):
         """ Preparations before the test will be run with the images from the pipeline. """
-        self.jsonScenarioFile = "scenarios/2D-HS-1_2021-03-24v02r00dp.json"
-        self.prepared = True
+        self.jsonScenarioFile = "2D-HS-1_2021-03-24v02r00dp.json"
 
-        # Get Imax and the SNRmax from the JSON file:
-        jsonText = pkgutil.get_data(__name__, self.jsonScenarioFile).decode()
+        if self.jsonScenarioFile is not None:
+            scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
 
-        if jsonText != None:
-            jsonDict = json.loads(jsonText)
-
-            self.pixelSizeX = in_mm_json(get_value_or_none(jsonDict, "detector", "pixel_pitch", "u"))
-            self.pixelSizeY = in_mm_json(get_value_or_none(jsonDict, "detector", "pixel_pitch", "v"))
-            self.detectorWidthPx  = get_value_or_none(jsonDict, "detector", "columns", "value")
-            self.detectorHeightPx = get_value_or_none(jsonDict, "detector", "rows", "value")
+            self.pixelSizeX = scenario.detector.pixel_pitch.u.get()
+            self.pixelSizeY = scenario.detector.pixel_pitch.v.get()
+            self.detectorWidthPx  = scenario.detector.columns.get()
+            self.detectorHeightPx = scenario.detector.rows.get()
 
             self.detectorWidthMM  = self.detectorWidthPx  * self.pixelSizeX
             self.detectorHeightMM = self.detectorHeightPx * self.pixelSizeY
@@ -269,6 +264,8 @@ class Test2D_HS_1(generalTest):
             self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=-205), R=66)
 
             self.nominalCircles.sortCircles()
+
+            self.prepared = True
 
     def run(self, image):
         self.prepare()
@@ -335,17 +332,22 @@ class Test2D_HS_1(generalTest):
                 # Crop circle:
                 left, right, top, bottom = circleImg.cropROIaroundPoint(x, y, w, h)
                 if self.rawOutput:
-                    circleImg.saveRAW("{dir}/{name}_04_circle_{n:02d}.raw".format(dir=self.resultFileDirectory, name=self.name, n=i), dataType="uint16", addInfo=True)
+                    circleImg.saveRAW(f"{self.resultFileDirectory}/{self.name}_04_circle_{i:02d}.raw", dataType="uint16", addInfo=True)
                 else:
-                    circleImg.save("{dir}/{name}_04_circle_{n:02d}.tif".format(dir=self.resultFileDirectory, name=self.name, n=i), dataType="uint16")
+                    circleImg.save(f"{self.resultFileDirectory}/{self.name}_04_circle_{i:02d}.tif", dataType="uint16")
+
+
 
                 # Fit circle:
                 #log("    Fitting circle...")
                 centerX, centerY, radius, meanDifference, minDifference, maxDifference = circleImg.fitCircle()
+
+                print(f"Left: {left}    Top: {top}  x: {centerX}    y: {centerY}")
+
                 centerX += left
                 centerY += top
 
-                log("    Found: cx={:.4f}, cy={:.4f}, R={:.4f}".format(centerX, centerY, radius))
+                log(f"    Found: cx={centerX:.4f}, cy={centerY:.4f}, R={radius:.4f}")
 
                 # Find the biggest circle. This will be the symmetry breaker.
                 if radius > greatRadius:
@@ -436,7 +438,7 @@ class Test2D_HS_1(generalTest):
 
                     # angular orientation:
                     cross = connection_ideal.cross(connection_real)
-                    if (cross.z < 0) and (abs(angle) < (math.pi - 0.0000001)):
+                    if (cross.z() < 0) and (abs(angle) < (math.pi - 0.0000001)):
                         angle = -abs(angle)
                     else:
                         angle = abs(angle)

@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
 from ..test import *
 from ..helpers import *
-import json
-import pkgutil
+from ..scenario import Scenario
 
 class Test2D_FB_1_results:
     """ Results for one sub test of the noise scenario. """
@@ -54,7 +53,7 @@ class Test2D_FB_1(generalTest):
             self.results = []
             self.xValues = numpy.linspace(0, self.gvMax, self.gvMax, endpoint=False)
 
-            if self.jsonScenarioFile != None:
+            if self.jsonScenarioFile is not None:
                 self.prepared = True
             else:
                 raise Exception("Test {name}: Please provide a JSON scenario description.".format(name=self.name))
@@ -64,20 +63,17 @@ class Test2D_FB_1(generalTest):
     def prepareRun(self, i):
         if i < len(self.subtests):
             if self.subtests[i] == "SNR100":
-                self.jsonScenarioFile = "scenarios/2D-FB-1_Detektor1_SNR100_2021-05-25v06r00dp.json"
+                self.jsonScenarioFile = "2D-FB-1_Detektor1_SNR100_2021-05-25v06r00dp.json"
             elif self.subtests[i] == "SNR250":
-                self.jsonScenarioFile = "scenarios/2D-FB-1_Detektor2_SNR250_2021-05-25v06r00dp.json"
+                self.jsonScenarioFile = "2D-FB-1_Detektor2_SNR250_2021-05-25v06r00dp.json"
             else:
                 raise Exception("{key} is not a valid subtest identifier for test scenario {test}".format(key=self.subtests[i], test=self.testName))
 
-            # Get Imax and the SNRmax from the JSON file:
-            jsonText = pkgutil.get_data(__name__, self.jsonScenarioFile).decode()
+            if self.jsonScenarioFile is not None:
+                scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
 
-            if jsonText != None:
-                jsonDict = json.loads(jsonText)
-
-                self.imax = get_value_or_none(jsonDict, "detector", "grey_value", "imax", "value")
-                snrMax = get_value_or_none(jsonDict, "detector", "noise", "snr_at_imax", "value")
+                self.imax = scenario.detector.gray_value.imax.get()
+                snrMax = scenario.detector.noise.snr_at_imax.get()
 
                 if self.imax is None:
                     raise Exception("Test {name}: Cannot find 'imax' value in JSON scenario description: {json}".format(name=self.name, json=self.jsonScenarioFile))
@@ -204,8 +200,8 @@ class Test2D_FB_1(generalTest):
                 #ax.xaxis.set_major_formatter(FormatStrFormatter('%d'))
                 #ax.xaxis.set_minor_locator(MultipleLocator(50))
                 ax.set_xlim(xStart, xStop)
-                ax.grid(b=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
-                ax.grid(b=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
+                ax.grid(visible=True, which='major', axis='both', color='#d9d9d9', linestyle='dashed')
+                ax.grid(visible=True, which='minor', axis='both', color='#e7e7e7', linestyle='dotted')
                 ax.legend()
 
                 fig.tight_layout(pad=5.0)
@@ -214,8 +210,8 @@ class Test2D_FB_1(generalTest):
                 matplotlib.pyplot.savefig(plotFilename)
                 fig.clf()
                 matplotlib.pyplot.close('all')
-            except:
-                log("Warning: Error plotting results for test {name}, {subname} using matplotlib.".format(name=self.name, subname=subtestName))
+            except Exception as e:
+                log(f"Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}")
 
             log("Evaluation data for test {name}, {subtest} written to {dir}.".format(name=self.name, subtest=subtestName, dir=self.resultFileDirectory))
 

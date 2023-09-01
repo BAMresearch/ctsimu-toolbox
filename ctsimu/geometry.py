@@ -1197,7 +1197,9 @@ class Geometry:
         xaxis = Vector(SOD, 0, 0)
         cera_volume_midpoint = source_in_CERA.center.get_copy()
         cera_volume_midpoint.subtract(xaxis)
-        xaxis.make_unit_vector()
+
+        if xaxis.length() != 0:
+            xaxis.make_unit_vector()
 
         world_volume_midpoint = change_reference_frame_of_point(cera_volume_midpoint, cs_CERA, ctsimu_world)
 
@@ -1682,7 +1684,7 @@ class Geometry:
 
     def triangle_area_on_unit_sphere(self, A, B, C):
         # Source must be at (0, 0, 0) relative to given detector,
-        # and A, B, C must be vectors pointing to ´triangle corners in
+        # and A, B, C must be vectors pointing to triangle corners in
         # world coordinate system.
 
         # Define normals of circular planes, pointing into the
@@ -1742,7 +1744,7 @@ class Geometry:
 
         # Source - Detector distance (SDD) defined by shortest distance between source and detector,
         # or distance between source and spot of highest intensity on detector.
-        SDD = abs(S.center.z)
+        SDD = abs(S.center.z())
 
         # Calculate the area of the theoretical "brightest pixel" on the unit sphere:
         pu = D.pitch_u
@@ -1809,7 +1811,7 @@ class Geometry:
                         pixelPolygon = pixelPolygon.clip(coverPolygon)
 
                     # Remove the intensity covered by the clipping polygon:
-                    pixelPolygon.make_3D(zComponent=SDD)
+                    pixelPolygon.make_3D(z_component=SDD)
                     subarea = self.polygon_area_on_unit_sphere(pixelPolygon)
                     pxSphericalArea -= subarea
 
@@ -1820,7 +1822,7 @@ class Geometry:
 
         # Method #1: renormalize to area of theoretically brightest pixel:
         flatField.divide(areaOfBrightestPixel)
-        if clippedFlatField != None:
+        if clippedFlatField is not None:
             clippedFlatField.divide(areaOfBrightestPixel)
 
         # Method #2: rescale maximum of actual brightest pixel to 1.0:
