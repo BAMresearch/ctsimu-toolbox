@@ -14,10 +14,10 @@ myCT.detector.set_size(
 	pitch_v  = 0.2)
 
 # Calculate the projection matrix:
-P_openCT = myCT.projection_matrix(mode="openCT")
+P_openCT = myCT.projection_matrix(mode="OpenCT")
 P_CERA   = myCT.projection_matrix(mode="CERA")
 
-print("openCT:")
+print("OpenCT:")
 print(P_openCT)
 
 print("CERA:")

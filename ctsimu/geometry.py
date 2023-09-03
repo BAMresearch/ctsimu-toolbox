@@ -1365,14 +1365,14 @@ class Geometry:
         ```
         """
 
-        validModes = ["OpenCT", "CERA"]
+        validModes = ["openct", "cera"]
 
         if mode is not None:
-            if mode in validModes:  # Override imageCS
+            if mode.lower() in validModes:  # Override imageCS
                 image = CoordinateSystem()
                 volume = CoordinateSystem()
 
-                if mode == "OpenCT":
+                if mode.lower() == "openct":
                     """OpenCT places the origin of the image CS at the detector
                     center. The constructor places it at (0,0,0) automatically,
                     so there is nothing to do. Comments for illustration."""
@@ -1389,7 +1389,7 @@ class Geometry:
 
                     volume.w.invert() # mirror reconstruction volume
 
-                elif mode == "CERA":
+                elif mode.lower() == "cera":
                     if self.detector.size_is_set():
                         """CERA places the origin of the image CS in the center
                         of the lower left pixel of the projection image."""

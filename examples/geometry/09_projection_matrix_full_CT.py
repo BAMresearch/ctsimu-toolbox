@@ -46,7 +46,7 @@ for p in range(projections):
 	myCT.update()
 
 	# Calculate a projection matrix for this frame:
-	P_openCT = myCT.projection_matrix(mode="openCT")
+	P_openCT = myCT.projection_matrix(mode="OpenCT")
 	P_CERA   = myCT.projection_matrix(mode="CERA")
 
 	# Add to list of projection matrices:
@@ -62,7 +62,7 @@ myCT.restore()
 # openCT configuration:
 # ----------------------
 # Write the openCT configuration file, including the projection matrices:
-create_openCT_config(
+create_OpenCT_config(
 	geo=myCT,
 	filename="example_09/recon_openCT.json",
 	projection_files=projection_filenames,

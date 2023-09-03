@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
-"""Tools to set up, read and write [CTSimU scenarios].
-[CTSimU scenarios]: https://bamresearch.github.io/ctsimu-scenarios
+"""Read, write, handle and manipulate a CTSimU scenario.
+
+.. include:: ./documentation.md
 """
 
 import math
@@ -22,7 +23,64 @@ from .material import Material
 from .metadata import Metadata
 
 class Scenario:
+    """Representation of a CTSimU scenario. Reads, writes, manages
+    and manipulates scenarios.
+
+    Attributes
+    ----------
+    detector : ctsimu.scenario.detector.Detector
+        Detector object of the scenario.
+
+    source : ctsimu.scenario.source.Source
+        X-ray source object of the scenario.
+
+    stage : ctsimu.scenario.stage.Stage
+        Sample stage object of the scenario.
+
+    samples : list
+        List of samples in the scenario, each an object of class
+        `ctsimu.scenario.sample.Sample`.
+
+    file : ctsimu.scenario.file.File
+        Information about the scenario file.
+
+    environment : ctsimu.scenario.environment.Environment
+        Environment properties of the scenario.
+
+    acquisition : ctsimu.scenario.acquisition.Acquisition
+        CT acquisition parameters.
+
+    materials : list
+        List of materials used in the scenario, each an object of
+        class `ctsimu.scenario.material.Material`.
+
+    simulation : dict
+        Dictionary of simulation software-specific properties
+        from the scenario file.
+
+    metadata : ctsimu.scenario.metadata.Metadata
+        Metadata information about projection images and
+        the reconstruction volume. This information depends on the output
+        of the CT scanner or simulation software, not on the scenario
+        itself.
+    """
     def __init__(self, filename:str=None, json_dict:dict=None):
+        """The scenario can optionally constructed by passing the path to
+        a scenario file or by passing a Python dictionary that contains
+        scenario information:
+
+        Parameters
+        ----------
+        filename : str, optional
+            Path to a [CTSimU scenario] file.
+            [CTSimU scenario]: https://bamresearch.github.io/ctsimu-scenarios
+
+        json_dict : dict, optional
+            A Python dictionary containing a CTSimU scenario.
+            The dictionary must obey the same structure as a
+            CTSimU JSON scenario file.
+        """
+
         self.detector = Detector(_root=self)
         self.source   = Source(_root=self)
         self.stage    = Stage(_root=self)
@@ -409,7 +467,6 @@ class Scenario:
             metadata_dict["simulation"]["ctsimu_scenario"] = self.json_dict()
             write_json_file(filename=filename, dictionary=metadata_dict)
 
-
     def get(self, key:list) -> float | str | bool:
         """Get the current value of the parameter identified by a list of keys.
 
@@ -450,7 +507,7 @@ class Scenario:
         Returns
         -------
         abs_path : str
-            Absolute path to the referred external file.
+            Absolute path to the referenced external file.
         """
         if os.path.isabs(filename):
             # Already absolute path?
