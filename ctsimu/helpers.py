@@ -66,12 +66,13 @@ def is_version_supported(supported_version:dict, version_to_test:dict) -> bool:
         If the given version number is supported by the toolbox scenario module.
     """
 
-    if supported_version["major"] > version_to_test["major"]:
-        return True
-
-    if supported_version["major"] == version_to_test["major"]:
-        if supported_version["minor"] >= version_to_test["minor"]:
+    if (version_to_test is not None) and (supported_version is not None):
+        if supported_version["major"] > version_to_test["major"]:
             return True
+
+        if supported_version["major"] == version_to_test["major"]:
+            if supported_version["minor"] >= version_to_test["minor"]:
+                return True
 
     return False
 

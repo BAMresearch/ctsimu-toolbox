@@ -94,6 +94,20 @@ class Scenario:
             raise Exception("Scenario: read() function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.")
             return False
 
+        # If a file is read, we want to make sure that it is a valid
+        # and supported scenario file:
+        if isinstance(json_dict, dict):
+            file_type = get_value(json_dict, ["file", "file_type"])
+            if file_type != "CTSimU Scenario":
+                raise Exception(f"Invalid scenario structure: the string 'CTSimU Scenario' was not found in 'file.file_type' in the scenario file {file}.")
+
+            file_format_version = get_value(json_dict, ["file", "file_format_version"])
+            if not is_version_supported(ctsimu_supported_scenario_version, file_format_version):
+                raise Exception(f"Unsupported or invalid metadata version. Currently supported: up to {ctsimu_supported_metadata_version['major']}.{ctsimu_supported_metadata_version['minor']}.")
+        else:
+            raise Exception(f"Error when reading the scenario file: {filename}. read_json_file did not return a Python dictionary.")
+
+
         self.detector.set_from_json(json_dict)
         self.source.set_from_json(json_dict)
         self.stage.set_from_json(json_dict)
@@ -165,59 +179,61 @@ class Scenario:
         """
         if filename is not None:
             json_dict = read_json_file(filename=filename)
-
-            # If a file is read, we want to make sure that it is a valid
-            # and supported metadata file:
-            if isinstance(json_dict, dict):
-                file_type = get_value(json_dict, ["file", "file_type"])
-                if file_type != "CTSimU Metadata":
-                    raise Exception(f"Invalid metadata structure: the string 'CTSimU Metadata' was not found in 'file.file_type' in the metadata file {file}.")
-            else:
-                raise Exception(f"Error when reading the metadata file: {filename}")
-
             self.current_metadata_path = filename
             self.current_metadata_directory = os.path.dirname(filename)
             self.current_metadata_file = os.path.basename(filename)
             self.current_metadata_basename, extension = os.path.splitext(self.current_metadata_file)
 
-        if json_dict is not None:
-            # If we get a `json_dict` as function parameter, we do not
-            # test for a valid version because reduced/simplified metadata
-            # structures should be supported as well.
-            self.metadata.set_from_json(json_dict)
-            self.metadata_is_set = True
+        # If a file is read, we want to make sure that it is a valid
+        # and supported metadata file:
+        if isinstance(json_dict, dict):
+            file_type = get_value(json_dict, ["file", "file_type"])
+            if file_type != "CTSimU Metadata":
+                raise Exception(f"Invalid metadata structure: the string 'CTSimU Metadata' was not found in 'file.file_type' in the metadata file {file}.")
 
-            if import_referenced_scenario:
-                # Import the scenario that's referenced in the metadata file.
-                ref_file = self.metadata.get(["acquisition_geometry", "path_to_CTSimU_JSON"])
+            fileformatversion = get_value(json_dict, ["file", "file_format_version"])
+            if not is_version_supported(ctsimu_supported_metadata_version, fileformatversion):
+                raise Exception(f"Unsupported or invalid metadata version. Currently supported: up to {ctsimu_supported_metadata_version['major']}.{ctsimu_supported_metadata_version['minor']}.")
+        else:
+            raise Exception(f"Error when reading the metadata file: {filename}. read_json_file did not return a Python dictionary.")
 
+        # If we get a `json_dict` as function parameter, we do not
+        # test for a valid version because reduced/simplified metadata
+        # structures should be supported as well.
+        self.metadata.set_from_json(json_dict)
+        self.metadata_is_set = True
+
+        if import_referenced_scenario:
+            # Import the scenario that's referenced in the metadata file.
+            ref_file = self.metadata.get(["acquisition_geometry", "path_to_CTSimU_JSON"])
+
+            import_success = False
+
+            try:
+                if (ref_file is not None) and (ref_file != ""):
+                    if isinstance(ref_file, str):
+                        ref_file = abspath_of_referenced_file(self.current_metadata_path, ref_file)
+                    else:
+                        raise Exception("read_metadata: path_to_CTSimU_JSON is not a string.")
+
+                    # Try to import scenario:
+                    self.read(filename=ref_file)
+                    import_success = True
+            except Exception as e:
+                warnings.warn(str(e))
                 import_success = False
 
-                try:
-                    if (ref_file is not None) and (ref_file != ""):
-                        if isinstance(ref_file, str):
-                            ref_file = abspath_of_referenced_file(self.current_metadata_path, ref_file)
-                        else:
-                            raise Exception("read_metadata: path_to_CTSimU_JSON is not a string.")
+            if not import_success:
+                # Try to import the embedded scenario structure.
+                if json_exists_and_not_null(json_dict, ["simulation", "ctsimu_scenario"]):
+                    self.read(json_dict=json_dict["simulation"]["ctsimu_scenario"])
+                    import_success = True
 
-                        # Try to import scenario:
-                        self.read(filename=ref_file)
-                        import_success = True
-                except Exception as e:
-                    warnings.warn(str(e))
-                    import_success = False
-
-                if not import_success:
-                    # Try to import the embedded scenario structure.
-                    if json_exists_and_not_null(json_dict, ["simulation", "ctsimu_scenario"]):
-                        self.read(json_dict=json_dict["simulation"]["ctsimu_scenario"])
-                        import_success = True
-
-                # Create default metadata in case the original
-                # metadata file did not contain all information that's needed:
-                self.create_default_metadata()
-                # Re-import metadata:
-                self.metadata.set_from_json(json_dict)
+            # Create default metadata in case the original
+            # metadata file did not contain all information that's needed:
+            self.create_default_metadata()
+            # Re-import metadata:
+            self.metadata.set_from_json(json_dict)
 
 
     def create_default_metadata(self):

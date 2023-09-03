@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""
+Quick metdata-based post-processing with simple commands.
+
+.. include:: ./toolbox.md
+"""
 import os
 import shutil
 from datetime import datetime
@@ -31,7 +36,7 @@ class Toolbox:
             self.standardize(*args)
         elif operation == "recon_config":
             self.recon_config(*args, **kwargs)
-        elif operation == "post-processing":
+        elif (operation == "post-processing") or (operation == "post_processing"):
             self.post_processing(*args, **kwargs)
         elif operation.startswith("2D-"):
             # Possibly a 2D test... try it!
@@ -73,8 +78,8 @@ class Toolbox:
             + `rescaleFactor` : float
 
                 Rescale factor after flat-field division. If `None`, the value
-                will be imported from key `max_intensity` in metadata file,
-                or set to `60000` if this fails.
+                will be imported from the key `max_intensity` in the metadata
+                file, or set to `60000` if this fails.
 
                 Standard value: `None`
 
@@ -110,8 +115,11 @@ class Toolbox:
 
         for metadata_file in metadata_files:
             # Prepare a pipeline
-            pipeline = self.get_ff_pipeline_from_metadata(metadata_file, settings["rescaleFactor"], settings["offsetAfterRescale"])
-            pipeline.run(overwrite=settings["overwrite"])
+            try:
+                pipeline = self.get_ff_pipeline_from_metadata(metadata_file, settings["rescaleFactor"], settings["offsetAfterRescale"])
+                pipeline.run(overwrite=settings["overwrite"])
+            except Exception as e:
+                log(f"Error: {metadata_file}: {str(e)}")
 
         return True
 
@@ -268,11 +276,9 @@ class Toolbox:
 
                 return pipeline
             else:
-                log(f"Metadata file does not exist: {metadata_file}")
-                return False
+                raise Exception(f"Metadata file does not exist: {metadata_file}")
         else:
-            log(f"Invalid metadata file path: {metadata_file}")
-            return False
+            raise Exception(f"Invalid metadata file path: {metadata_file}")
 
     def standardize(self, *scenario_files, **kwargs):
         """Standardize CTSimU scenario files to the
@@ -309,25 +315,27 @@ class Toolbox:
                         log(f"   {scenario_file_old}")
                         continue
                     else:
-                        # Backup previous file:
-                        shutil.copy2(scenario_file, scenario_file_old)
+                        try:
+                            # Try to read scenario:
+                            s = Scenario(scenario_file)
 
-                        # Check if backup exists:
-                        if os.path.exists(scenario_file_old):
-                            try:
-                                s = Scenario(scenario_file)
+                            # Backup previous file:
+                            shutil.copy2(scenario_file, scenario_file_old)
+
+                            # Check if backup exists:
+                            if os.path.exists(scenario_file_old):
                                 s.file.date_changed.set(now.strftime("%Y-%m-%d"))
                                 s.file.file_format_version.major.set(ctsimu_supported_scenario_version["major"])
                                 s.file.file_format_version.minor.set(ctsimu_supported_scenario_version["minor"])
                                 s.write(scenario_file)
-                            except Exception as e:
-                                log(f"   Error: {str(e)}")
-                        else:
-                            raise Exception(f"Failed to create scenario backup file: {scenario_file_old}")
+                            else:
+                                raise Exception(f"Failed to create scenario backup file: {scenario_file_old}")
+                        except Exception as e:
+                            log(f"   Error: {str(e)}")
                 else:
-                    raise Exception(f"File not found: '{scenario_file}'")
+                    log(f"   Error: file not found: '{scenario_file}'")
             else:
-                raise Exception(f"Not a scenario file: '{scenario_file}'")
+                log(f"   Error: not a scenario file: '{scenario_file}'")
 
     def recon_config(self, *metadata_files, **kwargs):
         """Create reconstruction configuration files for
@@ -396,49 +404,53 @@ class Toolbox:
                 settings[key] = value
 
         for metadata in metadata_files:
-            s = Scenario()
-            s.read_metadata(filename=metadata, import_referenced_scenario=True)
+            try:
+                log(f"Creating recon config for: {metadata}")
+                s = Scenario()
+                s.read_metadata(filename=metadata, import_referenced_scenario=True)
 
-            recon_config_dir, recon_config_metafile = os.path.split(metadata)
+                recon_config_dir, recon_config_metafile = os.path.split(metadata)
 
-            basename, extension = os.path.splitext(recon_config_metafile)
+                basename, extension = os.path.splitext(recon_config_metafile)
 
-            # Remove '_metadata' from basename:
-            basename = basename.replace("_metadata", "")
+                # Remove '_metadata' from basename:
+                basename = basename.replace("_metadata", "")
 
-            if settings["cera"] is True:
-                cera_filename = basename + "_cera.config"
-                cera_filepath = join_dir_and_filename(recon_config_dir, cera_filename)
-                cera_write = True
-                if os.path.exists(cera_filepath):
-                    if settings["overwrite"] is False:
-                        cera_write = False
+                if settings["cera"] is True:
+                    cera_filename = basename + "_cera.config"
+                    cera_filepath = join_dir_and_filename(recon_config_dir, cera_filename)
+                    cera_write = True
+                    if os.path.exists(cera_filepath):
+                        if settings["overwrite"] is False:
+                            cera_write = False
 
-                if cera_write is True:
-                    log(f"Writing CERA config files to:   '{recon_config_dir}' ...")
-                    s.write_CERA_config(
-                        save_dir=recon_config_dir,
-                        basename=f"{basename}_cera",
-                        create_vgi=settings["create_vgi"]
-                        )
+                    if cera_write is True:
+                        log(f"  Writing CERA config files to:   '{recon_config_dir}' ...")
+                        s.write_CERA_config(
+                            save_dir=recon_config_dir,
+                            basename=f"{basename}_cera",
+                            create_vgi=settings["create_vgi"]
+                            )
 
-            if settings["openct"] is True:
-                openct_filename = basename + "_openCT.json"
-                openct_filepath = join_dir_and_filename(recon_config_dir, openct_filename)
-                openct_write = True
-                if os.path.exists(openct_filepath):
-                    if settings["overwrite"] is False:
-                        openct_write = False
+                if settings["openct"] is True:
+                    openct_filename = basename + "_openCT.json"
+                    openct_filepath = join_dir_and_filename(recon_config_dir, openct_filename)
+                    openct_write = True
+                    if os.path.exists(openct_filepath):
+                        if settings["overwrite"] is False:
+                            openct_write = False
 
-                if openct_write is True:
-                    log(f"Writing OpenCT config files to: '{recon_config_dir}' ...")
-                    s.write_OpenCT_config(
-                        save_dir=recon_config_dir,
-                        basename=f"{basename}_openCT",
-                        create_vgi=settings["create_vgi"],
-                        variant=settings["openct_variant"],
-                        abspaths=settings["openct_abspaths"]
-                        )
+                    if openct_write is True:
+                        log(f"  Writing OpenCT config files to: '{recon_config_dir}' ...")
+                        s.write_OpenCT_config(
+                            save_dir=recon_config_dir,
+                            basename=f"{basename}_openCT",
+                            create_vgi=settings["create_vgi"],
+                            variant=settings["openct_variant"],
+                            abspaths=settings["openct_abspaths"]
+                            )
+            except Exception as e:
+                log(f"   Error: {metadata}: {str(e)}")
 
     def post_processing(self, *directories, **kwargs):
         """Run post-processing recursively on whole directories.
@@ -463,8 +475,8 @@ class Toolbox:
             + `rescaleFactor` : `float`
 
                 Rescale factor after flat-field division. If `None`, the value
-                will be imported from key `max_intensity` in metadata file,
-                or set to `60000` if this fails.
+                will be imported from the key `max_intensity` in the metadata
+                file, or set to `60000` if this fails.
 
                 Standard value: `None`
 

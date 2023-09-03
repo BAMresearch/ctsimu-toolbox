@@ -2,8 +2,6 @@
 """
 Coordinate systems, transformations and projection matrix functionality.
 
-This geometry module relies on basic objects like vectors and matrices from the `ctsimu.primitives` module.
-
 .. include:: ./geometry.md
 """
 
