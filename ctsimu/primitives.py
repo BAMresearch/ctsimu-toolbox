@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-"""Basic structures for linear algebra and geometry: vectors, matrices, lines and polygons."""
+"""Structures for linear algebra and geometry: vectors, matrices, lines and polygons."""
 
 import math
 import numpy

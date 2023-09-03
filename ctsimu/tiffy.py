@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
-
+"""
+TIFF image reader and writer.
+"""
 # Version 0.1 (2020-09-29)
 
 import os      # to check for files

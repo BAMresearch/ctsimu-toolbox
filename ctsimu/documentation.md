@@ -1,32 +1,41 @@
 Features
 ========
 
-In its current version, the toolbox can be used for the following tasks:
+The toolbox provides the following main submodules, each designed
+for a different task.
 
-Image conversion
-----------------
-For image conversion, an "empty" `ctsimu.processing.pipeline` can be used. The following properties can be converted:
+Quick access
+------------
+The **`ctsimu.toolbox`** sub-module provides a simplified interface to the most
+commonly used functionality. It reads [CTSimU scenario description files]
+and [metadata files] to carry out the following tasks:
+
+* Flat-field correction,
+* Create reconstruction configuration files,
+* Standardize or update scenario description files to the latest file format version,
+* Run recursive post-processing on whole directory trees (batch processing).
+
+Image conversion & processing
+------------------------------
+The **`ctsimu.processing`** sub-module provides image processing pipelines that
+can be used to convert stacks of projection images into different formats.
+The following properties can be converted:
 
 * Image format conversion (RAW, TIFF),
 * Data type conversion (int, float),
 * Representation conversion (multi-file slice stacks, single-file RAW volume chunks).
 
- For details, refer to the documentation of the `ctsimu.processing` module.
-
-Image processing
-----------------
-For image processing, processing steps can be added to the pipeline. Currently, there are processing steps for
+Additional processing steps can be added to a pipeline: this will alter the
+images before they are saved. Currently, there are processing steps for
 
 * Flat-field and dark-field correction with provided gain/offset files,
 * Pixel binning,
 * Median filter,
 * Transformations: rotations, flipping.
 
-You can find out more in the documentation of the `ctsimu.processing` module.
-
 Image quality assessment
 ------------------------
-The `ctsimu.image_analysis` module currently provides functions for:
+The **`ctsimu.image_analysis`** sub-module currently provides functions for:
 
 * Line profiles,
 * `ctsimu.image_analysis.mtf`: Calculation of the modulation transfer function (MTF) from an edge image,
@@ -34,7 +43,7 @@ The `ctsimu.image_analysis` module currently provides functions for:
 
 Geometry tools
 --------------
-The `ctsimu.geometry` module provides tools for
+The **`ctsimu.geometry`** sub-module provides tools for
 
 * Virtual representation and manipulation of a CT scene in Python,
 * Importing CT geometries from [CTSimU scenario description files],
@@ -42,6 +51,7 @@ The `ctsimu.geometry` module provides tools for
 * Calculation of projection matrices.
 
 [CTSimU scenario description files]: https://bamresearch.github.io/ctsimu-scenarios
+[metadata files]: https://bamresearch.github.io/ctsimu-scenarios/metadata.html
 
 
 Getting started
