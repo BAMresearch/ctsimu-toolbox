@@ -44,7 +44,7 @@ class Scenevector:
 		native_unit : str, optional
 			The native unit of the vector's components. Standard is `None`,
 			but `"mm"` would make sense for positions in space.
-			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 		"""
 		self._root = _root  # root scenario object
 		
@@ -103,7 +103,7 @@ class Scenevector:
 		native_unit : str
 			The native unit of the vector's components. Standard is `None`,
 			but `"mm"` would make sense for positions in space.
-			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 		"""
 		if is_valid_native_unit(native_unit):
 			self.c0.set_native_unit(native_unit)

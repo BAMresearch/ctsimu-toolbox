@@ -23,7 +23,7 @@ class Parameter:
 
     native_unit : str
         The parameter's native unit.
-        Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+        Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
     preferred_unit : str
         The unit by which the value is represented in a JSON scenario file.
@@ -61,7 +61,7 @@ class Parameter:
 
         native_unit : str
             The parameter's native unit.
-            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
         simple : bool
             Set to `True` if the parameter is represented
@@ -126,13 +126,11 @@ class Parameter:
                 if self.preferred_unit is not None:
                     unit = self.preferred_unit
 
-                    if self.standard_value is not None:
-                        if isinstance(self.standard_value, numbers.Number):
-                            # Convert value to preferred unit:
-                            conversion_factor = convert_to_native_unit(given_unit=self.preferred_unit, native_unit=self.native_unit, value=1)
-
-                            if conversion_factor != 0:
-                                jd["value"] /= conversion_factor
+                    # Convert value to preferred unit:
+                    jd["value"] = convert_to_preferred_unit(
+                        preferred_unit=self.preferred_unit,
+                        native_unit=self.native_unit,
+                        value=jd["value"])
 
                 jd["unit"] = unit
 
@@ -145,14 +143,11 @@ class Parameter:
                     if self.preferred_uncertainty_unit is not None:
                         uncertainty_unit = self.preferred_uncertainty_unit
 
-                        if self.uncertainty is not None:
-                            if isinstance(self.uncertainty, numbers.Number):
-                                # Convert value to preferred unit:
-                                conversion_factor = convert_to_native_unit(given_unit=self.preferred_uncertainty_unit, native_unit=self.native_unit, value=1)
-
-                                if conversion_factor != 0:
-                                    jd["uncertainty"]["value"] /= conversion_factor
-
+                        # Convert uncertainty to preferred unit:
+                        jd["uncertainty"]["value"] = convert_to_preferred_unit(
+                            preferred_unit=self.preferred_uncertainty_unit,
+                            native_unit=self.native_unit,
+                            value=jd["uncertainty"]["value"])
 
                     jd["uncertainty"]["unit"] = uncertainty_unit
 
@@ -284,7 +279,7 @@ class Parameter:
         ----------
         native_unit : str
             New native unit for the parameter.
-            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
         """
         if is_valid_native_unit(native_unit):
             self.native_unit = native_unit

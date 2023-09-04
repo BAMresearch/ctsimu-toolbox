@@ -24,7 +24,7 @@ class Drift:
 	native_unit : str
 		The drift's native unit. Should match the native unit of the
 		`ctsimu.scenario.parameter.Parameter` object to which this drift belongs.
-		Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+		Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
 	known_to_reconstruction : bool
 		Should this parameter drift be considered by the reconstruction software?
@@ -46,7 +46,7 @@ class Drift:
 		native_unit : str
 			The drift's native unit. Should match the native unit of the
 			`ctsimu.scenario.parameter.Parameter` object to which this drift belongs.
-			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
 		preferred_unit : str
 			Preferred unit to represent these drift values in the JSON file.
@@ -134,7 +134,7 @@ class Drift:
 		----------
 		native_unit : str
 			New native unit for the drift.
-			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+			Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 		"""
 		if is_valid_native_unit(native_unit):
 			self.native_unit = native_unit

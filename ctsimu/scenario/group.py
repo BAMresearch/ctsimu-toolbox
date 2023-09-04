@@ -189,7 +189,7 @@ class Group:
 
         native_unit : str, optional
             The native unit of the property.
-            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
         simple : bool
             Set to `True` if the parameter is represented
@@ -287,7 +287,7 @@ class Group:
         native_unit : str
             Native unit for the new parameter. Only necessary if the parameter
             for the given `key` does not yet exist.
-            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
         fail_value : float or str or bool, optional
             Value to be used if no value can be found in the given `dictionary`
@@ -359,7 +359,7 @@ class Group:
         native_unit : str
             Native unit for the new parameter. Only necessary if the parameter
             for the given `key` does not yet exist.
-            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
         Returns
         -------
@@ -418,7 +418,7 @@ class Group:
         native_unit : str
             Native unit for the new parameter. Only necessary if the parameter
             for the given `key` does not yet exist.
-            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+            Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`, `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
         fail_value : float or str or bool, optional
             Value to be used if no value can be found in the given `dictionary`

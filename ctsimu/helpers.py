@@ -5,6 +5,7 @@ import math
 import csv
 import pkgutil
 import numpy
+import numbers
 from scipy import optimize, fft
 
 ctsimu_supported_scenario_version = {
@@ -90,9 +91,9 @@ def log(message:str):
 # JSON Handling
 # ----------------
 valid_native_units = [
-        None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "deg/s", "bool", "string"
+        None, "mm", "rad", "deg", "s", "mA", "kV", "g/cm^3", "lp/mm", "deg/s", "C", "bool", "string"
     ]
-valid_dummy_units = ["px", "1/J", "C", "F", "K", "relative"] # units that are not converted
+valid_dummy_units = ["px", "1/J", "relative"] # units that are not converted
 native_units_to_omit_in_json_file = [None, "bool", "string"]
 
 def is_valid_native_unit(native_unit:str) -> bool:
@@ -1051,6 +1052,102 @@ def in_lp_per_mm(value:float, unit:str) -> float:
 
     raise ValueError(f"Not a valid unit for resolution: '{unit}'.")
 
+def in_celsius(value:float, unit:str) -> float:
+    """Convert a temperature to degree Celsius.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"C"`, `"K"`, `"F"`
+
+    Returns
+    -------
+    value_in_celsius : float
+        The value converted to degree Celsius,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit for temperature.
+    """
+    if value is not None:
+        if unit == "C": return value
+        if unit == "K": return (value - 273.15)
+        if unit == "F": return (value - 32) * 5.0/9.0
+    else:
+        return None
+
+    raise ValueError(f"Not a valid unit for temperature: '{unit}'.")
+
+def in_kelvin(value:float, unit:str) -> float:
+    """Convert a temperature to Kelvin.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"C"`, `"K"`, `"F"`
+
+    Returns
+    -------
+    value_in_kelvin : float
+        The value converted to Kelvin,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit for temperature.
+    """
+    if value is not None:
+        if unit == "C": return (value + 273.15)
+        if unit == "K": return value
+        if unit == "F": return (value + 459.67) * 5.0/9.0
+    else:
+        return None
+
+    raise ValueError(f"Not a valid unit for temperature: '{unit}'.")
+
+def in_fahrenheit(value:float, unit:str) -> float:
+    """Convert a temperature to Fahrenheit.
+
+    Parameters
+    ----------
+    value : float
+        The value to convert.
+
+    unit : str
+        The value's current unit.
+        Options are: `"C"`, `"K"`, `"F"`
+
+    Returns
+    -------
+    value_in_fahrenheit : float
+        The value converted to Fahrenheit,
+        or 'None' if the original value was `None`.
+
+    Raises
+    ------
+    ValueError
+        If the given `unit` is not a valid unit for temperature.
+    """
+    if value is not None:
+        if unit == "C": return (value * 9.0/5.0) + 32.0
+        if unit == "K": return (value * 9.0/5.0) - 459.67
+        if unit == "F": return value
+    else:
+        return None
+
+    raise ValueError(f"Not a valid unit for temperature: '{unit}'.")
+
 def from_bool(value) -> bool:
     """Convert `value` into a true Python boolean.
     (For example, `1` becomes `True`, and `0` becomes `False`.)
@@ -1106,7 +1203,7 @@ def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> floa
     native_unit : str
         The native unit into which the value must be converted.
         Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`,
-        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
     value : float or str or bool
         Value to convert.
@@ -1137,6 +1234,7 @@ def convert_to_native_unit(given_unit:str, native_unit:str, value:float) -> floa
         if native_unit == "deg/s":  return in_deg_per_s(value, given_unit)
         if native_unit == "g/cm^3": return in_g_per_cm3(value, given_unit)
         if native_unit == "lp/mm":  return in_lp_per_mm(value, given_unit)
+        if native_unit == "C":      return in_celsius(value, given_unit)
         if native_unit == "bool":   return from_bool(value)
 
     raise ValueError(f"Native unit '{native_unit}' is incompatible with the given unit '{given_unit}'.")
@@ -1159,7 +1257,7 @@ def json_convert_to_native_unit(native_unit:str, value_and_unit:dict, fallback_j
     native_unit : str
         The native unit into which the value will be converted.
         Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`,
-        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
     value_and_unit : dict
         Dictionary that specifies a `"value"` and a `"unit"`,
@@ -1212,6 +1310,49 @@ def json_convert_to_native_unit(native_unit:str, value_and_unit:dict, fallback_j
 
     raise ValueError(f"Failed to convert a value to '{native_unit}': no valid value/unit pair is provided from the JSON object.")
 
+def convert_to_preferred_unit(preferred_unit:str, native_unit:str, value:float):
+    """Convert a value from its native unit to the
+    preferred unit.
+
+    Parameters
+    ----------
+    preferred_unit : str
+        Preferred unit to be returned.
+
+    native_unit : str
+        Value's current native unit.
+
+    value : float
+        Value in its native unit.
+
+    Returns
+    -------
+    value : float
+        Value in preferred unit.
+    """
+    if value is not None:
+        if isinstance(value, numbers.Number):
+            # Catch temperatures (with non-scaling conversions):
+            if preferred_unit == "C":
+                return in_celsius(value, native_unit)
+            elif preferred_unit == "K":
+                return in_kelvin(value, native_unit)
+            elif preferred_unit == "F":
+                return in_fahrenheit(value, native_unit)
+            else:
+                # Find conversion factor to native:
+                conversion_factor = convert_to_native_unit(
+                    given_unit=preferred_unit,
+                    native_unit=native_unit,
+                    value=1)
+
+                # Conversion factor to preferred unit is
+                # just the inverse:
+                if conversion_factor != 0:
+                    return value / conversion_factor
+
+    return value
+
 def get_value_in_native_unit(native_unit:str, dictionary:dict, keys:list, fail_value=None) -> float | str | bool:
     """Get a parameter value in the `native_unit`,
     located at a sequence of `keys` in a given `dictionary`.
@@ -1221,7 +1362,7 @@ def get_value_in_native_unit(native_unit:str, dictionary:dict, keys:list, fail_v
     native_unit : str
         The native unit into which the value will be converted.
         Possible values: `None`, `"mm"`, `"rad"`, `"deg"`, `"s"`, `"mA"`,
-        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"bool"`, `"string"`.
+        `"kV"`, `"g/cm^3"`, `"lp/mm"`, `"deg/s"`, `"C"`, `"bool"`, `"string"`.
 
     dictionary : dict
         Dictionary representation of the JSON structure.
