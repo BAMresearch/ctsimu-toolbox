@@ -141,6 +141,7 @@ class Scenario:
             Default value: `None`
         """
         self.current_scenario_path = None
+        self.reset()
 
         if filename is not None:
             json_dict = read_json_file(filename=filename)
@@ -192,6 +193,10 @@ class Scenario:
 
         if not self.metadata_is_set:
             self.create_default_metadata()
+
+    def reset(self):
+        for group in self.subgroups:
+            group.reset()
 
     def reset_metadata(self):
         """Reset scenario's metadata information."""

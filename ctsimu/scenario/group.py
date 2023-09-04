@@ -532,6 +532,9 @@ class Array(Group):
         for element in self._elements:
             element.reset()
 
+        # Clear array:
+        self._elements = []
+
     def json_dict(self) -> list:
         jd = list()
         for element in self._elements:
