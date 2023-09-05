@@ -76,14 +76,14 @@ class CoordinateSystem:
 
         Parameters
         ----------
-        center : Vector
+        center : ctsimu.primitives.Vector
             Object's center point in reference coordinate system,
             origin of local {u,v,w} coordinate system.
 
-        u : Vector
+        u : ctsimu.primitives.Vector
             Basis vector u in terms of reference coordinate system.
 
-        w : Vector
+        w : ctsimu.primitives.Vector
             Basis vector w in terms of reference coordinate system.
 
         Notes
@@ -193,7 +193,7 @@ class CoordinateSystem:
 
         Parameters
         ----------
-        translation_vector : Vector
+        translation_vector : ctsimu.primitives.Vector
             Vector by which the object's center point should be shifted.
             Its components are added to the center's components.
         """
@@ -204,7 +204,7 @@ class CoordinateSystem:
 
         Parameters
         ----------
-        direction : Vector
+        direction : ctsimu.primitives.Vector
             Vector along which the center point should be shifted.
             It must not be a unit vector.
 
@@ -285,7 +285,7 @@ class CoordinateSystem:
 
         Parameters
         ----------
-        axis : Vector
+        axis : ctsimu.primitives.Vector
             The axis of rotation, in terms of the object's
             reference coordinate system.
 
@@ -305,13 +305,13 @@ class CoordinateSystem:
 
         Parameters
         ----------
-        axis : Vector
+        axis : ctsimu.primitives.Vector
             Rotation axis, in terms of the object's reference coordinate system.
 
         angle : float
             Rotation angle (in rad).
 
-        pivot : Vector
+        pivot : ctsimu.primitives.Vector
             Pivot point, in terms of the object's reference coordinate system.
         """
 
@@ -519,7 +519,7 @@ def basis_transform_matrix(cs_from:'CoordinateSystem', cs_to:'CoordinateSystem')
 
     Returns
     -------
-    T : Matrix
+    T : ctsimu.primitives.Matrix
         The 3x3 basis transformation matrix.
 
     References
@@ -552,7 +552,7 @@ def change_reference_frame_of_direction(direction:'Vector', cs_from:'CoordinateS
 
     Parameters
     ----------
-    direction : Vector
+    direction : ctsimu.primitives.Vector
         Direction in terms of `cs_from`.
 
     cs_from : CoordinateSystem
@@ -563,7 +563,7 @@ def change_reference_frame_of_direction(direction:'Vector', cs_from:'CoordinateS
 
     Returns
     -------
-    direction_in_cs_to : Vector
+    direction_in_cs_to : ctsimu.primitives.Vector
         The direction in terms of cs_to.
     """
 
@@ -579,7 +579,7 @@ def change_reference_frame_of_point(point:'Vector', cs_from:'CoordinateSystem', 
 
     Parameters
     ----------
-    point : Vector
+    point : ctsimu.primitives.Vector
         Point coordinates in terms of `cs_from`.
 
     cs_from : CoordinateSystem
@@ -591,7 +591,7 @@ def change_reference_frame_of_point(point:'Vector', cs_from:'CoordinateSystem', 
 
     Returns
     -------
-    point_in_cs_to : Vector
+    point_in_cs_to : ctsimu.primitives.Vector
         The point coordinates in terms of cs_to.
     """
 
@@ -642,7 +642,7 @@ class DetectorGeometry(CoordinateSystem):
         In units of the reference coordinate system.
         Computed automatically after calling `set_size()`.
 
-    pixel_origin : Vector
+    pixel_origin : ctsimu.primitives.Vector
         Origin of the pixel coordinate system in terms of the reference
         coordinate system. This is the outermost corner of the
         (0,0) pixel of the detector (often the "upper left" corner).
@@ -803,7 +803,7 @@ class DetectorGeometry(CoordinateSystem):
 
         Returns
         -------
-        pixel_vector : Vector
+        pixel_vector : ctsimu.primitives.Vector
             Pixel position in reference coordinate system (usually world)
             as a 3D vector.
         """
@@ -828,7 +828,7 @@ class DetectorGeometry(CoordinateSystem):
 
         Returns
         -------
-        pixel_vector : Vector
+        pixel_vector : ctsimu.primitives.Vector
             Position of the pixel center in the reference coordinate system
             (usually world) as a 3D vector.
 
@@ -869,12 +869,12 @@ class Geometry:
         Shortest distance between stage center and detector plane.
         Calculated automatically by `update()`.
 
-    brightest_spot_world : Vector
+    brightest_spot_world : ctsimu.primitives.Vector
         Location of the intensity maximum on the detector, in world coordinates.
         Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
 
-    brightest_spot_detector : Vector
+    brightest_spot_detector : ctsimu.primitives.Vector
         Location of the intensity maximum on the detector, in terms of
         detector coordinate system. Assuming an isotropically radiating source.
         Calculated automatically by `update()`.
@@ -954,8 +954,18 @@ class Geometry:
         self.brightest_spot_detector = copy.deepcopy(self.brightest_spot_world)
         self.brightest_spot_detector.subtract(self.detector.center)
 
-        pxU = self.brightest_spot_detector.dot(self.detector.u) / self.detector.pitch_u + self.detector.cols()/2.0
-        pxV = self.brightest_spot_detector.dot(self.detector.v) / self.detector.pitch_v + self.detector.rows()/2.0
+        pxU = 0
+        pxV = 0
+
+        if (self.detector.pitch_u != 0) and (self.detector.pitch_u is not None):
+            if self.detector.cols() is not None:
+                pxU = self.brightest_spot_detector.dot(self.detector.u) / self.detector.pitch_u + self.detector.cols()/2.0
+
+
+        if (self.detector.pitch_v != 0) and (self.detector.pitch_v is not None):
+            if self.detector.rows() is not None:
+                pxV = self.brightest_spot_detector.dot(self.detector.v) / self.detector.pitch_v + self.detector.rows()/2.0
+
 
         self.brightest_spot_detector = Vector(pxU, pxV, 0)
 
@@ -1002,7 +1012,7 @@ class Geometry:
         self.update()
 
         txt  = "Detector\n"
-        txt += "========\n"
+        txt += "===================\n"
         txt += "Center:          {}\n".format(self.detector.center)
         txt += "u:               {}\n".format(self.detector.u)
         txt += "v:               {}\n".format(self.detector.v)
@@ -1017,7 +1027,7 @@ class Geometry:
 
         txt += "\n"
         txt += "Source\n"
-        txt += "======\n"
+        txt += "===================\n"
         txt += "Center:          {}\n".format(self.source.center)
         txt += "u:               {}\n".format(self.source.u)
         txt += "v:               {}\n".format(self.source.v)
@@ -1025,7 +1035,7 @@ class Geometry:
 
         txt += "\n"
         txt += "Stage\n"
-        txt += "=====\n"
+        txt += "===================\n"
         txt += "Center:          {}\n".format(self.stage.center)
         txt += "u:               {}\n".format(self.stage.u)
         txt += "v:               {}\n".format(self.stage.v)
@@ -1324,7 +1334,7 @@ class Geometry:
 
         Returns
         -------
-        P : Matrix
+        P : ctsimu.primitives.Matrix
             Projection matrix.
 
         Notes
@@ -1467,40 +1477,27 @@ class Geometry:
         vfoc = source_from_image.center.y() / scale_image_v
         SDD  = abs(source_from_image.center.z())
 
-        # Scale: volume units -> world units
+        # Scale: volume units -> world units,
+        # move origin to source (the origin of the camera CS)
         A = Matrix(values=[
-            [scale_volume_u, 0, 0, 0],
-            [0, scale_volume_v, 0, 0],
-            [0, 0, scale_volume_w, 0],
-            [0, 0, 0, 1]
-        ])
-
-        # Move origin to source (the origin of the camera CS)
-        F = Matrix(values=[
-            [1, 0, 0, xfoc],
-            [0, 1, 0, yfoc],
-            [0, 0, 1, zfoc]
+            [scale_volume_u, 0, 0, xfoc],
+            [0, scale_volume_v, 0, yfoc],
+            [0, 0, scale_volume_w, zfoc]
         ])
 
         # Rotations:
         R = basis_transform_matrix(volume, image)
 
-        # Projection onto detector and scaling (world units -> volume units):
+        # Projection onto detector and scaling (world units -> image units)
+        # and shift in detector CS: (ufoc and vfoc must be in scaled units)
         S = Matrix(values=[
-            [-SDD/scale_image_u, 0, 0],
-            [0, -SDD/scale_image_v, 0],
-            [0, 0, -1.0/scale_image_w]
-        ])
-
-        # Shift in detector CS: (ufoc and vfoc must be in scaled units)
-        T = Matrix(values=[
-            [1, 0, ufoc],
-            [0, 1, vfoc],
-            [0, 0, 1]
+            [SDD/scale_image_u, 0, ufoc/scale_image_w],
+            [0, SDD/scale_image_v, vfoc/scale_image_w],
+            [0, 0, 1.0/scale_image_w]
         ])
 
         # Multiply all together:
-        P = T * (S * (R * (F * A)))
+        P = S * (R * A)
 
         # Renormalize:
         lower_right = P.get(col=3, row=2)
