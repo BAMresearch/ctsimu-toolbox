@@ -29,6 +29,12 @@ files.
 For details on how to run the test scenarios using metadata
 files for the given projection images to be tested, see the
 following documentation for each individual test.
+
+## Result files
+
+Each test generates a number of result files. These files will be put
+next to the given metadata files, in a sub-folder with the test name:
+`{test_name}-results`.
 """
 
 from . import *
