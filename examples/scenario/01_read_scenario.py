@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+# File: examples/scenario/01_read_scenario.py
+
 from ctsimu.scenario import Scenario
-s = Scenario()
-s.write("example_new.json")
+s = Scenario("example.json")

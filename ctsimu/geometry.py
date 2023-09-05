@@ -398,50 +398,50 @@ class CoordinateSystem:
         self.u.rotate(self.w, angle)
         self.v.rotate(self.w, angle)
 
-    def transform(self, csFrom:'CoordinateSystem', csTo:'CoordinateSystem'):
+    def transform(self, cs_from:'CoordinateSystem', cs_to:'CoordinateSystem'):
         """Relative transformation in world coordinates
-        from `csFrom` to `csTo`, result will be in world coordinates.
+        from `cs_from` to `cs_to`, result will be in world coordinates.
 
-        Detailed description: assuming this CS, `csFrom` and `csTo`
+        Assuming this CS, `cs_from` and `cs_to`
         all three are independent coordinate systems in a common
         reference coordinate system (e.g. world). This function
         will calculate the necessary translation and rotation that
-        would have to be done to superimpose `csFrom` with `csTo`.
+        would have to be done to superimpose `cs_from` with `cs_to`.
         This translation and rotation will, however, be applied
-        to this CS, not to `csFrom`.
+        to this CS, not to `cs_from`.
 
         Parameters
         ----------
-        csFrom : CoordinateSystem
+        cs_from : CoordinateSystem
             Coordinate system before the transformation.
 
-        csTo : CoordinateSystem
+        cs_to : CoordinateSystem
             Coordinate system after the transformation.
         """
 
         # -- TRANSLATION:
-        t = csFrom.center.to(csTo.center)
+        t = cs_from.center.to(cs_to.center)
         self.translate(t)
 
-        # We need a copy of csFrom and csTo because later on,
+        # We need a copy of cs_from and cs_to because later on,
         # we might have to transform them and don't want to
-        # affect the original csFrom passed to this function.
-        # Also, csFrom or csTo could simply be pointers to
+        # affect the original cs_from passed to this function.
+        # Also, cs_from or cs_to could simply be pointers to
         # this coordinate system.
-        csFromCopy = csFrom.get_copy()
-        csToCopy   = csTo.get_copy()
+        cs_fromCopy = cs_from.get_copy()
+        cs_toCopy   = cs_to.get_copy()
 
         # -- ROTATIONS
         # Rotation to bring w axis from -> to
-        wFrom = csFromCopy.w
-        wTo   = csToCopy.w
+        wFrom = cs_fromCopy.w
+        wTo   = cs_toCopy.w
         rotationAxis = wFrom.cross(wTo)
 
         if rotationAxis.length() == 0:
             if wTo.dot(wFrom) < 0:
                 # 180° flip; vectors point in opposite direction.
                 # Rotation axis is another CS basis vector.
-                rotationAxis = csFromCopy.u.get_copy()
+                rotationAxis = cs_fromCopy.u.get_copy()
             else:
                 # wFrom already points in direction of wTo.
                 pass
@@ -449,22 +449,22 @@ class CoordinateSystem:
         if rotationAxis.length() > 0:
             rotationAngle = wFrom.angle(wTo)
             if rotationAngle != 0:
-                self.rotate_around_pivot_point(rotationAxis, rotationAngle, csToCopy.center)
+                self.rotate_around_pivot_point(rotationAxis, rotationAngle, cs_toCopy.center)
 
-                # Also rotate `csFrom` to make calculation of
+                # Also rotate `cs_from` to make calculation of
                 # rotation around u axis possible (next step):
-                csFromCopy.rotate(rotationAxis, rotationAngle)
+                cs_fromCopy.rotate(rotationAxis, rotationAngle)
 
         # Rotation to bring u axis from -> to (around now fixed w axis)
-        uFrom = csFromCopy.u
-        uTo   = csToCopy.u
+        uFrom = cs_fromCopy.u
+        uTo   = cs_toCopy.u
         rotationAxis = uFrom.cross(uTo)
 
         if rotationAxis.length() == 0:
             if uTo.dot(uFrom) < 0:
                 # 180° flip; vectors point in opposite direction.
                 # Rotation axis is another CS basis vector.
-                rotationAxis = csFromCopy.w.get_copy()
+                rotationAxis = cs_fromCopy.w.get_copy()
             else:
                 # uFrom already points in direction of uTo.
                 pass
@@ -472,49 +472,49 @@ class CoordinateSystem:
         if rotationAxis.length() > 0:
             rotationAngle = uFrom.angle(uTo)
             if rotationAngle != 0:
-                self.rotate_around_pivot_point(rotationAxis, rotationAngle, csToCopy.center)
+                self.rotate_around_pivot_point(rotationAxis, rotationAngle, cs_toCopy.center)
 
-    def change_reference_frame(self, csFrom:'CoordinateSystem', csTo:'CoordinateSystem'):
+    def change_reference_frame(self, cs_from:'CoordinateSystem', cs_to:'CoordinateSystem'):
         """Change the object's reference coordinate system.
 
         Parameters
         ----------
-        csFrom : CoordinateSystem
+        cs_from : CoordinateSystem
             Current reference coordinate system.
 
-        csTo : CoordinateSystem
+        cs_to : CoordinateSystem
             New reference coordinate system.
 
         Notes
         -----
-        Both `csFrom` and `csTo` must be in the same reference coordinate system
+        Both `cs_from` and `cs_to` must be in the same reference coordinate system
         (e.g., the world coordinate system).
         """
 
-        # Rotate basis vectors into csTo:
-        T = basis_transform_matrix(csFrom, csTo)
+        # Rotate basis vectors into cs_to:
+        T = basis_transform_matrix(cs_from, cs_to)
         self.u.transform(T)
         self.v.transform(T)
         self.w.transform(T)
 
-        self.center = change_reference_frame_of_point(self.center, csFrom, csTo)
+        self.center = change_reference_frame_of_point(self.center, cs_from, cs_to)
 
 ctsimu_world = CoordinateSystem()
 
-def basis_transform_matrix(csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -> 'Matrix':
-    """A matrix that transforms coordinates from `csFrom` to `csTo`.
+def basis_transform_matrix(cs_from:'CoordinateSystem', cs_to:'CoordinateSystem') -> 'Matrix':
+    """A matrix that transforms coordinates from `cs_from` to `cs_to`.
 
-    `csFrom` and `csTo` must have the same common reference frame
+    `cs_from` and `cs_to` must have the same common reference frame
     (e.g. the world coordinate system). A shift in origins is not
     taken into account, i.e., their origins are assumed to be at
     the same position.
 
     Parameters
     ----------
-    csFrom : CoordinateSystem
+    cs_from : CoordinateSystem
         The origin coordinate system.
 
-    csTo : CoordinateSystem
+    cs_to : CoordinateSystem
         The target coordinate system.
 
     Returns
@@ -530,81 +530,81 @@ def basis_transform_matrix(csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -
     T = Matrix(3, 3)
 
     # Row 1:
-    T.value[0][0] = csTo.u.unit_vector().dot(csFrom.u.unit_vector())
-    T.value[0][1] = csTo.u.unit_vector().dot(csFrom.v.unit_vector())
-    T.value[0][2] = csTo.u.unit_vector().dot(csFrom.w.unit_vector())
+    T.value[0][0] = cs_to.u.unit_vector().dot(cs_from.u.unit_vector())
+    T.value[0][1] = cs_to.u.unit_vector().dot(cs_from.v.unit_vector())
+    T.value[0][2] = cs_to.u.unit_vector().dot(cs_from.w.unit_vector())
 
     # Row 2:
-    T.value[1][0] = csTo.v.unit_vector().dot(csFrom.u.unit_vector())
-    T.value[1][1] = csTo.v.unit_vector().dot(csFrom.v.unit_vector())
-    T.value[1][2] = csTo.v.unit_vector().dot(csFrom.w.unit_vector())
+    T.value[1][0] = cs_to.v.unit_vector().dot(cs_from.u.unit_vector())
+    T.value[1][1] = cs_to.v.unit_vector().dot(cs_from.v.unit_vector())
+    T.value[1][2] = cs_to.v.unit_vector().dot(cs_from.w.unit_vector())
 
     # Row 3:
-    T.value[2][0] = csTo.w.unit_vector().dot(csFrom.u.unit_vector())
-    T.value[2][1] = csTo.w.unit_vector().dot(csFrom.v.unit_vector())
-    T.value[2][2] = csTo.w.unit_vector().dot(csFrom.w.unit_vector())
+    T.value[2][0] = cs_to.w.unit_vector().dot(cs_from.u.unit_vector())
+    T.value[2][1] = cs_to.w.unit_vector().dot(cs_from.v.unit_vector())
+    T.value[2][2] = cs_to.w.unit_vector().dot(cs_from.w.unit_vector())
 
     return T
 
-def change_reference_frame_of_direction(direction:'Vector', csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -> 'Vector':
-    """For a `direction` in `csFrom`, get the new direction in terms of `csTo`.
-    `csFrom` and `csTo` must be in the same reference coordinate system.
+def change_reference_frame_of_direction(direction:'Vector', cs_from:'CoordinateSystem', cs_to:'CoordinateSystem') -> 'Vector':
+    """For a `direction` in `cs_from`, get the new direction in terms of `cs_to`.
+    `cs_from` and `cs_to` must be in the same reference coordinate system.
 
     Parameters
     ----------
     direction : Vector
-        Direction in terms of `csFrom`.
+        Direction in terms of `cs_from`.
 
-    csFrom : CoordinateSystem
+    cs_from : CoordinateSystem
         The original coordinate system.
 
-    csTo : CoordinateSystem
+    cs_to : CoordinateSystem
         The target coordinate system, in which the direction should be expressed.
 
     Returns
     -------
-    direction_in_csTo : Vector
-        The direction in terms of csTo.
+    direction_in_cs_to : Vector
+        The direction in terms of cs_to.
     """
 
-    # Rotation matrix to rotate base vectors into csTo:
-    R = basis_transform_matrix(csFrom, csTo)
+    # Rotation matrix to rotate base vectors into cs_to:
+    R = basis_transform_matrix(cs_from, cs_to)
 
     # Perform rotation:
     return (R * direction)
 
-def change_reference_frame_of_point(point:'Vector', csFrom:'CoordinateSystem', csTo:'CoordinateSystem') -> 'Vector':
-    """For a `point` coordinate in `csFrom`, get the new coordinate in terms of
-    `csTo`. `csFrom` and `csTo` must be in the same reference coordinate system.
+def change_reference_frame_of_point(point:'Vector', cs_from:'CoordinateSystem', cs_to:'CoordinateSystem') -> 'Vector':
+    """For a `point` coordinate in `cs_from`, get the new coordinate in terms of
+    `cs_to`. `cs_from` and `cs_to` must be in the same reference coordinate system.
 
     Parameters
     ----------
     point : Vector
-        Point coordinates in terms of `csFrom`.
+        Point coordinates in terms of `cs_from`.
 
-    csFrom : CoordinateSystem
+    cs_from : CoordinateSystem
         The original coordinate system.
 
-    csTo : CoordinateSystem
+    cs_to : CoordinateSystem
         The target coordinate system, in which the point coordinates
         should be expressed.
 
     Returns
     -------
-    point_in_csTo : Vector
-        The point coordinates in terms of csTo.
+    point_in_cs_to : Vector
+        The point coordinates in terms of cs_to.
     """
 
     # Place the point in the common reference coordinate system
     # (mathematically, this is always the 'world'):
     point_in_to = point.get_copy()
-    R_to_world = basis_transform_matrix(csFrom, ctsimu_world)
+    R_to_world = basis_transform_matrix(cs_from, ctsimu_world)
     point_in_to.transform(R_to_world)
-    point_in_to.add(csFrom.center)
+    point_in_to.add(cs_from.center)
 
     # Move point to the target coordinate system:
-    point_in_to.subtract(csTo.center)
-    R_to_to = basis_transform_matrix(ctsimu_world, csTo)
+    point_in_to.subtract(cs_to.center)
+    R_to_to = basis_transform_matrix(ctsimu_world, cs_to)
     point_in_to.transform(R_to_to)
 
     return point_in_to

@@ -195,6 +195,9 @@ class Scenario:
             self.create_default_metadata()
 
     def reset(self):
+        """Reset scenario: delete all drifts, deviations and
+        sample and material information."""
+
         for group in self.subgroups:
             group.reset()
 
@@ -574,7 +577,7 @@ class Scenario:
         n_frames = self.acquisition.get("number_of_projections")
         return n_frames
 
-    def get_current_stage_rotation_angle(self):
+    def current_stage_angle(self):
         """Stage rotation angle (in deg) for the current frame.
 
         Returns
@@ -612,12 +615,30 @@ class Scenario:
         return angular_position
 
     def set_frame(self, frame:float=0, reconstruction:bool=False):
+        """Set the current frame representation of the scenario.
+
+        Parameters
+        ----------
+        frame : float
+            Frame number, starting at zero and usually
+            going to `{n_projections}-1`.
+
+            Default value: `0`
+
+        reconstruction : bool
+            Set the scenario geometry as seen by the reconstruction software?
+            If `True`, this will only obey drifts and deviations that
+            are `known_to_reconstruction`.
+
+            Default value: `False`
+        """
+
         self.current_frame = frame
 
         # Number of frames:
         n_frames = self.n_frames()
 
-        stage_deg = self.get_current_stage_rotation_angle()
+        stage_deg = self.current_stage_angle()
         stage_rot = math.radians(stage_deg)
 
         # Update materials:
@@ -902,7 +923,10 @@ text = {name}"""
                         # starting at 0000.
                         for p in range(n):
                             if '%' in filename:
-                                filelist.append(filename % p)
+                                try:
+                                    filelist.append(filename % p)
+                                except Exception as e:
+                                    raise Exception(f"Error in sequentially numbered filename pattern. Please give a percentage sign, followed by the number of digits and a 'd' character: 'example_%04d.tif'. You gave: '{filename}'")
                             else:
                                 filelist.append(filename)
 

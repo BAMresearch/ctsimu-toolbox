@@ -193,6 +193,9 @@ def abspath_of_referenced_file(filepath:str, referenced:str) -> str:
     referenced_abs : str
         Absolute path of the referenced file.
     """
+    if referenced is None:
+        return referenced
+
     if not os.path.isabs(referenced):
         if filepath is not None:
             file_abspath = os.path.abspath(filepath)

@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+# File: examples/scenario/02_getters_and_setters.py
+
 from ctsimu.scenario import Scenario
 s = Scenario("example.json")
 
@@ -16,6 +18,5 @@ print(f"Now, it's {T}°C in the room.")
 # Currently, it's 23°C in the room.
 
 # Native unit and preferred unit:
-
 print(s.environment.temperature.native_unit)
 print(s.environment.temperature.preferred_unit)

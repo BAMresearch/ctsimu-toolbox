@@ -212,14 +212,14 @@ class Parameter:
         """
         if self.has_drifts():
             if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value is not None):
-                total_drift_max = self.get_total_drift_value_for_frame(
+                total_drift_max = self.get_total_drift_for_frame(
                     0,
                     n_frames,
                     reconstruction
                 )
 
                 for f in range(n_frames):
-                    total_drift_for_frame = self.get_total_drift_value_for_frame(
+                    total_drift_for_frame = self.get_total_drift_for_frame(
                         f,
                         n_frames,
                         reconstruction
@@ -252,14 +252,14 @@ class Parameter:
         """
         if self.has_drifts():
             if (self.native_unit != "string") and (self.native_unit != "bool") and (self.standard_value is not None):
-                total_drift_min = self.get_total_drift_value_for_frame(
+                total_drift_min = self.get_total_drift_for_frame(
                     0,
                     n_frames,
                     reconstruction
                 )
 
                 for f in range(n_frames):
-                    total_drift_for_frame = self.get_total_drift_value_for_frame(
+                    total_drift_for_frame = self.get_total_drift_for_frame(
                         f,
                         n_frames,
                         reconstruction
@@ -407,7 +407,7 @@ class Parameter:
         self.set_frame(frame, n_frames, reconstruction)
         return self.current_value
 
-    def get_total_drift_value_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> float | str | bool:
+    def get_total_drift_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> float | str | bool:
         """Calculate the total drift value from all drift components,
         for the given `frame` out of a total of `n_frames`,
         depending on whether all drifts are applied or only
@@ -649,7 +649,7 @@ class Parameter:
             If the value has changed from the previous value (e.g. due to drifts).
         """
         new_value = self.standard_value
-        total_drift = self.get_total_drift_value_for_frame(frame, n_frames, reconstruction)
+        total_drift = self.get_total_drift_for_frame(frame, n_frames, reconstruction)
 
         if self.native_unit == "string":
             if isinstance(total_drift, str):

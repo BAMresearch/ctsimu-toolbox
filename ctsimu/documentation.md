@@ -1,7 +1,7 @@
 Features
 ========
 
-The toolbox provides the following main submodules, each designed
+The toolbox provides the following **main submodules,** each designed
 for a different task.
 
 Quick access
@@ -50,9 +50,19 @@ The **`ctsimu.geometry`** sub-module provides tools for
 * Creation of reconstruction configurations for openCT (VGSTUDIO) and CERA,
 * Calculation of projection matrices.
 
-[CTSimU scenario description files]: https://bamresearch.github.io/ctsimu-scenarios
+[CTSimU scenario description files]: https://bamresearch.github.io/ctsimu-scenarios/
 [metadata files]: https://bamresearch.github.io/ctsimu-scenarios/metadata.html
 
+Scenario handling
+-----------------
+The **`ctsimu.scenario`** sub-module is used to handle complete
+CTSimU scenarios:
+
+* Read, write, explore and manipulate [CTSimU scenario description files],
+* Calculate coordinate systems for each frame,
+* Generate reconstruction configuration files.
+
+[CTSimU scenario description files]: https://bamresearch.github.io/ctsimu-scenarios/
 
 Getting started
 ===============

@@ -19,8 +19,8 @@ mySpecimen.translate_z(5.0)
 # Change the specimen's reference frame to
 # the world coordinate system:
 mySpecimen.change_reference_frame(
-	csFrom = myCT.stage,
-	csTo = world)
+	cs_from = myCT.stage,
+	cs_to = world)
 
 print("The specimen's world coordinates:")
 print(mySpecimen)

@@ -198,9 +198,9 @@ class Scenevector:
 		"""
 
 		return Vector(
-			x=self.c0.get_total_drift_value_for_frame(frame, n_frames, reconstruction),
-			y=self.c1.get_total_drift_value_for_frame(frame, n_frames, reconstruction),
-			z=self.c2.get_total_drift_value_for_frame(frame, n_frames, reconstruction)
+			x=self.c0.get_total_drift_for_frame(frame, n_frames, reconstruction),
+			y=self.c1.get_total_drift_for_frame(frame, n_frames, reconstruction),
+			z=self.c2.get_total_drift_for_frame(frame, n_frames, reconstruction)
 		)
 
 	def vector_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -> 'Vector':
