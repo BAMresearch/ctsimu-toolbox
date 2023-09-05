@@ -14,16 +14,16 @@ from .image import ImageStack
 from .scenario import Scenario
 from .processing.pipeline import Pipeline
 from .processing.flat_field import Step_FlatFieldCorrection
-from .ctsimu_evaluations.test2D_FB_2 import Test2D_FB_2
-from .ctsimu_evaluations.test2D_FB_1 import Test2D_FB_1
-from .ctsimu_evaluations.test2D_SW_1 import Test2D_SW_1
-from .ctsimu_evaluations.test2D_SW_2 import Test2D_SW_2
-from .ctsimu_evaluations.test2D_SW_3 import Test2D_SW_3
-from .ctsimu_evaluations.test2D_SW_4 import Test2D_SW_4
-from .ctsimu_evaluations.test2D_DW_1 import Test2D_DW_1
-from .ctsimu_evaluations.test2D_WE_1 import Test2D_WE_1
-from .ctsimu_evaluations.test2D_WE_2 import Test2D_WE_2
-from .ctsimu_evaluations.test2D_HS_1 import Test2D_HS_1
+from .evaluation.test2D_FB_2 import Test2D_FB_2
+from .evaluation.test2D_FB_1 import Test2D_FB_1
+from .evaluation.test2D_SW_1 import Test2D_SW_1
+from .evaluation.test2D_SW_2 import Test2D_SW_2
+from .evaluation.test2D_SW_3 import Test2D_SW_3
+from .evaluation.test2D_SW_4 import Test2D_SW_4
+from .evaluation.test2D_DW_1 import Test2D_DW_1
+from .evaluation.test2D_WE_1 import Test2D_WE_1
+from .evaluation.test2D_WE_2 import Test2D_WE_2
+from .evaluation.test2D_HS_1 import Test2D_HS_1
 
 class Toolbox:
     """ Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. """

@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ctsimu.scenario.material API documentation</title>
+<meta name="description" content="Material component: formula and mass fraction.
+Material: composition, density, and their drifts" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.scenario.material</code></h1>
+</header>
+<section id="section-intro">
+<p>Material component: formula and mass fraction.
+Material: composition, density, and their drifts</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;
+Material component: formula and mass fraction.
+Material: composition, density, and their drifts
+&#34;&#34;&#34;
+import numbers
+
+from ..helpers import *
+from .parameter import Parameter
+from .drift import Drift
+
+class MaterialComponent:
+        &#34;&#34;&#34;Combination of a chemical formula and a mass fraction,
+        used as a component for a full material (which may consist
+        of a number of material components).
+
+        Attributes
+        ----------
+        formula : ctsimu.scenario.parameter.Parameter
+                Chemical formula for the material component.
+                A `Parameter` which represents a string (and
+                may drift over time).
+
+        mass_fraction : ctsimu.scenario.parameter.Parameter
+                The component&#39;s mass fraction. A `Parameter` which
+                represents a `float` number (and may drift over time).
+
+        parent_material_id : str
+                Identifier of the parent material (`material_id`
+                as defined in the JSON scenario description).
+
+        parent_material_name : str
+                Trivial name of the parent material.
+        &#34;&#34;&#34;
+
+        def __init__(self, formula:str=&#34;Fe&#34;, mass_fraction:float=1, parent_material_id:str=&#34;&#34;, parent_material_name:str=&#34;&#34;, _root=None):
+                &#34;&#34;&#34;All four attributes can be set when the material
+                component is initialized.
+
+                Parameters
+                ----------
+                formula : str
+                        Chemical formula for the material component.
+                        A `Parameter` which represents a string (and
+                        may drift over time).
+
+                mass_fraction : float
+                        The component&#39;s mass fraction as a `float` number.
+
+                parent_material_id : str
+                        Identifier of the parent material (`material_id`
+                        as defined in the JSON scenario description).
+
+                parent_material_name : str
+                        Trivial name of the parent material.
+                &#34;&#34;&#34;
+                self._root = _root  # root scenario object
+
+                self.parent_material_id = parent_material_id
+                self.parent_material_name = parent_material_name
+                self.formula = Parameter(native_unit=&#34;string&#34;, standard_value=formula, _root=self._root)
+                self.mass_fraction = Parameter(native_unit=None, standard_value=mass_fraction, _root=self._root)
+
+        def json_dict(self) -&gt; dict:
+                &#34;&#34;&#34;Create a CTSimU JSON dictionary for this material component.
+
+                Returns
+                -------
+                json_dict : dict
+                &#34;&#34;&#34;
+                jd = dict()
+                jd[&#34;formula&#34;] = self.formula.json_dict()
+                jd[&#34;mass_fraction&#34;] = self.mass_fraction.json_dict()
+                return jd
+
+        def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
+                &#34;&#34;&#34;Prepare the material component for the given `frame` number,
+                considering potential drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in scan.
+
+                reconstruction : bool
+                        `True` if only those drifts known to the reconstruction software
+                        must be taken into account, `False` if all drifts are taken
+                        into account.
+
+                Returns
+                -------
+                changed : bool
+                        If the material component has changed from its previous state
+                        (due to drifts).
+                &#34;&#34;&#34;
+
+                value_changed = self.formula.set_frame(frame, n_frames, reconstruction) or self.mass_fraction.set_frame(frame, n_frames, reconstruction)
+                return value_changed
+
+        def set_from_json(self, json_object:dict):
+                &#34;&#34;&#34;Set the material component from a CTSimU JSON object.
+
+                Parameters
+                ----------
+                json_object : dict
+                        CTSimU material component definition, as imported
+                        from a JSON file.
+
+                Raises
+                ------
+                ValueError
+                        If formula or mass fraction cannot be read from the `json_object`.
+                &#34;&#34;&#34;
+
+                if not self.formula.set_parameter_from_key(json_object, [&#34;formula&#34;]):
+                        raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json: Error reading a formula for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+                if not self.mass_fraction.set_parameter_from_key(json_object, [&#34;mass_fraction&#34;]):
+                        raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json: Error reading a mass fraction for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+                self.set_frame(0, 1, False)
+
+        def set_from_json_legacy(self, json_object:dict):
+                &#34;&#34;&#34;Set the material component from a legacy CTSimU JSON object
+                (for file format version &lt;= 1.0)
+
+                Parameters
+                ----------
+                json_object : dict
+                        CTSimU material component definition, as imported
+                        from a JSON file.
+
+                Raises
+                ------
+                ValueError
+                        If composition cannot be read from the `json_object`.
+                &#34;&#34;&#34;
+
+                # In file format version &lt;= 1.0, the composition was
+                # simply a string value, no mass fraction was defined.
+                if not self.formula.set_parameter_from_key(json_object, [&#34;composition&#34;]):
+                        raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json_legacy: Error reading a composition for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+                self.mass_fraction.reset()
+                self.mass_fraction.set_standard_value(1.0)
+
+                self.set_frame(0, 1, False)
+
+
+class Material:
+        &#34;&#34;&#34;Sample material.
+
+        Attributes
+        ----------
+        material_id : str
+                Material ID, as defined in the CTSimU scenario description to
+                reference the material definition.
+
+        name : str
+                Trivial name for the material.
+
+        density : ctsimu.scenario.parameter.Parameter
+                Mass density in g/cm³.
+
+        composition : list
+                List of `MaterialComponent` objects that define
+                the composition (chemical formula and mass fracion) of
+                the material.
+        &#34;&#34;&#34;
+
+        def __init__(self, material_id:str=None, name:str=None, density:float=0, _root=None):
+                &#34;&#34;&#34;The init constructor takes the following optional arguments.
+
+                Parameters
+                ----------
+                material_id : str
+                        Material ID, as defined in the CTSimU scenario description to
+                        reference the material definition.
+
+                name : str
+                        Trivial name for the material.
+
+                density : float
+                        Simple floating point value to define the mass density (in g/cm³).
+
+                Returns
+                -------
+                changed : bool
+                        If the material has changed from its previous state
+                        (due to drifts).
+                &#34;&#34;&#34;
+                self._root = _root  # root scenario object
+
+                self.material_id = material_id
+                self.name = name
+                self.density = Parameter(native_unit=&#34;g/cm^3&#34;, standard_value=density, _root=self._root)
+                self.composition = list()
+
+        def reset(self):
+                &#34;&#34;&#34;Reset density to `0` (with no drifts),
+                clear all material composition entries.&#34;&#34;&#34;
+                self.density.reset()
+                self.density.set_standard_value(0.0)
+                self.composition = list()
+
+        def json_dict(self) -&gt; dict:
+                &#34;&#34;&#34;Create a CTSimU JSON dictionary for this material.
+
+                Returns
+                -------
+                json_dict : dict
+                &#34;&#34;&#34;
+                jd = dict()
+                jd[&#34;id&#34;] = self.material_id
+                jd[&#34;name&#34;] = self.name
+                jd[&#34;density&#34;] = self.density.json_dict()
+                jd[&#34;composition&#34;] = list()
+                for component in self.composition:
+                        jd[&#34;composition&#34;].append(component.json_dict())
+
+                return jd
+
+        def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
+                &#34;&#34;&#34;Prepare the material for the given `frame` number,
+                considering potential drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in scan.
+                &#34;&#34;&#34;
+
+                density_changed = self.density.set_frame(frame, n_frames, reconstruction)
+
+                composition_changed = False
+                for comp in self.composition:
+                        composition_changed = composition_changed or comp.set_frame(frame, n_frames, reconstruction)
+
+                changed = density_changed or composition_changed
+                return changed
+
+        def set_density(self, density):
+                &#34;&#34;&#34;Set the density.
+
+                Parameters
+                ----------
+                density : float or ctsimu.scenario.parameter.Parameter
+                        The density (in g/cm³). Given as a simple numerical
+                        value (`float`), it will be converted to a Parameter
+                        with this as the standard value.
+                        It can also be given directly as a `Parameter` object.
+
+                Raises
+                ------
+                TypeError
+                        If the `density` is neither of type `float` nor an instance
+                        of `ctsimu.scenario.parameter.Parameter`.
+                &#34;&#34;&#34;
+                if isinstance(density, Parameter):
+                        # given as Parameter object
+                        self.density = density
+                elif isinstance(density, numbers.Number):
+                        # given as float
+                        self.density.reset()
+                        self.density.set_standard_value(density)
+                else:
+                        raise TypeError(f&#34;CTSimU Material: set_density: invalid type of given density: &#39;{type(density)}&#39;. Must be &#39;float&#39; or &#39;Parameter&#39;.&#34;)
+
+        def add_component(self, component:&#39;MaterialComponent&#39;):
+                &#34;&#34;&#34;Add a material component to the material&#39;s components list.
+
+                Parameters
+                ----------
+                component : MaterialComponent
+                        Material component object.
+
+                Raises
+                ------
+                TypeError
+                        If the composition is not an instance
+                        of `ctsimu.scenario.material.MaterialComponent`.
+                &#34;&#34;&#34;
+                if isinstance(component, MaterialComponent):
+                        self.composition.append(component)
+                else:
+                        raise TypeError(f&#34;CTSimU Material: add_component: invalid type of given component: &#39;{type(component)}&#39;. Only a &#39;MaterialComponent&#39; object will be accepted.&#34;)
+
+        def set_from_json(self, json_object:dict):
+                &#34;&#34;&#34;Set up the material from a CTSimU material definition.
+
+                Parameters
+                ----------
+                json_object : dict
+                        CTSimU material definition, as imported from a JSON file.
+
+                Raises
+                ------
+                ValueError
+                        If the required properties are missing or not set in the
+                        `json_object` dictionary.
+                &#34;&#34;&#34;
+
+                self.reset()
+
+                if json_exists_and_not_null(json_object, [&#34;id&#34;]):
+                        self.material_id = get_value(json_object, [&#34;id&#34;], fail_value=None)
+                else:
+                        raise ValueError(&#34;CTSimU Material: set_from_json: missing id in material definition.&#34;)
+
+                self.name = get_value(json_object, [&#34;name&#34;], fail_value=None)
+
+                if not self.density.set_parameter_from_key(json_object, [&#34;density&#34;]):
+                        raise ValueError(f&#34;CTSimU Material: set_from_json: error reading density of material &#39;{self.material_id} ({self.name})&#39;.&#34;)
+
+                if json_exists_and_not_null(json_object, [&#34;composition&#34;]):
+                        # The composition should be an array since file format version 1.1:
+                        json_components = json_extract(json_object, [&#34;composition&#34;])
+                        if isinstance(json_components, list):
+                                for json_component in json_components:
+                                        new_component = MaterialComponent(
+                                                parent_material_id=self.material_id,
+                                                parent_material_name=self.name,
+                                                _root=self._root
+                                        )
+                                        new_component.set_from_json(json_component)
+                                        self.add_component(new_component)
+                        else:
+                                # Probably legacy definition?
+                                # Try composition given as single string.
+                                new_component = MaterialComponent(
+                                        parent_material_id=self.material_id,
+                                        parent_material_name=self.name,
+                                        _root=self._root
+                                )
+                                new_component.set_from_json_legacy(json_object)
+                                self.add_component(new_component)
+                else:
+                        raise ValueError(f&#34;CTSimU Material: set_from_json: error reading composition of material &#39;{self.material_id} ({self.name})&#39;.&#34;)
+
+                self.set_frame(0, 1, False)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.scenario.material.Material"><code class="flex name class">
+<span>class <span class="ident">Material</span></span>
+<span>(</span><span>material_id: str = None, name: str = None, density: float = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sample material.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>material_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Material ID, as defined in the CTSimU scenario description to
+reference the material definition.</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Trivial name for the material.</dd>
+<dt><strong><code>density</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Mass density in g/cm³.</dd>
+<dt><strong><code>composition</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of <code><a title="ctsimu.scenario.material.MaterialComponent" href="#ctsimu.scenario.material.MaterialComponent">MaterialComponent</a></code> objects that define
+the composition (chemical formula and mass fracion) of
+the material.</dd>
+</dl>
+<p>The init constructor takes the following optional arguments.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>material_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Material ID, as defined in the CTSimU scenario description to
+reference the material definition.</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Trivial name for the material.</dd>
+<dt><strong><code>density</code></strong> :&ensp;<code>float</code></dt>
+<dd>Simple floating point value to define the mass density (in g/cm³).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>changed</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If the material has changed from its previous state
+(due to drifts).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Material:
+        &#34;&#34;&#34;Sample material.
+
+        Attributes
+        ----------
+        material_id : str
+                Material ID, as defined in the CTSimU scenario description to
+                reference the material definition.
+
+        name : str
+                Trivial name for the material.
+
+        density : ctsimu.scenario.parameter.Parameter
+                Mass density in g/cm³.
+
+        composition : list
+                List of `MaterialComponent` objects that define
+                the composition (chemical formula and mass fracion) of
+                the material.
+        &#34;&#34;&#34;
+
+        def __init__(self, material_id:str=None, name:str=None, density:float=0, _root=None):
+                &#34;&#34;&#34;The init constructor takes the following optional arguments.
+
+                Parameters
+                ----------
+                material_id : str
+                        Material ID, as defined in the CTSimU scenario description to
+                        reference the material definition.
+
+                name : str
+                        Trivial name for the material.
+
+                density : float
+                        Simple floating point value to define the mass density (in g/cm³).
+
+                Returns
+                -------
+                changed : bool
+                        If the material has changed from its previous state
+                        (due to drifts).
+                &#34;&#34;&#34;
+                self._root = _root  # root scenario object
+
+                self.material_id = material_id
+                self.name = name
+                self.density = Parameter(native_unit=&#34;g/cm^3&#34;, standard_value=density, _root=self._root)
+                self.composition = list()
+
+        def reset(self):
+                &#34;&#34;&#34;Reset density to `0` (with no drifts),
+                clear all material composition entries.&#34;&#34;&#34;
+                self.density.reset()
+                self.density.set_standard_value(0.0)
+                self.composition = list()
+
+        def json_dict(self) -&gt; dict:
+                &#34;&#34;&#34;Create a CTSimU JSON dictionary for this material.
+
+                Returns
+                -------
+                json_dict : dict
+                &#34;&#34;&#34;
+                jd = dict()
+                jd[&#34;id&#34;] = self.material_id
+                jd[&#34;name&#34;] = self.name
+                jd[&#34;density&#34;] = self.density.json_dict()
+                jd[&#34;composition&#34;] = list()
+                for component in self.composition:
+                        jd[&#34;composition&#34;].append(component.json_dict())
+
+                return jd
+
+        def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
+                &#34;&#34;&#34;Prepare the material for the given `frame` number,
+                considering potential drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in scan.
+                &#34;&#34;&#34;
+
+                density_changed = self.density.set_frame(frame, n_frames, reconstruction)
+
+                composition_changed = False
+                for comp in self.composition:
+                        composition_changed = composition_changed or comp.set_frame(frame, n_frames, reconstruction)
+
+                changed = density_changed or composition_changed
+                return changed
+
+        def set_density(self, density):
+                &#34;&#34;&#34;Set the density.
+
+                Parameters
+                ----------
+                density : float or ctsimu.scenario.parameter.Parameter
+                        The density (in g/cm³). Given as a simple numerical
+                        value (`float`), it will be converted to a Parameter
+                        with this as the standard value.
+                        It can also be given directly as a `Parameter` object.
+
+                Raises
+                ------
+                TypeError
+                        If the `density` is neither of type `float` nor an instance
+                        of `ctsimu.scenario.parameter.Parameter`.
+                &#34;&#34;&#34;
+                if isinstance(density, Parameter):
+                        # given as Parameter object
+                        self.density = density
+                elif isinstance(density, numbers.Number):
+                        # given as float
+                        self.density.reset()
+                        self.density.set_standard_value(density)
+                else:
+                        raise TypeError(f&#34;CTSimU Material: set_density: invalid type of given density: &#39;{type(density)}&#39;. Must be &#39;float&#39; or &#39;Parameter&#39;.&#34;)
+
+        def add_component(self, component:&#39;MaterialComponent&#39;):
+                &#34;&#34;&#34;Add a material component to the material&#39;s components list.
+
+                Parameters
+                ----------
+                component : MaterialComponent
+                        Material component object.
+
+                Raises
+                ------
+                TypeError
+                        If the composition is not an instance
+                        of `ctsimu.scenario.material.MaterialComponent`.
+                &#34;&#34;&#34;
+                if isinstance(component, MaterialComponent):
+                        self.composition.append(component)
+                else:
+                        raise TypeError(f&#34;CTSimU Material: add_component: invalid type of given component: &#39;{type(component)}&#39;. Only a &#39;MaterialComponent&#39; object will be accepted.&#34;)
+
+        def set_from_json(self, json_object:dict):
+                &#34;&#34;&#34;Set up the material from a CTSimU material definition.
+
+                Parameters
+                ----------
+                json_object : dict
+                        CTSimU material definition, as imported from a JSON file.
+
+                Raises
+                ------
+                ValueError
+                        If the required properties are missing or not set in the
+                        `json_object` dictionary.
+                &#34;&#34;&#34;
+
+                self.reset()
+
+                if json_exists_and_not_null(json_object, [&#34;id&#34;]):
+                        self.material_id = get_value(json_object, [&#34;id&#34;], fail_value=None)
+                else:
+                        raise ValueError(&#34;CTSimU Material: set_from_json: missing id in material definition.&#34;)
+
+                self.name = get_value(json_object, [&#34;name&#34;], fail_value=None)
+
+                if not self.density.set_parameter_from_key(json_object, [&#34;density&#34;]):
+                        raise ValueError(f&#34;CTSimU Material: set_from_json: error reading density of material &#39;{self.material_id} ({self.name})&#39;.&#34;)
+
+                if json_exists_and_not_null(json_object, [&#34;composition&#34;]):
+                        # The composition should be an array since file format version 1.1:
+                        json_components = json_extract(json_object, [&#34;composition&#34;])
+                        if isinstance(json_components, list):
+                                for json_component in json_components:
+                                        new_component = MaterialComponent(
+                                                parent_material_id=self.material_id,
+                                                parent_material_name=self.name,
+                                                _root=self._root
+                                        )
+                                        new_component.set_from_json(json_component)
+                                        self.add_component(new_component)
+                        else:
+                                # Probably legacy definition?
+                                # Try composition given as single string.
+                                new_component = MaterialComponent(
+                                        parent_material_id=self.material_id,
+                                        parent_material_name=self.name,
+                                        _root=self._root
+                                )
+                                new_component.set_from_json_legacy(json_object)
+                                self.add_component(new_component)
+                else:
+                        raise ValueError(f&#34;CTSimU Material: set_from_json: error reading composition of material &#39;{self.material_id} ({self.name})&#39;.&#34;)
+
+                self.set_frame(0, 1, False)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.scenario.material.Material.add_component"><code class="name flex">
+<span>def <span class="ident">add_component</span></span>(<span>self, component: <a title="ctsimu.scenario.material.MaterialComponent" href="#ctsimu.scenario.material.MaterialComponent">MaterialComponent</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a material component to the material's components list.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>component</code></strong> :&ensp;<code><a title="ctsimu.scenario.material.MaterialComponent" href="#ctsimu.scenario.material.MaterialComponent">MaterialComponent</a></code></dt>
+<dd>Material component object.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If the composition is not an instance
+of <code><a title="ctsimu.scenario.material.MaterialComponent" href="#ctsimu.scenario.material.MaterialComponent">MaterialComponent</a></code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_component(self, component:&#39;MaterialComponent&#39;):
+        &#34;&#34;&#34;Add a material component to the material&#39;s components list.
+
+        Parameters
+        ----------
+        component : MaterialComponent
+                Material component object.
+
+        Raises
+        ------
+        TypeError
+                If the composition is not an instance
+                of `ctsimu.scenario.material.MaterialComponent`.
+        &#34;&#34;&#34;
+        if isinstance(component, MaterialComponent):
+                self.composition.append(component)
+        else:
+                raise TypeError(f&#34;CTSimU Material: add_component: invalid type of given component: &#39;{type(component)}&#39;. Only a &#39;MaterialComponent&#39; object will be accepted.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.Material.json_dict"><code class="name flex">
+<span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a CTSimU JSON dictionary for this material.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def json_dict(self) -&gt; dict:
+        &#34;&#34;&#34;Create a CTSimU JSON dictionary for this material.
+
+        Returns
+        -------
+        json_dict : dict
+        &#34;&#34;&#34;
+        jd = dict()
+        jd[&#34;id&#34;] = self.material_id
+        jd[&#34;name&#34;] = self.name
+        jd[&#34;density&#34;] = self.density.json_dict()
+        jd[&#34;composition&#34;] = list()
+        for component in self.composition:
+                jd[&#34;composition&#34;].append(component.json_dict())
+
+        return jd</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.Material.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reset density to <code>0</code> (with no drifts),
+clear all material composition entries.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset(self):
+        &#34;&#34;&#34;Reset density to `0` (with no drifts),
+        clear all material composition entries.&#34;&#34;&#34;
+        self.density.reset()
+        self.density.set_standard_value(0.0)
+        self.composition = list()</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.Material.set_density"><code class="name flex">
+<span>def <span class="ident">set_density</span></span>(<span>self, density)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the density.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>density</code></strong> :&ensp;<code>float</code> or <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>The density (in g/cm³). Given as a simple numerical
+value (<code>float</code>), it will be converted to a Parameter
+with this as the standard value.
+It can also be given directly as a <code>Parameter</code> object.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>TypeError</code></dt>
+<dd>If the <code>density</code> is neither of type <code>float</code> nor an instance
+of <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_density(self, density):
+        &#34;&#34;&#34;Set the density.
+
+        Parameters
+        ----------
+        density : float or ctsimu.scenario.parameter.Parameter
+                The density (in g/cm³). Given as a simple numerical
+                value (`float`), it will be converted to a Parameter
+                with this as the standard value.
+                It can also be given directly as a `Parameter` object.
+
+        Raises
+        ------
+        TypeError
+                If the `density` is neither of type `float` nor an instance
+                of `ctsimu.scenario.parameter.Parameter`.
+        &#34;&#34;&#34;
+        if isinstance(density, Parameter):
+                # given as Parameter object
+                self.density = density
+        elif isinstance(density, numbers.Number):
+                # given as float
+                self.density.reset()
+                self.density.set_standard_value(density)
+        else:
+                raise TypeError(f&#34;CTSimU Material: set_density: invalid type of given density: &#39;{type(density)}&#39;. Must be &#39;float&#39; or &#39;Parameter&#39;.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.Material.set_frame"><code class="name flex">
+<span>def <span class="ident">set_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prepare the material for the given <code>frame</code> number,
+considering potential drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>Current frame number.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total number of frames in scan.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
+        &#34;&#34;&#34;Prepare the material for the given `frame` number,
+        considering potential drifts.
+
+        Parameters
+        ----------
+        frame : float
+                Current frame number.
+
+        n_frames : int
+                Total number of frames in scan.
+        &#34;&#34;&#34;
+
+        density_changed = self.density.set_frame(frame, n_frames, reconstruction)
+
+        composition_changed = False
+        for comp in self.composition:
+                composition_changed = composition_changed or comp.set_frame(frame, n_frames, reconstruction)
+
+        changed = density_changed or composition_changed
+        return changed</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.Material.set_from_json"><code class="name flex">
+<span>def <span class="ident">set_from_json</span></span>(<span>self, json_object: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set up the material from a CTSimU material definition.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>CTSimU material definition, as imported from a JSON file.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the required properties are missing or not set in the
+<code>json_object</code> dictionary.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_from_json(self, json_object:dict):
+        &#34;&#34;&#34;Set up the material from a CTSimU material definition.
+
+        Parameters
+        ----------
+        json_object : dict
+                CTSimU material definition, as imported from a JSON file.
+
+        Raises
+        ------
+        ValueError
+                If the required properties are missing or not set in the
+                `json_object` dictionary.
+        &#34;&#34;&#34;
+
+        self.reset()
+
+        if json_exists_and_not_null(json_object, [&#34;id&#34;]):
+                self.material_id = get_value(json_object, [&#34;id&#34;], fail_value=None)
+        else:
+                raise ValueError(&#34;CTSimU Material: set_from_json: missing id in material definition.&#34;)
+
+        self.name = get_value(json_object, [&#34;name&#34;], fail_value=None)
+
+        if not self.density.set_parameter_from_key(json_object, [&#34;density&#34;]):
+                raise ValueError(f&#34;CTSimU Material: set_from_json: error reading density of material &#39;{self.material_id} ({self.name})&#39;.&#34;)
+
+        if json_exists_and_not_null(json_object, [&#34;composition&#34;]):
+                # The composition should be an array since file format version 1.1:
+                json_components = json_extract(json_object, [&#34;composition&#34;])
+                if isinstance(json_components, list):
+                        for json_component in json_components:
+                                new_component = MaterialComponent(
+                                        parent_material_id=self.material_id,
+                                        parent_material_name=self.name,
+                                        _root=self._root
+                                )
+                                new_component.set_from_json(json_component)
+                                self.add_component(new_component)
+                else:
+                        # Probably legacy definition?
+                        # Try composition given as single string.
+                        new_component = MaterialComponent(
+                                parent_material_id=self.material_id,
+                                parent_material_name=self.name,
+                                _root=self._root
+                        )
+                        new_component.set_from_json_legacy(json_object)
+                        self.add_component(new_component)
+        else:
+                raise ValueError(f&#34;CTSimU Material: set_from_json: error reading composition of material &#39;{self.material_id} ({self.name})&#39;.&#34;)
+
+        self.set_frame(0, 1, False)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="ctsimu.scenario.material.MaterialComponent"><code class="flex name class">
+<span>class <span class="ident">MaterialComponent</span></span>
+<span>(</span><span>formula: str = 'Fe', mass_fraction: float = 1, parent_material_id: str = '', parent_material_name: str = '')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Combination of a chemical formula and a mass fraction,
+used as a component for a full material (which may consist
+of a number of material components).</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>formula</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Chemical formula for the material component.
+A <code>Parameter</code> which represents a string (and
+may drift over time).</dd>
+<dt><strong><code>mass_fraction</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>The component's mass fraction. A <code>Parameter</code> which
+represents a <code>float</code> number (and may drift over time).</dd>
+<dt><strong><code>parent_material_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of the parent material (<code>material_id</code>
+as defined in the JSON scenario description).</dd>
+<dt><strong><code>parent_material_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Trivial name of the parent material.</dd>
+</dl>
+<p>All four attributes can be set when the material
+component is initialized.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>formula</code></strong> :&ensp;<code>str</code></dt>
+<dd>Chemical formula for the material component.
+A <code>Parameter</code> which represents a string (and
+may drift over time).</dd>
+<dt><strong><code>mass_fraction</code></strong> :&ensp;<code>float</code></dt>
+<dd>The component's mass fraction as a <code>float</code> number.</dd>
+<dt><strong><code>parent_material_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of the parent material (<code>material_id</code>
+as defined in the JSON scenario description).</dd>
+<dt><strong><code>parent_material_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Trivial name of the parent material.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MaterialComponent:
+        &#34;&#34;&#34;Combination of a chemical formula and a mass fraction,
+        used as a component for a full material (which may consist
+        of a number of material components).
+
+        Attributes
+        ----------
+        formula : ctsimu.scenario.parameter.Parameter
+                Chemical formula for the material component.
+                A `Parameter` which represents a string (and
+                may drift over time).
+
+        mass_fraction : ctsimu.scenario.parameter.Parameter
+                The component&#39;s mass fraction. A `Parameter` which
+                represents a `float` number (and may drift over time).
+
+        parent_material_id : str
+                Identifier of the parent material (`material_id`
+                as defined in the JSON scenario description).
+
+        parent_material_name : str
+                Trivial name of the parent material.
+        &#34;&#34;&#34;
+
+        def __init__(self, formula:str=&#34;Fe&#34;, mass_fraction:float=1, parent_material_id:str=&#34;&#34;, parent_material_name:str=&#34;&#34;, _root=None):
+                &#34;&#34;&#34;All four attributes can be set when the material
+                component is initialized.
+
+                Parameters
+                ----------
+                formula : str
+                        Chemical formula for the material component.
+                        A `Parameter` which represents a string (and
+                        may drift over time).
+
+                mass_fraction : float
+                        The component&#39;s mass fraction as a `float` number.
+
+                parent_material_id : str
+                        Identifier of the parent material (`material_id`
+                        as defined in the JSON scenario description).
+
+                parent_material_name : str
+                        Trivial name of the parent material.
+                &#34;&#34;&#34;
+                self._root = _root  # root scenario object
+
+                self.parent_material_id = parent_material_id
+                self.parent_material_name = parent_material_name
+                self.formula = Parameter(native_unit=&#34;string&#34;, standard_value=formula, _root=self._root)
+                self.mass_fraction = Parameter(native_unit=None, standard_value=mass_fraction, _root=self._root)
+
+        def json_dict(self) -&gt; dict:
+                &#34;&#34;&#34;Create a CTSimU JSON dictionary for this material component.
+
+                Returns
+                -------
+                json_dict : dict
+                &#34;&#34;&#34;
+                jd = dict()
+                jd[&#34;formula&#34;] = self.formula.json_dict()
+                jd[&#34;mass_fraction&#34;] = self.mass_fraction.json_dict()
+                return jd
+
+        def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
+                &#34;&#34;&#34;Prepare the material component for the given `frame` number,
+                considering potential drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in scan.
+
+                reconstruction : bool
+                        `True` if only those drifts known to the reconstruction software
+                        must be taken into account, `False` if all drifts are taken
+                        into account.
+
+                Returns
+                -------
+                changed : bool
+                        If the material component has changed from its previous state
+                        (due to drifts).
+                &#34;&#34;&#34;
+
+                value_changed = self.formula.set_frame(frame, n_frames, reconstruction) or self.mass_fraction.set_frame(frame, n_frames, reconstruction)
+                return value_changed
+
+        def set_from_json(self, json_object:dict):
+                &#34;&#34;&#34;Set the material component from a CTSimU JSON object.
+
+                Parameters
+                ----------
+                json_object : dict
+                        CTSimU material component definition, as imported
+                        from a JSON file.
+
+                Raises
+                ------
+                ValueError
+                        If formula or mass fraction cannot be read from the `json_object`.
+                &#34;&#34;&#34;
+
+                if not self.formula.set_parameter_from_key(json_object, [&#34;formula&#34;]):
+                        raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json: Error reading a formula for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+                if not self.mass_fraction.set_parameter_from_key(json_object, [&#34;mass_fraction&#34;]):
+                        raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json: Error reading a mass fraction for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+                self.set_frame(0, 1, False)
+
+        def set_from_json_legacy(self, json_object:dict):
+                &#34;&#34;&#34;Set the material component from a legacy CTSimU JSON object
+                (for file format version &lt;= 1.0)
+
+                Parameters
+                ----------
+                json_object : dict
+                        CTSimU material component definition, as imported
+                        from a JSON file.
+
+                Raises
+                ------
+                ValueError
+                        If composition cannot be read from the `json_object`.
+                &#34;&#34;&#34;
+
+                # In file format version &lt;= 1.0, the composition was
+                # simply a string value, no mass fraction was defined.
+                if not self.formula.set_parameter_from_key(json_object, [&#34;composition&#34;]):
+                        raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json_legacy: Error reading a composition for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+                self.mass_fraction.reset()
+                self.mass_fraction.set_standard_value(1.0)
+
+                self.set_frame(0, 1, False)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.scenario.material.MaterialComponent.json_dict"><code class="name flex">
+<span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a CTSimU JSON dictionary for this material component.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def json_dict(self) -&gt; dict:
+        &#34;&#34;&#34;Create a CTSimU JSON dictionary for this material component.
+
+        Returns
+        -------
+        json_dict : dict
+        &#34;&#34;&#34;
+        jd = dict()
+        jd[&#34;formula&#34;] = self.formula.json_dict()
+        jd[&#34;mass_fraction&#34;] = self.mass_fraction.json_dict()
+        return jd</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.MaterialComponent.set_frame"><code class="name flex">
+<span>def <span class="ident">set_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prepare the material component for the given <code>frame</code> number,
+considering potential drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>Current frame number.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total number of frames in scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if only those drifts known to the reconstruction software
+must be taken into account, <code>False</code> if all drifts are taken
+into account.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>changed</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If the material component has changed from its previous state
+(due to drifts).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
+        &#34;&#34;&#34;Prepare the material component for the given `frame` number,
+        considering potential drifts.
+
+        Parameters
+        ----------
+        frame : float
+                Current frame number.
+
+        n_frames : int
+                Total number of frames in scan.
+
+        reconstruction : bool
+                `True` if only those drifts known to the reconstruction software
+                must be taken into account, `False` if all drifts are taken
+                into account.
+
+        Returns
+        -------
+        changed : bool
+                If the material component has changed from its previous state
+                (due to drifts).
+        &#34;&#34;&#34;
+
+        value_changed = self.formula.set_frame(frame, n_frames, reconstruction) or self.mass_fraction.set_frame(frame, n_frames, reconstruction)
+        return value_changed</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.MaterialComponent.set_from_json"><code class="name flex">
+<span>def <span class="ident">set_from_json</span></span>(<span>self, json_object: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the material component from a CTSimU JSON object.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>CTSimU material component definition, as imported
+from a JSON file.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If formula or mass fraction cannot be read from the <code>json_object</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_from_json(self, json_object:dict):
+        &#34;&#34;&#34;Set the material component from a CTSimU JSON object.
+
+        Parameters
+        ----------
+        json_object : dict
+                CTSimU material component definition, as imported
+                from a JSON file.
+
+        Raises
+        ------
+        ValueError
+                If formula or mass fraction cannot be read from the `json_object`.
+        &#34;&#34;&#34;
+
+        if not self.formula.set_parameter_from_key(json_object, [&#34;formula&#34;]):
+                raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json: Error reading a formula for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+        if not self.mass_fraction.set_parameter_from_key(json_object, [&#34;mass_fraction&#34;]):
+                raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json: Error reading a mass fraction for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+        self.set_frame(0, 1, False)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.material.MaterialComponent.set_from_json_legacy"><code class="name flex">
+<span>def <span class="ident">set_from_json_legacy</span></span>(<span>self, json_object: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the material component from a legacy CTSimU JSON object
+(for file format version &lt;= 1.0)</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>CTSimU material component definition, as imported
+from a JSON file.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If composition cannot be read from the <code>json_object</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_from_json_legacy(self, json_object:dict):
+        &#34;&#34;&#34;Set the material component from a legacy CTSimU JSON object
+        (for file format version &lt;= 1.0)
+
+        Parameters
+        ----------
+        json_object : dict
+                CTSimU material component definition, as imported
+                from a JSON file.
+
+        Raises
+        ------
+        ValueError
+                If composition cannot be read from the `json_object`.
+        &#34;&#34;&#34;
+
+        # In file format version &lt;= 1.0, the composition was
+        # simply a string value, no mass fraction was defined.
+        if not self.formula.set_parameter_from_key(json_object, [&#34;composition&#34;]):
+                raise ValueError(f&#34;CTSimU MaterialComponent: set_from_json_legacy: Error reading a composition for material &#39;{self.parent_material_id} ({self.parent_material_name})&#39;.&#34;)
+
+        self.mass_fraction.reset()
+        self.mass_fraction.set_standard_value(1.0)
+
+        self.set_frame(0, 1, False)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu.scenario" href="index.html">ctsimu.scenario</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.scenario.material.Material" href="#ctsimu.scenario.material.Material">Material</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ctsimu.scenario.material.Material.add_component" href="#ctsimu.scenario.material.Material.add_component">add_component</a></code></li>
+<li><code><a title="ctsimu.scenario.material.Material.json_dict" href="#ctsimu.scenario.material.Material.json_dict">json_dict</a></code></li>
+<li><code><a title="ctsimu.scenario.material.Material.reset" href="#ctsimu.scenario.material.Material.reset">reset</a></code></li>
+<li><code><a title="ctsimu.scenario.material.Material.set_density" href="#ctsimu.scenario.material.Material.set_density">set_density</a></code></li>
+<li><code><a title="ctsimu.scenario.material.Material.set_frame" href="#ctsimu.scenario.material.Material.set_frame">set_frame</a></code></li>
+<li><code><a title="ctsimu.scenario.material.Material.set_from_json" href="#ctsimu.scenario.material.Material.set_from_json">set_from_json</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ctsimu.scenario.material.MaterialComponent" href="#ctsimu.scenario.material.MaterialComponent">MaterialComponent</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.scenario.material.MaterialComponent.json_dict" href="#ctsimu.scenario.material.MaterialComponent.json_dict">json_dict</a></code></li>
+<li><code><a title="ctsimu.scenario.material.MaterialComponent.set_frame" href="#ctsimu.scenario.material.MaterialComponent.set_frame">set_frame</a></code></li>
+<li><code><a title="ctsimu.scenario.material.MaterialComponent.set_from_json" href="#ctsimu.scenario.material.MaterialComponent.set_from_json">set_from_json</a></code></li>
+<li><code><a title="ctsimu.scenario.material.MaterialComponent.set_from_json_legacy" href="#ctsimu.scenario.material.MaterialComponent.set_from_json_legacy">set_from_json_legacy</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

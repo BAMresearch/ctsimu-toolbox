@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-WE-2: Effect of partial pixel coverage
+
+.. include:: ./test2D_WE_2.md
+"""
+
 from ..test import *
 from ..helpers import *
 from ..primitives import Vector, Polygon

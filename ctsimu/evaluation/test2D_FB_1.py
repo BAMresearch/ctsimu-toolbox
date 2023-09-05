@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-FB-1: Noise
+
+.. include:: ./test2D_FB_1.md
+"""
+
 from ..test import *
 from ..helpers import *
 from ..scenario import Scenario

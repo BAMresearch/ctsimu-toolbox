@@ -1,0 +1,2263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ctsimu.scenario.scenevector API documentation</title>
+<meta name="description" content="A scene vector is a 3D vector that knows its reference coordinate system.
+It can be converted between these coordinate systems and handles drifts." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.scenario.scenevector</code></h1>
+</header>
+<section id="section-intro">
+<p>A scene vector is a 3D vector that knows its reference coordinate system.
+It can be converted between these coordinate systems and handles drifts.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;
+A scene vector is a 3D vector that knows its reference coordinate system.
+It can be converted between these coordinate systems and handles drifts.
+&#34;&#34;&#34;
+
+from ..helpers import *
+from ..primitives import Vector, Matrix
+from ..geometry import *
+from .parameter import Parameter
+
+class Scenevector:
+        &#34;&#34;&#34;A scene vector is a 3D vector that knows the type of its
+        reference coordinate system, given as world, local or sample.
+        It provides functions to convert between these coordinate systems
+        and it can handle drifts. Therefore, all three vector components
+        are stored as `ctsimu.scenario.parameter.Parameter` objects.
+
+        Useful for vectors that can change due to drifts,
+        such as rotation axis and pivot point of a deviation,
+        or, in general, the coordinate system vectors.
+
+        Attributes
+        ----------
+        reference : str
+                Identifies the reference coordinate system.
+                Can be: `&#34;world&#34;`, `local&#34;`, or `&#34;sample&#34;`.
+
+        c0 : ctsimu.scenario.parameter.Parameter
+                Value of the first vector component.
+
+        c1 : ctsimu.scenario.parameter.Parameter
+                Value of the second vector component.
+
+        c2 : ctsimu.scenario.parameter.Parameter
+                Value of the third vector component.
+        &#34;&#34;&#34;
+
+        def __init__(self, native_unit:str=None, _root=None):
+                &#34;&#34;&#34;For initialization, the native unit can be given.
+
+                Parameters
+                ----------
+                native_unit : str, optional
+                        The native unit of the vector&#39;s components. Standard is `None`,
+                        but `&#34;mm&#34;` would make sense for positions in space.
+                        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
+                &#34;&#34;&#34;
+                self._root = _root  # root scenario object
+                
+                self.c0 = Parameter(native_unit=native_unit, _root=self._root) # 1st vector component
+                self.c1 = Parameter(native_unit=native_unit, _root=self._root) # 2nd vector component
+                self.c2 = Parameter(native_unit=native_unit, _root=self._root) # 3rd vector component
+
+                # Reference coordinate system:
+                self.reference = &#34;world&#34; # &#34;world&#34;, local&#34;, &#34;sample&#34;
+
+        def __str__(self):
+                s = &#34;({c0}, {c1}, {c2}) in {ref}&#34;.format(
+                        c0 = self.c0.current_value,
+                        c1 = self.c1.current_value,
+                        c2 = self.c2.current_value,
+                        ref = self.reference
+                )
+
+                return s
+
+        def has_drifts(self) -&gt; bool:
+                &#34;&#34;&#34;Does the vector drift during the CT scan?
+
+                Returns
+                -------
+                has_drifts : bool
+                        `True` if any vector component defines a drift,
+                        `False` if none of the vector components defines any drift.
+                &#34;&#34;&#34;
+                return (self.c0.has_drifts()) or (self.c1.has_drifts()) or (self.c2.has_drifts())
+
+        def set_reference(self, reference:str):
+                &#34;&#34;&#34;Set the reference coordinate system.
+                Can be `&#34;world&#34;`, `&#34;local&#34;` or `&#34;sample&#34;`.
+
+                Parameters
+                ----------
+                reference : str
+                        String that identifies the reference coordinate system
+                        (see above for valid strings).
+                &#34;&#34;&#34;
+                valid_references = [&#34;world&#34;, &#34;local&#34;, &#34;sample&#34;]
+                if reference in valid_references:
+                        self.reference = reference
+                else:
+                        raise Exception(f&#34;Scenevector: set_reference(): not a valid reference coordinate system: &#39;{reference}&#39;. Valid reference coordinate systems are: {valid_references}.&#34;)
+
+        def set_native_unit(self, native_unit:str):
+                &#34;&#34;&#34;Set native unit of vector components.
+                Necessary for the location of points such as
+                the center points of coordinate systems,
+                usually given in `&#34;mm&#34;` as native unit.
+
+                Parameters
+                ----------
+                native_unit : str
+                        The native unit of the vector&#39;s components. Standard is `None`,
+                        but `&#34;mm&#34;` would make sense for positions in space.
+                        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
+                &#34;&#34;&#34;
+                if is_valid_native_unit(native_unit):
+                        self.c0.set_native_unit(native_unit)
+                        self.c1.set_native_unit(native_unit)
+                        self.c2.set_native_unit(native_unit)
+
+        def set_simple(self, c0:float, c1:float, c2:float):
+                &#34;&#34;&#34;Set a simple scene vector from three numbers,
+                results in a scene vector without drifts.
+
+                Parameters
+                ----------
+                c0 : float
+                        Value of the first vector component.
+
+                c1 : float
+                        Value of the second vector component.
+
+                c2 : float
+                        Value of the third vector component.
+                &#34;&#34;&#34;
+                self.c0.set_standard_value(c0)
+                self.c1.set_standard_value(c1)
+                self.c2.set_standard_value(c2)
+
+                # Delete all drifts and set current value to standard value:
+                self.c0.reset()
+                self.c1.reset()
+                self.c2.reset()
+
+        def set_component(self, i:int, p:&#39;Parameter&#39;):
+                &#34;&#34;&#34;Set the `i`th vector component to the given parameter `p`
+                (which must be a `ctsimu.scenario.parameter.Parameter` object).
+
+                Parameters
+                ----------
+                i : int
+                        Index of the vector component (`0`, `1` or `2`).
+
+                p : ctsimu.scenario.parameter.Parameter
+                        Parameter object for the given vector component.
+                &#34;&#34;&#34;
+                if isinstance(p, Parameter):
+                        if i == 0:
+                                self.c0 = p
+                        elif i == 1:
+                                self.c1 = p
+                        elif i == 2:
+                                self.c2 = p
+                else:
+                        raise Exception(f&#34;CTSimU Scenevector: set_component(): the given parameter is not an instance of class &#39;ctsimu.scenario.parameter.Parameter&#39;, but of type {type(p)}.&#34;)
+
+        def standard_vector(self) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents this
+                scene vector in its standard orientation
+                (i.e., without any drifts applied).
+
+                Returns
+                -------
+                v : ctsimu.primitives.Vector
+                        Standard vector (without any drifts applied).
+                &#34;&#34;&#34;
+                return Vector(
+                        x=self.c0.get_standard_value(),
+                        y=self.c1.get_standard_value(),
+                        z=self.c2.get_standard_value()
+                )
+
+        def drift_vector(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents
+                only the drift values for the given `frame` number.
+
+                Can later be added to the standard value to get
+                the resulting vector respecting all drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in CT scan.
+
+                reconstruction : bool
+                        Obey only those drifts that are labeled as known to the
+                        reconstruction software?
+
+                Returns
+                -------
+                drift_vector : ctsimu.primitives.Vector
+                        Vector that contains the drift values for the given `frame` number.
+                &#34;&#34;&#34;
+
+                return Vector(
+                        x=self.c0.get_total_drift_for_frame(frame, n_frames, reconstruction),
+                        y=self.c1.get_total_drift_for_frame(frame, n_frames, reconstruction),
+                        z=self.c2.get_total_drift_for_frame(frame, n_frames, reconstruction)
+                )
+
+        def vector_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for the given `frame` number,
+                respecting all drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in CT scan.
+
+                reconstruction : bool
+                        Obey only those drifts that are labeled as known to the
+                        reconstruction software?
+
+                Returns
+                -------
+                vec : ctsimu.primitives.Vector
+                        Vector for the given `frame` number.
+                &#34;&#34;&#34;
+                return Vector(
+                        x=self.c0.set_frame_and_get_value(frame, n_frames, reconstruction),
+                        y=self.c1.set_frame_and_get_value(frame, n_frames, reconstruction),
+                        z=self.c2.set_frame_and_get_value(frame, n_frames, reconstruction)
+                )
+
+        def point_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+                in terms of the world coordinate system for the given `frame` number,
+                respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_world : ctsimu.primitives.Vector
+                        A vector in terms of the world coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Already in world.
+                        return v
+                elif self.reference == &#34;local&#34;:
+                        # Convert from local to world.
+                        v_in_world = change_reference_frame_of_point(v, local, ctsimu_world)
+                        return v_in_world
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world a first time...
+                        # ...and a second time to transform it
+                        # from the stage to the world:
+                        v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
+                        v_in_world = change_reference_frame_of_point(v_in_stage, local, ctsimu_world)
+                        return v_in_world
+
+        def point_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+                in terms of the local coordinate system for the given `frame` number,
+                respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_local : ctsimu.primitives.Vector
+                        A vector in terms of the local coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Convert from world to local.
+                        v_in_local = change_reference_frame_of_point(v, ctsimu_world, local)
+                        return v_in_local
+                elif self.reference == &#34;local&#34;:
+                        # Already in local.
+                        return v
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world.
+                        v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
+                        return v_in_stage
+
+        def point_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+                in terms of the sample coordinate system for the given `frame` number,
+                respecting all relevant drifts.
+
+                The sample must be attached to the stage, otherwise use `in_local`
+                instead. Note that a direct conversion from one sample CS to another is
+                not possible with this function.
+
+                Parameters
+                ----------
+                stage : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the stage&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+                        This must be the same sample coordinate system to which this
+                        scene vector refers.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_sample : ctsimu.primitives.Vector
+                        A vector in terms of the sample coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # From world to stage...
+                        # ...and a second time from world to sample
+                        # because the stage is the sample&#39;s &#34;world&#34;:
+                        v_in_stage  = change_reference_frame_of_point(v, ctsimu_world, stage)
+                        v_in_sample = change_reference_frame_of_point(v_in_stage, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;local&#34;:
+                        # Convert from stage to sample. Because
+                        # the stage is the sample&#39;s world, we actually
+                        # convert from world to sample.
+                        v_in_sample = change_reference_frame_of_point(v, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;sample&#34;:
+                        # Already in sample coordinate system:
+                        return v
+
+        def direction_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the world
+                coordinate system for the given `frame` number, respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_world : ctsimu.primitives.Vector
+                        A vector in terms of the world coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Already in world.
+                        return v
+                elif self.reference == &#34;local&#34;:
+                        # Convert from local to world.
+                        v_in_world = change_reference_frame_of_direction(v, local, ctsimu_world)
+                        return v_in_world
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world a first time...
+                        # ...and a second time to transform it
+                        # from the stage to the world:
+                        v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
+                        v_in_world = change_reference_frame_of_direction(v_in_stage, local, ctsimu_world)
+                        return v_in_world
+
+        def direction_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the local
+                coordinate system for the given `frame` number, respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_local : ctsimu.primitives.Vector
+                        A vector in terms of the local coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Convert from world to local.
+                        v_in_local = change_reference_frame_of_direction(v, ctsimu_world, local)
+                        return v_in_local
+                elif self.reference == &#34;local&#34;:
+                        # Already in local.
+                        return v
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world.
+                        v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
+                        return v_in_stage
+
+        def direction_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the sample
+                coordinate system for the given `frame` number, respecting all relevant drifts.
+
+                The sample must be attached to the stage, otherwise use `in_local`
+                instead. Note that a direct conversion from one sample CS to another is
+                not possible with this function.
+
+                Parameters
+                ----------
+                stage : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the stage&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+                        This must be the same sample coordinate system to which this
+                        scene vector refers.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_sample : ctsimu.primitives.Vector
+                        A vector in terms of the sample coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # From world to stage...
+                        # ...and a second time from world to sample
+                        # because the stage is the sample&#39;s &#34;world&#34;:
+                        v_in_stage  = change_reference_frame_of_direction(v, ctsimu_world, stage)
+                        v_in_sample = change_reference_frame_of_direction(v_in_stage, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;local&#34;:
+                        # Convert from stage to sample. Because
+                        # the stage is the sample&#39;s world, we actually
+                        # convert from world to sample.
+                        v_in_sample = change_reference_frame_of_direction(v, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;sample&#34;:
+                        # Already in sample coordinate system:
+                        return v
+
+        def set_from_json(self, json_vector_object:dict) -&gt; bool:
+                &#34;&#34;&#34;Set up the scene vector from a CTSimU JSON object
+                that describes a three-component vector.
+
+                Parameters
+                ----------
+                json_vector_object : dict
+                        CTSimU vector object, as imported from a JSON scenario description.
+
+                Returns
+                -------
+                success : bool
+                        `True` on success, `False` when an error occurred.
+                &#34;&#34;&#34;
+
+                if json_exists_and_not_null(json_vector_object, keys=[&#34;x&#34;]) and \
+                   json_exists_and_not_null(json_vector_object, keys=[&#34;y&#34;]) and \
+                   json_exists_and_not_null(json_vector_object, keys=[&#34;z&#34;]):
+                        self.set_reference(&#34;world&#34;)
+                        if self.c0.set_parameter_from_key(json_vector_object, [&#34;x&#34;]) and \
+                           self.c1.set_parameter_from_key(json_vector_object, [&#34;y&#34;]) and \
+                           self.c2.set_parameter_from_key(json_vector_object, [&#34;z&#34;]):
+                                return True
+                elif json_exists_and_not_null(json_vector_object, keys=[&#34;u&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;v&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;w&#34;]):
+                        self.set_reference(&#34;local&#34;)
+                        if self.c0.set_parameter_from_key(json_vector_object, [&#34;u&#34;]) and \
+                           self.c1.set_parameter_from_key(json_vector_object, [&#34;v&#34;]) and \
+                           self.c2.set_parameter_from_key(json_vector_object, [&#34;w&#34;]):
+                                return True
+                elif json_exists_and_not_null(json_vector_object, keys=[&#34;r&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;s&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;t&#34;]):
+                        self.set_reference(&#34;sample&#34;)
+                        if self.c0.set_parameter_from_key(json_vector_object, [&#34;r&#34;]) and \
+                           self.c1.set_parameter_from_key(json_vector_object, [&#34;s&#34;]) and \
+                           self.c2.set_parameter_from_key(json_vector_object, [&#34;t&#34;]):
+                                return True
+
+                raise Exception(&#34;Unable to set scene vector from JSON file. A vector must be specified by the three components (x,y,z), (u,v,w) or (r,s,t).&#34;)
+                return False
+
+        def json_dict(self) -&gt; dict:
+                &#34;&#34;&#34;Create a dictionary of this scenevector for a CTSimU JSON file.&#34;&#34;&#34;
+                jd = dict()
+
+                if self.reference == &#34;world&#34;:
+                        jd[&#34;x&#34;] = self.c0.json_dict()
+                        jd[&#34;y&#34;] = self.c1.json_dict()
+                        jd[&#34;z&#34;] = self.c2.json_dict()
+                elif self.reference == &#34;local&#34;:
+                        jd[&#34;u&#34;] = self.c0.json_dict()
+                        jd[&#34;v&#34;] = self.c1.json_dict()
+                        jd[&#34;w&#34;] = self.c2.json_dict()
+                elif self.reference == &#34;sample&#34;:
+                        jd[&#34;r&#34;] = self.c0.json_dict()
+                        jd[&#34;s&#34;] = self.c1.json_dict()
+                        jd[&#34;t&#34;] = self.c2.json_dict()
+
+                return jd</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.scenario.scenevector.Scenevector"><code class="flex name class">
+<span>class <span class="ident">Scenevector</span></span>
+<span>(</span><span>native_unit: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A scene vector is a 3D vector that knows the type of its
+reference coordinate system, given as world, local or sample.
+It provides functions to convert between these coordinate systems
+and it can handle drifts. Therefore, all three vector components
+are stored as <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> objects.</p>
+<p>Useful for vectors that can change due to drifts,
+such as rotation axis and pivot point of a deviation,
+or, in general, the coordinate system vectors.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>reference</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifies the reference coordinate system.
+Can be: <code>"world"</code>, <code>local"</code>, or <code>"sample"</code>.</dd>
+<dt><strong><code>c0</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Value of the first vector component.</dd>
+<dt><strong><code>c1</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Value of the second vector component.</dd>
+<dt><strong><code>c2</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Value of the third vector component.</dd>
+</dl>
+<p>For initialization, the native unit can be given.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The native unit of the vector's components. Standard is <code>None</code>,
+but <code>"mm"</code> would make sense for positions in space.
+Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Scenevector:
+        &#34;&#34;&#34;A scene vector is a 3D vector that knows the type of its
+        reference coordinate system, given as world, local or sample.
+        It provides functions to convert between these coordinate systems
+        and it can handle drifts. Therefore, all three vector components
+        are stored as `ctsimu.scenario.parameter.Parameter` objects.
+
+        Useful for vectors that can change due to drifts,
+        such as rotation axis and pivot point of a deviation,
+        or, in general, the coordinate system vectors.
+
+        Attributes
+        ----------
+        reference : str
+                Identifies the reference coordinate system.
+                Can be: `&#34;world&#34;`, `local&#34;`, or `&#34;sample&#34;`.
+
+        c0 : ctsimu.scenario.parameter.Parameter
+                Value of the first vector component.
+
+        c1 : ctsimu.scenario.parameter.Parameter
+                Value of the second vector component.
+
+        c2 : ctsimu.scenario.parameter.Parameter
+                Value of the third vector component.
+        &#34;&#34;&#34;
+
+        def __init__(self, native_unit:str=None, _root=None):
+                &#34;&#34;&#34;For initialization, the native unit can be given.
+
+                Parameters
+                ----------
+                native_unit : str, optional
+                        The native unit of the vector&#39;s components. Standard is `None`,
+                        but `&#34;mm&#34;` would make sense for positions in space.
+                        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
+                &#34;&#34;&#34;
+                self._root = _root  # root scenario object
+                
+                self.c0 = Parameter(native_unit=native_unit, _root=self._root) # 1st vector component
+                self.c1 = Parameter(native_unit=native_unit, _root=self._root) # 2nd vector component
+                self.c2 = Parameter(native_unit=native_unit, _root=self._root) # 3rd vector component
+
+                # Reference coordinate system:
+                self.reference = &#34;world&#34; # &#34;world&#34;, local&#34;, &#34;sample&#34;
+
+        def __str__(self):
+                s = &#34;({c0}, {c1}, {c2}) in {ref}&#34;.format(
+                        c0 = self.c0.current_value,
+                        c1 = self.c1.current_value,
+                        c2 = self.c2.current_value,
+                        ref = self.reference
+                )
+
+                return s
+
+        def has_drifts(self) -&gt; bool:
+                &#34;&#34;&#34;Does the vector drift during the CT scan?
+
+                Returns
+                -------
+                has_drifts : bool
+                        `True` if any vector component defines a drift,
+                        `False` if none of the vector components defines any drift.
+                &#34;&#34;&#34;
+                return (self.c0.has_drifts()) or (self.c1.has_drifts()) or (self.c2.has_drifts())
+
+        def set_reference(self, reference:str):
+                &#34;&#34;&#34;Set the reference coordinate system.
+                Can be `&#34;world&#34;`, `&#34;local&#34;` or `&#34;sample&#34;`.
+
+                Parameters
+                ----------
+                reference : str
+                        String that identifies the reference coordinate system
+                        (see above for valid strings).
+                &#34;&#34;&#34;
+                valid_references = [&#34;world&#34;, &#34;local&#34;, &#34;sample&#34;]
+                if reference in valid_references:
+                        self.reference = reference
+                else:
+                        raise Exception(f&#34;Scenevector: set_reference(): not a valid reference coordinate system: &#39;{reference}&#39;. Valid reference coordinate systems are: {valid_references}.&#34;)
+
+        def set_native_unit(self, native_unit:str):
+                &#34;&#34;&#34;Set native unit of vector components.
+                Necessary for the location of points such as
+                the center points of coordinate systems,
+                usually given in `&#34;mm&#34;` as native unit.
+
+                Parameters
+                ----------
+                native_unit : str
+                        The native unit of the vector&#39;s components. Standard is `None`,
+                        but `&#34;mm&#34;` would make sense for positions in space.
+                        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
+                &#34;&#34;&#34;
+                if is_valid_native_unit(native_unit):
+                        self.c0.set_native_unit(native_unit)
+                        self.c1.set_native_unit(native_unit)
+                        self.c2.set_native_unit(native_unit)
+
+        def set_simple(self, c0:float, c1:float, c2:float):
+                &#34;&#34;&#34;Set a simple scene vector from three numbers,
+                results in a scene vector without drifts.
+
+                Parameters
+                ----------
+                c0 : float
+                        Value of the first vector component.
+
+                c1 : float
+                        Value of the second vector component.
+
+                c2 : float
+                        Value of the third vector component.
+                &#34;&#34;&#34;
+                self.c0.set_standard_value(c0)
+                self.c1.set_standard_value(c1)
+                self.c2.set_standard_value(c2)
+
+                # Delete all drifts and set current value to standard value:
+                self.c0.reset()
+                self.c1.reset()
+                self.c2.reset()
+
+        def set_component(self, i:int, p:&#39;Parameter&#39;):
+                &#34;&#34;&#34;Set the `i`th vector component to the given parameter `p`
+                (which must be a `ctsimu.scenario.parameter.Parameter` object).
+
+                Parameters
+                ----------
+                i : int
+                        Index of the vector component (`0`, `1` or `2`).
+
+                p : ctsimu.scenario.parameter.Parameter
+                        Parameter object for the given vector component.
+                &#34;&#34;&#34;
+                if isinstance(p, Parameter):
+                        if i == 0:
+                                self.c0 = p
+                        elif i == 1:
+                                self.c1 = p
+                        elif i == 2:
+                                self.c2 = p
+                else:
+                        raise Exception(f&#34;CTSimU Scenevector: set_component(): the given parameter is not an instance of class &#39;ctsimu.scenario.parameter.Parameter&#39;, but of type {type(p)}.&#34;)
+
+        def standard_vector(self) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents this
+                scene vector in its standard orientation
+                (i.e., without any drifts applied).
+
+                Returns
+                -------
+                v : ctsimu.primitives.Vector
+                        Standard vector (without any drifts applied).
+                &#34;&#34;&#34;
+                return Vector(
+                        x=self.c0.get_standard_value(),
+                        y=self.c1.get_standard_value(),
+                        z=self.c2.get_standard_value()
+                )
+
+        def drift_vector(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents
+                only the drift values for the given `frame` number.
+
+                Can later be added to the standard value to get
+                the resulting vector respecting all drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in CT scan.
+
+                reconstruction : bool
+                        Obey only those drifts that are labeled as known to the
+                        reconstruction software?
+
+                Returns
+                -------
+                drift_vector : ctsimu.primitives.Vector
+                        Vector that contains the drift values for the given `frame` number.
+                &#34;&#34;&#34;
+
+                return Vector(
+                        x=self.c0.get_total_drift_for_frame(frame, n_frames, reconstruction),
+                        y=self.c1.get_total_drift_for_frame(frame, n_frames, reconstruction),
+                        z=self.c2.get_total_drift_for_frame(frame, n_frames, reconstruction)
+                )
+
+        def vector_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for the given `frame` number,
+                respecting all drifts.
+
+                Parameters
+                ----------
+                frame : float
+                        Current frame number.
+
+                n_frames : int
+                        Total number of frames in CT scan.
+
+                reconstruction : bool
+                        Obey only those drifts that are labeled as known to the
+                        reconstruction software?
+
+                Returns
+                -------
+                vec : ctsimu.primitives.Vector
+                        Vector for the given `frame` number.
+                &#34;&#34;&#34;
+                return Vector(
+                        x=self.c0.set_frame_and_get_value(frame, n_frames, reconstruction),
+                        y=self.c1.set_frame_and_get_value(frame, n_frames, reconstruction),
+                        z=self.c2.set_frame_and_get_value(frame, n_frames, reconstruction)
+                )
+
+        def point_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+                in terms of the world coordinate system for the given `frame` number,
+                respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_world : ctsimu.primitives.Vector
+                        A vector in terms of the world coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Already in world.
+                        return v
+                elif self.reference == &#34;local&#34;:
+                        # Convert from local to world.
+                        v_in_world = change_reference_frame_of_point(v, local, ctsimu_world)
+                        return v_in_world
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world a first time...
+                        # ...and a second time to transform it
+                        # from the stage to the world:
+                        v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
+                        v_in_world = change_reference_frame_of_point(v_in_stage, local, ctsimu_world)
+                        return v_in_world
+
+        def point_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+                in terms of the local coordinate system for the given `frame` number,
+                respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_local : ctsimu.primitives.Vector
+                        A vector in terms of the local coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Convert from world to local.
+                        v_in_local = change_reference_frame_of_point(v, ctsimu_world, local)
+                        return v_in_local
+                elif self.reference == &#34;local&#34;:
+                        # Already in local.
+                        return v
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world.
+                        v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
+                        return v_in_stage
+
+        def point_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+                in terms of the sample coordinate system for the given `frame` number,
+                respecting all relevant drifts.
+
+                The sample must be attached to the stage, otherwise use `in_local`
+                instead. Note that a direct conversion from one sample CS to another is
+                not possible with this function.
+
+                Parameters
+                ----------
+                stage : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the stage&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+                        This must be the same sample coordinate system to which this
+                        scene vector refers.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_sample : ctsimu.primitives.Vector
+                        A vector in terms of the sample coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # From world to stage...
+                        # ...and a second time from world to sample
+                        # because the stage is the sample&#39;s &#34;world&#34;:
+                        v_in_stage  = change_reference_frame_of_point(v, ctsimu_world, stage)
+                        v_in_sample = change_reference_frame_of_point(v_in_stage, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;local&#34;:
+                        # Convert from stage to sample. Because
+                        # the stage is the sample&#39;s world, we actually
+                        # convert from world to sample.
+                        v_in_sample = change_reference_frame_of_point(v, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;sample&#34;:
+                        # Already in sample coordinate system:
+                        return v
+
+        def direction_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the world
+                coordinate system for the given `frame` number, respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_world : ctsimu.primitives.Vector
+                        A vector in terms of the world coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Already in world.
+                        return v
+                elif self.reference == &#34;local&#34;:
+                        # Convert from local to world.
+                        v_in_world = change_reference_frame_of_direction(v, local, ctsimu_world)
+                        return v_in_world
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world a first time...
+                        # ...and a second time to transform it
+                        # from the stage to the world:
+                        v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
+                        v_in_world = change_reference_frame_of_direction(v_in_stage, local, ctsimu_world)
+                        return v_in_world
+
+        def direction_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the local
+                coordinate system for the given `frame` number, respecting all relevant drifts.
+
+                Parameters
+                ----------
+                local : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the object&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_local : ctsimu.primitives.Vector
+                        A vector in terms of the local coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # Convert from world to local.
+                        v_in_local = change_reference_frame_of_direction(v, ctsimu_world, local)
+                        return v_in_local
+                elif self.reference == &#34;local&#34;:
+                        # Already in local.
+                        return v
+                elif self.reference == &#34;sample&#34;:
+                        # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                        # To get the sample coordinates in stage coordinates,
+                        # we therefore transform to the world.
+                        v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
+                        return v_in_stage
+
+        def direction_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+                &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the sample
+                coordinate system for the given `frame` number, respecting all relevant drifts.
+
+                The sample must be attached to the stage, otherwise use `in_local`
+                instead. Note that a direct conversion from one sample CS to another is
+                not possible with this function.
+
+                Parameters
+                ----------
+                stage : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the stage&#39;s local coordinate
+                        system in terms of world coordinates.
+
+                sample : ctsimu.geometry.CoordinateSystem
+                        A coordinate system that represents the sample in terms of the
+                        stage coordinate system. If you don&#39;t want to convert from a
+                        sample vector, pass `None`.
+                        This must be the same sample coordinate system to which this
+                        scene vector refers.
+
+                frame : float
+                        The number of the current frame.
+
+                n_frames : int
+                        The total number of frames in the CT scan.
+
+                reconstruction : bool
+                        Only handle drifts that are labeled as known to the reconstruction software?
+
+                Returns
+                -------
+                vec_sample : ctsimu.primitives.Vector
+                        A vector in terms of the sample coordinate system.
+                &#34;&#34;&#34;
+
+                v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+                if self.reference == &#34;world&#34;:
+                        # From world to stage...
+                        # ...and a second time from world to sample
+                        # because the stage is the sample&#39;s &#34;world&#34;:
+                        v_in_stage  = change_reference_frame_of_direction(v, ctsimu_world, stage)
+                        v_in_sample = change_reference_frame_of_direction(v_in_stage, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;local&#34;:
+                        # Convert from stage to sample. Because
+                        # the stage is the sample&#39;s world, we actually
+                        # convert from world to sample.
+                        v_in_sample = change_reference_frame_of_direction(v, ctsimu_world, sample)
+                        return v_in_sample
+                elif self.reference == &#34;sample&#34;:
+                        # Already in sample coordinate system:
+                        return v
+
+        def set_from_json(self, json_vector_object:dict) -&gt; bool:
+                &#34;&#34;&#34;Set up the scene vector from a CTSimU JSON object
+                that describes a three-component vector.
+
+                Parameters
+                ----------
+                json_vector_object : dict
+                        CTSimU vector object, as imported from a JSON scenario description.
+
+                Returns
+                -------
+                success : bool
+                        `True` on success, `False` when an error occurred.
+                &#34;&#34;&#34;
+
+                if json_exists_and_not_null(json_vector_object, keys=[&#34;x&#34;]) and \
+                   json_exists_and_not_null(json_vector_object, keys=[&#34;y&#34;]) and \
+                   json_exists_and_not_null(json_vector_object, keys=[&#34;z&#34;]):
+                        self.set_reference(&#34;world&#34;)
+                        if self.c0.set_parameter_from_key(json_vector_object, [&#34;x&#34;]) and \
+                           self.c1.set_parameter_from_key(json_vector_object, [&#34;y&#34;]) and \
+                           self.c2.set_parameter_from_key(json_vector_object, [&#34;z&#34;]):
+                                return True
+                elif json_exists_and_not_null(json_vector_object, keys=[&#34;u&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;v&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;w&#34;]):
+                        self.set_reference(&#34;local&#34;)
+                        if self.c0.set_parameter_from_key(json_vector_object, [&#34;u&#34;]) and \
+                           self.c1.set_parameter_from_key(json_vector_object, [&#34;v&#34;]) and \
+                           self.c2.set_parameter_from_key(json_vector_object, [&#34;w&#34;]):
+                                return True
+                elif json_exists_and_not_null(json_vector_object, keys=[&#34;r&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;s&#34;]) and \
+                     json_exists_and_not_null(json_vector_object, keys=[&#34;t&#34;]):
+                        self.set_reference(&#34;sample&#34;)
+                        if self.c0.set_parameter_from_key(json_vector_object, [&#34;r&#34;]) and \
+                           self.c1.set_parameter_from_key(json_vector_object, [&#34;s&#34;]) and \
+                           self.c2.set_parameter_from_key(json_vector_object, [&#34;t&#34;]):
+                                return True
+
+                raise Exception(&#34;Unable to set scene vector from JSON file. A vector must be specified by the three components (x,y,z), (u,v,w) or (r,s,t).&#34;)
+                return False
+
+        def json_dict(self) -&gt; dict:
+                &#34;&#34;&#34;Create a dictionary of this scenevector for a CTSimU JSON file.&#34;&#34;&#34;
+                jd = dict()
+
+                if self.reference == &#34;world&#34;:
+                        jd[&#34;x&#34;] = self.c0.json_dict()
+                        jd[&#34;y&#34;] = self.c1.json_dict()
+                        jd[&#34;z&#34;] = self.c2.json_dict()
+                elif self.reference == &#34;local&#34;:
+                        jd[&#34;u&#34;] = self.c0.json_dict()
+                        jd[&#34;v&#34;] = self.c1.json_dict()
+                        jd[&#34;w&#34;] = self.c2.json_dict()
+                elif self.reference == &#34;sample&#34;:
+                        jd[&#34;r&#34;] = self.c0.json_dict()
+                        jd[&#34;s&#34;] = self.c1.json_dict()
+                        jd[&#34;t&#34;] = self.c2.json_dict()
+
+                return jd</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.scenario.scenevector.Scenevector.direction_in_local"><code class="name flex">
+<span>def <span class="ident">direction_in_local</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for a direction in terms of the local
+coordinate system for the given <code>frame</code> number, respecting all relevant drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>local</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the object's local coordinate
+system in terms of world coordinates.</dd>
+<dt><strong><code>sample</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the sample in terms of the
+stage coordinate system. If you don't want to convert from a
+sample vector, pass <code>None</code>.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of the current frame.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>The total number of frames in the CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only handle drifts that are labeled as known to the reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec_local</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>A vector in terms of the local coordinate system.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def direction_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the local
+        coordinate system for the given `frame` number, respecting all relevant drifts.
+
+        Parameters
+        ----------
+        local : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the object&#39;s local coordinate
+                system in terms of world coordinates.
+
+        sample : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the sample in terms of the
+                stage coordinate system. If you don&#39;t want to convert from a
+                sample vector, pass `None`.
+
+        frame : float
+                The number of the current frame.
+
+        n_frames : int
+                The total number of frames in the CT scan.
+
+        reconstruction : bool
+                Only handle drifts that are labeled as known to the reconstruction software?
+
+        Returns
+        -------
+        vec_local : ctsimu.primitives.Vector
+                A vector in terms of the local coordinate system.
+        &#34;&#34;&#34;
+
+        v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+        if self.reference == &#34;world&#34;:
+                # Convert from world to local.
+                v_in_local = change_reference_frame_of_direction(v, ctsimu_world, local)
+                return v_in_local
+        elif self.reference == &#34;local&#34;:
+                # Already in local.
+                return v
+        elif self.reference == &#34;sample&#34;:
+                # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                # To get the sample coordinates in stage coordinates,
+                # we therefore transform to the world.
+                v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
+                return v_in_stage</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.direction_in_sample"><code class="name flex">
+<span>def <span class="ident">direction_in_sample</span></span>(<span>self, stage: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for a direction in terms of the sample
+coordinate system for the given <code>frame</code> number, respecting all relevant drifts.</p>
+<p>The sample must be attached to the stage, otherwise use <code>in_local</code>
+instead. Note that a direct conversion from one sample CS to another is
+not possible with this function.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>stage</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the stage's local coordinate
+system in terms of world coordinates.</dd>
+<dt><strong><code>sample</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the sample in terms of the
+stage coordinate system. If you don't want to convert from a
+sample vector, pass <code>None</code>.
+This must be the same sample coordinate system to which this
+scene vector refers.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of the current frame.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>The total number of frames in the CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only handle drifts that are labeled as known to the reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec_sample</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>A vector in terms of the sample coordinate system.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def direction_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the sample
+        coordinate system for the given `frame` number, respecting all relevant drifts.
+
+        The sample must be attached to the stage, otherwise use `in_local`
+        instead. Note that a direct conversion from one sample CS to another is
+        not possible with this function.
+
+        Parameters
+        ----------
+        stage : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the stage&#39;s local coordinate
+                system in terms of world coordinates.
+
+        sample : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the sample in terms of the
+                stage coordinate system. If you don&#39;t want to convert from a
+                sample vector, pass `None`.
+                This must be the same sample coordinate system to which this
+                scene vector refers.
+
+        frame : float
+                The number of the current frame.
+
+        n_frames : int
+                The total number of frames in the CT scan.
+
+        reconstruction : bool
+                Only handle drifts that are labeled as known to the reconstruction software?
+
+        Returns
+        -------
+        vec_sample : ctsimu.primitives.Vector
+                A vector in terms of the sample coordinate system.
+        &#34;&#34;&#34;
+
+        v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+        if self.reference == &#34;world&#34;:
+                # From world to stage...
+                # ...and a second time from world to sample
+                # because the stage is the sample&#39;s &#34;world&#34;:
+                v_in_stage  = change_reference_frame_of_direction(v, ctsimu_world, stage)
+                v_in_sample = change_reference_frame_of_direction(v_in_stage, ctsimu_world, sample)
+                return v_in_sample
+        elif self.reference == &#34;local&#34;:
+                # Convert from stage to sample. Because
+                # the stage is the sample&#39;s world, we actually
+                # convert from world to sample.
+                v_in_sample = change_reference_frame_of_direction(v, ctsimu_world, sample)
+                return v_in_sample
+        elif self.reference == &#34;sample&#34;:
+                # Already in sample coordinate system:
+                return v</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.direction_in_world"><code class="name flex">
+<span>def <span class="ident">direction_in_world</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for a direction in terms of the world
+coordinate system for the given <code>frame</code> number, respecting all relevant drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>local</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the object's local coordinate
+system in terms of world coordinates.</dd>
+<dt><strong><code>sample</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the sample in terms of the
+stage coordinate system. If you don't want to convert from a
+sample vector, pass <code>None</code>.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of the current frame.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>The total number of frames in the CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only handle drifts that are labeled as known to the reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec_world</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>A vector in terms of the world coordinate system.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def direction_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the world
+        coordinate system for the given `frame` number, respecting all relevant drifts.
+
+        Parameters
+        ----------
+        local : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the object&#39;s local coordinate
+                system in terms of world coordinates.
+
+        sample : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the sample in terms of the
+                stage coordinate system. If you don&#39;t want to convert from a
+                sample vector, pass `None`.
+
+        frame : float
+                The number of the current frame.
+
+        n_frames : int
+                The total number of frames in the CT scan.
+
+        reconstruction : bool
+                Only handle drifts that are labeled as known to the reconstruction software?
+
+        Returns
+        -------
+        vec_world : ctsimu.primitives.Vector
+                A vector in terms of the world coordinate system.
+        &#34;&#34;&#34;
+
+        v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+        if self.reference == &#34;world&#34;:
+                # Already in world.
+                return v
+        elif self.reference == &#34;local&#34;:
+                # Convert from local to world.
+                v_in_world = change_reference_frame_of_direction(v, local, ctsimu_world)
+                return v_in_world
+        elif self.reference == &#34;sample&#34;:
+                # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                # To get the sample coordinates in stage coordinates,
+                # we therefore transform to the world a first time...
+                # ...and a second time to transform it
+                # from the stage to the world:
+                v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
+                v_in_world = change_reference_frame_of_direction(v_in_stage, local, ctsimu_world)
+                return v_in_world</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.drift_vector"><code class="name flex">
+<span>def <span class="ident">drift_vector</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> that represents
+only the drift values for the given <code>frame</code> number.</p>
+<p>Can later be added to the standard value to get
+the resulting vector respecting all drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>Current frame number.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total number of frames in CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Obey only those drifts that are labeled as known to the
+reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>drift_vector</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>Vector that contains the drift values for the given <code>frame</code> number.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def drift_vector(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents
+        only the drift values for the given `frame` number.
+
+        Can later be added to the standard value to get
+        the resulting vector respecting all drifts.
+
+        Parameters
+        ----------
+        frame : float
+                Current frame number.
+
+        n_frames : int
+                Total number of frames in CT scan.
+
+        reconstruction : bool
+                Obey only those drifts that are labeled as known to the
+                reconstruction software?
+
+        Returns
+        -------
+        drift_vector : ctsimu.primitives.Vector
+                Vector that contains the drift values for the given `frame` number.
+        &#34;&#34;&#34;
+
+        return Vector(
+                x=self.c0.get_total_drift_for_frame(frame, n_frames, reconstruction),
+                y=self.c1.get_total_drift_for_frame(frame, n_frames, reconstruction),
+                z=self.c2.get_total_drift_for_frame(frame, n_frames, reconstruction)
+        )</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.has_drifts"><code class="name flex">
+<span>def <span class="ident">has_drifts</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Does the vector drift during the CT scan?</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>has_drifts</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if any vector component defines a drift,
+<code>False</code> if none of the vector components defines any drift.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def has_drifts(self) -&gt; bool:
+        &#34;&#34;&#34;Does the vector drift during the CT scan?
+
+        Returns
+        -------
+        has_drifts : bool
+                `True` if any vector component defines a drift,
+                `False` if none of the vector components defines any drift.
+        &#34;&#34;&#34;
+        return (self.c0.has_drifts()) or (self.c1.has_drifts()) or (self.c2.has_drifts())</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.json_dict"><code class="name flex">
+<span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a dictionary of this scenevector for a CTSimU JSON file.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def json_dict(self) -&gt; dict:
+        &#34;&#34;&#34;Create a dictionary of this scenevector for a CTSimU JSON file.&#34;&#34;&#34;
+        jd = dict()
+
+        if self.reference == &#34;world&#34;:
+                jd[&#34;x&#34;] = self.c0.json_dict()
+                jd[&#34;y&#34;] = self.c1.json_dict()
+                jd[&#34;z&#34;] = self.c2.json_dict()
+        elif self.reference == &#34;local&#34;:
+                jd[&#34;u&#34;] = self.c0.json_dict()
+                jd[&#34;v&#34;] = self.c1.json_dict()
+                jd[&#34;w&#34;] = self.c2.json_dict()
+        elif self.reference == &#34;sample&#34;:
+                jd[&#34;r&#34;] = self.c0.json_dict()
+                jd[&#34;s&#34;] = self.c1.json_dict()
+                jd[&#34;t&#34;] = self.c2.json_dict()
+
+        return jd</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.point_in_local"><code class="name flex">
+<span>def <span class="ident">point_in_local</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for point coordinates
+in terms of the local coordinate system for the given <code>frame</code> number,
+respecting all relevant drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>local</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the object's local coordinate
+system in terms of world coordinates.</dd>
+<dt><strong><code>sample</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the sample in terms of the
+stage coordinate system. If you don't want to convert from a
+sample vector, pass <code>None</code>.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of the current frame.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>The total number of frames in the CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only handle drifts that are labeled as known to the reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec_local</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>A vector in terms of the local coordinate system.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def point_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+        in terms of the local coordinate system for the given `frame` number,
+        respecting all relevant drifts.
+
+        Parameters
+        ----------
+        local : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the object&#39;s local coordinate
+                system in terms of world coordinates.
+
+        sample : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the sample in terms of the
+                stage coordinate system. If you don&#39;t want to convert from a
+                sample vector, pass `None`.
+
+        frame : float
+                The number of the current frame.
+
+        n_frames : int
+                The total number of frames in the CT scan.
+
+        reconstruction : bool
+                Only handle drifts that are labeled as known to the reconstruction software?
+
+        Returns
+        -------
+        vec_local : ctsimu.primitives.Vector
+                A vector in terms of the local coordinate system.
+        &#34;&#34;&#34;
+
+        v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+        if self.reference == &#34;world&#34;:
+                # Convert from world to local.
+                v_in_local = change_reference_frame_of_point(v, ctsimu_world, local)
+                return v_in_local
+        elif self.reference == &#34;local&#34;:
+                # Already in local.
+                return v
+        elif self.reference == &#34;sample&#34;:
+                # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                # To get the sample coordinates in stage coordinates,
+                # we therefore transform to the world.
+                v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
+                return v_in_stage</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.point_in_sample"><code class="name flex">
+<span>def <span class="ident">point_in_sample</span></span>(<span>self, stage: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for point coordinates
+in terms of the sample coordinate system for the given <code>frame</code> number,
+respecting all relevant drifts.</p>
+<p>The sample must be attached to the stage, otherwise use <code>in_local</code>
+instead. Note that a direct conversion from one sample CS to another is
+not possible with this function.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>stage</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the stage's local coordinate
+system in terms of world coordinates.</dd>
+<dt><strong><code>sample</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the sample in terms of the
+stage coordinate system. If you don't want to convert from a
+sample vector, pass <code>None</code>.
+This must be the same sample coordinate system to which this
+scene vector refers.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of the current frame.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>The total number of frames in the CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only handle drifts that are labeled as known to the reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec_sample</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>A vector in terms of the sample coordinate system.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def point_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+        in terms of the sample coordinate system for the given `frame` number,
+        respecting all relevant drifts.
+
+        The sample must be attached to the stage, otherwise use `in_local`
+        instead. Note that a direct conversion from one sample CS to another is
+        not possible with this function.
+
+        Parameters
+        ----------
+        stage : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the stage&#39;s local coordinate
+                system in terms of world coordinates.
+
+        sample : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the sample in terms of the
+                stage coordinate system. If you don&#39;t want to convert from a
+                sample vector, pass `None`.
+                This must be the same sample coordinate system to which this
+                scene vector refers.
+
+        frame : float
+                The number of the current frame.
+
+        n_frames : int
+                The total number of frames in the CT scan.
+
+        reconstruction : bool
+                Only handle drifts that are labeled as known to the reconstruction software?
+
+        Returns
+        -------
+        vec_sample : ctsimu.primitives.Vector
+                A vector in terms of the sample coordinate system.
+        &#34;&#34;&#34;
+
+        v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+        if self.reference == &#34;world&#34;:
+                # From world to stage...
+                # ...and a second time from world to sample
+                # because the stage is the sample&#39;s &#34;world&#34;:
+                v_in_stage  = change_reference_frame_of_point(v, ctsimu_world, stage)
+                v_in_sample = change_reference_frame_of_point(v_in_stage, ctsimu_world, sample)
+                return v_in_sample
+        elif self.reference == &#34;local&#34;:
+                # Convert from stage to sample. Because
+                # the stage is the sample&#39;s world, we actually
+                # convert from world to sample.
+                v_in_sample = change_reference_frame_of_point(v, ctsimu_world, sample)
+                return v_in_sample
+        elif self.reference == &#34;sample&#34;:
+                # Already in sample coordinate system:
+                return v</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.point_in_world"><code class="name flex">
+<span>def <span class="ident">point_in_world</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for point coordinates
+in terms of the world coordinate system for the given <code>frame</code> number,
+respecting all relevant drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>local</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the object's local coordinate
+system in terms of world coordinates.</dd>
+<dt><strong><code>sample</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>A coordinate system that represents the sample in terms of the
+stage coordinate system. If you don't want to convert from a
+sample vector, pass <code>None</code>.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of the current frame.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>The total number of frames in the CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only handle drifts that are labeled as known to the reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec_world</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>A vector in terms of the world coordinate system.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def point_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
+        in terms of the world coordinate system for the given `frame` number,
+        respecting all relevant drifts.
+
+        Parameters
+        ----------
+        local : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the object&#39;s local coordinate
+                system in terms of world coordinates.
+
+        sample : ctsimu.geometry.CoordinateSystem
+                A coordinate system that represents the sample in terms of the
+                stage coordinate system. If you don&#39;t want to convert from a
+                sample vector, pass `None`.
+
+        frame : float
+                The number of the current frame.
+
+        n_frames : int
+                The total number of frames in the CT scan.
+
+        reconstruction : bool
+                Only handle drifts that are labeled as known to the reconstruction software?
+
+        Returns
+        -------
+        vec_world : ctsimu.primitives.Vector
+                A vector in terms of the world coordinate system.
+        &#34;&#34;&#34;
+
+        v = self.vector_for_frame(frame, n_frames, reconstruction)
+
+        if self.reference == &#34;world&#34;:
+                # Already in world.
+                return v
+        elif self.reference == &#34;local&#34;:
+                # Convert from local to world.
+                v_in_world = change_reference_frame_of_point(v, local, ctsimu_world)
+                return v_in_world
+        elif self.reference == &#34;sample&#34;:
+                # The sample&#39;s &#34;world&#34; is the stage (here: local).
+                # To get the sample coordinates in stage coordinates,
+                # we therefore transform to the world a first time...
+                # ...and a second time to transform it
+                # from the stage to the world:
+                v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
+                v_in_world = change_reference_frame_of_point(v_in_stage, local, ctsimu_world)
+                return v_in_world</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.set_component"><code class="name flex">
+<span>def <span class="ident">set_component</span></span>(<span>self, i: int, p: Parameter)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the <code>i</code>th vector component to the given parameter <code>p</code>
+(which must be a <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> object).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>i</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index of the vector component (<code>0</code>, <code>1</code> or <code>2</code>).</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Parameter object for the given vector component.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_component(self, i:int, p:&#39;Parameter&#39;):
+        &#34;&#34;&#34;Set the `i`th vector component to the given parameter `p`
+        (which must be a `ctsimu.scenario.parameter.Parameter` object).
+
+        Parameters
+        ----------
+        i : int
+                Index of the vector component (`0`, `1` or `2`).
+
+        p : ctsimu.scenario.parameter.Parameter
+                Parameter object for the given vector component.
+        &#34;&#34;&#34;
+        if isinstance(p, Parameter):
+                if i == 0:
+                        self.c0 = p
+                elif i == 1:
+                        self.c1 = p
+                elif i == 2:
+                        self.c2 = p
+        else:
+                raise Exception(f&#34;CTSimU Scenevector: set_component(): the given parameter is not an instance of class &#39;ctsimu.scenario.parameter.Parameter&#39;, but of type {type(p)}.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.set_from_json"><code class="name flex">
+<span>def <span class="ident">set_from_json</span></span>(<span>self, json_vector_object: dict) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set up the scene vector from a CTSimU JSON object
+that describes a three-component vector.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_vector_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>CTSimU vector object, as imported from a JSON scenario description.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> on success, <code>False</code> when an error occurred.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_from_json(self, json_vector_object:dict) -&gt; bool:
+        &#34;&#34;&#34;Set up the scene vector from a CTSimU JSON object
+        that describes a three-component vector.
+
+        Parameters
+        ----------
+        json_vector_object : dict
+                CTSimU vector object, as imported from a JSON scenario description.
+
+        Returns
+        -------
+        success : bool
+                `True` on success, `False` when an error occurred.
+        &#34;&#34;&#34;
+
+        if json_exists_and_not_null(json_vector_object, keys=[&#34;x&#34;]) and \
+           json_exists_and_not_null(json_vector_object, keys=[&#34;y&#34;]) and \
+           json_exists_and_not_null(json_vector_object, keys=[&#34;z&#34;]):
+                self.set_reference(&#34;world&#34;)
+                if self.c0.set_parameter_from_key(json_vector_object, [&#34;x&#34;]) and \
+                   self.c1.set_parameter_from_key(json_vector_object, [&#34;y&#34;]) and \
+                   self.c2.set_parameter_from_key(json_vector_object, [&#34;z&#34;]):
+                        return True
+        elif json_exists_and_not_null(json_vector_object, keys=[&#34;u&#34;]) and \
+             json_exists_and_not_null(json_vector_object, keys=[&#34;v&#34;]) and \
+             json_exists_and_not_null(json_vector_object, keys=[&#34;w&#34;]):
+                self.set_reference(&#34;local&#34;)
+                if self.c0.set_parameter_from_key(json_vector_object, [&#34;u&#34;]) and \
+                   self.c1.set_parameter_from_key(json_vector_object, [&#34;v&#34;]) and \
+                   self.c2.set_parameter_from_key(json_vector_object, [&#34;w&#34;]):
+                        return True
+        elif json_exists_and_not_null(json_vector_object, keys=[&#34;r&#34;]) and \
+             json_exists_and_not_null(json_vector_object, keys=[&#34;s&#34;]) and \
+             json_exists_and_not_null(json_vector_object, keys=[&#34;t&#34;]):
+                self.set_reference(&#34;sample&#34;)
+                if self.c0.set_parameter_from_key(json_vector_object, [&#34;r&#34;]) and \
+                   self.c1.set_parameter_from_key(json_vector_object, [&#34;s&#34;]) and \
+                   self.c2.set_parameter_from_key(json_vector_object, [&#34;t&#34;]):
+                        return True
+
+        raise Exception(&#34;Unable to set scene vector from JSON file. A vector must be specified by the three components (x,y,z), (u,v,w) or (r,s,t).&#34;)
+        return False</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.set_native_unit"><code class="name flex">
+<span>def <span class="ident">set_native_unit</span></span>(<span>self, native_unit: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set native unit of vector components.
+Necessary for the location of points such as
+the center points of coordinate systems,
+usually given in <code>"mm"</code> as native unit.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code></dt>
+<dd>The native unit of the vector's components. Standard is <code>None</code>,
+but <code>"mm"</code> would make sense for positions in space.
+Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_native_unit(self, native_unit:str):
+        &#34;&#34;&#34;Set native unit of vector components.
+        Necessary for the location of points such as
+        the center points of coordinate systems,
+        usually given in `&#34;mm&#34;` as native unit.
+
+        Parameters
+        ----------
+        native_unit : str
+                The native unit of the vector&#39;s components. Standard is `None`,
+                but `&#34;mm&#34;` would make sense for positions in space.
+                Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
+        &#34;&#34;&#34;
+        if is_valid_native_unit(native_unit):
+                self.c0.set_native_unit(native_unit)
+                self.c1.set_native_unit(native_unit)
+                self.c2.set_native_unit(native_unit)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.set_reference"><code class="name flex">
+<span>def <span class="ident">set_reference</span></span>(<span>self, reference: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the reference coordinate system.
+Can be <code>"world"</code>, <code>"local"</code> or <code>"sample"</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>reference</code></strong> :&ensp;<code>str</code></dt>
+<dd>String that identifies the reference coordinate system
+(see above for valid strings).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_reference(self, reference:str):
+        &#34;&#34;&#34;Set the reference coordinate system.
+        Can be `&#34;world&#34;`, `&#34;local&#34;` or `&#34;sample&#34;`.
+
+        Parameters
+        ----------
+        reference : str
+                String that identifies the reference coordinate system
+                (see above for valid strings).
+        &#34;&#34;&#34;
+        valid_references = [&#34;world&#34;, &#34;local&#34;, &#34;sample&#34;]
+        if reference in valid_references:
+                self.reference = reference
+        else:
+                raise Exception(f&#34;Scenevector: set_reference(): not a valid reference coordinate system: &#39;{reference}&#39;. Valid reference coordinate systems are: {valid_references}.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.set_simple"><code class="name flex">
+<span>def <span class="ident">set_simple</span></span>(<span>self, c0: float, c1: float, c2: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set a simple scene vector from three numbers,
+results in a scene vector without drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>c0</code></strong> :&ensp;<code>float</code></dt>
+<dd>Value of the first vector component.</dd>
+<dt><strong><code>c1</code></strong> :&ensp;<code>float</code></dt>
+<dd>Value of the second vector component.</dd>
+<dt><strong><code>c2</code></strong> :&ensp;<code>float</code></dt>
+<dd>Value of the third vector component.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_simple(self, c0:float, c1:float, c2:float):
+        &#34;&#34;&#34;Set a simple scene vector from three numbers,
+        results in a scene vector without drifts.
+
+        Parameters
+        ----------
+        c0 : float
+                Value of the first vector component.
+
+        c1 : float
+                Value of the second vector component.
+
+        c2 : float
+                Value of the third vector component.
+        &#34;&#34;&#34;
+        self.c0.set_standard_value(c0)
+        self.c1.set_standard_value(c1)
+        self.c2.set_standard_value(c2)
+
+        # Delete all drifts and set current value to standard value:
+        self.c0.reset()
+        self.c1.reset()
+        self.c2.reset()</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.standard_vector"><code class="name flex">
+<span>def <span class="ident">standard_vector</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> that represents this
+scene vector in its standard orientation
+(i.e., without any drifts applied).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>v</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>Standard vector (without any drifts applied).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def standard_vector(self) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents this
+        scene vector in its standard orientation
+        (i.e., without any drifts applied).
+
+        Returns
+        -------
+        v : ctsimu.primitives.Vector
+                Standard vector (without any drifts applied).
+        &#34;&#34;&#34;
+        return Vector(
+                x=self.c0.get_standard_value(),
+                y=self.c1.get_standard_value(),
+                z=self.c2.get_standard_value()
+        )</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.scenario.scenevector.Scenevector.vector_for_frame"><code class="name flex">
+<span>def <span class="ident">vector_for_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for the given <code>frame</code> number,
+respecting all drifts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>Current frame number.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total number of frames in CT scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Obey only those drifts that are labeled as known to the
+reconstruction software?</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>vec</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>Vector for the given <code>frame</code> number.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def vector_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
+        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for the given `frame` number,
+        respecting all drifts.
+
+        Parameters
+        ----------
+        frame : float
+                Current frame number.
+
+        n_frames : int
+                Total number of frames in CT scan.
+
+        reconstruction : bool
+                Obey only those drifts that are labeled as known to the
+                reconstruction software?
+
+        Returns
+        -------
+        vec : ctsimu.primitives.Vector
+                Vector for the given `frame` number.
+        &#34;&#34;&#34;
+        return Vector(
+                x=self.c0.set_frame_and_get_value(frame, n_frames, reconstruction),
+                y=self.c1.set_frame_and_get_value(frame, n_frames, reconstruction),
+                z=self.c2.set_frame_and_get_value(frame, n_frames, reconstruction)
+        )</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu.scenario" href="index.html">ctsimu.scenario</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.scenario.scenevector.Scenevector" href="#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></h4>
+<ul class="two-column">
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.direction_in_local" href="#ctsimu.scenario.scenevector.Scenevector.direction_in_local">direction_in_local</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.direction_in_sample" href="#ctsimu.scenario.scenevector.Scenevector.direction_in_sample">direction_in_sample</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.direction_in_world" href="#ctsimu.scenario.scenevector.Scenevector.direction_in_world">direction_in_world</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.drift_vector" href="#ctsimu.scenario.scenevector.Scenevector.drift_vector">drift_vector</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.has_drifts" href="#ctsimu.scenario.scenevector.Scenevector.has_drifts">has_drifts</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.json_dict" href="#ctsimu.scenario.scenevector.Scenevector.json_dict">json_dict</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.point_in_local" href="#ctsimu.scenario.scenevector.Scenevector.point_in_local">point_in_local</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.point_in_sample" href="#ctsimu.scenario.scenevector.Scenevector.point_in_sample">point_in_sample</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.point_in_world" href="#ctsimu.scenario.scenevector.Scenevector.point_in_world">point_in_world</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.set_component" href="#ctsimu.scenario.scenevector.Scenevector.set_component">set_component</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.set_from_json" href="#ctsimu.scenario.scenevector.Scenevector.set_from_json">set_from_json</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.set_native_unit" href="#ctsimu.scenario.scenevector.Scenevector.set_native_unit">set_native_unit</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.set_reference" href="#ctsimu.scenario.scenevector.Scenevector.set_reference">set_reference</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.set_simple" href="#ctsimu.scenario.scenevector.Scenevector.set_simple">set_simple</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.standard_vector" href="#ctsimu.scenario.scenevector.Scenevector.standard_vector">standard_vector</a></code></li>
+<li><code><a title="ctsimu.scenario.scenevector.Scenevector.vector_for_frame" href="#ctsimu.scenario.scenevector.Scenevector.vector_for_frame">vector_for_frame</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

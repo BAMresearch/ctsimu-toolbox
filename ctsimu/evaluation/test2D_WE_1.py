@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-WE-1: Focus spot size
+
+.. include:: ./test2D_WE_1.md
+"""
+
 from ..test import *
 from ..helpers import *
 from ..primitives import *

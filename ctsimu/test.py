@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+"""General class for a projection-based test."""
 
 import os    # File and path handling
 import numpy

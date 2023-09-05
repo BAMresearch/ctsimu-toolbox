@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-SW-3: Boolean models, contiguous surfaces
+
+.. include:: ./test2D_SW_3.md
+"""
+
 from ..test import *
 from ..helpers import *
 import math

@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-HS-1: Object and detector placement
+
+.. include:: ./test2D_HS_1.md
+"""
+
 from ..test import *
 from ..geometry import Vector, in_mm_json
 from ..helpers import *

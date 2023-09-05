@@ -1,0 +1,1873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ctsimu.evaluation.test2D_WE_1 API documentation</title>
+<meta name="description" content="Test 2D-WE-1: Focus spot size …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.evaluation.test2D_WE_1</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="test-2d-we-1-focus-spot-size">Test 2D-WE-1: Focus spot size</h1>
+<p>Any spatially extended focal spot leads to a spatially extended point spread function (PSF) on the detector and therefore to image blurring. In this test scenario, we check if Gaussian spot intensity profiles are correctly simulated by the software to lead to the expected image blurring, represented by certain expected MTF20 values that we calculate as described below.</p>
+<p>This scenario defines two sub-tests: one with a Gaussian spot intensity profile with a standard deviation of &sigma;<sub>1</sub> = 8 µm (Spot 1), and a second one with &sigma;<sub>2</sub> = 24 µm (Spot 2). The following code example shows how to identify each subtest correctly when using the toolbox to run the evaluation.</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;2D-WE-1&quot;,
+    spot1 = &quot;2D-WE-1_Spot1_metadata.json&quot;,
+    spot2 = &quot;2D-WE-1_Spot2_metadata.json&quot;)
+</code></pre>
+<p>Our evaluation approach is to measure the edge spread function (ESF) across the edge of an ideal absorber (the same edge as used for <code><a title="ctsimu.evaluation.test2D_WE_2" href="test2D_WE_2.html">ctsimu.evaluation.test2D_WE_2</a></code>). In subsequent steps, we will calculate the line spread function (LSF) to evaluate the spot size and the modulation transfer function (MTF) to determine where the system's frequency transmission drops to 20% (MTF20 value). <a href="https://doi.org/10.1148/93.2.257">Rossmann et al., 1969</a>, <a href="https://doi.org/10.1364/JOSA.48.000934">Jones et al., 1958</a>.</p>
+<p>The edge spread function (ESF) is simply the line profile across the edge. The center point <em>c</em> of the line profile is placed exactly in the center of the vertical part of the edge (see picture below). The starting point p<sub>0</sub> and the end point p<sub>1</sub> of the profile result from the line profile parameters: we choose a profile length of <em>l</em> = 100.1 px and a bin size (resolution) of <em>r</em> = 0.1 px. This results in a profile of <em>N</em>=1001 bins along the line across the edge. We choose a profile region that is <em>w</em> = 200 px wide.</p>
+<p><img alt="Line profile region of interest" src="../pictures/edge_lineprofile.png" title="Line profile region of interest"></p>
+<p>Due to the pixel rasterization of the projection and the finite sampling of the line profile, we will lose frequency information even in the ideal case of a point source. We therefore use the ideal edge image from <code><a title="ctsimu.evaluation.test2D_WE_2" href="test2D_WE_2.html">ctsimu.evaluation.test2D_WE_2</a></code> to determine the sampled LSF and MTF under the ideal assumption of a point source. This will give us the best LSF and MTF that are achievable with the given detector, edge tilt angle, and the chosen evaluation method, which means they represent our scenario's fundamental spread and transfer functions. These results are shown in the following picture.</p>
+<p><img alt="ESF_LSF_MTF" src="../pictures/sampled_pointsource_ESF_LSF_MTF.png" title="Fundamental edge spread function (ESF), normalized fundamental line spread function (LSF) and normalized fundamental modulation transfer function (MTF) from the ideal edge image assuming a point source."></p>
+<p>A convolution of the fundamental ESF and LSF with the profile of a Gaussian spot will lead to the expected ideal ESF and LSF at finite spot sizes. Generally, this convolution has to be done using the point spread function (PSF), which, apart from amplitude normalization, is identical to the LSF when an isotropic Gaussian distribution of the spot's intensity is assumed. (<a href="https://doi.org/10.1364/JOSA.57.001159">Gopala Rao et al., 1967</a>)</p>
+<p>To calculate the analytical sampled LSF of an ideal non-rotated edge under a Gaussian spot with a standard deviation &sigma;, we integrate the spot's intensity function along the full width of each bin of the line profile, assuming that the distribution is centered at <span><span class="MathJax_Preview">s_\text{c}=\frac{N}{2}</span><script type="math/tex">s_\text{c}=\frac{N}{2}</script></span> (with the number of bins <em>N</em>):
+<span><span class="MathJax_Preview">
+\text{LSF}_\text{Gaussian, j} = A\cdot \int_{j-\frac{N}{2}}^{j+1-\frac{N}{2}} \text{e}^{-s^2/(2\sigma^2)} \text{d} s = A \cdot \sqrt{\frac{2}{\pi}}\sigma \cdot \left[\text{erf}\left(\frac{j+1-\frac{N}{2}}{\sqrt{2}\sigma} \right) - \text{erf}\left(\frac{j-\frac{N}{2}}{\sqrt{2}\sigma} \right) \right].
+</span><script type="math/tex; mode=display">
+\text{LSF}_\text{Gaussian, j} = A\cdot \int_{j-\frac{N}{2}}^{j+1-\frac{N}{2}} \text{e}^{-s^2/(2\sigma^2)} \text{d} s = A \cdot \sqrt{\frac{2}{\pi}}\sigma \cdot \left[\text{erf}\left(\frac{j+1-\frac{N}{2}}{\sqrt{2}\sigma} \right) - \text{erf}\left(\frac{j-\frac{N}{2}}{\sqrt{2}\sigma} \right) \right].
+</script></span>
+The parameter <em>A</em> is chosen such that the maximum of the LSF is normalized to a value of 1. The ideal expected LSF is then computed by the discrete convolution (assuming the number of bins <em>N</em> is an odd number)
+<span><span class="MathJax_Preview">
+\text{LSF}_{\text{ideal}, j} = (\text{LSF}_\text{fundamental} \ast \text{LSF}_\text{Gaussian})_j = \sum_{k=0}^{N-1} \text{LSF}_{\text{fundamental}, k} \cdot \text{LSF}_{\text{Gaussian}, j-k+\frac{N-1}{2}}.
+</span><script type="math/tex; mode=display">
+\text{LSF}_{\text{ideal}, j} = (\text{LSF}_\text{fundamental} \ast \text{LSF}_\text{Gaussian})_j = \sum_{k=0}^{N-1} \text{LSF}_{\text{fundamental}, k} \cdot \text{LSF}_{\text{Gaussian}, j-k+\frac{N-1}{2}}.
+</script></span>
+In the scenario, the edge is located exactly halfway between source and detector. Therefore, no magnification of the point spread function (PSF) or line spread function (LSF) is to be expected, and the Gaussian spot size can be determined directly from the measured LSF without the need for scaling. In theory, it would be possible to use a deconvolution to remove the fundamental LSF from the measured LSF of a given simulated image such that only the shape of the spot intensity profile remains. However, deconvolution is an ill-posed problem, and it is only possible if all of our ideal assumptions are met by the simulation software. To avoid instabilities and the introduction of any additional errors, we therefore determine the expected spot sizes by Gaussian fits to the ideal LSF, i.e., from the convolution of fundamental LSF and Gaussian LSF that results from the above equation. Using a least-squares fit, we determine the expected ideal <span><span class="MathJax_Preview">\tilde{\sigma}</span><script type="math/tex">\tilde{\sigma}</script></span> that are listed in the following table.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Spot size</th>
+<th style="text-align: left;">Expected LSF std. dev.</th>
+<th style="text-align: left;">Expected MTF20 frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">&sigma;<sub>1</sub> = 8 &mu;m</td>
+<td style="text-align: left;"><span><span class="MathJax_Preview">\tilde{\sigma}_1</span><script type="math/tex">\tilde{\sigma}_1</script></span> =
+9.579(2)&mu;m</td>
+<td style="text-align: left;">MTF20<sub>1</sub> = 29.852 cycles/mm</td>
+</tr>
+<tr>
+<td style="text-align: left;">&sigma;<sub>2</sub> = 24 &mu;m</td>
+<td style="text-align: left;"><span><span class="MathJax_Preview">\tilde{\sigma}_2</span><script type="math/tex">\tilde{\sigma}_2</script></span> = 24.552(1)&mu;m</td>
+<td style="text-align: left;">MTF20<sub>2</sub> = 11.770 cycles/mm</td>
+</tr>
+</tbody>
+</table>
+<p>The ideal MTF can be calculated either by multiplication of the fundamental MTF and the Gaussian MTF (as calculated from the Gaussian LSF),
+<span><span class="MathJax_Preview">
+\text{MTF}_\text{ideal} = \text{MTF}_\text{fundamental} \cdot \text{MTF}_\text{Gaussian},
+</span><script type="math/tex; mode=display">
+\text{MTF}_\text{ideal} = \text{MTF}_\text{fundamental} \cdot \text{MTF}_\text{Gaussian},
+</script></span>
+or by applying a Fourier transform to the ideal LSF. Apart from numerical artifacts, both results are identical; here, we use the second approach.</p>
+<p>For each image to be measured, the MTF20 value is determined and compared to the MTF20 value of the ideal MTF. The MTF20 value is the frequency where the MTF drops to 20% of its maximum value. The expected values from our ideal MTFs are listed in the table above.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;# Test 2D-WE-1: Focus spot size
+
+.. include:: ./test2D_WE_1.md
+&#34;&#34;&#34;
+
+from ..test import *
+from ..helpers import *
+from ..primitives import *
+from ..image_analysis.mtf import *
+from ..scenario import Scenario
+
+from scipy import optimize
+
+class Test2D_WE_1_results:
+    &#34;&#34;&#34; Results for one sub test. &#34;&#34;&#34;
+
+    def __init__(self):
+        # Profile Data:
+        self.lineProfilePos      = []
+        self.lineProfileGV       = []  # this will be the edge spread function (ESF)
+        self.lineProfileSmoothed = []
+        self.LSF                 = []  # line spread function; derivative of ESF.
+        self.LSF_windowed        = []  # von-Hann window applied before FFT
+        self.LSF_gaussian_fit    = []
+        self.MTF                 = []
+        self.MTFpos              = []
+        self.fnyq                = 0   # Nyquist frequency
+
+        self.ideal_ESF_Convolution = None      # Convolution of Gaussian with SampledESF
+
+        self.ideal_LSF_Gaussian    = None
+        self.ideal_LSF_Convolution = None
+
+        self.ideal_MTF_Gaussian       = None   # MTF of Gaussian LSF
+        self.ideal_MTF_ConvolutionFFT = None   # Ideal MTF by FFT of Convolution (Gaussian and SampledLSF)
+        self.ideal_MTF_Multiplication = None   # Ideal MTF from SampledMTF * GaussianMTF; same result.
+
+        # Fit results [px]
+        self.nominalGaussianSigmaPX       = 0
+
+        self.idealGaussianSigmaPX         = 0
+        self.idealGaussianSigmaPXerror    = 0
+        self.idealGaussianMuPX            = 0
+        self.idealGaussianMuPXerror       = 0
+        self.idealGaussianAmpPX           = 0
+        self.idealGaussianAmpPXerror      = 0
+
+        self.measuredGaussianSigmaPX      = 0
+        self.measuredGaussianSigmaPXerror = 0
+        self.measuredGaussianMuPX         = 0
+        self.measuredGaussianMuPXerror    = 0
+        self.measuredGaussianAmpPX        = 0
+        self.measuredGaussianAmpPXerror   = 0
+
+        # Fit results [mm]
+        self.nominalGaussianSigmaMM       = 0
+
+        self.idealGaussianSigmaMM         = 0
+        self.idealGaussianSigmaMMerror    = 0
+        self.idealGaussianMuMM            = 0
+        self.idealGaussianMuMMerror       = 0
+        self.idealGaussianAmpMM           = 0
+        self.idealGaussianAmpMMerror      = 0
+
+        self.measuredGaussianSigmaMM      = 0
+        self.measuredGaussianSigmaMMerror = 0
+        self.measuredGaussianMuMM         = 0
+        self.measuredGaussianMuMMerror    = 0
+        self.measuredGaussianAmpMM        = 0
+        self.measuredGaussianAmpMMerror   = 0
+
+        # MTF evaluation results
+        self.MTF20freq_ideal    = 0
+        self.MTF20freq_measured = 0
+
+        #self.MTF10freq_ideal    = 0
+        #self.MTF10freq_measured = 0
+
+        self.pixelSize = 0
+
+    def MTF20freq_absDev(self):
+        return (self.MTF20freq_measured - self.MTF20freq_ideal)
+
+    def MTF20freq_relDev(self):
+        if self.MTF20freq_ideal != 0:
+            return (self.MTF20freq_measured - self.MTF20freq_ideal) / self.MTF20freq_ideal
+
+        return 0
+
+    #def MTF10freq_absDev(self):
+    #    return (self.MTF10freq_measured - self.MTF10freq_ideal)
+
+    #def MTF10freq_relDev(self):
+    #    if self.MTF10freq_ideal != 0:
+    #        return (self.MTF10freq_measured - self.MTF10freq_ideal) / self.MTF10freq_ideal
+
+        return 0
+
+    def sigma_absDev(self):
+        return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX)
+
+    def sigma_relDev(self):
+        if self.idealGaussianSigmaPX != 0:
+            return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX) / self.idealGaussianSigmaPX
+
+        return 0
+
+
+class Test2D_WE_1(generalTest):
+    &#34;&#34;&#34; CTSimU test 2D-WE-1: focal spot size. &#34;&#34;&#34;
+
+    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
+        generalTest.__init__(
+            self,
+            testName=&#34;2D-WE-1&#34;,
+            name=name,
+            resultFileDirectory=resultFileDirectory,
+            rawOutput=rawOutput)
+
+        self.geometry = None
+        self.analyticalIntensityProfileImage = None  # analytical flat field
+        self.analyticalEdgeImage             = None  # stores the analytically computed edge image (sharp image)
+        self.analyticalEdgeImageFF           = None  # stores the analytically computed edge image, flat-field corrected (sharp image)
+
+        self.results = []
+        self.results_idealPointSource = Test2D_WE_1_results()
+
+        # Start point (x0,y0) and end point (x1,y1) for line profile:
+        edgeAngle = 3 * (math.pi/180.0)    # 3 deg edge rotation
+
+        # point of origin for edge profile (i.e. profile center):
+        edgeOrigin = Vector(0, 1)                            # start with unit vector pointing &#34;down&#34;
+        edgeOrigin.rotate_2D_xy(edgeAngle)                   # rotate by edge angle
+        edgeOrigin.scale(500.5 / math.cos(edgeAngle) / 2.0)  # scale to half of visible edge length
+        edgeOrigin = edgeOrigin + Vector(500.5, 500.5)       # move to detector center
+
+        #print(&#34;Edge origin:&#34;)
+        #print(edgeOrigin)
+
+        self.profileLength = 100.1   # pixels
+
+        edgeDirection = Vector(self.profileLength/2.0, 0)
+        edgeDirection.rotate_2D_xy(edgeAngle)
+
+        self.p0 = edgeOrigin - edgeDirection
+        self.p1 = edgeOrigin + edgeDirection
+
+        #print(&#34;Line From p0:&#34;)
+        #print(self.p0)
+        #print(&#34;Line To p1:&#34;)
+        #print(self.p1)
+
+        self.profileWidth = 200  # pixels
+        self.profileRes   = 0.1  # pixels
+
+        # Also, prepare the clipping rectangle for the analytical
+        # calculation of the ideal edge image. In pixel coordinates.
+        A = Vector(   0,    0, 0)
+        B = Vector(   0,  300, 0)
+        C = Vector(-300,  300, 0)
+        D = Vector(-300,    0, 0)
+
+        #A.rotate_2D_xy(edgeAngle)
+        B.rotate_2D_xy(edgeAngle)
+        C.rotate_2D_xy(edgeAngle)
+        D.rotate_2D_xy(edgeAngle)
+
+        self.clippingRectangle = Polygon(A, B, C, D)
+
+    def prepare(self):
+        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+        if not isinstance(self.pipe, Pipeline):
+            self.prepared = False
+            raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
+
+        if len(self.subtests) &gt; 0:
+            if not self.prepared:
+                # It doesn&#39;t matter which of the sub-scenarios we take here.
+                # They all have the same geometry.
+                self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+
+                if(self.jsonScenarioFile is not None):
+                    self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                    self.geometry = self.scenario.current_geometry()
+                    self.geometry.update()
+
+                    print(&#34;Computing an analytical image for an ideal point source...&#34;)
+                    self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
+                    self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
+                    self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)
+
+                    # Raise analytical images to maximum grey value of 60000 before saving them.
+                    # This rescaling does not affect the previous FF correction.
+                    self.analyticalIntensityProfileImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
+                    self.analyticalEdgeImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
+
+
+                    # Write analytical images:
+                    if self.rawOutput:
+                        self.analyticalIntensityProfileImage.saveRAW(&#34;{dir}/{name}_ideal_flat.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                        self.analyticalEdgeImage.saveRAW(&#34;{dir}/{name}_ideal_edge.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                        self.analyticalEdgeImageFF.saveRAW(&#34;{dir}/{name}_ideal_edge_corrected.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                    else: # TIFF
+                        self.analyticalIntensityProfileImage.save(&#34;{dir}/{name}_ideal_flat.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+                        self.analyticalEdgeImage.save(&#34;{dir}/{name}_ideal_edge.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+                        self.analyticalEdgeImageFF.save(&#34;{dir}/{name}_ideal_edge_corrected.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+
+
+                    print(&#34;Calculating the fundamental LSF and MTF from the ideal edge image...&#34;)
+                    # Calculate the edge spread function (using a line profile across the edge):
+                    self.results_idealPointSource.lineProfileGV, self.results_idealPointSource.lineProfilePos, stepsize = self.analyticalEdgeImageFF.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
+
+                    # Nyquist frequency determines center of MTF frequency range:
+                    self.results_idealPointSource.fnyq = 1.0 / (2.0*stepsize)
+                    nSamples = len(self.results_idealPointSource.lineProfileGV)
+                    #self.results_idealPointSource.MTFpos = numpy.linspace(start=0, stop=2*self.results_idealPointSource.fnyq, num=nSamples, endpoint=False, dtype=numpy.float64)
+
+                    # Make the profile positions symmetric:
+                    self.results_idealPointSource.lineProfilePos -= self.profileLength / 2
+
+                    # Calculate the line spread function and MTF.
+                    self.results_idealPointSource.lineProfileSmoothed, self.results_idealPointSource.LSF, self.results_idealPointSource.LSF_windowed, self.results_idealPointSource.MTF, self.results_idealPointSource.MTFpos = MTF(positions=self.results_idealPointSource.lineProfilePos, ESF=self.results_idealPointSource.lineProfileGV)
+
+                    self.results_idealPointSource.lineProfileDelta = self.results_idealPointSource.lineProfileSmoothed - self.results_idealPointSource.lineProfileGV
+
+                    self.writeResultFile(subname=&#34;fundamental_spotPoint&#34;, results=self.results_idealPointSource)
+
+                    self.prepared = True
+                else:
+                    raise Exception(&#34;Test 2D-WE-1: Please provide a JSON scenario description.&#34;)
+
+    def prepareRun(self, i):
+        if i &lt; len(self.subtests):
+            self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+            if self.subtests[i] == &#34;spot1&#34;:
+                self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+            elif self.subtests[i] == &#34;spot2&#34;:
+                self.jsonScenarioFile = &#34;2D-WE-1_Spot2_2021-10-13v02r04dp.json&#34;
+            else:
+                raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}&#34;.format(key=self.subtests[i], test=self.testName))
+
+            results = Test2D_WE_1_results()
+
+            # Get the Gaussian spot size and the pixel size from the JSON file:
+            if self.jsonScenarioFile is not None:
+                scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                results.nominalGaussianSigmaMM = scenario.source.spot.sigma.u.get()
+                results.pixelSize = scenario.detector.pixel_pitch.u.get()
+
+                results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
+
+            if self.subtests[i] == &#34;spotPoint&#34;:
+                results.nominalGaussianSigmaMM = 0
+                results.nominalGaussianSigmaPX = 0
+            else:
+                # Create an ideal Gaussian LSF:
+                nBins = len(self.results_idealPointSource.lineProfilePos)
+                sigma = results.nominalGaussianSigmaPX
+                results.ideal_LSF_Gaussian = numpy.zeros_like(a=self.results_idealPointSource.lineProfilePos, dtype=numpy.dtype(&#39;float64&#39;))
+                for j in range(nBins):
+                    s = self.results_idealPointSource.lineProfilePos[j]
+                    sLeft  = s - self.profileRes
+                    sRight = s + self.profileRes
+                    results.ideal_LSF_Gaussian[j] = math.erf(sRight/(math.sqrt(2.0)*sigma)) - math.erf(sLeft/(math.sqrt(2.0)*sigma)) #gaussian((s+sNext)/2.0, 0, sigma, 1)
+
+                # Normalize ideal LSF maximum to 1:
+                idealLSFmax = numpy.amax(results.ideal_LSF_Gaussian)
+                if idealLSFmax != 0:
+                    results.ideal_LSF_Gaussian /= idealLSFmax
+
+                # Calculate convolution of ideal LSF of sharp image and Gaussian LSF:
+                results.ideal_LSF_Convolution = numpy.convolve(a=self.results_idealPointSource.LSF, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
+                convMax = numpy.amax(results.ideal_LSF_Convolution)
+                if convMax != 0:
+                    results.ideal_LSF_Convolution /= convMax
+
+                # Calculate ideal ESF as convolution of Gaussian with the ideal sampledESF:
+                results.ideal_ESF_Convolution = numpy.convolve(a=self.results_idealPointSource.lineProfileGV, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
+                convMax = numpy.amax(results.ideal_ESF_Convolution)
+                if convMax != 0:
+                    results.ideal_ESF_Convolution /= convMax
+
+                # Fit a Gaussian to central half of the data:
+                fitParametersInitial = (0, sigma, 1)
+                fitPositions = self.results_idealPointSource.lineProfilePos[int(nBins//4):int(3*nBins//4)]
+                #fitData = results.ideal_LSF_Gaussian #[int(nBins//4):int(3*nBins//4)]
+                #popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+                #print(&#34;- Ideal Gaussian Fit Mu:    {}&#34;.format(popt[0]))
+                #print(&#34;- Ideal Gaussian Fit Sigma: {}&#34;.format(popt[1]))
+                #print(&#34;- Ideal Gaussian Fit A:     {}&#34;.format(popt[2]))
+
+                fitData = results.ideal_LSF_Convolution[int(nBins//4):int(3*nBins//4)]
+                popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+                perr = numpy.sqrt(numpy.diag(pcov))
+
+                results.idealGaussianSigmaPX      = popt[1]
+                results.idealGaussianSigmaPXerror = perr[1]
+                results.idealGaussianMuPX         = popt[0]
+                results.idealGaussianMuPXerror    = perr[0]
+                results.idealGaussianAmpPX        = popt[2]
+                results.idealGaussianAmpPXerror   = perr[2]
+
+                results.idealGaussianSigmaMM      = results.pixelSize * results.idealGaussianSigmaPX
+                results.idealGaussianSigmaMMerror = results.pixelSize * results.idealGaussianSigmaPXerror
+                results.idealGaussianMuMM         = results.pixelSize * results.idealGaussianMuPX
+                results.idealGaussianMuMMerror    = results.pixelSize * results.idealGaussianMuPXerror
+                results.idealGaussianAmpMM        = results.pixelSize * results.idealGaussianAmpPX
+                results.idealGaussianAmpMMerror   = results.pixelSize * results.idealGaussianAmpPXerror
+
+                print(&#34;- Analytical LSF Fit Mu:    {} +- {}&#34;.format(popt[0], perr[0]))
+                print(&#34;- Analytical LSF Fit Sigma: {} +- {}&#34;.format(popt[1], perr[1]))
+                print(&#34;- Analytical LSF Fit A:     {} +- {}&#34;.format(popt[2], perr[2]))
+
+
+                # Calculate MTF for Gaussian LSF and Convolution LSF:
+                smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_Gaussian, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Gaussian)
+
+                smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_ConvolutionFFT, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Convolution)
+
+                results.ideal_MTF_Multiplication = self.results_idealPointSource.MTF * results.ideal_MTF_Gaussian
+                if results.ideal_MTF_Multiplication[0] != 0:
+                    results.ideal_MTF_Multiplication /= results.ideal_MTF_Multiplication[0]
+
+
+            print(&#34;Gaussian Spot Size: {} mm = {} px&#34;.format(results.nominalGaussianSigmaMM, results.nominalGaussianSigmaPX))
+
+            self.results.append(results)
+        else:
+            if len(self.subtests) == 0:
+                raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts the following keywords: &#39;spot1&#39; and &#39;spot2&#39;.&#34;.format(testname=self.testName))
+            else:
+                raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))
+
+    def writeSummaryFile(self, subname, results):
+        summaryText  = &#34;Evaluation results for {testname} {subtest}\n&#34;.format(testname=self.testName, subtest=subname)
+        summaryText += &#34;=================================================\n\n&#34;
+
+        summaryText += &#34;Fit results for gauss(x) = A * exp(-(x-mu)²/(2*sigma²))\n&#34;
+        summaryText += &#34;Errors: 1 standard deviation\n&#34;
+        summaryText += &#34;-------------------------------------------------------\n&#34;
+        summaryText += &#34;measured:   sigma [px] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaPX, results.measuredGaussianSigmaPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaMM, results.measuredGaussianSigmaMMerror)
+        summaryText += &#34;measured:   mu    [px] = {} +- {}\n&#34;.format(results.measuredGaussianMuPX,    results.measuredGaussianMuPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianMuMM,    results.measuredGaussianMuMMerror)
+        summaryText += &#34;measured:   A     [px] = {} +- {}\n&#34;.format(results.measuredGaussianAmpPX,   results.measuredGaussianAmpPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.measuredGaussianAmpMM, results.measuredGaussianAmpMMerror)
+
+        summaryText += &#34;analytical: sigma [px] = {} +- {}\n&#34;.format(results.idealGaussianSigmaPX, results.idealGaussianSigmaPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianSigmaMM, results.idealGaussianSigmaMMerror)
+        summaryText += &#34;analytical: mu    [px] = {} +- {}\n&#34;.format(results.idealGaussianMuPX,    results.idealGaussianMuPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianMuMM,    results.idealGaussianMuMMerror)
+        summaryText += &#34;analytical: A     [px] = {} +- {}\n&#34;.format(results.idealGaussianAmpPX,   results.idealGaussianAmpPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.idealGaussianAmpMM, results.idealGaussianAmpMMerror)
+
+        summaryText += &#34;sigma: abs. deviation (measured-analytical) [px]       = {:.5f}\n&#34;.format(results.sigma_absDev())
+        summaryText += &#34;sigma: abs. deviation (measured-analytical) [mm]       = {:.5f}\n&#34;.format(results.sigma_absDev() * results.pixelSize)
+        summaryText += &#34;sigma: rel. deviation (measured-analytical)/analytical = {:.5f}\n\n&#34;.format(results.sigma_relDev())
+
+
+        #summaryText += &#34;MTF 10% frequency\n&#34;
+        #summaryText += &#34;-------------------------------------------------------\n&#34;
+        #summaryText += &#34;MTF10 measured: [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_measured)
+        #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_measured / results.pixelSize)
+
+        #summaryText += &#34;MTF10 ideal:    [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_ideal)
+        #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_ideal / results.pixelSize)
+
+        #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/px] = {:.5f}\n&#34;.format(results.MTF10freq_absDev())
+        #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF10freq_absDev() / results.pixelSize)
+        #summaryText += &#34;MTF10: rel. deviation (measured-ideal)/ideal       = {:.5f}\n&#34;.format(results.MTF10freq_relDev())
+
+
+        summaryText += &#34;\nMTF 20% frequency\n&#34;
+        summaryText += &#34;-------------------------------------------------------\n&#34;
+        summaryText += &#34;MTF20 measured:   [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_measured)
+        summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_measured / results.pixelSize)
+
+        summaryText += &#34;MTF20 analytical: [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_ideal)
+        summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_ideal / results.pixelSize)
+
+        summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_absDev())
+        summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF20freq_absDev() / results.pixelSize)
+        summaryText += &#34;MTF20: rel. deviation (measured-analytical)/analytical  = {:.5f}\n&#34;.format(results.MTF20freq_relDev())
+
+
+        summaryFileName = &#34;{dir}/{name}_{subname}_summary.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+        with open(summaryFileName, &#39;w&#39;) as summaryFile:
+            summaryFile.write(summaryText)
+            summaryFile.close()
+
+
+    def writeResultFile(self, subname, results):
+        pos = results.lineProfilePos
+
+        # ESF
+        ESF         = results.lineProfileGV
+        ESFsmoothed = results.lineProfileSmoothed
+        ESFideal    = results.ideal_ESF_Convolution
+
+        # LSF
+        LSF         = results.LSF
+        LSFwindowed = results.LSF_windowed
+        LSFideal    = results.ideal_LSF_Convolution
+
+        # MTF
+        MTFpos      = results.MTFpos
+        MTF         = results.MTF
+        MTFideal    = results.ideal_MTF_ConvolutionFFT
+
+        profileText  = &#34;# Profile data: edge spread function (ESF), smoothed ESF, line spread function (LSF) and windowed LSF (von-Hann window)\n&#34;
+        profileText += &#34;# s [px]\tESF\tESF_smoothed&#34;
+        if not(ESFideal is None):
+            profileText += &#34;\tESF_ideal&#34;
+
+        profileText += &#34;\tLSF\tLSF_windowed&#34;
+
+        if not(LSFideal is None):
+            profileText += &#34;\tLSF_ideal&#34;
+
+        profileText += &#34;\n&#34;
+
+        mtfText  = &#34;# Modulation Transfer Function (MTF)\n&#34;
+        mtfText += &#34;# f [cycles/px]\tMTF_measured&#34;
+        if not(MTFideal is None):
+            mtfText += &#34;\tMTF_ideal&#34;
+
+        mtfText += &#34;\n&#34;
+
+        for j in range(len(pos)):
+            profileText += &#34;{pos:.2f}\t{ESF}\t{ESFsmoothed}&#34;.format(pos=pos[j], ESF=ESF[j], ESFsmoothed=ESFsmoothed[j])
+
+            if not(ESFideal is None):
+                profileText += &#34;\t{ESFideal}&#34;.format(ESFideal=ESFideal[j])
+
+            profileText += &#34;\t{LSF}\t{LSFwindowed}&#34;.format(LSF=LSF[j], LSFwindowed=LSFwindowed[j])
+
+            if not(LSFideal is None):
+                profileText += &#34;\t{LSFideal}&#34;.format(LSFideal=LSFideal[j])
+
+            profileText += &#34;\n&#34;
+
+
+            mtfText += &#34;{f:.3f}\t{mtf}&#34;.format(f=MTFpos[j], mtf=MTF[j])
+
+            if not(MTFideal is None):
+                mtfText += &#34;\t{MTFideal}&#34;.format(MTFideal=MTFideal[j])
+
+
+            mtfText += &#34;\n&#34;
+
+        profileFileName = &#34;{dir}/{name}_{subname}_ESF_LSF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+        with open(profileFileName, &#39;w&#39;) as profileFile:
+            profileFile.write(profileText)
+            profileFile.close()
+
+        mtfFileName = &#34;{dir}/{name}_{subname}_MTF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+        with open(mtfFileName, &#39;w&#39;) as mtfFile:
+            mtfFile.write(mtfText)
+            mtfFile.close()
+
+    def run(self, image):
+        self.prepare()
+        self.prepareRun(self.currentRun)
+        i = self.currentRun
+        subtestName = self.subtests[i]
+
+        print(&#34;Calculating the LSF and MTF of the projection image...&#34;)
+
+        # Calculate the edge spread function (using a line profile across the edge):
+        self.results[i].lineProfileGV, self.results[i].lineProfilePos, stepsize = image.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
+
+        ESFmax = numpy.amax(self.results[i].lineProfileGV)
+        if ESFmax != 0:
+            self.results[i].lineProfileGV /= ESFmax
+
+        # Nyquist frequency determines center of MTF frequency range:
+        self.results[i].fnyq = 1.0 / (2.0*stepsize)
+        nSamples = len(self.results[i].lineProfileGV)
+        #self.results[i].MTFpos = numpy.linspace(start=0, stop=2*self.results[i].fnyq, num=nSamples, endpoint=False, dtype=numpy.float64)
+
+        # Make the profile positions symmetric:
+        self.results[i].lineProfilePos -= self.profileLength / 2
+
+        # Calculate the line spread function and MTF.
+        self.results[i].lineProfileSmoothed, self.results[i].LSF, self.results[i].LSF_windowed, self.results[i].MTF, self.results[i].MTFpos = MTF(positions=self.results[i].lineProfilePos, ESF=self.results[i].lineProfileGV)
+
+        # Calculate the ideal and the measured MTF10 and MTF20 frequency:
+        #self.results[i].MTF10freq_ideal    = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].ideal_MTF_ConvolutionFFT, modulation=0.1)
+        #self.results[i].MTF10freq_measured = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].MTF, modulation=0.1)
+        self.results[i].MTF20freq_ideal    = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].ideal_MTF_ConvolutionFFT, modulation=0.2)
+        self.results[i].MTF20freq_measured = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].MTF, modulation=0.2)
+
+
+        # Fit a Gaussian to central half of the data:
+        sigma = self.results[i].nominalGaussianSigmaPX
+        nBins = len(self.results[i].lineProfilePos)
+        fitParametersInitial = (0, sigma, 1)
+        fitPositions = self.results[i].lineProfilePos[int(nBins//4):int(3*nBins//4)]
+        fitData = self.results[i].LSF[int(nBins//4):int(3*nBins//4)]
+        popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+        perr = numpy.sqrt(numpy.diag(pcov))
+
+        self.results[i].measuredGaussianSigmaPX      = popt[1]
+        self.results[i].measuredGaussianSigmaPXerror = perr[1]
+        self.results[i].measuredGaussianMuPX         = popt[0]
+        self.results[i].measuredGaussianMuPXerror    = perr[0]
+        self.results[i].measuredGaussianAmpPX        = popt[2]
+        self.results[i].measuredGaussianAmpPXerror   = perr[2]
+
+        self.results[i].measuredGaussianSigmaMM      = self.results[i].pixelSize * self.results[i].measuredGaussianSigmaPX
+        self.results[i].measuredGaussianSigmaMMerror = self.results[i].pixelSize * self.results[i].measuredGaussianSigmaPXerror
+        self.results[i].measuredGaussianMuMM         = self.results[i].pixelSize * self.results[i].measuredGaussianMuPX
+        self.results[i].measuredGaussianMuMMerror    = self.results[i].pixelSize * self.results[i].measuredGaussianMuPXerror
+        self.results[i].measuredGaussianAmpMM        = self.results[i].pixelSize * self.results[i].measuredGaussianAmpPX
+        self.results[i].measuredGaussianAmpMMerror   = self.results[i].pixelSize * self.results[i].measuredGaussianAmpPXerror
+
+        print(&#34;- Measured LSF Fit Mu:    {} +- {}&#34;.format(popt[0], perr[0]))
+        print(&#34;- Measured LSF Fit Sigma: {} +- {}&#34;.format(popt[1], perr[1]))
+        print(&#34;- Measured LSF Fit A:     {} +- {}&#34;.format(popt[2], perr[2]))
+
+        # Rescale LSF to maximum of fit function:
+        if self.results[i].measuredGaussianAmpPX != 0.0:
+            self.results[i].LSF /= self.results[i].measuredGaussianAmpPX
+            self.results[i].LSF_windowed /= self.results[i].measuredGaussianAmpPX
+            self.results[i].measuredGaussianAmpPX = 1.0
+
+        self.results[i].LSF_gaussian_fit = numpy.zeros_like(a=self.results[i].lineProfilePos, dtype=numpy.dtype(&#39;float64&#39;))
+        for j in range(len(self.results[i].LSF_gaussian_fit)):
+            self.results[i].LSF_gaussian_fit[j] = gaussian(x=self.results[i].lineProfilePos[j], mu=self.results[i].measuredGaussianMuPX, sigma=self.results[i].measuredGaussianSigmaPX, A=self.results[i].measuredGaussianAmpPX)
+
+        self.writeResultFile(subname=subtestName, results=self.results[i])
+        self.writeSummaryFile(subname=subtestName, results=self.results[i])
+
+        log(&#34;Evaluation data for test {name}, {subname} written to {dir}.&#34;.format(name=self.name, subname=subtestName, dir=self.resultFileDirectory))
+
+        self.plotResults()
+
+        self.currentRun += 1
+        return image
+
+    def followUp(self):
+        pass
+
+    def plotResults(self):
+        i = self.currentRun
+        subtestName = self.subtests[i]
+        try:
+            import matplotlib
+            import matplotlib.pyplot
+            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
+            matplotlib.use(&#34;agg&#34;)
+
+            fig, (ax1, ax2, ax3) = matplotlib.pyplot.subplots(nrows=3, ncols=1, figsize=(6, 8))
+
+            # ESF:
+            ax1.plot(self.results[i].lineProfilePos, self.results[i].lineProfileGV, linewidth=1.5, label=&#34;Measured&#34;, color=&#39;#ffaa00&#39;)
+            ax1.plot(self.results[i].lineProfilePos, self.results[i].ideal_ESF_Convolution, linewidth=1.0, label=&#34;Analytical&#34;, color=&#39;#000000&#39;, linestyle=&#39;dotted&#39;)
+
+            ax1.set_xlabel(&#34;Horizontal distance in px&#34;)
+            ax1.set_ylabel(&#34;ESF&#34;)
+            ax1.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
+            ax1.set_title(&#34;Edge Spread Function (ESF)&#34;)
+            #ax1.xaxis.set_ticklabels([])
+            ax1.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            ax1.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            ax1.legend(loc=&#39;best&#39;)
+
+
+            # LSF
+            ax2.plot(self.results[i].lineProfilePos, self.results[i].LSF, linewidth=1.5, label=&#34;Measured&#34;, color=&#39;#ffaa00&#39;)
+            ax2.plot(self.results[i].lineProfilePos, self.results[i].LSF_gaussian_fit, linewidth=1.0, label=&#34;Fit&#34;, color=&#39;#1f77b4&#39;, linestyle=&#39;dashed&#39;)
+            ax2.plot(self.results[i].lineProfilePos, self.results[i].ideal_LSF_Convolution, linewidth=1.0, label=&#34;Analytical&#34;, color=&#39;#000000&#39;, linestyle=&#39;dotted&#39;)
+
+            ax2.set_xlabel(&#34;Horizontal distance in px&#34;)
+            ax2.set_ylabel(&#34;LSF&#34;)
+            ax2.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
+            ax2.set_title(&#34;Line Spread Function (LSF)&#34;)
+            #ax2.xaxis.set_ticklabels([])
+            ax2.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            ax2.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            ax2.legend(loc=&#39;best&#39;)
+
+
+            # Lines for MTF 10:
+            #mtf10ideal_vert_x    = numpy.array([self.results[i].MTF10freq_ideal, self.results[i].MTF10freq_ideal])
+            #mtf10measured_vert_x = numpy.array([self.results[i].MTF10freq_measured, self.results[i].MTF10freq_measured])
+            #mtf10_vert_y = numpy.array([-0.1, 0.1])
+
+            #mtf10_horz_x = numpy.array([0, 3.0*max(self.results[i].MTF10freq_measured, self.results[i].MTF10freq_ideal)])
+            #mtf10_horz_y = numpy.array([0.1, 0.1])
+
+
+            # Lines for MTF 20:
+            mtf20ideal_vert_x    = numpy.array([self.results[i].MTF20freq_ideal, self.results[i].MTF20freq_ideal])
+            mtf20measured_vert_x = numpy.array([self.results[i].MTF20freq_measured, self.results[i].MTF20freq_measured])
+            mtf20_vert_y = numpy.array([-0.1, 0.2])
+
+            mtf20_horz_x = numpy.array([0, 3.0*max(self.results[i].MTF20freq_measured, self.results[i].MTF20freq_ideal)])
+            mtf20_horz_y = numpy.array([0.2, 0.2])
+
+            # MTF
+            ax3.plot(self.results[i].MTFpos, self.results[i].MTF, linewidth=1.5, label=&#34;Measured&#34;, color=&#39;#ffaa00&#39;)
+            ax3.plot(self.results[i].MTFpos, self.results[i].ideal_MTF_ConvolutionFFT, linewidth=1.0, label=&#34;Analytical&#34;, color=&#39;#000000&#39;, linestyle=&#39;dotted&#39;)
+
+            #ax3.plot(mtf10_horz_x, mtf10_horz_y,         linewidth=0.5, color=&#39;#000000&#39;, label=&#34;MTF10&#34;)
+            #ax3.plot(mtf10ideal_vert_x, mtf10_vert_y,    linewidth=0.5, color=&#39;#000000&#39;, label=&#34;&#34;)
+            #ax3.plot(mtf10measured_vert_x, mtf10_vert_y, linewidth=0.5, color=&#39;#000000&#39;, label=&#34;&#34;)
+
+            #ax3.plot(mtf20_horz_x, mtf20_horz_y,         linewidth=0.5, color=&#39;#808080&#39;, label=&#34;MTF20&#34;)
+            ax3.plot(mtf20ideal_vert_x, mtf20_vert_y,    linewidth=0.5, color=&#39;#808080&#39;, label=&#34;&#34;, linestyle=&#39;dotted&#39;)
+            ax3.plot(mtf20measured_vert_x, mtf20_vert_y, linewidth=0.5, color=&#39;#808080&#39;, label=&#34;&#34;)
+
+            ax3.set_xlabel(&#34;Modulation frequency in cycles/px&#34;)
+            ax3.set_ylabel(&#34;Modulation contrast&#34;)
+            ax3.set_xlim([0, 3.0*max(self.results[i].MTF20freq_measured, self.results[i].MTF20freq_ideal)])
+            ax3.set_ylim([-0.1, 1.1])
+            ax3.set_yticks(numpy.array([0, 0.2, 0.4, 0.6, 0.8, 1]))
+            ax3.set_title(&#34;Modulation Transfer Function (MTF)&#34;)
+            #ax3.xaxis.set_ticklabels([])
+            ax3.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            ax3.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            ax3.legend(loc=&#39;best&#39;)
+
+            fig.tight_layout(pad=2.5)
+
+            plotFilename = &#34;{dir}/{name}_{subname}_ESF_LSF_MTF.png&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
+            matplotlib.pyplot.savefig(plotFilename)
+            fig.clf()
+            matplotlib.pyplot.close(&#39;all&#39;)
+        except Exception as e:
+            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1"><code class="flex name class">
+<span>class <span class="ident">Test2D_WE_1</span></span>
+<span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CTSimU test 2D-WE-1: focal spot size.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Test2D_WE_1(generalTest):
+    &#34;&#34;&#34; CTSimU test 2D-WE-1: focal spot size. &#34;&#34;&#34;
+
+    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
+        generalTest.__init__(
+            self,
+            testName=&#34;2D-WE-1&#34;,
+            name=name,
+            resultFileDirectory=resultFileDirectory,
+            rawOutput=rawOutput)
+
+        self.geometry = None
+        self.analyticalIntensityProfileImage = None  # analytical flat field
+        self.analyticalEdgeImage             = None  # stores the analytically computed edge image (sharp image)
+        self.analyticalEdgeImageFF           = None  # stores the analytically computed edge image, flat-field corrected (sharp image)
+
+        self.results = []
+        self.results_idealPointSource = Test2D_WE_1_results()
+
+        # Start point (x0,y0) and end point (x1,y1) for line profile:
+        edgeAngle = 3 * (math.pi/180.0)    # 3 deg edge rotation
+
+        # point of origin for edge profile (i.e. profile center):
+        edgeOrigin = Vector(0, 1)                            # start with unit vector pointing &#34;down&#34;
+        edgeOrigin.rotate_2D_xy(edgeAngle)                   # rotate by edge angle
+        edgeOrigin.scale(500.5 / math.cos(edgeAngle) / 2.0)  # scale to half of visible edge length
+        edgeOrigin = edgeOrigin + Vector(500.5, 500.5)       # move to detector center
+
+        #print(&#34;Edge origin:&#34;)
+        #print(edgeOrigin)
+
+        self.profileLength = 100.1   # pixels
+
+        edgeDirection = Vector(self.profileLength/2.0, 0)
+        edgeDirection.rotate_2D_xy(edgeAngle)
+
+        self.p0 = edgeOrigin - edgeDirection
+        self.p1 = edgeOrigin + edgeDirection
+
+        #print(&#34;Line From p0:&#34;)
+        #print(self.p0)
+        #print(&#34;Line To p1:&#34;)
+        #print(self.p1)
+
+        self.profileWidth = 200  # pixels
+        self.profileRes   = 0.1  # pixels
+
+        # Also, prepare the clipping rectangle for the analytical
+        # calculation of the ideal edge image. In pixel coordinates.
+        A = Vector(   0,    0, 0)
+        B = Vector(   0,  300, 0)
+        C = Vector(-300,  300, 0)
+        D = Vector(-300,    0, 0)
+
+        #A.rotate_2D_xy(edgeAngle)
+        B.rotate_2D_xy(edgeAngle)
+        C.rotate_2D_xy(edgeAngle)
+        D.rotate_2D_xy(edgeAngle)
+
+        self.clippingRectangle = Polygon(A, B, C, D)
+
+    def prepare(self):
+        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+        if not isinstance(self.pipe, Pipeline):
+            self.prepared = False
+            raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
+
+        if len(self.subtests) &gt; 0:
+            if not self.prepared:
+                # It doesn&#39;t matter which of the sub-scenarios we take here.
+                # They all have the same geometry.
+                self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+
+                if(self.jsonScenarioFile is not None):
+                    self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                    self.geometry = self.scenario.current_geometry()
+                    self.geometry.update()
+
+                    print(&#34;Computing an analytical image for an ideal point source...&#34;)
+                    self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
+                    self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
+                    self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)
+
+                    # Raise analytical images to maximum grey value of 60000 before saving them.
+                    # This rescaling does not affect the previous FF correction.
+                    self.analyticalIntensityProfileImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
+                    self.analyticalEdgeImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
+
+
+                    # Write analytical images:
+                    if self.rawOutput:
+                        self.analyticalIntensityProfileImage.saveRAW(&#34;{dir}/{name}_ideal_flat.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                        self.analyticalEdgeImage.saveRAW(&#34;{dir}/{name}_ideal_edge.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                        self.analyticalEdgeImageFF.saveRAW(&#34;{dir}/{name}_ideal_edge_corrected.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                    else: # TIFF
+                        self.analyticalIntensityProfileImage.save(&#34;{dir}/{name}_ideal_flat.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+                        self.analyticalEdgeImage.save(&#34;{dir}/{name}_ideal_edge.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+                        self.analyticalEdgeImageFF.save(&#34;{dir}/{name}_ideal_edge_corrected.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+
+
+                    print(&#34;Calculating the fundamental LSF and MTF from the ideal edge image...&#34;)
+                    # Calculate the edge spread function (using a line profile across the edge):
+                    self.results_idealPointSource.lineProfileGV, self.results_idealPointSource.lineProfilePos, stepsize = self.analyticalEdgeImageFF.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
+
+                    # Nyquist frequency determines center of MTF frequency range:
+                    self.results_idealPointSource.fnyq = 1.0 / (2.0*stepsize)
+                    nSamples = len(self.results_idealPointSource.lineProfileGV)
+                    #self.results_idealPointSource.MTFpos = numpy.linspace(start=0, stop=2*self.results_idealPointSource.fnyq, num=nSamples, endpoint=False, dtype=numpy.float64)
+
+                    # Make the profile positions symmetric:
+                    self.results_idealPointSource.lineProfilePos -= self.profileLength / 2
+
+                    # Calculate the line spread function and MTF.
+                    self.results_idealPointSource.lineProfileSmoothed, self.results_idealPointSource.LSF, self.results_idealPointSource.LSF_windowed, self.results_idealPointSource.MTF, self.results_idealPointSource.MTFpos = MTF(positions=self.results_idealPointSource.lineProfilePos, ESF=self.results_idealPointSource.lineProfileGV)
+
+                    self.results_idealPointSource.lineProfileDelta = self.results_idealPointSource.lineProfileSmoothed - self.results_idealPointSource.lineProfileGV
+
+                    self.writeResultFile(subname=&#34;fundamental_spotPoint&#34;, results=self.results_idealPointSource)
+
+                    self.prepared = True
+                else:
+                    raise Exception(&#34;Test 2D-WE-1: Please provide a JSON scenario description.&#34;)
+
+    def prepareRun(self, i):
+        if i &lt; len(self.subtests):
+            self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+            if self.subtests[i] == &#34;spot1&#34;:
+                self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+            elif self.subtests[i] == &#34;spot2&#34;:
+                self.jsonScenarioFile = &#34;2D-WE-1_Spot2_2021-10-13v02r04dp.json&#34;
+            else:
+                raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}&#34;.format(key=self.subtests[i], test=self.testName))
+
+            results = Test2D_WE_1_results()
+
+            # Get the Gaussian spot size and the pixel size from the JSON file:
+            if self.jsonScenarioFile is not None:
+                scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                results.nominalGaussianSigmaMM = scenario.source.spot.sigma.u.get()
+                results.pixelSize = scenario.detector.pixel_pitch.u.get()
+
+                results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
+
+            if self.subtests[i] == &#34;spotPoint&#34;:
+                results.nominalGaussianSigmaMM = 0
+                results.nominalGaussianSigmaPX = 0
+            else:
+                # Create an ideal Gaussian LSF:
+                nBins = len(self.results_idealPointSource.lineProfilePos)
+                sigma = results.nominalGaussianSigmaPX
+                results.ideal_LSF_Gaussian = numpy.zeros_like(a=self.results_idealPointSource.lineProfilePos, dtype=numpy.dtype(&#39;float64&#39;))
+                for j in range(nBins):
+                    s = self.results_idealPointSource.lineProfilePos[j]
+                    sLeft  = s - self.profileRes
+                    sRight = s + self.profileRes
+                    results.ideal_LSF_Gaussian[j] = math.erf(sRight/(math.sqrt(2.0)*sigma)) - math.erf(sLeft/(math.sqrt(2.0)*sigma)) #gaussian((s+sNext)/2.0, 0, sigma, 1)
+
+                # Normalize ideal LSF maximum to 1:
+                idealLSFmax = numpy.amax(results.ideal_LSF_Gaussian)
+                if idealLSFmax != 0:
+                    results.ideal_LSF_Gaussian /= idealLSFmax
+
+                # Calculate convolution of ideal LSF of sharp image and Gaussian LSF:
+                results.ideal_LSF_Convolution = numpy.convolve(a=self.results_idealPointSource.LSF, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
+                convMax = numpy.amax(results.ideal_LSF_Convolution)
+                if convMax != 0:
+                    results.ideal_LSF_Convolution /= convMax
+
+                # Calculate ideal ESF as convolution of Gaussian with the ideal sampledESF:
+                results.ideal_ESF_Convolution = numpy.convolve(a=self.results_idealPointSource.lineProfileGV, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
+                convMax = numpy.amax(results.ideal_ESF_Convolution)
+                if convMax != 0:
+                    results.ideal_ESF_Convolution /= convMax
+
+                # Fit a Gaussian to central half of the data:
+                fitParametersInitial = (0, sigma, 1)
+                fitPositions = self.results_idealPointSource.lineProfilePos[int(nBins//4):int(3*nBins//4)]
+                #fitData = results.ideal_LSF_Gaussian #[int(nBins//4):int(3*nBins//4)]
+                #popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+                #print(&#34;- Ideal Gaussian Fit Mu:    {}&#34;.format(popt[0]))
+                #print(&#34;- Ideal Gaussian Fit Sigma: {}&#34;.format(popt[1]))
+                #print(&#34;- Ideal Gaussian Fit A:     {}&#34;.format(popt[2]))
+
+                fitData = results.ideal_LSF_Convolution[int(nBins//4):int(3*nBins//4)]
+                popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+                perr = numpy.sqrt(numpy.diag(pcov))
+
+                results.idealGaussianSigmaPX      = popt[1]
+                results.idealGaussianSigmaPXerror = perr[1]
+                results.idealGaussianMuPX         = popt[0]
+                results.idealGaussianMuPXerror    = perr[0]
+                results.idealGaussianAmpPX        = popt[2]
+                results.idealGaussianAmpPXerror   = perr[2]
+
+                results.idealGaussianSigmaMM      = results.pixelSize * results.idealGaussianSigmaPX
+                results.idealGaussianSigmaMMerror = results.pixelSize * results.idealGaussianSigmaPXerror
+                results.idealGaussianMuMM         = results.pixelSize * results.idealGaussianMuPX
+                results.idealGaussianMuMMerror    = results.pixelSize * results.idealGaussianMuPXerror
+                results.idealGaussianAmpMM        = results.pixelSize * results.idealGaussianAmpPX
+                results.idealGaussianAmpMMerror   = results.pixelSize * results.idealGaussianAmpPXerror
+
+                print(&#34;- Analytical LSF Fit Mu:    {} +- {}&#34;.format(popt[0], perr[0]))
+                print(&#34;- Analytical LSF Fit Sigma: {} +- {}&#34;.format(popt[1], perr[1]))
+                print(&#34;- Analytical LSF Fit A:     {} +- {}&#34;.format(popt[2], perr[2]))
+
+
+                # Calculate MTF for Gaussian LSF and Convolution LSF:
+                smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_Gaussian, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Gaussian)
+
+                smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_ConvolutionFFT, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Convolution)
+
+                results.ideal_MTF_Multiplication = self.results_idealPointSource.MTF * results.ideal_MTF_Gaussian
+                if results.ideal_MTF_Multiplication[0] != 0:
+                    results.ideal_MTF_Multiplication /= results.ideal_MTF_Multiplication[0]
+
+
+            print(&#34;Gaussian Spot Size: {} mm = {} px&#34;.format(results.nominalGaussianSigmaMM, results.nominalGaussianSigmaPX))
+
+            self.results.append(results)
+        else:
+            if len(self.subtests) == 0:
+                raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts the following keywords: &#39;spot1&#39; and &#39;spot2&#39;.&#34;.format(testname=self.testName))
+            else:
+                raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))
+
+    def writeSummaryFile(self, subname, results):
+        summaryText  = &#34;Evaluation results for {testname} {subtest}\n&#34;.format(testname=self.testName, subtest=subname)
+        summaryText += &#34;=================================================\n\n&#34;
+
+        summaryText += &#34;Fit results for gauss(x) = A * exp(-(x-mu)²/(2*sigma²))\n&#34;
+        summaryText += &#34;Errors: 1 standard deviation\n&#34;
+        summaryText += &#34;-------------------------------------------------------\n&#34;
+        summaryText += &#34;measured:   sigma [px] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaPX, results.measuredGaussianSigmaPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaMM, results.measuredGaussianSigmaMMerror)
+        summaryText += &#34;measured:   mu    [px] = {} +- {}\n&#34;.format(results.measuredGaussianMuPX,    results.measuredGaussianMuPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianMuMM,    results.measuredGaussianMuMMerror)
+        summaryText += &#34;measured:   A     [px] = {} +- {}\n&#34;.format(results.measuredGaussianAmpPX,   results.measuredGaussianAmpPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.measuredGaussianAmpMM, results.measuredGaussianAmpMMerror)
+
+        summaryText += &#34;analytical: sigma [px] = {} +- {}\n&#34;.format(results.idealGaussianSigmaPX, results.idealGaussianSigmaPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianSigmaMM, results.idealGaussianSigmaMMerror)
+        summaryText += &#34;analytical: mu    [px] = {} +- {}\n&#34;.format(results.idealGaussianMuPX,    results.idealGaussianMuPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianMuMM,    results.idealGaussianMuMMerror)
+        summaryText += &#34;analytical: A     [px] = {} +- {}\n&#34;.format(results.idealGaussianAmpPX,   results.idealGaussianAmpPXerror)
+        summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.idealGaussianAmpMM, results.idealGaussianAmpMMerror)
+
+        summaryText += &#34;sigma: abs. deviation (measured-analytical) [px]       = {:.5f}\n&#34;.format(results.sigma_absDev())
+        summaryText += &#34;sigma: abs. deviation (measured-analytical) [mm]       = {:.5f}\n&#34;.format(results.sigma_absDev() * results.pixelSize)
+        summaryText += &#34;sigma: rel. deviation (measured-analytical)/analytical = {:.5f}\n\n&#34;.format(results.sigma_relDev())
+
+
+        #summaryText += &#34;MTF 10% frequency\n&#34;
+        #summaryText += &#34;-------------------------------------------------------\n&#34;
+        #summaryText += &#34;MTF10 measured: [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_measured)
+        #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_measured / results.pixelSize)
+
+        #summaryText += &#34;MTF10 ideal:    [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_ideal)
+        #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_ideal / results.pixelSize)
+
+        #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/px] = {:.5f}\n&#34;.format(results.MTF10freq_absDev())
+        #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF10freq_absDev() / results.pixelSize)
+        #summaryText += &#34;MTF10: rel. deviation (measured-ideal)/ideal       = {:.5f}\n&#34;.format(results.MTF10freq_relDev())
+
+
+        summaryText += &#34;\nMTF 20% frequency\n&#34;
+        summaryText += &#34;-------------------------------------------------------\n&#34;
+        summaryText += &#34;MTF20 measured:   [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_measured)
+        summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_measured / results.pixelSize)
+
+        summaryText += &#34;MTF20 analytical: [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_ideal)
+        summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_ideal / results.pixelSize)
+
+        summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_absDev())
+        summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF20freq_absDev() / results.pixelSize)
+        summaryText += &#34;MTF20: rel. deviation (measured-analytical)/analytical  = {:.5f}\n&#34;.format(results.MTF20freq_relDev())
+
+
+        summaryFileName = &#34;{dir}/{name}_{subname}_summary.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+        with open(summaryFileName, &#39;w&#39;) as summaryFile:
+            summaryFile.write(summaryText)
+            summaryFile.close()
+
+
+    def writeResultFile(self, subname, results):
+        pos = results.lineProfilePos
+
+        # ESF
+        ESF         = results.lineProfileGV
+        ESFsmoothed = results.lineProfileSmoothed
+        ESFideal    = results.ideal_ESF_Convolution
+
+        # LSF
+        LSF         = results.LSF
+        LSFwindowed = results.LSF_windowed
+        LSFideal    = results.ideal_LSF_Convolution
+
+        # MTF
+        MTFpos      = results.MTFpos
+        MTF         = results.MTF
+        MTFideal    = results.ideal_MTF_ConvolutionFFT
+
+        profileText  = &#34;# Profile data: edge spread function (ESF), smoothed ESF, line spread function (LSF) and windowed LSF (von-Hann window)\n&#34;
+        profileText += &#34;# s [px]\tESF\tESF_smoothed&#34;
+        if not(ESFideal is None):
+            profileText += &#34;\tESF_ideal&#34;
+
+        profileText += &#34;\tLSF\tLSF_windowed&#34;
+
+        if not(LSFideal is None):
+            profileText += &#34;\tLSF_ideal&#34;
+
+        profileText += &#34;\n&#34;
+
+        mtfText  = &#34;# Modulation Transfer Function (MTF)\n&#34;
+        mtfText += &#34;# f [cycles/px]\tMTF_measured&#34;
+        if not(MTFideal is None):
+            mtfText += &#34;\tMTF_ideal&#34;
+
+        mtfText += &#34;\n&#34;
+
+        for j in range(len(pos)):
+            profileText += &#34;{pos:.2f}\t{ESF}\t{ESFsmoothed}&#34;.format(pos=pos[j], ESF=ESF[j], ESFsmoothed=ESFsmoothed[j])
+
+            if not(ESFideal is None):
+                profileText += &#34;\t{ESFideal}&#34;.format(ESFideal=ESFideal[j])
+
+            profileText += &#34;\t{LSF}\t{LSFwindowed}&#34;.format(LSF=LSF[j], LSFwindowed=LSFwindowed[j])
+
+            if not(LSFideal is None):
+                profileText += &#34;\t{LSFideal}&#34;.format(LSFideal=LSFideal[j])
+
+            profileText += &#34;\n&#34;
+
+
+            mtfText += &#34;{f:.3f}\t{mtf}&#34;.format(f=MTFpos[j], mtf=MTF[j])
+
+            if not(MTFideal is None):
+                mtfText += &#34;\t{MTFideal}&#34;.format(MTFideal=MTFideal[j])
+
+
+            mtfText += &#34;\n&#34;
+
+        profileFileName = &#34;{dir}/{name}_{subname}_ESF_LSF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+        with open(profileFileName, &#39;w&#39;) as profileFile:
+            profileFile.write(profileText)
+            profileFile.close()
+
+        mtfFileName = &#34;{dir}/{name}_{subname}_MTF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+        with open(mtfFileName, &#39;w&#39;) as mtfFile:
+            mtfFile.write(mtfText)
+            mtfFile.close()
+
+    def run(self, image):
+        self.prepare()
+        self.prepareRun(self.currentRun)
+        i = self.currentRun
+        subtestName = self.subtests[i]
+
+        print(&#34;Calculating the LSF and MTF of the projection image...&#34;)
+
+        # Calculate the edge spread function (using a line profile across the edge):
+        self.results[i].lineProfileGV, self.results[i].lineProfilePos, stepsize = image.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
+
+        ESFmax = numpy.amax(self.results[i].lineProfileGV)
+        if ESFmax != 0:
+            self.results[i].lineProfileGV /= ESFmax
+
+        # Nyquist frequency determines center of MTF frequency range:
+        self.results[i].fnyq = 1.0 / (2.0*stepsize)
+        nSamples = len(self.results[i].lineProfileGV)
+        #self.results[i].MTFpos = numpy.linspace(start=0, stop=2*self.results[i].fnyq, num=nSamples, endpoint=False, dtype=numpy.float64)
+
+        # Make the profile positions symmetric:
+        self.results[i].lineProfilePos -= self.profileLength / 2
+
+        # Calculate the line spread function and MTF.
+        self.results[i].lineProfileSmoothed, self.results[i].LSF, self.results[i].LSF_windowed, self.results[i].MTF, self.results[i].MTFpos = MTF(positions=self.results[i].lineProfilePos, ESF=self.results[i].lineProfileGV)
+
+        # Calculate the ideal and the measured MTF10 and MTF20 frequency:
+        #self.results[i].MTF10freq_ideal    = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].ideal_MTF_ConvolutionFFT, modulation=0.1)
+        #self.results[i].MTF10freq_measured = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].MTF, modulation=0.1)
+        self.results[i].MTF20freq_ideal    = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].ideal_MTF_ConvolutionFFT, modulation=0.2)
+        self.results[i].MTF20freq_measured = MTFfreq(MTFpos=self.results[i].MTFpos, MTF=self.results[i].MTF, modulation=0.2)
+
+
+        # Fit a Gaussian to central half of the data:
+        sigma = self.results[i].nominalGaussianSigmaPX
+        nBins = len(self.results[i].lineProfilePos)
+        fitParametersInitial = (0, sigma, 1)
+        fitPositions = self.results[i].lineProfilePos[int(nBins//4):int(3*nBins//4)]
+        fitData = self.results[i].LSF[int(nBins//4):int(3*nBins//4)]
+        popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+        perr = numpy.sqrt(numpy.diag(pcov))
+
+        self.results[i].measuredGaussianSigmaPX      = popt[1]
+        self.results[i].measuredGaussianSigmaPXerror = perr[1]
+        self.results[i].measuredGaussianMuPX         = popt[0]
+        self.results[i].measuredGaussianMuPXerror    = perr[0]
+        self.results[i].measuredGaussianAmpPX        = popt[2]
+        self.results[i].measuredGaussianAmpPXerror   = perr[2]
+
+        self.results[i].measuredGaussianSigmaMM      = self.results[i].pixelSize * self.results[i].measuredGaussianSigmaPX
+        self.results[i].measuredGaussianSigmaMMerror = self.results[i].pixelSize * self.results[i].measuredGaussianSigmaPXerror
+        self.results[i].measuredGaussianMuMM         = self.results[i].pixelSize * self.results[i].measuredGaussianMuPX
+        self.results[i].measuredGaussianMuMMerror    = self.results[i].pixelSize * self.results[i].measuredGaussianMuPXerror
+        self.results[i].measuredGaussianAmpMM        = self.results[i].pixelSize * self.results[i].measuredGaussianAmpPX
+        self.results[i].measuredGaussianAmpMMerror   = self.results[i].pixelSize * self.results[i].measuredGaussianAmpPXerror
+
+        print(&#34;- Measured LSF Fit Mu:    {} +- {}&#34;.format(popt[0], perr[0]))
+        print(&#34;- Measured LSF Fit Sigma: {} +- {}&#34;.format(popt[1], perr[1]))
+        print(&#34;- Measured LSF Fit A:     {} +- {}&#34;.format(popt[2], perr[2]))
+
+        # Rescale LSF to maximum of fit function:
+        if self.results[i].measuredGaussianAmpPX != 0.0:
+            self.results[i].LSF /= self.results[i].measuredGaussianAmpPX
+            self.results[i].LSF_windowed /= self.results[i].measuredGaussianAmpPX
+            self.results[i].measuredGaussianAmpPX = 1.0
+
+        self.results[i].LSF_gaussian_fit = numpy.zeros_like(a=self.results[i].lineProfilePos, dtype=numpy.dtype(&#39;float64&#39;))
+        for j in range(len(self.results[i].LSF_gaussian_fit)):
+            self.results[i].LSF_gaussian_fit[j] = gaussian(x=self.results[i].lineProfilePos[j], mu=self.results[i].measuredGaussianMuPX, sigma=self.results[i].measuredGaussianSigmaPX, A=self.results[i].measuredGaussianAmpPX)
+
+        self.writeResultFile(subname=subtestName, results=self.results[i])
+        self.writeSummaryFile(subname=subtestName, results=self.results[i])
+
+        log(&#34;Evaluation data for test {name}, {subname} written to {dir}.&#34;.format(name=self.name, subname=subtestName, dir=self.resultFileDirectory))
+
+        self.plotResults()
+
+        self.currentRun += 1
+        return image
+
+    def followUp(self):
+        pass
+
+    def plotResults(self):
+        i = self.currentRun
+        subtestName = self.subtests[i]
+        try:
+            import matplotlib
+            import matplotlib.pyplot
+            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
+            matplotlib.use(&#34;agg&#34;)
+
+            fig, (ax1, ax2, ax3) = matplotlib.pyplot.subplots(nrows=3, ncols=1, figsize=(6, 8))
+
+            # ESF:
+            ax1.plot(self.results[i].lineProfilePos, self.results[i].lineProfileGV, linewidth=1.5, label=&#34;Measured&#34;, color=&#39;#ffaa00&#39;)
+            ax1.plot(self.results[i].lineProfilePos, self.results[i].ideal_ESF_Convolution, linewidth=1.0, label=&#34;Analytical&#34;, color=&#39;#000000&#39;, linestyle=&#39;dotted&#39;)
+
+            ax1.set_xlabel(&#34;Horizontal distance in px&#34;)
+            ax1.set_ylabel(&#34;ESF&#34;)
+            ax1.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
+            ax1.set_title(&#34;Edge Spread Function (ESF)&#34;)
+            #ax1.xaxis.set_ticklabels([])
+            ax1.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            ax1.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            ax1.legend(loc=&#39;best&#39;)
+
+
+            # LSF
+            ax2.plot(self.results[i].lineProfilePos, self.results[i].LSF, linewidth=1.5, label=&#34;Measured&#34;, color=&#39;#ffaa00&#39;)
+            ax2.plot(self.results[i].lineProfilePos, self.results[i].LSF_gaussian_fit, linewidth=1.0, label=&#34;Fit&#34;, color=&#39;#1f77b4&#39;, linestyle=&#39;dashed&#39;)
+            ax2.plot(self.results[i].lineProfilePos, self.results[i].ideal_LSF_Convolution, linewidth=1.0, label=&#34;Analytical&#34;, color=&#39;#000000&#39;, linestyle=&#39;dotted&#39;)
+
+            ax2.set_xlabel(&#34;Horizontal distance in px&#34;)
+            ax2.set_ylabel(&#34;LSF&#34;)
+            ax2.set_xlim([-3*self.results[i].nominalGaussianSigmaPX, 3*self.results[i].nominalGaussianSigmaPX])
+            ax2.set_title(&#34;Line Spread Function (LSF)&#34;)
+            #ax2.xaxis.set_ticklabels([])
+            ax2.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            ax2.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            ax2.legend(loc=&#39;best&#39;)
+
+
+            # Lines for MTF 10:
+            #mtf10ideal_vert_x    = numpy.array([self.results[i].MTF10freq_ideal, self.results[i].MTF10freq_ideal])
+            #mtf10measured_vert_x = numpy.array([self.results[i].MTF10freq_measured, self.results[i].MTF10freq_measured])
+            #mtf10_vert_y = numpy.array([-0.1, 0.1])
+
+            #mtf10_horz_x = numpy.array([0, 3.0*max(self.results[i].MTF10freq_measured, self.results[i].MTF10freq_ideal)])
+            #mtf10_horz_y = numpy.array([0.1, 0.1])
+
+
+            # Lines for MTF 20:
+            mtf20ideal_vert_x    = numpy.array([self.results[i].MTF20freq_ideal, self.results[i].MTF20freq_ideal])
+            mtf20measured_vert_x = numpy.array([self.results[i].MTF20freq_measured, self.results[i].MTF20freq_measured])
+            mtf20_vert_y = numpy.array([-0.1, 0.2])
+
+            mtf20_horz_x = numpy.array([0, 3.0*max(self.results[i].MTF20freq_measured, self.results[i].MTF20freq_ideal)])
+            mtf20_horz_y = numpy.array([0.2, 0.2])
+
+            # MTF
+            ax3.plot(self.results[i].MTFpos, self.results[i].MTF, linewidth=1.5, label=&#34;Measured&#34;, color=&#39;#ffaa00&#39;)
+            ax3.plot(self.results[i].MTFpos, self.results[i].ideal_MTF_ConvolutionFFT, linewidth=1.0, label=&#34;Analytical&#34;, color=&#39;#000000&#39;, linestyle=&#39;dotted&#39;)
+
+            #ax3.plot(mtf10_horz_x, mtf10_horz_y,         linewidth=0.5, color=&#39;#000000&#39;, label=&#34;MTF10&#34;)
+            #ax3.plot(mtf10ideal_vert_x, mtf10_vert_y,    linewidth=0.5, color=&#39;#000000&#39;, label=&#34;&#34;)
+            #ax3.plot(mtf10measured_vert_x, mtf10_vert_y, linewidth=0.5, color=&#39;#000000&#39;, label=&#34;&#34;)
+
+            #ax3.plot(mtf20_horz_x, mtf20_horz_y,         linewidth=0.5, color=&#39;#808080&#39;, label=&#34;MTF20&#34;)
+            ax3.plot(mtf20ideal_vert_x, mtf20_vert_y,    linewidth=0.5, color=&#39;#808080&#39;, label=&#34;&#34;, linestyle=&#39;dotted&#39;)
+            ax3.plot(mtf20measured_vert_x, mtf20_vert_y, linewidth=0.5, color=&#39;#808080&#39;, label=&#34;&#34;)
+
+            ax3.set_xlabel(&#34;Modulation frequency in cycles/px&#34;)
+            ax3.set_ylabel(&#34;Modulation contrast&#34;)
+            ax3.set_xlim([0, 3.0*max(self.results[i].MTF20freq_measured, self.results[i].MTF20freq_ideal)])
+            ax3.set_ylim([-0.1, 1.1])
+            ax3.set_yticks(numpy.array([0, 0.2, 0.4, 0.6, 0.8, 1]))
+            ax3.set_title(&#34;Modulation Transfer Function (MTF)&#34;)
+            #ax3.xaxis.set_ticklabels([])
+            ax3.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            ax3.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            ax3.legend(loc=&#39;best&#39;)
+
+            fig.tight_layout(pad=2.5)
+
+            plotFilename = &#34;{dir}/{name}_{subname}_ESF_LSF_MTF.png&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
+            matplotlib.pyplot.savefig(plotFilename)
+            fig.clf()
+            matplotlib.pyplot.close(&#39;all&#39;)
+        except Exception as e:
+            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
+<li><a title="ctsimu.processing.step.Step" href="../processing/step.html#ctsimu.processing.step.Step">Step</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepare"><code class="name flex">
+<span>def <span class="ident">prepare</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare(self):
+    &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+    if not isinstance(self.pipe, Pipeline):
+        self.prepared = False
+        raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
+
+    if len(self.subtests) &gt; 0:
+        if not self.prepared:
+            # It doesn&#39;t matter which of the sub-scenarios we take here.
+            # They all have the same geometry.
+            self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+
+            if(self.jsonScenarioFile is not None):
+                self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+                self.geometry = self.scenario.current_geometry()
+                self.geometry.update()
+
+                print(&#34;Computing an analytical image for an ideal point source...&#34;)
+                self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
+                self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
+                self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)
+
+                # Raise analytical images to maximum grey value of 60000 before saving them.
+                # This rescaling does not affect the previous FF correction.
+                self.analyticalIntensityProfileImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
+                self.analyticalEdgeImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
+
+
+                # Write analytical images:
+                if self.rawOutput:
+                    self.analyticalIntensityProfileImage.saveRAW(&#34;{dir}/{name}_ideal_flat.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                    self.analyticalEdgeImage.saveRAW(&#34;{dir}/{name}_ideal_edge.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                    self.analyticalEdgeImageFF.saveRAW(&#34;{dir}/{name}_ideal_edge_corrected.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+                else: # TIFF
+                    self.analyticalIntensityProfileImage.save(&#34;{dir}/{name}_ideal_flat.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+                    self.analyticalEdgeImage.save(&#34;{dir}/{name}_ideal_edge.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+                    self.analyticalEdgeImageFF.save(&#34;{dir}/{name}_ideal_edge_corrected.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+
+
+                print(&#34;Calculating the fundamental LSF and MTF from the ideal edge image...&#34;)
+                # Calculate the edge spread function (using a line profile across the edge):
+                self.results_idealPointSource.lineProfileGV, self.results_idealPointSource.lineProfilePos, stepsize = self.analyticalEdgeImageFF.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
+
+                # Nyquist frequency determines center of MTF frequency range:
+                self.results_idealPointSource.fnyq = 1.0 / (2.0*stepsize)
+                nSamples = len(self.results_idealPointSource.lineProfileGV)
+                #self.results_idealPointSource.MTFpos = numpy.linspace(start=0, stop=2*self.results_idealPointSource.fnyq, num=nSamples, endpoint=False, dtype=numpy.float64)
+
+                # Make the profile positions symmetric:
+                self.results_idealPointSource.lineProfilePos -= self.profileLength / 2
+
+                # Calculate the line spread function and MTF.
+                self.results_idealPointSource.lineProfileSmoothed, self.results_idealPointSource.LSF, self.results_idealPointSource.LSF_windowed, self.results_idealPointSource.MTF, self.results_idealPointSource.MTFpos = MTF(positions=self.results_idealPointSource.lineProfilePos, ESF=self.results_idealPointSource.lineProfileGV)
+
+                self.results_idealPointSource.lineProfileDelta = self.results_idealPointSource.lineProfileSmoothed - self.results_idealPointSource.lineProfileGV
+
+                self.writeResultFile(subname=&#34;fundamental_spotPoint&#34;, results=self.results_idealPointSource)
+
+                self.prepared = True
+            else:
+                raise Exception(&#34;Test 2D-WE-1: Please provide a JSON scenario description.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepareRun"><code class="name flex">
+<span>def <span class="ident">prepareRun</span></span>(<span>self, i)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepareRun(self, i):
+    if i &lt; len(self.subtests):
+        self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+        if self.subtests[i] == &#34;spot1&#34;:
+            self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
+        elif self.subtests[i] == &#34;spot2&#34;:
+            self.jsonScenarioFile = &#34;2D-WE-1_Spot2_2021-10-13v02r04dp.json&#34;
+        else:
+            raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}&#34;.format(key=self.subtests[i], test=self.testName))
+
+        results = Test2D_WE_1_results()
+
+        # Get the Gaussian spot size and the pixel size from the JSON file:
+        if self.jsonScenarioFile is not None:
+            scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+
+            results.nominalGaussianSigmaMM = scenario.source.spot.sigma.u.get()
+            results.pixelSize = scenario.detector.pixel_pitch.u.get()
+
+            results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
+
+        if self.subtests[i] == &#34;spotPoint&#34;:
+            results.nominalGaussianSigmaMM = 0
+            results.nominalGaussianSigmaPX = 0
+        else:
+            # Create an ideal Gaussian LSF:
+            nBins = len(self.results_idealPointSource.lineProfilePos)
+            sigma = results.nominalGaussianSigmaPX
+            results.ideal_LSF_Gaussian = numpy.zeros_like(a=self.results_idealPointSource.lineProfilePos, dtype=numpy.dtype(&#39;float64&#39;))
+            for j in range(nBins):
+                s = self.results_idealPointSource.lineProfilePos[j]
+                sLeft  = s - self.profileRes
+                sRight = s + self.profileRes
+                results.ideal_LSF_Gaussian[j] = math.erf(sRight/(math.sqrt(2.0)*sigma)) - math.erf(sLeft/(math.sqrt(2.0)*sigma)) #gaussian((s+sNext)/2.0, 0, sigma, 1)
+
+            # Normalize ideal LSF maximum to 1:
+            idealLSFmax = numpy.amax(results.ideal_LSF_Gaussian)
+            if idealLSFmax != 0:
+                results.ideal_LSF_Gaussian /= idealLSFmax
+
+            # Calculate convolution of ideal LSF of sharp image and Gaussian LSF:
+            results.ideal_LSF_Convolution = numpy.convolve(a=self.results_idealPointSource.LSF, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
+            convMax = numpy.amax(results.ideal_LSF_Convolution)
+            if convMax != 0:
+                results.ideal_LSF_Convolution /= convMax
+
+            # Calculate ideal ESF as convolution of Gaussian with the ideal sampledESF:
+            results.ideal_ESF_Convolution = numpy.convolve(a=self.results_idealPointSource.lineProfileGV, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
+            convMax = numpy.amax(results.ideal_ESF_Convolution)
+            if convMax != 0:
+                results.ideal_ESF_Convolution /= convMax
+
+            # Fit a Gaussian to central half of the data:
+            fitParametersInitial = (0, sigma, 1)
+            fitPositions = self.results_idealPointSource.lineProfilePos[int(nBins//4):int(3*nBins//4)]
+            #fitData = results.ideal_LSF_Gaussian #[int(nBins//4):int(3*nBins//4)]
+            #popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+            #print(&#34;- Ideal Gaussian Fit Mu:    {}&#34;.format(popt[0]))
+            #print(&#34;- Ideal Gaussian Fit Sigma: {}&#34;.format(popt[1]))
+            #print(&#34;- Ideal Gaussian Fit A:     {}&#34;.format(popt[2]))
+
+            fitData = results.ideal_LSF_Convolution[int(nBins//4):int(3*nBins//4)]
+            popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
+
+            perr = numpy.sqrt(numpy.diag(pcov))
+
+            results.idealGaussianSigmaPX      = popt[1]
+            results.idealGaussianSigmaPXerror = perr[1]
+            results.idealGaussianMuPX         = popt[0]
+            results.idealGaussianMuPXerror    = perr[0]
+            results.idealGaussianAmpPX        = popt[2]
+            results.idealGaussianAmpPXerror   = perr[2]
+
+            results.idealGaussianSigmaMM      = results.pixelSize * results.idealGaussianSigmaPX
+            results.idealGaussianSigmaMMerror = results.pixelSize * results.idealGaussianSigmaPXerror
+            results.idealGaussianMuMM         = results.pixelSize * results.idealGaussianMuPX
+            results.idealGaussianMuMMerror    = results.pixelSize * results.idealGaussianMuPXerror
+            results.idealGaussianAmpMM        = results.pixelSize * results.idealGaussianAmpPX
+            results.idealGaussianAmpMMerror   = results.pixelSize * results.idealGaussianAmpPXerror
+
+            print(&#34;- Analytical LSF Fit Mu:    {} +- {}&#34;.format(popt[0], perr[0]))
+            print(&#34;- Analytical LSF Fit Sigma: {} +- {}&#34;.format(popt[1], perr[1]))
+            print(&#34;- Analytical LSF Fit A:     {} +- {}&#34;.format(popt[2], perr[2]))
+
+
+            # Calculate MTF for Gaussian LSF and Convolution LSF:
+            smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_Gaussian, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Gaussian)
+
+            smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_ConvolutionFFT, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Convolution)
+
+            results.ideal_MTF_Multiplication = self.results_idealPointSource.MTF * results.ideal_MTF_Gaussian
+            if results.ideal_MTF_Multiplication[0] != 0:
+                results.ideal_MTF_Multiplication /= results.ideal_MTF_Multiplication[0]
+
+
+        print(&#34;Gaussian Spot Size: {} mm = {} px&#34;.format(results.nominalGaussianSigmaMM, results.nominalGaussianSigmaPX))
+
+        self.results.append(results)
+    else:
+        if len(self.subtests) == 0:
+            raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts the following keywords: &#39;spot1&#39; and &#39;spot2&#39;.&#34;.format(testname=self.testName))
+        else:
+            raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeResultFile"><code class="name flex">
+<span>def <span class="ident">writeResultFile</span></span>(<span>self, subname, results)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def writeResultFile(self, subname, results):
+    pos = results.lineProfilePos
+
+    # ESF
+    ESF         = results.lineProfileGV
+    ESFsmoothed = results.lineProfileSmoothed
+    ESFideal    = results.ideal_ESF_Convolution
+
+    # LSF
+    LSF         = results.LSF
+    LSFwindowed = results.LSF_windowed
+    LSFideal    = results.ideal_LSF_Convolution
+
+    # MTF
+    MTFpos      = results.MTFpos
+    MTF         = results.MTF
+    MTFideal    = results.ideal_MTF_ConvolutionFFT
+
+    profileText  = &#34;# Profile data: edge spread function (ESF), smoothed ESF, line spread function (LSF) and windowed LSF (von-Hann window)\n&#34;
+    profileText += &#34;# s [px]\tESF\tESF_smoothed&#34;
+    if not(ESFideal is None):
+        profileText += &#34;\tESF_ideal&#34;
+
+    profileText += &#34;\tLSF\tLSF_windowed&#34;
+
+    if not(LSFideal is None):
+        profileText += &#34;\tLSF_ideal&#34;
+
+    profileText += &#34;\n&#34;
+
+    mtfText  = &#34;# Modulation Transfer Function (MTF)\n&#34;
+    mtfText += &#34;# f [cycles/px]\tMTF_measured&#34;
+    if not(MTFideal is None):
+        mtfText += &#34;\tMTF_ideal&#34;
+
+    mtfText += &#34;\n&#34;
+
+    for j in range(len(pos)):
+        profileText += &#34;{pos:.2f}\t{ESF}\t{ESFsmoothed}&#34;.format(pos=pos[j], ESF=ESF[j], ESFsmoothed=ESFsmoothed[j])
+
+        if not(ESFideal is None):
+            profileText += &#34;\t{ESFideal}&#34;.format(ESFideal=ESFideal[j])
+
+        profileText += &#34;\t{LSF}\t{LSFwindowed}&#34;.format(LSF=LSF[j], LSFwindowed=LSFwindowed[j])
+
+        if not(LSFideal is None):
+            profileText += &#34;\t{LSFideal}&#34;.format(LSFideal=LSFideal[j])
+
+        profileText += &#34;\n&#34;
+
+
+        mtfText += &#34;{f:.3f}\t{mtf}&#34;.format(f=MTFpos[j], mtf=MTF[j])
+
+        if not(MTFideal is None):
+            mtfText += &#34;\t{MTFideal}&#34;.format(MTFideal=MTFideal[j])
+
+
+        mtfText += &#34;\n&#34;
+
+    profileFileName = &#34;{dir}/{name}_{subname}_ESF_LSF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+    with open(profileFileName, &#39;w&#39;) as profileFile:
+        profileFile.write(profileText)
+        profileFile.close()
+
+    mtfFileName = &#34;{dir}/{name}_{subname}_MTF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+    with open(mtfFileName, &#39;w&#39;) as mtfFile:
+        mtfFile.write(mtfText)
+        mtfFile.close()</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeSummaryFile"><code class="name flex">
+<span>def <span class="ident">writeSummaryFile</span></span>(<span>self, subname, results)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def writeSummaryFile(self, subname, results):
+    summaryText  = &#34;Evaluation results for {testname} {subtest}\n&#34;.format(testname=self.testName, subtest=subname)
+    summaryText += &#34;=================================================\n\n&#34;
+
+    summaryText += &#34;Fit results for gauss(x) = A * exp(-(x-mu)²/(2*sigma²))\n&#34;
+    summaryText += &#34;Errors: 1 standard deviation\n&#34;
+    summaryText += &#34;-------------------------------------------------------\n&#34;
+    summaryText += &#34;measured:   sigma [px] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaPX, results.measuredGaussianSigmaPXerror)
+    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaMM, results.measuredGaussianSigmaMMerror)
+    summaryText += &#34;measured:   mu    [px] = {} +- {}\n&#34;.format(results.measuredGaussianMuPX,    results.measuredGaussianMuPXerror)
+    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianMuMM,    results.measuredGaussianMuMMerror)
+    summaryText += &#34;measured:   A     [px] = {} +- {}\n&#34;.format(results.measuredGaussianAmpPX,   results.measuredGaussianAmpPXerror)
+    summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.measuredGaussianAmpMM, results.measuredGaussianAmpMMerror)
+
+    summaryText += &#34;analytical: sigma [px] = {} +- {}\n&#34;.format(results.idealGaussianSigmaPX, results.idealGaussianSigmaPXerror)
+    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianSigmaMM, results.idealGaussianSigmaMMerror)
+    summaryText += &#34;analytical: mu    [px] = {} +- {}\n&#34;.format(results.idealGaussianMuPX,    results.idealGaussianMuPXerror)
+    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianMuMM,    results.idealGaussianMuMMerror)
+    summaryText += &#34;analytical: A     [px] = {} +- {}\n&#34;.format(results.idealGaussianAmpPX,   results.idealGaussianAmpPXerror)
+    summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.idealGaussianAmpMM, results.idealGaussianAmpMMerror)
+
+    summaryText += &#34;sigma: abs. deviation (measured-analytical) [px]       = {:.5f}\n&#34;.format(results.sigma_absDev())
+    summaryText += &#34;sigma: abs. deviation (measured-analytical) [mm]       = {:.5f}\n&#34;.format(results.sigma_absDev() * results.pixelSize)
+    summaryText += &#34;sigma: rel. deviation (measured-analytical)/analytical = {:.5f}\n\n&#34;.format(results.sigma_relDev())
+
+
+    #summaryText += &#34;MTF 10% frequency\n&#34;
+    #summaryText += &#34;-------------------------------------------------------\n&#34;
+    #summaryText += &#34;MTF10 measured: [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_measured)
+    #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_measured / results.pixelSize)
+
+    #summaryText += &#34;MTF10 ideal:    [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_ideal)
+    #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_ideal / results.pixelSize)
+
+    #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/px] = {:.5f}\n&#34;.format(results.MTF10freq_absDev())
+    #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF10freq_absDev() / results.pixelSize)
+    #summaryText += &#34;MTF10: rel. deviation (measured-ideal)/ideal       = {:.5f}\n&#34;.format(results.MTF10freq_relDev())
+
+
+    summaryText += &#34;\nMTF 20% frequency\n&#34;
+    summaryText += &#34;-------------------------------------------------------\n&#34;
+    summaryText += &#34;MTF20 measured:   [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_measured)
+    summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_measured / results.pixelSize)
+
+    summaryText += &#34;MTF20 analytical: [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_ideal)
+    summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_ideal / results.pixelSize)
+
+    summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_absDev())
+    summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF20freq_absDev() / results.pixelSize)
+    summaryText += &#34;MTF20: rel. deviation (measured-analytical)/analytical  = {:.5f}\n&#34;.format(results.MTF20freq_relDev())
+
+
+    summaryFileName = &#34;{dir}/{name}_{subname}_summary.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
+    with open(summaryFileName, &#39;w&#39;) as summaryFile:
+        summaryFile.write(summaryText)
+        summaryFile.close()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ctsimu.test.generalTest.followUp" href="../processing/step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.plotResults" href="../test.html#ctsimu.test.generalTest.plotResults">plotResults</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.run" href="../processing/step.html#ctsimu.processing.step.Step.run">run</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setName" href="../test.html#ctsimu.test.generalTest.setName">setName</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setRawOutput" href="../test.html#ctsimu.test.generalTest.setRawOutput">setRawOutput</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setResultFileDirectory" href="../test.html#ctsimu.test.generalTest.setResultFileDirectory">setResultFileDirectory</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results"><code class="flex name class">
+<span>class <span class="ident">Test2D_WE_1_results</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Results for one sub test.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Test2D_WE_1_results:
+    &#34;&#34;&#34; Results for one sub test. &#34;&#34;&#34;
+
+    def __init__(self):
+        # Profile Data:
+        self.lineProfilePos      = []
+        self.lineProfileGV       = []  # this will be the edge spread function (ESF)
+        self.lineProfileSmoothed = []
+        self.LSF                 = []  # line spread function; derivative of ESF.
+        self.LSF_windowed        = []  # von-Hann window applied before FFT
+        self.LSF_gaussian_fit    = []
+        self.MTF                 = []
+        self.MTFpos              = []
+        self.fnyq                = 0   # Nyquist frequency
+
+        self.ideal_ESF_Convolution = None      # Convolution of Gaussian with SampledESF
+
+        self.ideal_LSF_Gaussian    = None
+        self.ideal_LSF_Convolution = None
+
+        self.ideal_MTF_Gaussian       = None   # MTF of Gaussian LSF
+        self.ideal_MTF_ConvolutionFFT = None   # Ideal MTF by FFT of Convolution (Gaussian and SampledLSF)
+        self.ideal_MTF_Multiplication = None   # Ideal MTF from SampledMTF * GaussianMTF; same result.
+
+        # Fit results [px]
+        self.nominalGaussianSigmaPX       = 0
+
+        self.idealGaussianSigmaPX         = 0
+        self.idealGaussianSigmaPXerror    = 0
+        self.idealGaussianMuPX            = 0
+        self.idealGaussianMuPXerror       = 0
+        self.idealGaussianAmpPX           = 0
+        self.idealGaussianAmpPXerror      = 0
+
+        self.measuredGaussianSigmaPX      = 0
+        self.measuredGaussianSigmaPXerror = 0
+        self.measuredGaussianMuPX         = 0
+        self.measuredGaussianMuPXerror    = 0
+        self.measuredGaussianAmpPX        = 0
+        self.measuredGaussianAmpPXerror   = 0
+
+        # Fit results [mm]
+        self.nominalGaussianSigmaMM       = 0
+
+        self.idealGaussianSigmaMM         = 0
+        self.idealGaussianSigmaMMerror    = 0
+        self.idealGaussianMuMM            = 0
+        self.idealGaussianMuMMerror       = 0
+        self.idealGaussianAmpMM           = 0
+        self.idealGaussianAmpMMerror      = 0
+
+        self.measuredGaussianSigmaMM      = 0
+        self.measuredGaussianSigmaMMerror = 0
+        self.measuredGaussianMuMM         = 0
+        self.measuredGaussianMuMMerror    = 0
+        self.measuredGaussianAmpMM        = 0
+        self.measuredGaussianAmpMMerror   = 0
+
+        # MTF evaluation results
+        self.MTF20freq_ideal    = 0
+        self.MTF20freq_measured = 0
+
+        #self.MTF10freq_ideal    = 0
+        #self.MTF10freq_measured = 0
+
+        self.pixelSize = 0
+
+    def MTF20freq_absDev(self):
+        return (self.MTF20freq_measured - self.MTF20freq_ideal)
+
+    def MTF20freq_relDev(self):
+        if self.MTF20freq_ideal != 0:
+            return (self.MTF20freq_measured - self.MTF20freq_ideal) / self.MTF20freq_ideal
+
+        return 0
+
+    #def MTF10freq_absDev(self):
+    #    return (self.MTF10freq_measured - self.MTF10freq_ideal)
+
+    #def MTF10freq_relDev(self):
+    #    if self.MTF10freq_ideal != 0:
+    #        return (self.MTF10freq_measured - self.MTF10freq_ideal) / self.MTF10freq_ideal
+
+        return 0
+
+    def sigma_absDev(self):
+        return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX)
+
+    def sigma_relDev(self):
+        if self.idealGaussianSigmaPX != 0:
+            return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX) / self.idealGaussianSigmaPX
+
+        return 0</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_absDev"><code class="name flex">
+<span>def <span class="ident">MTF20freq_absDev</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def MTF20freq_absDev(self):
+    return (self.MTF20freq_measured - self.MTF20freq_ideal)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_relDev"><code class="name flex">
+<span>def <span class="ident">MTF20freq_relDev</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def MTF20freq_relDev(self):
+    if self.MTF20freq_ideal != 0:
+        return (self.MTF20freq_measured - self.MTF20freq_ideal) / self.MTF20freq_ideal
+
+    return 0
+
+#def MTF10freq_absDev(self):
+#    return (self.MTF10freq_measured - self.MTF10freq_ideal)
+
+#def MTF10freq_relDev(self):
+#    if self.MTF10freq_ideal != 0:
+#        return (self.MTF10freq_measured - self.MTF10freq_ideal) / self.MTF10freq_ideal
+
+    return 0</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_absDev"><code class="name flex">
+<span>def <span class="ident">sigma_absDev</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sigma_absDev(self):
+    return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_relDev"><code class="name flex">
+<span>def <span class="ident">sigma_relDev</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sigma_relDev(self):
+    if self.idealGaussianSigmaPX != 0:
+        return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX) / self.idealGaussianSigmaPX
+
+    return 0</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#test-2d-we-1-focus-spot-size">Test 2D-WE-1: Focus spot size</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu.evaluation" href="index.html">ctsimu.evaluation</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1">Test2D_WE_1</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepare" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepareRun" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepareRun">prepareRun</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeResultFile" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeResultFile">writeResultFile</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeSummaryFile" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeSummaryFile">writeSummaryFile</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results">Test2D_WE_1_results</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_absDev" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_absDev">MTF20freq_absDev</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_relDev" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_relDev">MTF20freq_relDev</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_absDev" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_absDev">sigma_absDev</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_relDev" href="#ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_relDev">sigma_relDev</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

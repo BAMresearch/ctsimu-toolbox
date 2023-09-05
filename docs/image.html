@@ -12,10 +12,26 @@
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
 </head>
 <body>
 <main>
@@ -207,7 +223,7 @@ class ImageFile:
 
     def setByteOrder(self, byteOrder: str):
         &#34;&#34;&#34; Set endianness, do sanity check before. &#34;&#34;&#34;
-        if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder==None:
+        if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder is None:
             self.byteOrder = byteOrder
         else:
             raise Exception(&#34;{} is not a valid byte order. Must be &#39;little&#39; or &#39;big&#39;.&#34;.format(byteOrder))
@@ -452,7 +468,7 @@ class Image:
         &#34;&#34;&#34; Return maximum intensity in image. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.amax(self.px)
 
         return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -461,7 +477,7 @@ class Image:
         &#34;&#34;&#34; Return minimum intensity in image. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.amin(self.px)
 
         return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -470,7 +486,7 @@ class Image:
         &#34;&#34;&#34; Return arithmetic mean of the image grey values. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.mean(self.px)
 
         return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -479,7 +495,7 @@ class Image:
         &#34;&#34;&#34; Return the standard deviation of the image grey values. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.std(self.px)
 
         return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -694,7 +710,7 @@ class Image:
             if dataType is None:
                 if isinstance(self.inputFile, ImageFile):
                     dataType = self.inputFile.getDataType()
-                    if(dataType != None):
+                    if(dataType is not None):
                         self.outputFile.setDataType(dataType)
                     else:
                         raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
@@ -721,12 +737,12 @@ class Image:
             self.saveRAW(filename, dataType, byteOrder, appendChunk, clipValues, addInfo=False)
 
     def saveTIFF(self, filename=None, dataType=None, clipValues=True):
-        if (filename != None) and (len(filename) &gt; 0):
+        if (filename is not None) and (len(filename) &gt; 0):
             fileBaseName = os.path.basename(filename)
             if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
                 raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
-            if dataType != None:
+            if dataType is not None:
                 if not isTIFF(filename):
                     filename += &#34;.tif&#34;
 
@@ -748,12 +764,12 @@ class Image:
             raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
     def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
-        if (filename != None) and (len(filename) &gt; 0):
+        if (filename is not None) and (len(filename) &gt; 0):
             fileBaseName = os.path.basename(filename)
             if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
                 raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
-            if dataType != None:
+            if dataType is not None:
                 if byteOrder is None:
                     byteOrder = &#34;little&#34;
 
@@ -883,7 +899,7 @@ class Image:
 
     def verticalROIProfile(self, ROI):
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -899,7 +915,7 @@ class Image:
 
     def horizontalROIProfile(self, ROI):
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -920,7 +936,7 @@ class Image:
                False     : does not include weights in returned pixel coordinate tuples.
         &#34;&#34;&#34;
 
-        if seedPoint != None:
+        if seedPoint is not None:
             seedX = int(round(seedPoint.x()))
             seedY = int(round(seedPoint.y()))
         else:
@@ -1009,10 +1025,10 @@ class Image:
     @staticmethod
     def getPixelWeight(x, y, clipPolygon):
         # Calculate pixel weight from the area of the clipped pixel:
-        upperLeft  = Vector2D(x,   y)
-        upperRight = Vector2D(x+1, y)
-        lowerLeft  = Vector2D(x,   y+1)
-        lowerRight = Vector2D(x+1, y+1)
+        upperLeft  = Vector(x,   y)
+        upperRight = Vector(x+1, y)
+        lowerLeft  = Vector(x,   y+1)
+        lowerRight = Vector(x+1, y+1)
         pixelPolygon = Polygon(upperLeft, upperRight, lowerRight, lowerLeft)  # Clockwise order because pixel CS is y-flipped.
 
         clippedPixel = pixelPolygon.clip(clipPolygon)
@@ -1028,7 +1044,7 @@ class Image:
             t:   unit vector along width axis
         &#34;&#34;&#34;
 
-        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
         # Create a map with pixels&#39; distances to the bin:
         # (measured parallel to s vector):
@@ -1077,7 +1093,7 @@ class Image:
             t:   unit vector along width axis
         &#34;&#34;&#34;
 
-        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
         # Create a map with pixels&#39; distances to the bin:
         # (measured parallel to s vector):
@@ -1218,15 +1234,15 @@ class Image:
         t.make_unit_vector()
 
         # Convert to 2D vectors:
-        s = Vector2D(s.x(), s.y())
-        t = Vector2D(t.x(), t.y())
+        s = Vector(s.x(), s.y())
+        t = Vector(t.x(), t.y())
 
         tUnit = copy.deepcopy(t)
 
         t.scale(0.5*width)  # t points from line origin half way in direction of width
 
         # Define a rectangle along the line and its width.
-        origin = Vector2D(x0, y0)
+        origin = Vector(x0, y0)
 
         nSamples = math.ceil( s.length() / resolution ) #+ 1 # +1 for endpoint
         ceilLength = nSamples * resolution
@@ -1247,7 +1263,7 @@ class Image:
         s.make_unit_vector()
         s.scale(resolution)
 
-        rectPos = Vector2D(0, 0)
+        rectPos = Vector(0, 0)
 
         # A pixel center can be this far from the binPos (bin center)
         # in s and t direction to still be accepted:
@@ -1265,8 +1281,8 @@ class Image:
             sPos = resolution*b
 
             # Construct a vector to the left point of the bin on the s axis:
-            rectPos.setx(sUnit.x())
-            rectPos.sety(sUnit.y())
+            rectPos.set_x(sUnit.x())
+            rectPos.set_y(sUnit.y())
             rectPos.scale(sPos)
             rectPos.add(origin)
 
@@ -1325,7 +1341,7 @@ class Image:
         self.crop(x0, y0, x1, y1)
 
     def cropROIaroundPoint(self, centerX, centerY, roiWidth, roiHeight):
-        &#34;&#34;&#34; Crop a region of interest, centerd around given point. &#34;&#34;&#34;
+        &#34;&#34;&#34; Crop a region of interest, centered around given point. &#34;&#34;&#34;
 
         if roiWidth &lt; 0:
             roiWidth = abs(roiWidth)
@@ -1460,7 +1476,7 @@ class Image:
         &#34;&#34;&#34;Renormalization of grey values from (currentMin, Max) to (newMin, Max) &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -1569,7 +1585,7 @@ class Image:
         &#34;&#34;&#34; Image or ROI statistics. Mean, Standard Deviation &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -1606,7 +1622,7 @@ class Image:
         &#34;&#34;&#34; Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000 &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000
@@ -1651,11 +1667,11 @@ class Image:
             self.erase()
 
             areaMin = 0
-            if(min_patch_area != None):
+            if(min_patch_area is not None):
                 areaMin = min_patch_area
 
             areaMax = self.getWidth() * self.getHeight()
-            if(max_patch_area != None):
+            if(max_patch_area is not None):
                 areaMax = max_patch_area
 
             areaMin = areaMin / (self.getResolution()**2)
@@ -1684,7 +1700,7 @@ class Image:
                         continue
 
                 # An ideal circle should have an aspect ratio of 1:
-                if aspect_ratio_tolerance != None:
+                if aspect_ratio_tolerance is not None:
                     aspectRatio = 0
                     if(top != bottom):
                         aspectRatio = abs(right-left) / abs(bottom-top)
@@ -1712,8 +1728,8 @@ class Image:
         coordinates = numpy.nonzero(self.px)
         circlePixelsX = coordinates[1]
         circlePixelsY = coordinates[0]
+        circlePixels1 = numpy.ones_like(circlePixelsX)
         nPoints = len(circlePixelsX)
-        circlePixels1 = numpy.ones(nPoints)
 
         # Create the matrix B for the system of linear equations:
         matrixB = numpy.array((circlePixelsX, circlePixelsY, circlePixels1))
@@ -1839,7 +1855,59 @@ class ImageStack:
     &#34;&#34;&#34; Specify an image stack from a single file (RAW chunk) or
         a collection of single 2D RAW or TIFF files. &#34;&#34;&#34;
 
-    def __init__(self, filePattern=None, width=None, height=None, dataType=None, byteOrder=None, rawFileHeaderSize=0, rawImageHeaderSize=0, slices=None, startNumber=0, flipByteOrder=False):
+    def __init__(self, filePattern:str=None, width:int=None, height:int=None, dataType:str=None, byteOrder:str=None, rawFileHeaderSize:int=0, rawImageHeaderSize:int=0, slices:int=None, startNumber:int=0, flipByteOrder:bool=False):
+        &#34;&#34;&#34;The constructor takes the following optional parameters.
+
+        Parameters
+        ----------
+        filePattern : str
+            Name of a single file or a numbered file stack.
+            If file names end on `.tif` or `.tiff`, those are assumed to be TIFF files.
+
+        width : int
+            Image width (in pixels) of a raw file or chunk.
+            Required for RAW input.
+
+        height : int
+            Image height (in pixels) of a raw file or chunk.
+            Required for RAW input.
+
+        dataType : str
+            Data type of the gray value representation.
+            Required for RAW input and output and TIFF output.
+
+            Options are: `&#34;int8&#34;`, `&#34;int16&#34;`, `&#34;int32&#34;`, `&#34;int64&#34;`,
+            `&#34;uint8&#34;`, `&#34;uint16&#34;`, `&#34;uint32&#34;`, `&#34;uint64&#34;`, `&#34;float32&#34;`, and `&#34;float64&#34;`.
+
+        byteOrder : str
+            Byte order (endianness) of the raw data.
+
+            Default value: system default.
+
+            Options: `&#34;little&#34;`, `&#34;big&#34;`, `None` (system default)
+
+        rawFileHeaderSize : int
+            File header size (in bytes) of an input RAW file.
+
+            Default value: `0`
+
+        rawImageHeaderSize : int
+            Image header size (in bytes) for each image in an input RAW chunk that contains several image slices.
+
+            Default value: `0`
+
+        slices : int
+            Number of image slices to be read from a given input RAW file, or number of image files to be read from a given image sequence.
+
+            Default value: the number of slices will be determined automatically from the RAW chunk file size or from the number of images in the provided sequence.
+
+        startNumber : int
+            For image sequences. The index in the sequential number in the input filename where to start reading files for this stack.
+
+        flipByteOrder : bool
+            Only for TIFF input. The byte order (big or little endian) should be determined by the TIFF loader and be imported correctly. If not, you can use this parameter to flip the byte order after reading a TIFF file.
+        &#34;&#34;&#34;
+
         self.files = ImageFile(filePattern, dataType, byteOrder, flipByteOrder)
 
         # Has this stack already been built?
@@ -1947,8 +2015,8 @@ class ImageStack:
                 self.nSlices  = 1
                 self.files.setDataType(testImage.inputFile.getDataType())
             else:  # treat as raw chunk
-                if (self.width != None) and (self.height != None):
-                    if (self.files.getDataType() != None):
+                if (self.width is not None) and (self.height is not None):
+                    if (self.files.getDataType() is not None):
                         if os.path.isfile(inFilePattern):
                             self._isVolumeChunk = True
 
@@ -2017,7 +2085,7 @@ class ImageStack:
 
 
     def getFilename(self, index=None):
-        if index != None:
+        if index is not None:
             if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return self.fileList[0]
@@ -2032,7 +2100,7 @@ class ImageStack:
             return self.files.getFilename()
 
     def getFileBasename(self, index=None):
-        if index != None:
+        if index is not None:
             if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return os.path.basename(self.fileList[0])
@@ -2380,7 +2448,7 @@ class ImageStack:
         &#34;&#34;&#34; Return maximum intensity in image. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.amax(self.px)
 
         return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -2389,7 +2457,7 @@ class ImageStack:
         &#34;&#34;&#34; Return minimum intensity in image. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.amin(self.px)
 
         return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -2398,7 +2466,7 @@ class ImageStack:
         &#34;&#34;&#34; Return arithmetic mean of the image grey values. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.mean(self.px)
 
         return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -2407,7 +2475,7 @@ class ImageStack:
         &#34;&#34;&#34; Return the standard deviation of the image grey values. &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             return numpy.std(self.px)
 
         return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])
@@ -2622,7 +2690,7 @@ class ImageStack:
             if dataType is None:
                 if isinstance(self.inputFile, ImageFile):
                     dataType = self.inputFile.getDataType()
-                    if(dataType != None):
+                    if(dataType is not None):
                         self.outputFile.setDataType(dataType)
                     else:
                         raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
@@ -2649,12 +2717,12 @@ class ImageStack:
             self.saveRAW(filename, dataType, byteOrder, appendChunk, clipValues, addInfo=False)
 
     def saveTIFF(self, filename=None, dataType=None, clipValues=True):
-        if (filename != None) and (len(filename) &gt; 0):
+        if (filename is not None) and (len(filename) &gt; 0):
             fileBaseName = os.path.basename(filename)
             if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
                 raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
-            if dataType != None:
+            if dataType is not None:
                 if not isTIFF(filename):
                     filename += &#34;.tif&#34;
 
@@ -2676,12 +2744,12 @@ class ImageStack:
             raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
     def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
-        if (filename != None) and (len(filename) &gt; 0):
+        if (filename is not None) and (len(filename) &gt; 0):
             fileBaseName = os.path.basename(filename)
             if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
                 raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
-            if dataType != None:
+            if dataType is not None:
                 if byteOrder is None:
                     byteOrder = &#34;little&#34;
 
@@ -2811,7 +2879,7 @@ class ImageStack:
 
     def verticalROIProfile(self, ROI):
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -2827,7 +2895,7 @@ class ImageStack:
 
     def horizontalROIProfile(self, ROI):
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -2848,7 +2916,7 @@ class ImageStack:
                False     : does not include weights in returned pixel coordinate tuples.
         &#34;&#34;&#34;
 
-        if seedPoint != None:
+        if seedPoint is not None:
             seedX = int(round(seedPoint.x()))
             seedY = int(round(seedPoint.y()))
         else:
@@ -2937,10 +3005,10 @@ class ImageStack:
     @staticmethod
     def getPixelWeight(x, y, clipPolygon):
         # Calculate pixel weight from the area of the clipped pixel:
-        upperLeft  = Vector2D(x,   y)
-        upperRight = Vector2D(x+1, y)
-        lowerLeft  = Vector2D(x,   y+1)
-        lowerRight = Vector2D(x+1, y+1)
+        upperLeft  = Vector(x,   y)
+        upperRight = Vector(x+1, y)
+        lowerLeft  = Vector(x,   y+1)
+        lowerRight = Vector(x+1, y+1)
         pixelPolygon = Polygon(upperLeft, upperRight, lowerRight, lowerLeft)  # Clockwise order because pixel CS is y-flipped.
 
         clippedPixel = pixelPolygon.clip(clipPolygon)
@@ -2956,7 +3024,7 @@ class ImageStack:
             t:   unit vector along width axis
         &#34;&#34;&#34;
 
-        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
         # Create a map with pixels&#39; distances to the bin:
         # (measured parallel to s vector):
@@ -3005,7 +3073,7 @@ class ImageStack:
             t:   unit vector along width axis
         &#34;&#34;&#34;
 
-        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+        roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
         # Create a map with pixels&#39; distances to the bin:
         # (measured parallel to s vector):
@@ -3146,15 +3214,15 @@ class ImageStack:
         t.make_unit_vector()
 
         # Convert to 2D vectors:
-        s = Vector2D(s.x(), s.y())
-        t = Vector2D(t.x(), t.y())
+        s = Vector(s.x(), s.y())
+        t = Vector(t.x(), t.y())
 
         tUnit = copy.deepcopy(t)
 
         t.scale(0.5*width)  # t points from line origin half way in direction of width
 
         # Define a rectangle along the line and its width.
-        origin = Vector2D(x0, y0)
+        origin = Vector(x0, y0)
 
         nSamples = math.ceil( s.length() / resolution ) #+ 1 # +1 for endpoint
         ceilLength = nSamples * resolution
@@ -3175,7 +3243,7 @@ class ImageStack:
         s.make_unit_vector()
         s.scale(resolution)
 
-        rectPos = Vector2D(0, 0)
+        rectPos = Vector(0, 0)
 
         # A pixel center can be this far from the binPos (bin center)
         # in s and t direction to still be accepted:
@@ -3193,8 +3261,8 @@ class ImageStack:
             sPos = resolution*b
 
             # Construct a vector to the left point of the bin on the s axis:
-            rectPos.setx(sUnit.x())
-            rectPos.sety(sUnit.y())
+            rectPos.set_x(sUnit.x())
+            rectPos.set_y(sUnit.y())
             rectPos.scale(sPos)
             rectPos.add(origin)
 
@@ -3253,7 +3321,7 @@ class ImageStack:
         self.crop(x0, y0, x1, y1)
 
     def cropROIaroundPoint(self, centerX, centerY, roiWidth, roiHeight):
-        &#34;&#34;&#34; Crop a region of interest, centerd around given point. &#34;&#34;&#34;
+        &#34;&#34;&#34; Crop a region of interest, centered around given point. &#34;&#34;&#34;
 
         if roiWidth &lt; 0:
             roiWidth = abs(roiWidth)
@@ -3388,7 +3456,7 @@ class ImageStack:
         &#34;&#34;&#34;Renormalization of grey values from (currentMin, Max) to (newMin, Max) &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -3497,7 +3565,7 @@ class ImageStack:
         &#34;&#34;&#34; Image or ROI statistics. Mean, Standard Deviation &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -3534,7 +3602,7 @@ class ImageStack:
         &#34;&#34;&#34; Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000 &#34;&#34;&#34;
 
         # Take full image if no ROI is given
-        if ROI==None:
+        if ROI is None:
             ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
         self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000
@@ -3579,11 +3647,11 @@ class ImageStack:
             self.erase()
 
             areaMin = 0
-            if(min_patch_area != None):
+            if(min_patch_area is not None):
                 areaMin = min_patch_area
 
             areaMax = self.getWidth() * self.getHeight()
-            if(max_patch_area != None):
+            if(max_patch_area is not None):
                 areaMax = max_patch_area
 
             areaMin = areaMin / (self.getResolution()**2)
@@ -3612,7 +3680,7 @@ class ImageStack:
                         continue
 
                 # An ideal circle should have an aspect ratio of 1:
-                if aspect_ratio_tolerance != None:
+                if aspect_ratio_tolerance is not None:
                     aspectRatio = 0
                     if(top != bottom):
                         aspectRatio = abs(right-left) / abs(bottom-top)
@@ -3640,8 +3708,8 @@ class ImageStack:
         coordinates = numpy.nonzero(self.px)
         circlePixelsX = coordinates[1]
         circlePixelsY = coordinates[0]
+        circlePixels1 = numpy.ones_like(circlePixelsX)
         nPoints = len(circlePixelsX)
-        circlePixels1 = numpy.ones(nPoints)
 
         # Create the matrix B for the system of linear equations:
         matrixB = numpy.array((circlePixelsX, circlePixelsY, circlePixels1))
@@ -3777,10 +3845,10 @@ class ImageStack:
 <pre><code class="python">@staticmethod
 def getPixelWeight(x, y, clipPolygon):
     # Calculate pixel weight from the area of the clipped pixel:
-    upperLeft  = Vector2D(x,   y)
-    upperRight = Vector2D(x+1, y)
-    lowerLeft  = Vector2D(x,   y+1)
-    lowerRight = Vector2D(x+1, y+1)
+    upperLeft  = Vector(x,   y)
+    upperRight = Vector(x+1, y)
+    lowerLeft  = Vector(x,   y+1)
+    lowerRight = Vector(x+1, y+1)
     pixelPolygon = Polygon(upperLeft, upperRight, lowerRight, lowerLeft)  # Clockwise order because pixel CS is y-flipped.
 
     clippedPixel = pixelPolygon.clip(clipPolygon)
@@ -4058,11 +4126,11 @@ Valid operations: mean, max, min, sum.</p></div>
         self.erase()
 
         areaMin = 0
-        if(min_patch_area != None):
+        if(min_patch_area is not None):
             areaMin = min_patch_area
 
         areaMax = self.getWidth() * self.getHeight()
-        if(max_patch_area != None):
+        if(max_patch_area is not None):
             areaMax = max_patch_area
 
         areaMin = areaMin / (self.getResolution()**2)
@@ -4091,7 +4159,7 @@ Valid operations: mean, max, min, sum.</p></div>
                     continue
 
             # An ideal circle should have an aspect ratio of 1:
-            if aspect_ratio_tolerance != None:
+            if aspect_ratio_tolerance is not None:
                 aspectRatio = 0
                 if(top != bottom):
                     aspectRatio = abs(right-left) / abs(bottom-top)
@@ -4209,13 +4277,13 @@ Valid operations: mean, max, min, sum.</p></div>
 <span>def <span class="ident">cropROIaroundPoint</span></span>(<span>self, centerX, centerY, roiWidth, roiHeight)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Crop a region of interest, centerd around given point.</p></div>
+<div class="desc"><p>Crop a region of interest, centered around given point.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def cropROIaroundPoint(self, centerX, centerY, roiWidth, roiHeight):
-    &#34;&#34;&#34; Crop a region of interest, centerd around given point. &#34;&#34;&#34;
+    &#34;&#34;&#34; Crop a region of interest, centered around given point. &#34;&#34;&#34;
 
     if roiWidth &lt; 0:
         roiWidth = abs(roiWidth)
@@ -4404,8 +4472,8 @@ Valid operations: mean, max, min, sum.</p></div>
     coordinates = numpy.nonzero(self.px)
     circlePixelsX = coordinates[1]
     circlePixelsY = coordinates[0]
+    circlePixels1 = numpy.ones_like(circlePixelsX)
     nPoints = len(circlePixelsX)
-    circlePixels1 = numpy.ones(nPoints)
 
     # Create the matrix B for the system of linear equations:
     matrixB = numpy.array((circlePixelsX, circlePixelsY, circlePixels1))
@@ -4803,7 +4871,7 @@ Valid operations: mean, max, min, sum.</p></div>
 </summary>
 <pre><code class="python">def horizontalROIProfile(self, ROI):
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
     slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -4931,15 +4999,15 @@ Center of pixel (0, 0) has shape CS coordinates (0.5, 0.5).</p>
     t.make_unit_vector()
 
     # Convert to 2D vectors:
-    s = Vector2D(s.x(), s.y())
-    t = Vector2D(t.x(), t.y())
+    s = Vector(s.x(), s.y())
+    t = Vector(t.x(), t.y())
 
     tUnit = copy.deepcopy(t)
 
     t.scale(0.5*width)  # t points from line origin half way in direction of width
 
     # Define a rectangle along the line and its width.
-    origin = Vector2D(x0, y0)
+    origin = Vector(x0, y0)
 
     nSamples = math.ceil( s.length() / resolution ) #+ 1 # +1 for endpoint
     ceilLength = nSamples * resolution
@@ -4960,7 +5028,7 @@ Center of pixel (0, 0) has shape CS coordinates (0.5, 0.5).</p>
     s.make_unit_vector()
     s.scale(resolution)
 
-    rectPos = Vector2D(0, 0)
+    rectPos = Vector(0, 0)
 
     # A pixel center can be this far from the binPos (bin center)
     # in s and t direction to still be accepted:
@@ -4978,8 +5046,8 @@ Center of pixel (0, 0) has shape CS coordinates (0.5, 0.5).</p>
         sPos = resolution*b
 
         # Construct a vector to the left point of the bin on the s axis:
-        rectPos.setx(sUnit.x())
-        rectPos.sety(sUnit.y())
+        rectPos.set_x(sUnit.x())
+        rectPos.set_y(sUnit.y())
         rectPos.scale(sPos)
         rectPos.add(origin)
 
@@ -5130,7 +5198,7 @@ numpy array of assigned grey values (for converted image)</p>
     &#34;&#34;&#34; Return maximum intensity in image. &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         return numpy.amax(self.px)
 
     return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
@@ -5149,7 +5217,7 @@ numpy array of assigned grey values (for converted image)</p>
     &#34;&#34;&#34; Return arithmetic mean of the image grey values. &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         return numpy.mean(self.px)
 
     return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
@@ -5178,7 +5246,7 @@ unit vector along width axis</p></div>
         t:   unit vector along width axis
     &#34;&#34;&#34;
 
-    roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+    roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
     # Create a map with pixels&#39; distances to the bin:
     # (measured parallel to s vector):
@@ -5245,7 +5313,7 @@ unit vector along width axis</p></div>
         t:   unit vector along width axis
     &#34;&#34;&#34;
 
-    roi_x0, roi_y0, roi_x1, roi_y1 = binShape.getBoundingBox()
+    roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
 
     # Create a map with pixels&#39; distances to the bin:
     # (measured parallel to s vector):
@@ -5300,7 +5368,7 @@ unit vector along width axis</p></div>
     &#34;&#34;&#34; Return minimum intensity in image. &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         return numpy.amin(self.px)
 
     return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
@@ -5390,7 +5458,7 @@ False
            False     : does not include weights in returned pixel coordinate tuples.
     &#34;&#34;&#34;
 
-    if seedPoint != None:
+    if seedPoint is not None:
         seedX = int(round(seedPoint.x()))
         seedY = int(round(seedPoint.y()))
     else:
@@ -5616,7 +5684,7 @@ False
     &#34;&#34;&#34;Renormalization of grey values from (currentMin, Max) to (newMin, Max) &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
     slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -5649,7 +5717,7 @@ False
     &#34;&#34;&#34; Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000 &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
     self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000</code></pre>
@@ -5761,7 +5829,7 @@ False
         if dataType is None:
             if isinstance(self.inputFile, ImageFile):
                 dataType = self.inputFile.getDataType()
-                if(dataType != None):
+                if(dataType is not None):
                     self.outputFile.setDataType(dataType)
                 else:
                     raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
@@ -5798,12 +5866,12 @@ False
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
-    if (filename != None) and (len(filename) &gt; 0):
+    if (filename is not None) and (len(filename) &gt; 0):
         fileBaseName = os.path.basename(filename)
         if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
             raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
-        if dataType != None:
+        if dataType is not None:
             if byteOrder is None:
                 byteOrder = &#34;little&#34;
 
@@ -5863,12 +5931,12 @@ False
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def saveTIFF(self, filename=None, dataType=None, clipValues=True):
-    if (filename != None) and (len(filename) &gt; 0):
+    if (filename is not None) and (len(filename) &gt; 0):
         fileBaseName = os.path.basename(filename)
         if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
             raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
 
-        if dataType != None:
+        if dataType is not None:
             if not isTIFF(filename):
                 filename += &#34;.tif&#34;
 
@@ -6116,7 +6184,7 @@ False
     &#34;&#34;&#34; Image or ROI statistics. Mean, Standard Deviation &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
     slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -6143,7 +6211,7 @@ False
     &#34;&#34;&#34; Return the standard deviation of the image grey values. &#34;&#34;&#34;
 
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         return numpy.std(self.px)
 
     return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
@@ -6204,7 +6272,7 @@ False
 </summary>
 <pre><code class="python">def verticalROIProfile(self, ROI):
     # Take full image if no ROI is given
-    if ROI==None:
+    if ROI is None:
         ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
 
     slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
@@ -6271,7 +6339,7 @@ False
 
     def setByteOrder(self, byteOrder: str):
         &#34;&#34;&#34; Set endianness, do sanity check before. &#34;&#34;&#34;
-        if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder==None:
+        if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder is None:
             self.byteOrder = byteOrder
         else:
             raise Exception(&#34;{} is not a valid byte order. Must be &#39;little&#39; or &#39;big&#39;.&#34;.format(byteOrder))
@@ -6393,7 +6461,7 @@ False
 </summary>
 <pre><code class="python">def setByteOrder(self, byteOrder: str):
     &#34;&#34;&#34; Set endianness, do sanity check before. &#34;&#34;&#34;
-    if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder==None:
+    if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder is None:
         self.byteOrder = byteOrder
     else:
         raise Exception(&#34;{} is not a valid byte order. Must be &#39;little&#39; or &#39;big&#39;.&#34;.format(byteOrder))</code></pre>
@@ -6578,11 +6646,56 @@ False
 </dd>
 <dt id="ctsimu.image.ImageStack"><code class="flex name class">
 <span>class <span class="ident">ImageStack</span></span>
-<span>(</span><span>filePattern=None, width=None, height=None, dataType=None, byteOrder=None, rawFileHeaderSize=0, rawImageHeaderSize=0, slices=None, startNumber=0, flipByteOrder=False)</span>
+<span>(</span><span>filePattern: str = None, width: int = None, height: int = None, dataType: str = None, byteOrder: str = None, rawFileHeaderSize: int = 0, rawImageHeaderSize: int = 0, slices: int = None, startNumber: int = 0, flipByteOrder: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Specify an image stack from a single file (RAW chunk) or
-a collection of single 2D RAW or TIFF files.</p></div>
+a collection of single 2D RAW or TIFF files. </p>
+<p>The constructor takes the following optional parameters.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filePattern</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of a single file or a numbered file stack.
+If file names end on <code>.tif</code> or <code>.tiff</code>, those are assumed to be TIFF files.</dd>
+<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
+<dd>Image width (in pixels) of a raw file or chunk.
+Required for RAW input.</dd>
+<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
+<dd>Image height (in pixels) of a raw file or chunk.
+Required for RAW input.</dd>
+<dt><strong><code>dataType</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Data type of the gray value representation.
+Required for RAW input and output and TIFF output.</p>
+<p>Options are: <code>"int8"</code>, <code>"int16"</code>, <code>"int32"</code>, <code>"int64"</code>,
+<code>"uint8"</code>, <code>"uint16"</code>, <code>"uint32"</code>, <code>"uint64"</code>, <code>"float32"</code>, and <code>"float64"</code>.</p>
+</dd>
+<dt><strong><code>byteOrder</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Byte order (endianness) of the raw data.</p>
+<p>Default value: system default.</p>
+<p>Options: <code>"little"</code>, <code>"big"</code>, <code>None</code> (system default)</p>
+</dd>
+<dt><strong><code>rawFileHeaderSize</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>File header size (in bytes) of an input RAW file.</p>
+<p>Default value: <code>0</code></p>
+</dd>
+<dt><strong><code>rawImageHeaderSize</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>Image header size (in bytes) for each image in an input RAW chunk that contains several image slices.</p>
+<p>Default value: <code>0</code></p>
+</dd>
+<dt><strong><code>slices</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>Number of image slices to be read from a given input RAW file, or number of image files to be read from a given image sequence.</p>
+<p>Default value: the number of slices will be determined automatically from the RAW chunk file size or from the number of images in the provided sequence.</p>
+</dd>
+<dt><strong><code>startNumber</code></strong> :&ensp;<code>int</code></dt>
+<dd>For image sequences. The index in the sequential number in the input filename where to start reading files for this stack.</dd>
+<dt><strong><code>flipByteOrder</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only for TIFF input. The byte order (big or little endian) should be determined by the TIFF loader and be imported correctly. If not, you can use this parameter to flip the byte order after reading a TIFF file.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6591,7 +6704,59 @@ a collection of single 2D RAW or TIFF files.</p></div>
     &#34;&#34;&#34; Specify an image stack from a single file (RAW chunk) or
         a collection of single 2D RAW or TIFF files. &#34;&#34;&#34;
 
-    def __init__(self, filePattern=None, width=None, height=None, dataType=None, byteOrder=None, rawFileHeaderSize=0, rawImageHeaderSize=0, slices=None, startNumber=0, flipByteOrder=False):
+    def __init__(self, filePattern:str=None, width:int=None, height:int=None, dataType:str=None, byteOrder:str=None, rawFileHeaderSize:int=0, rawImageHeaderSize:int=0, slices:int=None, startNumber:int=0, flipByteOrder:bool=False):
+        &#34;&#34;&#34;The constructor takes the following optional parameters.
+
+        Parameters
+        ----------
+        filePattern : str
+            Name of a single file or a numbered file stack.
+            If file names end on `.tif` or `.tiff`, those are assumed to be TIFF files.
+
+        width : int
+            Image width (in pixels) of a raw file or chunk.
+            Required for RAW input.
+
+        height : int
+            Image height (in pixels) of a raw file or chunk.
+            Required for RAW input.
+
+        dataType : str
+            Data type of the gray value representation.
+            Required for RAW input and output and TIFF output.
+
+            Options are: `&#34;int8&#34;`, `&#34;int16&#34;`, `&#34;int32&#34;`, `&#34;int64&#34;`,
+            `&#34;uint8&#34;`, `&#34;uint16&#34;`, `&#34;uint32&#34;`, `&#34;uint64&#34;`, `&#34;float32&#34;`, and `&#34;float64&#34;`.
+
+        byteOrder : str
+            Byte order (endianness) of the raw data.
+
+            Default value: system default.
+
+            Options: `&#34;little&#34;`, `&#34;big&#34;`, `None` (system default)
+
+        rawFileHeaderSize : int
+            File header size (in bytes) of an input RAW file.
+
+            Default value: `0`
+
+        rawImageHeaderSize : int
+            Image header size (in bytes) for each image in an input RAW chunk that contains several image slices.
+
+            Default value: `0`
+
+        slices : int
+            Number of image slices to be read from a given input RAW file, or number of image files to be read from a given image sequence.
+
+            Default value: the number of slices will be determined automatically from the RAW chunk file size or from the number of images in the provided sequence.
+
+        startNumber : int
+            For image sequences. The index in the sequential number in the input filename where to start reading files for this stack.
+
+        flipByteOrder : bool
+            Only for TIFF input. The byte order (big or little endian) should be determined by the TIFF loader and be imported correctly. If not, you can use this parameter to flip the byte order after reading a TIFF file.
+        &#34;&#34;&#34;
+
         self.files = ImageFile(filePattern, dataType, byteOrder, flipByteOrder)
 
         # Has this stack already been built?
@@ -6699,8 +6864,8 @@ a collection of single 2D RAW or TIFF files.</p></div>
                 self.nSlices  = 1
                 self.files.setDataType(testImage.inputFile.getDataType())
             else:  # treat as raw chunk
-                if (self.width != None) and (self.height != None):
-                    if (self.files.getDataType() != None):
+                if (self.width is not None) and (self.height is not None):
+                    if (self.files.getDataType() is not None):
                         if os.path.isfile(inFilePattern):
                             self._isVolumeChunk = True
 
@@ -6769,7 +6934,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 
 
     def getFilename(self, index=None):
-        if index != None:
+        if index is not None:
             if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return self.fileList[0]
@@ -6784,7 +6949,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
             return self.files.getFilename()
 
     def getFileBasename(self, index=None):
-        if index != None:
+        if index is not None:
             if self._isVolumeChunk:
                 if len(self.fileList) &gt; 0:
                     return os.path.basename(self.fileList[0])
@@ -6935,8 +7100,8 @@ a collection of single 2D RAW or TIFF files.</p></div>
             self.nSlices  = 1
             self.files.setDataType(testImage.inputFile.getDataType())
         else:  # treat as raw chunk
-            if (self.width != None) and (self.height != None):
-                if (self.files.getDataType() != None):
+            if (self.width is not None) and (self.height is not None):
+                if (self.files.getDataType() is not None):
                     if os.path.isfile(inFilePattern):
                         self._isVolumeChunk = True
 
@@ -7066,7 +7231,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def getFileBasename(self, index=None):
-    if index != None:
+    if index is not None:
         if self._isVolumeChunk:
             if len(self.fileList) &gt; 0:
                 return os.path.basename(self.fileList[0])
@@ -7117,7 +7282,7 @@ a collection of single 2D RAW or TIFF files.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def getFilename(self, index=None):
-    if index != None:
+    if index is not None:
         if self._isVolumeChunk:
             if len(self.fileList) &gt; 0:
                 return self.fileList[0]

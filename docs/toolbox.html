@@ -5,17 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>ctsimu.toolbox API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Quick metadata-based post-processing with simple commands …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
 </head>
 <body>
 <main>
@@ -24,189 +40,428 @@
 <h1 class="title">Module <code>ctsimu.toolbox</code></h1>
 </header>
 <section id="section-intro">
+<p>Quick metadata-based post-processing with simple commands.</p>
+<p><a href="https://bamresearch.github.io/ctsimu-scenarios/metadata.html">CTSimU metadata files</a> contain information about the projection images of a
+CT scan and about the tomogram. They reference a <a href="https://bamresearch.github.io/ctsimu-scenarios/index.html">CTSimU scenario file</a> which
+describes the acquisition parameters and scanner geometry, and they may
+also contain information about a simulation (if the projections originate
+from a CT simulation).</p>
+<p>Metadata files can be passed to the toolbox along with single commands, such
+as the instruction to run a flat-field correction on all projection images or
+to create reconstruction configuration files for OpenCT or SIEMENS CERA.</p>
+<p>The following listing shows an example for a metadata file. The meanings of
+the parameters are described in the documentation for <a href="https://bamresearch.github.io/ctsimu-scenarios/metadata.html">CTSimU metadata files</a>.</p>
+<pre><code class="language-json">{
+    &quot;file&quot;:                 {
+        &quot;name&quot;:                &quot;example&quot;,
+        &quot;description&quot;:         &quot;Tetrahedron in a rigid frame.&quot;,
+        &quot;contact&quot;:             &quot;Jane Doe&quot;,
+        &quot;date_created&quot;:        &quot;2023-09-03&quot;,
+        &quot;date_changed&quot;:        &quot;2023-09-03&quot;,
+        &quot;file_type&quot;:           &quot;CTSimU Metadata&quot;,
+        &quot;file_format_version&quot;: {&quot;major&quot;: 1, &quot;minor&quot;: 2}
+    },
+    &quot;output&quot;:               {
+        &quot;system&quot;:        &quot;&quot;,
+        &quot;date_measured&quot;: &quot;2023-09-03&quot;,
+        &quot;projections&quot;:   {
+            &quot;filename&quot;:      &quot;../projections/example_%04d.raw&quot;,
+            &quot;number&quot;:        300,
+            &quot;frame_average&quot;: 3,
+            &quot;max_intensity&quot;: 42000,
+            &quot;datatype&quot;:      &quot;uint16&quot;,
+            &quot;byteorder&quot;:     &quot;little&quot;,
+            &quot;headersize&quot;:    {&quot;file&quot;:  0, &quot;image&quot;: 0},
+            &quot;dimensions&quot;:    {
+                &quot;x&quot;: {&quot;value&quot;: 200, &quot;unit&quot;:  &quot;px&quot;},
+                &quot;y&quot;: {&quot;value&quot;: 150, &quot;unit&quot;:  &quot;px&quot;}
+            },
+            &quot;pixelsize&quot;:     {
+                &quot;x&quot;: {&quot;value&quot;: 1.3, &quot;unit&quot;:  &quot;mm&quot;},
+                &quot;y&quot;: {&quot;value&quot;: 1.3, &quot;unit&quot;:  &quot;mm&quot;}
+            },
+            &quot;dark_field&quot;:    {
+                &quot;number&quot;:        1,
+                &quot;frame_average&quot;: 20,
+                &quot;filename&quot;:      &quot;../projections/example_dark.raw&quot;,
+                &quot;projections_corrected&quot;: false
+            },
+            &quot;flat_field&quot;:    {
+                &quot;number&quot;:        3,
+                &quot;frame_average&quot;: 20,
+                &quot;filename&quot;:      &quot;../projections/example_flat_%04d.raw&quot;,
+                &quot;projections_corrected&quot;: false
+            },
+            &quot;bad_pixel_map&quot;: {
+                &quot;filename&quot;: null,
+                &quot;projections_corrected&quot;: false
+            }
+        },
+        &quot;tomogram&quot;:      {
+            &quot;filename&quot;:   &quot;example_reconstruction.raw&quot;,
+            &quot;datatype&quot;:   &quot;float32&quot;,
+            &quot;byteorder&quot;:  &quot;little&quot;,
+            &quot;headersize&quot;: {&quot;file&quot;:  0, &quot;image&quot;: 0},
+            &quot;dimensions&quot;: {
+                &quot;x&quot;: {&quot;value&quot;: 200, &quot;unit&quot;:  &quot;px&quot;},
+                &quot;y&quot;: {&quot;value&quot;: 200, &quot;unit&quot;:  &quot;px&quot;},
+                &quot;z&quot;: {&quot;value&quot;: 150, &quot;unit&quot;:  &quot;px&quot;}
+            },
+            &quot;voxelsize&quot;:  {
+                &quot;x&quot;: {&quot;value&quot;: 0.9, &quot;unit&quot;:  &quot;mm&quot;},
+                &quot;y&quot;: {&quot;value&quot;: 0.9, &quot;unit&quot;:  &quot;mm&quot;},
+                &quot;z&quot;: {&quot;value&quot;: 0.9, &quot;unit&quot;:  &quot;mm&quot;}
+            }
+        }
+    },
+    &quot;acquisition_geometry&quot;: {
+        &quot;path_to_CTSimU_JSON&quot;: &quot;../../example.json&quot;
+    }
+}
+</code></pre>
+<h1 id="flat-field-correction">Flat-field correction</h1>
+<p>Metadata files can reference dark-field images and flat-field (bright,
+free-beam) images. These images can be used by the toolbox to run a dark-field and
+flat-field correction on the projection images. The corrected images
+will be placed in a sub-folder called <code>corrected</code> at the location of
+the uncorrected projection images.</p>
+<p>To run corrections, pass the command <code>correction</code> to the constructor of
+a new toolbox object, followed by one or more metadata files:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;correction&quot;, &quot;example_metadata.json&quot;)
+</code></pre>
+<p>After the flat-field division, the projection images will be rescaled to the
+value of <code>"max_intensity"</code> defined in the metadata file. If this value is not
+defined, a default value of <code>60000</code> is assumed. Alternatively, the rescale
+factor can be set manually, as well as an additional offset that is added
+after the correction and gray value rescaling:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;correction&quot;,
+    &quot;example_metadata.json&quot;,
+    rescaleFactor=42000,
+    offsetAfterRescale=1500
+)
+</code></pre>
+<p>Note that it is possible to run the flat-field correction for multiple
+metadata files, for example located in sub-directories. The keyword argument
+<code>overwrite</code> determines if existing corrected projection files will be overwritten
+(default: <code>True</code>).</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;correction&quot;,
+    &quot;run001/example_metadata_run001.json&quot;,
+    &quot;run002/example_metadata_run002.json&quot;,
+    &quot;run003/example_metadata_run003.json&quot;,
+    overwrite=False
+)
+</code></pre>
+<p>For more information about the keyword arguments, see the documentation
+of the function <code><a title="ctsimu.toolbox.Toolbox.correction" href="#ctsimu.toolbox.Toolbox.correction">Toolbox.correction()</a></code></p>
+<h1 id="reconstruction-configurations">Reconstruction configurations</h1>
+<p>To create reconstruction configuration files for OpenCT and SIEMENS CERA,
+the command <code>"recon_config"</code> along with one or more reconstruction metadata
+files can be passed to the toolbox.</p>
+<p>By default, the Toolbox will calculate a projection matrix for each frame. These
+matrices will be included in the reconstruction configuration files. This means
+that, in principle, the reconstruction of free-trajectory scans is possible.</p>
+<p>The reconstruction metadata file must reference a valid <a href="https://bamresearch.github.io/ctsimu-scenarios/index.html">CTSimU scenario file</a>
+which describes the full acquisition geometry. It should also contain information
+about the tomogram to be created (number of voxels, voxel size). If tomogram
+information is missing, the tomogram size will be determined automatically
+from the scenario's detector size and magnification.</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;recon_config&quot;, &quot;reconstruction/metadata.json&quot;)
+</code></pre>
+<p>Existing configuration files will not be overwritten unless this is enforced:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;recon_config&quot;, &quot;reconstruction/metadata.json&quot;, overwrite=True)
+</code></pre>
+<p>To select which files should be created, the keyword arguments <code>openct</code>
+and <code>cera</code> can either be set to <code>True</code> or <code>False</code>:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;recon_config&quot;, &quot;reconstruction/metadata.json&quot;, openct=True, cera=True)
+</code></pre>
+<p>By default, VGI files are created which reference the volume output file from
+the reconstruction software and which can be opened in VGSTUDIO. To deactivate
+the creation of VGI files, the keyword argument <code>create_vgi</code> can be set to
+<code>False</code>.</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;recon_config&quot;, &quot;reconstruction/metadata.json&quot;, create_vgi=False)
+</code></pre>
+<p>Under some conditions, OpenCT files must include absolute paths to projection
+files (instead of relative paths). This can be activated with the keyword argument
+<code>openct_abspaths</code>. To create an OpenCT file of the circular trajectory variant
+(instead of the default free trajectory), <code>openct_variant</code> can be set to <code>"circular"</code>.
+The circular variant will not include any projection matrices. It is only
+meant for ideal circular trajectory scans with the rotation axis in the
+center of the detector and no tilts.</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;recon_config&quot;,
+    &quot;reconstruction/metadata.json&quot;,
+    openct_abspaths=True,
+    openct_variant=&quot;circular&quot;
+)
+</code></pre>
+<p>For more information about the keyword arguments, see the documentation
+of the function <code><a title="ctsimu.toolbox.Toolbox.recon_config" href="#ctsimu.toolbox.Toolbox.recon_config">Toolbox.recon_config()</a></code></p>
+<h1 id="scenario-standardization">Scenario standardization</h1>
+<p>Scenario files can be updated to the latest version of the <a href="https://bamresearch.github.io/ctsimu-scenarios/index.html">CTSimU file format</a>
+using the <code>standardize</code> command. The function accepts one or more CTSimU scenario
+description JSON files:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;standardize&quot;, &quot;scenario.json&quot;)
+</code></pre>
+<p>The previous scenario files will be backed up (i.e., renamed to <code>{name}.json.old</code>).
+If a backup file already exists, the standardization will be skipped. It is
+therefore not possible to overwrite backed up scenario files.</p>
+<p>The file format version that is currently supported by the toolbox can be
+found in the <code><a title="ctsimu.helpers" href="helpers.html">ctsimu.helpers</a></code> module in the dictionaries
+<code>ctsimu_supported_scenario_version</code> and <code>ctsimu_supported_metadata_version</code>:</p>
+<pre><code class="language-python"># Find supported file format versions
+# -------------------------------------
+import ctsimu.helpers
+
+# Scenarios:
+print(&quot;Supported scenario file format:&quot;)
+print(ctsimu.helpers.ctsimu_supported_scenario_version)
+
+# Metadata files:
+print(&quot;Supported metadata file format:&quot;)
+print(ctsimu.helpers.ctsimu_supported_metadata_version)
+</code></pre>
+<h1 id="recursive-post-processing">Recursive post-processing</h1>
+<p>The toolbox can recursively scan complete folders for scenario and metadata
+files to run flat-field correction, standardize scenario files and create
+reconstruction config files automatically for a collection of folders.</p>
+<p>The command <code>"post-processing"</code> is used for recursive post-processing, followed
+by one or more folder paths which should be scanned and processed.</p>
+<p>The following example script runs recursive post-processing in the script's
+current working directory (<code>"."</code>): projection images will be corrected and
+reconstruction config files will be created, existing files will not be
+overwritten. Scenario file standardization is turned off.</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;post-processing&quot;,
+    &quot;.&quot;,
+    correction=True,
+    recon_config=True,
+        cera=True,
+        openct=True,
+            openct_variant='free',
+            openct_abspaths=False,
+    standardize=False,
+    overwrite=False
+)
+</code></pre>
+<p>More information about the keyword arguments and more available options
+for flat-field correction can be found in the documentation of the function
+<code><a title="ctsimu.toolbox.Toolbox.post_processing" href="#ctsimu.toolbox.Toolbox.post_processing">Toolbox.post_processing()</a></code>.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;
+Quick metadata-based post-processing with simple commands.
+
+.. include:: ./toolbox.md
+&#34;&#34;&#34;
 import os
-import json
+import shutil
+from datetime import datetime
 
 from .helpers import *
 from .geometry import Geometry
 from .image import ImageStack
+from .scenario import Scenario
 from .processing.pipeline import Pipeline
 from .processing.flat_field import Step_FlatFieldCorrection
-from .ctsimu_evaluations.test2D_FB_2 import Test2D_FB_2
-from .ctsimu_evaluations.test2D_FB_1 import Test2D_FB_1
-from .ctsimu_evaluations.test2D_SW_1 import Test2D_SW_1
-from .ctsimu_evaluations.test2D_SW_2 import Test2D_SW_2
-from .ctsimu_evaluations.test2D_SW_3 import Test2D_SW_3
-from .ctsimu_evaluations.test2D_SW_4 import Test2D_SW_4
-from .ctsimu_evaluations.test2D_DW_1 import Test2D_DW_1
-from .ctsimu_evaluations.test2D_WE_1 import Test2D_WE_1
-from .ctsimu_evaluations.test2D_WE_2 import Test2D_WE_2
-from .ctsimu_evaluations.test2D_HS_1 import Test2D_HS_1
+from .evaluation.test2D_FB_2 import Test2D_FB_2
+from .evaluation.test2D_FB_1 import Test2D_FB_1
+from .evaluation.test2D_SW_1 import Test2D_SW_1
+from .evaluation.test2D_SW_2 import Test2D_SW_2
+from .evaluation.test2D_SW_3 import Test2D_SW_3
+from .evaluation.test2D_SW_4 import Test2D_SW_4
+from .evaluation.test2D_DW_1 import Test2D_DW_1
+from .evaluation.test2D_WE_1 import Test2D_WE_1
+from .evaluation.test2D_WE_2 import Test2D_WE_2
+from .evaluation.test2D_HS_1 import Test2D_HS_1
 
 class Toolbox:
     &#34;&#34;&#34; Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. &#34;&#34;&#34;
+    def __init__(self, operation, *args, **kwargs):
+        if operation == &#34;info&#34;:
+            self.info(*args)
+        elif operation == &#34;correction&#34;:
+            self.correction(*args, **kwargs)
+        elif operation == &#34;standardize&#34;:
+            self.standardize(*args)
+        elif operation == &#34;recon_config&#34;:
+            self.recon_config(*args, **kwargs)
+        elif (operation == &#34;post-processing&#34;) or (operation == &#34;post_processing&#34;):
+            self.post_processing(*args, **kwargs)
+        elif operation.startswith(&#34;2D-&#34;):
+            # Possibly a 2D test... try it!
+            self.test_2D(operation, *args, **kwargs)
 
-    def __init__(self, op, *metadata, **subtests):
-        if op == &#34;info&#34;:
-            for metafile in metadata:
-                geo = Geometry(jsonFile=metafile)
-                print(geo.info())
+    def info(self, *scenario_files:str) -&gt; bool:
+        &#34;&#34;&#34;Print geometry information about given scenario files.
 
-            return
+        Parameters
+        ----------
+        *scenario_files : str
+            Strings that define CTSimU scenario files.
 
-        ffRescaleFactor = float(60000.0)
-        ffRescaleOffset = 0
-        if op == &#34;correction&#34;:
-            for key, metafile in subtests.items():
-                if key == &#34;rescaleFactor&#34;:
-                    ffRescaleFactor = metafile
-                elif key == &#34;offsetAfterRescale&#34;:
-                    ffRescaleOffset = metafile
+        Returns
+        -------
+        success : bool
+        &#34;&#34;&#34;
 
-        # Prepare a pipeline
-        pipeline = Pipeline()
-        ffCorrection = Step_FlatFieldCorrection()
-        ffCorrection.setFlatFieldRescaleFactor(ffRescaleFactor, ffRescaleOffset)
-        pipeline.addStep(ffCorrection)
+        for scenario_file in scenario_files:
+            s = Scenario(scenario_file)
+            s.set_frame(0)
+            geo = s.current_geometry()
+            print(geo.info())
 
-        evaluationStep = None
-        if op==&#34;2D-FB-2&#34;:
-            evaluationStep = Test2D_FB_2()
-        elif op==&#34;2D-FB-1&#34;:
-            evaluationStep = Test2D_FB_1()
-        elif op==&#34;2D-SW-1&#34;:
-            evaluationStep = Test2D_SW_1()
-        elif op==&#34;2D-SW-2&#34;:
-            evaluationStep = Test2D_SW_2()
-        elif op==&#34;2D-SW-3&#34;:
-            evaluationStep = Test2D_SW_3()
-        elif op==&#34;2D-SW-4&#34;:
-            evaluationStep = Test2D_SW_4()
-        elif op==&#34;2D-DW-1&#34;:
-            evaluationStep = Test2D_DW_1()
-        elif op==&#34;2D-WE-1&#34;:
-            evaluationStep = Test2D_WE_1()
-        elif op==&#34;2D-WE-2&#34;:
-            evaluationStep = Test2D_WE_2()
-        elif op==&#34;2D-HS-1&#34;:
-            evaluationStep = Test2D_HS_1()
-        elif op==&#34;correction&#34;:
-            pass
-        else:
-            log(&#34;Not a valid test scenario name or operation: {op}&#34;.format(op=op))
+        return True
 
-        # Evaluate keyword list and see if metadata files are provided
-        # together with keywords that might identify subtest scenarios.
-        metadataList = []
-        if op != &#34;correction&#34;:
-            for key, metafile in subtests.items():
-                if evaluationStep is not None:
-                    evaluationStep.addSubtest(key)
-                    metadataList.append(metafile)
-                else:
-                    raise Exception(&#34;&#39;{op}&#39; is not a valid command for the toolbox.&#34;.format(op=op))
+    def correction(self, *metadata_files, **kwargs) -&gt; bool:
+        &#34;&#34;&#34;Run flat-field and dark-field correction on projections
+        defined in metadata files.
 
-        if len(metadataList) == 0:  # Fallback to non-keyword list. Works only for tests that require no subtest identification.
-            metadataList = list(metadata)
+        Parameters
+        ----------
+        *metadata_files : str
+            Strings that define CTSimU metadata files for uncorrected
+            projection images.
 
-        if evaluationStep != None:
-            pipeline.addStep(evaluationStep)
+        **kwargs : float
 
-        for metafile in metadataList:
-            if os.path.isfile(metafile):
+            + `rescaleFactor` : float
+
+                Rescale factor after flat-field division. If `None`, the value
+                will be imported from the key `max_intensity` in the metadata
+                file, or set to `60000` if this fails.
+
+                Standard value: `None`
+
+            + `offsetAfterRescale` : float
+
+                Offset to be added to all pixels after flat-field correction
+                and rescaling.
+
+                Standard value: `0`
+
+            + `overwrite` : bool
+
+                Overwrite existing, corrected projection images?
+
+                Standard value: `True`
+
+        Returns
+        -------
+        success : bool
+        &#34;&#34;&#34;
+
+        # Default values for keyword arguments:
+        settings = {
+            &#34;rescaleFactor&#34;: None,
+            &#34;offsetAfterRescale&#34;: 0,
+            &#34;overwrite&#34;: True
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for metadata_file in metadata_files:
+            # Prepare a pipeline
+            try:
+                pipeline = self.get_ff_pipeline_from_metadata(metadata_file, settings[&#34;rescaleFactor&#34;], settings[&#34;offsetAfterRescale&#34;])
+                pipeline.run(overwrite=settings[&#34;overwrite&#34;])
+            except Exception as e:
+                log(f&#34;Error: {metadata_file}: {str(e)}&#34;)
+
+        return True
+
+    def get_ff_pipeline_from_metadata(self, metadata_file:str, rescaleFactor:float=None, offsetAfterRescale:float=0) -&gt; &#39;Pipeline&#39;:
+        &#34;&#34;&#34;Create a pipeline with a flat-field correction step based on the given metadata file.
+
+        Parameters
+        ----------
+        metadata_file : str
+            Path to a metadata file.
+
+        rescaleFactor : float
+            Rescale factor after flat-field division. If `None`, the value
+            will be imported from key `max_intensity` in metadata file,
+            or set to `60000` if this fails.
+
+            Standard value: `None`
+
+        offsetAfterRescale : float
+            Offset to be added to all pixels after flat-field correction
+            and rescaling.
+
+            Standard value: `0`
+
+        Returns
+        -------
+        pipeline : ctsimu.processing.pipeline.Pipeline
+            Pipeline with a flat-field correction step.
+        &#34;&#34;&#34;
+        if os.path.isfile(metadata_file):
+            if os.path.exists(metadata_file):
                 metafileAbsolute = &#34;&#34;
                 metafileAbsDir   = &#34;&#34;
 
+                log(&#34;Metadata File: {mf}&#34;.format(mf=metadata_file))
+
+                jsonDict = read_json_file(metadata_file)
+
                 # Try to find the working directory with the metadata files:
-                if metafile != None:
-                    metafileAbsolute = os.path.abspath(metafile)
-                    metafileAbsDir   = os.path.dirname(metafileAbsolute)
-
-                resultFileDir = &#34;{testname}-results&#34;.format(testname=op)
-                if metafileAbsDir != None and len(metafileAbsDir) &gt; 0:
-                    resultFileDir = metafileAbsDir + &#34;/&#34; + resultFileDir
-
-                if evaluationStep != None:
-                    pipeline.step(1).setResultFileDirectory(resultFileDir)
-
-                log(&#34;---&#34;)
-                log(&#34;Metadata File: {mf}&#34;.format(mf=metafile))
-
-                jsonFile = open(metafile, &#34;r&#34;)
-                jsonText = jsonFile.read()
-                jsonFile.close()
-
-                jsonDict = json.loads(jsonText)
-
-                metafileAbsolute = os.path.abspath(metafile)
+                metafileAbsolute = os.path.abspath(metadata_file)
                 metafileAbsDir   = os.path.dirname(metafileAbsolute)
 
                 projFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
-                if projFilename != None:
+                if projFilename is not None:
                     if not os.path.isabs(projFilename): # Check if an absolute path is provided
-                        # If a relative path is provided, this path is relative to the location of the metadata file:
-                        projFilename = &#34;{metafileDir}/{imgfile}&#34;.format(metafileDir=metafileAbsDir, imgfile=projFilename)
-
-                log(&#34;  Projection File(s):    {proj}&#34;.format(proj=projFilename))
+                        # If a relative path is provided, this path is
+                        # relative to the location of the metadata file:
+                        projFilename = join_dir_and_filename(metafileAbsDir, projFilename)
 
                 projNumber = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
-                log(&#34;  Number of Projections: {nproj}&#34;.format(nproj=projNumber))
-
                 projDataType = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
-                log(&#34;  Data Type:             {dataType}&#34;.format(dataType=projDataType))
-
                 projByteOrder = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
-                log(&#34;  Byte Order:            {byteOrder}&#34;.format(byteOrder=projByteOrder))
-
                 projHeaderSizeFile = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
-                log(&#34;  File Header Size:      {fileHeaderSize}&#34;.format(fileHeaderSize=projHeaderSizeFile))
-
                 projHeaderSizeImage = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
-                log(&#34;  Image Header Size:     {imageHeaderSize}&#34;.format(imageHeaderSize=projHeaderSizeImage))
-
                 width  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
-                log(&#34;  Projection Width:      {w}&#34;.format(w=width))
-
                 height = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
-                log(&#34;  Projection Height:     {h}&#34;.format(h=height))
 
-                darkFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
-                if darkFilename != None:
+                if rescaleFactor is None:
+                    rescaleFactor = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;max_intensity&#34;], 60000)
+
+                darkFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
+                if darkFilename is not None:
                     if not os.path.isabs(darkFilename): # Check if an absolute path is provided
-                        # If a relative path is provided, this path is relative to the location of the metadata file:
-                        darkFilename = &#34;{metafileDir}/{imgfile}&#34;.format(metafileDir=metafileAbsDir, imgfile=darkFilename)
+                        # If a relative path is provided, this path is
+                        # relative to the location of the metadata file:
+                        darkFilename = join_dir_and_filename(metafileAbsDir, darkFilename)
 
-                log(&#34;  Dark Field(s):         {df}&#34;.format(df=darkFilename))
-
-                darkNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;)
-                log(&#34;  Number of Dark Fields: {n}&#34;.format(n=darkNumber))
-
-                darkCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;)
-                log(&#34;  DF correction applied: {dfapplied}&#34;.format(dfapplied=darkCorrected))
+                darkNumber    = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;], 0)
+                darkCorrected = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;], False)
 
                 flatFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
-                if flatFilename != None:
+                if flatFilename is not None:
                     if not os.path.isabs(flatFilename): # Check if an absolute path is provided
-                        # If a relative path is provided, this path is relative to the location of the metadata file:
-                        flatFilename = &#34;{metafileDir}/{imgfile}&#34;.format(metafileDir=metafileAbsDir, imgfile=flatFilename)
+                        # If a relative path is provided, this path is
+                        # relative to the location of the metadata file:
+                        flatFilename = join_dir_and_filename(metafileAbsDir, flatFilename)
 
-                log(&#34;  Flat Field(s):         {ff}&#34;.format(ff=flatFilename))
-
-                flatNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;)
-                log(&#34;  Number of Flat Fields: {n}&#34;.format(n=flatNumber))
-
-                flatCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;)
-                log(&#34;  FF correction applied: {ffapplied}&#34;.format(ffapplied=flatCorrected))
-
-                log(&#34;---&#34;)
+                flatNumber    = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;], 0)
+                flatCorrected = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;], False)
 
                 if projFilename is None:
-                    raise Exception(&#34;No projection filename provided in metadata file: {filename}&#34;.format(filename=metafile))
+                    raise Exception(f&#34;No projection filename provided in metadata file: {metadata_file}&#34;)
 
                 projections = ImageStack(
                     filePattern=projFilename,
@@ -220,10 +475,14 @@ class Toolbox:
                     flipByteOrder=False
                     )
 
+                ffCorrection = Step_FlatFieldCorrection()
+                ffCorrection.setFlatFieldRescaleFactor(rescaleFactor, offsetAfterRescale)
+
+                pipeline = Pipeline()
                 pipeline.setInputFileStack(projections)
                 pipeline.setOutputFileStack(None)  # set later, if corrections will be applied
-                pipeline.step(0).setOffsetCorrection(False)
-                pipeline.step(0).setGainCorrection(False)
+                ffCorrection.setOffsetCorrection(False)
+                ffCorrection.setGainCorrection(False)
 
                 correctedFilename = os.path.dirname(projFilename) + &#34;/corrected/&#34; + os.path.basename(projFilename)
                 outputFiles = ImageStack(
@@ -241,7 +500,7 @@ class Toolbox:
 
                 if not darkCorrected:
                     if darkNumber &gt; 0:
-                        if darkFilename != None:
+                        if darkFilename is not None:
                             darkStack = ImageStack(
                                             filePattern=darkFilename,
                                             width=width,
@@ -253,12 +512,12 @@ class Toolbox:
                                             slices=darkNumber,
                                             flipByteOrder=False
                                         )
-                            pipeline.step(0).setDarkFileStack(darkStack)
+                            ffCorrection.setDarkFileStack(darkStack)
                             pipeline.setOutputFileStack(outputFiles)
 
                 if not flatCorrected:
                     if flatNumber &gt; 0:
-                        if flatFilename != None:
+                        if flatFilename is not None:
                             flatStack = ImageStack(
                                             filePattern=flatFilename,
                                             width=width,
@@ -270,17 +529,436 @@ class Toolbox:
                                             slices=flatNumber,
                                             flipByteOrder=False
                                         )
-                            pipeline.step(0).setFlatFileStack(flatStack)
+                            ffCorrection.setFlatFileStack(flatStack)
                             pipeline.setOutputFileStack(outputFiles)
 
-                pipeline.run()
+                pipeline.addStep(ffCorrection)
 
+                return pipeline
             else:
-                raise Exception(&#34;Cannot access metadata file: {filename}&#34;.format(filename=metafile))
+                raise Exception(f&#34;Metadata file does not exist: {metadata_file}&#34;)
+        else:
+            raise Exception(f&#34;Invalid metadata file path: {metadata_file}&#34;)
 
-        if evaluationStep != None:
-            # Run the follow-up procedure to output the results.
-            evaluationStep.followUp()</code></pre>
+    def standardize(self, *scenario_files, **kwargs):
+        &#34;&#34;&#34;Standardize CTSimU scenario files to the
+        file format version currently supported by the toolbox.
+
+        The previous version of the file will be kept in a
+        copy called {filename}.json.old
+
+        Parameters
+        ----------
+        *scenario_files : str
+            Scenario files to be standardized.
+        &#34;&#34;&#34;
+        settings = {
+
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        now = datetime.now()
+
+        for scenario_file in scenario_files:
+            if os.path.isfile(scenario_file):
+                if os.path.exists(scenario_file):
+                    log(f&#34;Standardizing {scenario_file} ...&#34;)
+                    scenario_file_old = scenario_file + &#34;.old&#34;
+                    if os.path.exists(scenario_file_old):
+                        # An old version seems to already exist.
+                        # Skip standardization of this file.
+                        log(f&#34;   Skipped standardization, old file exists:&#34;)
+                        log(f&#34;   {scenario_file_old}&#34;)
+                        continue
+                    else:
+                        try:
+                            # Try to read scenario:
+                            s = Scenario(scenario_file)
+
+                            # Backup previous file:
+                            shutil.copy2(scenario_file, scenario_file_old)
+
+                            # Check if backup exists:
+                            if os.path.exists(scenario_file_old):
+                                s.file.date_changed.set(now.strftime(&#34;%Y-%m-%d&#34;))
+                                s.file.file_format_version.major.set(ctsimu_supported_scenario_version[&#34;major&#34;])
+                                s.file.file_format_version.minor.set(ctsimu_supported_scenario_version[&#34;minor&#34;])
+                                s.write(scenario_file)
+                            else:
+                                raise Exception(f&#34;Failed to create scenario backup file: {scenario_file_old}&#34;)
+                        except Exception as e:
+                            log(f&#34;   Error: {str(e)}&#34;)
+                else:
+                    log(f&#34;   Error: file not found: &#39;{scenario_file}&#39;&#34;)
+            else:
+                log(f&#34;   Error: not a scenario file: &#39;{scenario_file}&#39;&#34;)
+
+    def recon_config(self, *metadata_files, **kwargs):
+        &#34;&#34;&#34;Create reconstruction configuration files for
+        given metadata files.
+
+        Parameters
+        ----------
+        *metadata_files : str
+            Metadata files that describe reconstruction data.
+
+        **kwargs
+
+            + `openct` : `bool`
+
+                Create OpenCT config file?
+
+                Standard value: `True`
+
+            + `cera` : `bool`
+
+                Create CERA config file?
+
+                Standard value: `True`
+
+            + `openct_variant` : `str`
+
+                When reconstruction config files are created,
+                the variant of the OpenCT config file.
+
+                Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
+
+                Standard value: `&#34;free&#34;`
+
+            + `openct_abspaths` : `bool`
+
+                Use absolute paths in OpenCT config file?
+
+                Standard value: `False`
+
+            + `create_vgi` : `bool`
+
+                Create VGI file for the reconstruction volume?
+
+                Standard value: `True`
+
+            + `overwrite` : `bool`
+
+                Overwrite existing output files?
+
+                Standard value: `False`
+        &#34;&#34;&#34;
+
+        # Default values for keyword arguments:
+        settings = {
+            &#34;openct&#34;: True,
+            &#34;cera&#34;: True,
+            &#34;openct_variant&#34;: &#34;free&#34;,
+            &#34;openct_abspaths&#34;: False,
+            &#34;create_vgi&#34;: True,
+            &#34;overwrite&#34;: False
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for metadata in metadata_files:
+            try:
+                log(f&#34;Creating recon config for: {metadata}&#34;)
+                s = Scenario()
+                s.read_metadata(filename=metadata, import_referenced_scenario=True)
+
+                recon_config_dir, recon_config_metafile = os.path.split(metadata)
+
+                basename, extension = os.path.splitext(recon_config_metafile)
+
+                # Remove &#39;_metadata&#39; from basename:
+                basename = basename.replace(&#34;_metadata&#34;, &#34;&#34;)
+
+                if settings[&#34;cera&#34;] is True:
+                    cera_filename = basename + &#34;_cera.config&#34;
+                    cera_filepath = join_dir_and_filename(recon_config_dir, cera_filename)
+                    cera_write = True
+                    if os.path.exists(cera_filepath):
+                        if settings[&#34;overwrite&#34;] is False:
+                            cera_write = False
+
+                    if cera_write is True:
+                        log(f&#34;  Writing CERA config files to:   &#39;{recon_config_dir}&#39; ...&#34;)
+                        s.write_CERA_config(
+                            save_dir=recon_config_dir,
+                            basename=f&#34;{basename}_cera&#34;,
+                            create_vgi=settings[&#34;create_vgi&#34;]
+                            )
+
+                if settings[&#34;openct&#34;] is True:
+                    openct_filename = basename + &#34;_openCT.json&#34;
+                    openct_filepath = join_dir_and_filename(recon_config_dir, openct_filename)
+                    openct_write = True
+                    if os.path.exists(openct_filepath):
+                        if settings[&#34;overwrite&#34;] is False:
+                            openct_write = False
+
+                    if openct_write is True:
+                        log(f&#34;  Writing OpenCT config files to: &#39;{recon_config_dir}&#39; ...&#34;)
+                        s.write_OpenCT_config(
+                            save_dir=recon_config_dir,
+                            basename=f&#34;{basename}_openCT&#34;,
+                            create_vgi=settings[&#34;create_vgi&#34;],
+                            variant=settings[&#34;openct_variant&#34;],
+                            abspaths=settings[&#34;openct_abspaths&#34;]
+                            )
+            except Exception as e:
+                log(f&#34;   Error: {metadata}: {str(e)}&#34;)
+
+    def post_processing(self, *directories, **kwargs):
+        &#34;&#34;&#34;Run post-processing recursively on whole directories.
+
+        Searches for metadata files in the given directories
+        (and their subdirectories) and automatically runs
+        flat-field corrections and creates reconstruction config files.
+
+        Parameters
+        ----------
+        *directories : str
+            Directories in which recursive post-processing will take place.
+
+        **kwargs
+
+            + `correction` : `bool`
+
+                Run flat-field correction where applicable?
+
+                Standard value: `False`
+
+            + `rescaleFactor` : `float`
+
+                Rescale factor after flat-field division. If `None`, the value
+                will be imported from the key `max_intensity` in the metadata
+                file, or set to `60000` if this fails.
+
+                Standard value: `None`
+
+            + `offsetAfterRescale` : `float`
+
+                Offset to be added to all pixels after flat-field correction
+                and rescaling.
+
+                Standard value: `0`
+
+            + `recon_config` : `bool`
+
+                Create reconstruction config files?
+
+                Standard value: `False`
+
+            + `openct_variant` : `str`
+
+                When reconstruction config files are created,
+                the variant of the OpenCT config file.
+
+                Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
+
+                Standard value: `&#34;free&#34;`
+
+            + `openct_abspaths` : `bool`
+
+                Use absolute paths in OpenCT config file?
+
+                Standard value: `False`
+
+            + `standardize` : `bool`
+
+                Standardize CTSimU scenario files to the
+                file format version currently supported by the toolbox.
+
+                The previous version of the file will be kept in a
+                copy called {filename}.json.old
+
+                Standard value: `False`
+
+            + `overwrite` : `bool`
+
+                Overwrite existing output files?
+
+                Does not apply to standardization: the old scenario backup
+                files will never be overwritten.
+
+                Standard value: `False`
+        &#34;&#34;&#34;
+
+        # Default values for keyword arguments:
+        settings = {
+            &#34;correction&#34;: False,
+            &#34;rescaleFactor&#34;: None,
+            &#34;offsetAfterRescale&#34;: 0,
+            &#34;recon_config&#34;: False,
+            &#34;cera&#34;: True,
+            &#34;openct&#34;: True,
+            &#34;openct_variant&#34;: &#34;free&#34;,
+            &#34;openct_abspaths&#34;: False,
+            &#34;standardize&#34;: False,
+            &#34;overwrite&#34;: False
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        # Walk through directories and collect paths of scenario files,
+        # projection metadata and reconstruction metadata files.
+        scenario_files = list()
+        metadata_projection = list()
+        metadata_reconstruction = list()
+        for directory in directories:
+            print(f&#34;Searching directory: {directory}&#34;)
+            walker = os.walk(directory)
+            for dirpath, dirnames, filenames in walker:
+                json_files = [f for f in filenames if f.endswith(&#34;.json&#34;)]
+                # Check JSON files:
+                for j in json_files:
+                    try:
+                        jsonpath = join_dir_and_filename(dirpath, j)
+                        jd = read_json_file(jsonpath)
+                        file_type = get_value(jd, [&#34;file&#34;, &#34;file_type&#34;])
+
+                        if file_type is not None:
+                            if file_type == &#34;CTSimU Scenario&#34;:
+                                scenario_files.append(jsonpath)
+                                log(f&#34;   Found scenario file:           {j}&#34;)
+                            elif file_type == &#34;CTSimU Metadata&#34;:
+                                if json_exists(jd, [&#34;output&#34;, &#34;tomogram&#34;, &#34;filename&#34;]):
+                                    # Seems to be a reconstruction file.
+                                    metadata_reconstruction.append(jsonpath)
+                                    log(f&#34;   Found reconstruction metadata: {j}&#34;)
+                                else:
+                                    # Assume a projection metadata file.
+                                    metadata_projection.append(jsonpath)
+                                    log(f&#34;   Found projection metadata:     {j}&#34;)
+                    except Exception as e:
+                        log(f&#34;Error: {str(e)}&#34;)
+
+        if settings[&#34;standardize&#34;] is True:
+            # Standardize scenario files.
+            for scenario_file in scenario_files:
+                try:
+                    self.standardize(scenario_file, **settings)
+                except Exception as e:
+                    log(f&#34;Error: {str(e)}&#34;)
+
+        if settings[&#34;recon_config&#34;] is True:
+            # Create reconstruction configs:
+            for metadata in metadata_reconstruction:
+                self.recon_config(metadata, **settings)
+
+        if settings[&#34;correction&#34;] is True:
+            # Run flat-field corrections:
+            for metadata in metadata_projection:
+                self.correction(metadata, **settings)
+
+        print(&#34;Done.&#34;)
+
+    def test_2D(self, test_name:str, *metadata, **kwargs) -&gt; bool:
+        &#34;&#34;&#34;Run a projection-based 2D test on projections
+        defined in one or more metadata files.
+
+        Parameters
+        ----------
+        test_name : str
+            Identifier of the CTSimU test, e.g. `&#34;2D-SW-1&#34;`.
+
+        *metadata : str
+            One or more paths to metadata files.
+
+        **kwargs : str
+            Possible subtest identifiers (as keys) and
+            associated metadata files (as values).
+
+        Returns
+        -------
+        success : bool
+        &#34;&#34;&#34;
+
+        evaluationStep = None
+        if test_name==&#34;2D-FB-2&#34;:
+            evaluationStep = Test2D_FB_2()
+        elif test_name==&#34;2D-FB-1&#34;:
+            evaluationStep = Test2D_FB_1()
+        elif test_name==&#34;2D-SW-1&#34;:
+            evaluationStep = Test2D_SW_1()
+        elif test_name==&#34;2D-SW-2&#34;:
+            evaluationStep = Test2D_SW_2()
+        elif test_name==&#34;2D-SW-3&#34;:
+            evaluationStep = Test2D_SW_3()
+        elif test_name==&#34;2D-SW-4&#34;:
+            evaluationStep = Test2D_SW_4()
+        elif test_name==&#34;2D-DW-1&#34;:
+            evaluationStep = Test2D_DW_1()
+        elif test_name==&#34;2D-WE-1&#34;:
+            evaluationStep = Test2D_WE_1()
+        elif test_name==&#34;2D-WE-2&#34;:
+            evaluationStep = Test2D_WE_2()
+        elif test_name==&#34;2D-HS-1&#34;:
+            evaluationStep = Test2D_HS_1()
+        else:
+            log(&#34;Not a valid test name: {test_name}&#34;.format(test_name=test_name))
+            return False
+
+        # The flat-field rescale factor is fixed for all tests:
+        rescaleFactor = float(60000.0)
+        offsetAfterRescale = 0
+
+        # Evaluate keyword list and see if metadata files are provided
+        # together with keywords that might identify subtest scenarios.
+        metadata_list = []
+        for key, metafile in kwargs.items():
+            if evaluationStep is not None:
+                evaluationStep.addSubtest(key)
+                metadata_list.append(metafile)
+            else:
+                log(f&#34;&#39;{test_name}&#39; is not a valid command for the toolbox.&#34;)
+                return False
+
+        # Fallback to non-keyword list. Works only for tests that require no subtest identification.
+        if len(metadata_list) == 0:
+            metadata_list = list(metadata)
+
+        for metadata_file in metadata_list:
+            if os.path.isfile(metadata_file):
+                if os.path.exists(metadata_file):
+                    metafileAbsolute = &#34;&#34;
+                    metafileAbsDir   = &#34;&#34;
+
+                    # Try to find the working directory with the metadata files:
+                    if metadata_file is not None:
+                        metafileAbsolute = os.path.abspath(metadata_file)
+                        metafileAbsDir   = os.path.dirname(metafileAbsolute)
+
+                    resultFileDir = &#34;{testname}-results&#34;.format(testname=test_name)
+                    if metafileAbsDir is not None:
+                        if isinstance(metafileAbsDir, str):
+                            if len(metafileAbsDir) &gt; 0:
+                                resultFileDir = metafileAbsDir + &#34;/&#34; + resultFileDir
+
+                    evaluationStep.setResultFileDirectory(resultFileDir)
+
+                    pipeline = self.get_ff_pipeline_from_metadata(metadata_file, rescaleFactor, offsetAfterRescale)
+                    pipeline.addStep(evaluationStep)
+
+                    # Run pipeline: FF-correction and CTSimU test.
+                    pipeline.run()
+                else:
+                    raise Exception(f&#34;Cannot access metadata file: {metadata_file}&#34;)
+            else:
+                raise Exception(f&#34;Cannot access metadata file: {metadata_file}&#34;)
+
+        # Run the follow-up procedure to output the results.
+        if evaluationStep is not None:
+            evaluationStep.followUp()
+
+        return True</code></pre>
 </details>
 </section>
 <section>
@@ -294,7 +972,7 @@ class Toolbox:
 <dl>
 <dt id="ctsimu.toolbox.Toolbox"><code class="flex name class">
 <span>class <span class="ident">Toolbox</span></span>
-<span>(</span><span>op, *metadata, **subtests)</span>
+<span>(</span><span>operation, *args, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Manages a test run, including preliminary flat field corrections, based on metadata JSON input files.</p></div>
@@ -304,163 +982,181 @@ class Toolbox:
 </summary>
 <pre><code class="python">class Toolbox:
     &#34;&#34;&#34; Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. &#34;&#34;&#34;
+    def __init__(self, operation, *args, **kwargs):
+        if operation == &#34;info&#34;:
+            self.info(*args)
+        elif operation == &#34;correction&#34;:
+            self.correction(*args, **kwargs)
+        elif operation == &#34;standardize&#34;:
+            self.standardize(*args)
+        elif operation == &#34;recon_config&#34;:
+            self.recon_config(*args, **kwargs)
+        elif (operation == &#34;post-processing&#34;) or (operation == &#34;post_processing&#34;):
+            self.post_processing(*args, **kwargs)
+        elif operation.startswith(&#34;2D-&#34;):
+            # Possibly a 2D test... try it!
+            self.test_2D(operation, *args, **kwargs)
 
-    def __init__(self, op, *metadata, **subtests):
-        if op == &#34;info&#34;:
-            for metafile in metadata:
-                geo = Geometry(jsonFile=metafile)
-                print(geo.info())
+    def info(self, *scenario_files:str) -&gt; bool:
+        &#34;&#34;&#34;Print geometry information about given scenario files.
 
-            return
+        Parameters
+        ----------
+        *scenario_files : str
+            Strings that define CTSimU scenario files.
 
-        ffRescaleFactor = float(60000.0)
-        ffRescaleOffset = 0
-        if op == &#34;correction&#34;:
-            for key, metafile in subtests.items():
-                if key == &#34;rescaleFactor&#34;:
-                    ffRescaleFactor = metafile
-                elif key == &#34;offsetAfterRescale&#34;:
-                    ffRescaleOffset = metafile
+        Returns
+        -------
+        success : bool
+        &#34;&#34;&#34;
 
-        # Prepare a pipeline
-        pipeline = Pipeline()
-        ffCorrection = Step_FlatFieldCorrection()
-        ffCorrection.setFlatFieldRescaleFactor(ffRescaleFactor, ffRescaleOffset)
-        pipeline.addStep(ffCorrection)
+        for scenario_file in scenario_files:
+            s = Scenario(scenario_file)
+            s.set_frame(0)
+            geo = s.current_geometry()
+            print(geo.info())
 
-        evaluationStep = None
-        if op==&#34;2D-FB-2&#34;:
-            evaluationStep = Test2D_FB_2()
-        elif op==&#34;2D-FB-1&#34;:
-            evaluationStep = Test2D_FB_1()
-        elif op==&#34;2D-SW-1&#34;:
-            evaluationStep = Test2D_SW_1()
-        elif op==&#34;2D-SW-2&#34;:
-            evaluationStep = Test2D_SW_2()
-        elif op==&#34;2D-SW-3&#34;:
-            evaluationStep = Test2D_SW_3()
-        elif op==&#34;2D-SW-4&#34;:
-            evaluationStep = Test2D_SW_4()
-        elif op==&#34;2D-DW-1&#34;:
-            evaluationStep = Test2D_DW_1()
-        elif op==&#34;2D-WE-1&#34;:
-            evaluationStep = Test2D_WE_1()
-        elif op==&#34;2D-WE-2&#34;:
-            evaluationStep = Test2D_WE_2()
-        elif op==&#34;2D-HS-1&#34;:
-            evaluationStep = Test2D_HS_1()
-        elif op==&#34;correction&#34;:
-            pass
-        else:
-            log(&#34;Not a valid test scenario name or operation: {op}&#34;.format(op=op))
+        return True
 
-        # Evaluate keyword list and see if metadata files are provided
-        # together with keywords that might identify subtest scenarios.
-        metadataList = []
-        if op != &#34;correction&#34;:
-            for key, metafile in subtests.items():
-                if evaluationStep is not None:
-                    evaluationStep.addSubtest(key)
-                    metadataList.append(metafile)
-                else:
-                    raise Exception(&#34;&#39;{op}&#39; is not a valid command for the toolbox.&#34;.format(op=op))
+    def correction(self, *metadata_files, **kwargs) -&gt; bool:
+        &#34;&#34;&#34;Run flat-field and dark-field correction on projections
+        defined in metadata files.
 
-        if len(metadataList) == 0:  # Fallback to non-keyword list. Works only for tests that require no subtest identification.
-            metadataList = list(metadata)
+        Parameters
+        ----------
+        *metadata_files : str
+            Strings that define CTSimU metadata files for uncorrected
+            projection images.
 
-        if evaluationStep != None:
-            pipeline.addStep(evaluationStep)
+        **kwargs : float
 
-        for metafile in metadataList:
-            if os.path.isfile(metafile):
+            + `rescaleFactor` : float
+
+                Rescale factor after flat-field division. If `None`, the value
+                will be imported from the key `max_intensity` in the metadata
+                file, or set to `60000` if this fails.
+
+                Standard value: `None`
+
+            + `offsetAfterRescale` : float
+
+                Offset to be added to all pixels after flat-field correction
+                and rescaling.
+
+                Standard value: `0`
+
+            + `overwrite` : bool
+
+                Overwrite existing, corrected projection images?
+
+                Standard value: `True`
+
+        Returns
+        -------
+        success : bool
+        &#34;&#34;&#34;
+
+        # Default values for keyword arguments:
+        settings = {
+            &#34;rescaleFactor&#34;: None,
+            &#34;offsetAfterRescale&#34;: 0,
+            &#34;overwrite&#34;: True
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for metadata_file in metadata_files:
+            # Prepare a pipeline
+            try:
+                pipeline = self.get_ff_pipeline_from_metadata(metadata_file, settings[&#34;rescaleFactor&#34;], settings[&#34;offsetAfterRescale&#34;])
+                pipeline.run(overwrite=settings[&#34;overwrite&#34;])
+            except Exception as e:
+                log(f&#34;Error: {metadata_file}: {str(e)}&#34;)
+
+        return True
+
+    def get_ff_pipeline_from_metadata(self, metadata_file:str, rescaleFactor:float=None, offsetAfterRescale:float=0) -&gt; &#39;Pipeline&#39;:
+        &#34;&#34;&#34;Create a pipeline with a flat-field correction step based on the given metadata file.
+
+        Parameters
+        ----------
+        metadata_file : str
+            Path to a metadata file.
+
+        rescaleFactor : float
+            Rescale factor after flat-field division. If `None`, the value
+            will be imported from key `max_intensity` in metadata file,
+            or set to `60000` if this fails.
+
+            Standard value: `None`
+
+        offsetAfterRescale : float
+            Offset to be added to all pixels after flat-field correction
+            and rescaling.
+
+            Standard value: `0`
+
+        Returns
+        -------
+        pipeline : ctsimu.processing.pipeline.Pipeline
+            Pipeline with a flat-field correction step.
+        &#34;&#34;&#34;
+        if os.path.isfile(metadata_file):
+            if os.path.exists(metadata_file):
                 metafileAbsolute = &#34;&#34;
                 metafileAbsDir   = &#34;&#34;
 
+                log(&#34;Metadata File: {mf}&#34;.format(mf=metadata_file))
+
+                jsonDict = read_json_file(metadata_file)
+
                 # Try to find the working directory with the metadata files:
-                if metafile != None:
-                    metafileAbsolute = os.path.abspath(metafile)
-                    metafileAbsDir   = os.path.dirname(metafileAbsolute)
-
-                resultFileDir = &#34;{testname}-results&#34;.format(testname=op)
-                if metafileAbsDir != None and len(metafileAbsDir) &gt; 0:
-                    resultFileDir = metafileAbsDir + &#34;/&#34; + resultFileDir
-
-                if evaluationStep != None:
-                    pipeline.step(1).setResultFileDirectory(resultFileDir)
-
-                log(&#34;---&#34;)
-                log(&#34;Metadata File: {mf}&#34;.format(mf=metafile))
-
-                jsonFile = open(metafile, &#34;r&#34;)
-                jsonText = jsonFile.read()
-                jsonFile.close()
-
-                jsonDict = json.loads(jsonText)
-
-                metafileAbsolute = os.path.abspath(metafile)
+                metafileAbsolute = os.path.abspath(metadata_file)
                 metafileAbsDir   = os.path.dirname(metafileAbsolute)
 
                 projFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
-                if projFilename != None:
+                if projFilename is not None:
                     if not os.path.isabs(projFilename): # Check if an absolute path is provided
-                        # If a relative path is provided, this path is relative to the location of the metadata file:
-                        projFilename = &#34;{metafileDir}/{imgfile}&#34;.format(metafileDir=metafileAbsDir, imgfile=projFilename)
-
-                log(&#34;  Projection File(s):    {proj}&#34;.format(proj=projFilename))
+                        # If a relative path is provided, this path is
+                        # relative to the location of the metadata file:
+                        projFilename = join_dir_and_filename(metafileAbsDir, projFilename)
 
                 projNumber = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
-                log(&#34;  Number of Projections: {nproj}&#34;.format(nproj=projNumber))
-
                 projDataType = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
-                log(&#34;  Data Type:             {dataType}&#34;.format(dataType=projDataType))
-
                 projByteOrder = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
-                log(&#34;  Byte Order:            {byteOrder}&#34;.format(byteOrder=projByteOrder))
-
                 projHeaderSizeFile = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
-                log(&#34;  File Header Size:      {fileHeaderSize}&#34;.format(fileHeaderSize=projHeaderSizeFile))
-
                 projHeaderSizeImage = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
-                log(&#34;  Image Header Size:     {imageHeaderSize}&#34;.format(imageHeaderSize=projHeaderSizeImage))
-
                 width  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
-                log(&#34;  Projection Width:      {w}&#34;.format(w=width))
-
                 height = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
-                log(&#34;  Projection Height:     {h}&#34;.format(h=height))
 
-                darkFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
-                if darkFilename != None:
+                if rescaleFactor is None:
+                    rescaleFactor = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;max_intensity&#34;], 60000)
+
+                darkFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
+                if darkFilename is not None:
                     if not os.path.isabs(darkFilename): # Check if an absolute path is provided
-                        # If a relative path is provided, this path is relative to the location of the metadata file:
-                        darkFilename = &#34;{metafileDir}/{imgfile}&#34;.format(metafileDir=metafileAbsDir, imgfile=darkFilename)
+                        # If a relative path is provided, this path is
+                        # relative to the location of the metadata file:
+                        darkFilename = join_dir_and_filename(metafileAbsDir, darkFilename)
 
-                log(&#34;  Dark Field(s):         {df}&#34;.format(df=darkFilename))
-
-                darkNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;)
-                log(&#34;  Number of Dark Fields: {n}&#34;.format(n=darkNumber))
-
-                darkCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;)
-                log(&#34;  DF correction applied: {dfapplied}&#34;.format(dfapplied=darkCorrected))
+                darkNumber    = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;], 0)
+                darkCorrected = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;], False)
 
                 flatFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
-                if flatFilename != None:
+                if flatFilename is not None:
                     if not os.path.isabs(flatFilename): # Check if an absolute path is provided
-                        # If a relative path is provided, this path is relative to the location of the metadata file:
-                        flatFilename = &#34;{metafileDir}/{imgfile}&#34;.format(metafileDir=metafileAbsDir, imgfile=flatFilename)
+                        # If a relative path is provided, this path is
+                        # relative to the location of the metadata file:
+                        flatFilename = join_dir_and_filename(metafileAbsDir, flatFilename)
 
-                log(&#34;  Flat Field(s):         {ff}&#34;.format(ff=flatFilename))
-
-                flatNumber    = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;)
-                log(&#34;  Number of Flat Fields: {n}&#34;.format(n=flatNumber))
-
-                flatCorrected = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;)
-                log(&#34;  FF correction applied: {ffapplied}&#34;.format(ffapplied=flatCorrected))
-
-                log(&#34;---&#34;)
+                flatNumber    = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;], 0)
+                flatCorrected = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;], False)
 
                 if projFilename is None:
-                    raise Exception(&#34;No projection filename provided in metadata file: {filename}&#34;.format(filename=metafile))
+                    raise Exception(f&#34;No projection filename provided in metadata file: {metadata_file}&#34;)
 
                 projections = ImageStack(
                     filePattern=projFilename,
@@ -474,10 +1170,14 @@ class Toolbox:
                     flipByteOrder=False
                     )
 
+                ffCorrection = Step_FlatFieldCorrection()
+                ffCorrection.setFlatFieldRescaleFactor(rescaleFactor, offsetAfterRescale)
+
+                pipeline = Pipeline()
                 pipeline.setInputFileStack(projections)
                 pipeline.setOutputFileStack(None)  # set later, if corrections will be applied
-                pipeline.step(0).setOffsetCorrection(False)
-                pipeline.step(0).setGainCorrection(False)
+                ffCorrection.setOffsetCorrection(False)
+                ffCorrection.setGainCorrection(False)
 
                 correctedFilename = os.path.dirname(projFilename) + &#34;/corrected/&#34; + os.path.basename(projFilename)
                 outputFiles = ImageStack(
@@ -495,7 +1195,7 @@ class Toolbox:
 
                 if not darkCorrected:
                     if darkNumber &gt; 0:
-                        if darkFilename != None:
+                        if darkFilename is not None:
                             darkStack = ImageStack(
                                             filePattern=darkFilename,
                                             width=width,
@@ -507,12 +1207,12 @@ class Toolbox:
                                             slices=darkNumber,
                                             flipByteOrder=False
                                         )
-                            pipeline.step(0).setDarkFileStack(darkStack)
+                            ffCorrection.setDarkFileStack(darkStack)
                             pipeline.setOutputFileStack(outputFiles)
 
                 if not flatCorrected:
                     if flatNumber &gt; 0:
-                        if flatFilename != None:
+                        if flatFilename is not None:
                             flatStack = ImageStack(
                                             filePattern=flatFilename,
                                             width=width,
@@ -524,18 +1224,1366 @@ class Toolbox:
                                             slices=flatNumber,
                                             flipByteOrder=False
                                         )
-                            pipeline.step(0).setFlatFileStack(flatStack)
+                            ffCorrection.setFlatFileStack(flatStack)
                             pipeline.setOutputFileStack(outputFiles)
 
-                pipeline.run()
+                pipeline.addStep(ffCorrection)
 
+                return pipeline
             else:
-                raise Exception(&#34;Cannot access metadata file: {filename}&#34;.format(filename=metafile))
+                raise Exception(f&#34;Metadata file does not exist: {metadata_file}&#34;)
+        else:
+            raise Exception(f&#34;Invalid metadata file path: {metadata_file}&#34;)
 
-        if evaluationStep != None:
-            # Run the follow-up procedure to output the results.
-            evaluationStep.followUp()</code></pre>
+    def standardize(self, *scenario_files, **kwargs):
+        &#34;&#34;&#34;Standardize CTSimU scenario files to the
+        file format version currently supported by the toolbox.
+
+        The previous version of the file will be kept in a
+        copy called {filename}.json.old
+
+        Parameters
+        ----------
+        *scenario_files : str
+            Scenario files to be standardized.
+        &#34;&#34;&#34;
+        settings = {
+
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        now = datetime.now()
+
+        for scenario_file in scenario_files:
+            if os.path.isfile(scenario_file):
+                if os.path.exists(scenario_file):
+                    log(f&#34;Standardizing {scenario_file} ...&#34;)
+                    scenario_file_old = scenario_file + &#34;.old&#34;
+                    if os.path.exists(scenario_file_old):
+                        # An old version seems to already exist.
+                        # Skip standardization of this file.
+                        log(f&#34;   Skipped standardization, old file exists:&#34;)
+                        log(f&#34;   {scenario_file_old}&#34;)
+                        continue
+                    else:
+                        try:
+                            # Try to read scenario:
+                            s = Scenario(scenario_file)
+
+                            # Backup previous file:
+                            shutil.copy2(scenario_file, scenario_file_old)
+
+                            # Check if backup exists:
+                            if os.path.exists(scenario_file_old):
+                                s.file.date_changed.set(now.strftime(&#34;%Y-%m-%d&#34;))
+                                s.file.file_format_version.major.set(ctsimu_supported_scenario_version[&#34;major&#34;])
+                                s.file.file_format_version.minor.set(ctsimu_supported_scenario_version[&#34;minor&#34;])
+                                s.write(scenario_file)
+                            else:
+                                raise Exception(f&#34;Failed to create scenario backup file: {scenario_file_old}&#34;)
+                        except Exception as e:
+                            log(f&#34;   Error: {str(e)}&#34;)
+                else:
+                    log(f&#34;   Error: file not found: &#39;{scenario_file}&#39;&#34;)
+            else:
+                log(f&#34;   Error: not a scenario file: &#39;{scenario_file}&#39;&#34;)
+
+    def recon_config(self, *metadata_files, **kwargs):
+        &#34;&#34;&#34;Create reconstruction configuration files for
+        given metadata files.
+
+        Parameters
+        ----------
+        *metadata_files : str
+            Metadata files that describe reconstruction data.
+
+        **kwargs
+
+            + `openct` : `bool`
+
+                Create OpenCT config file?
+
+                Standard value: `True`
+
+            + `cera` : `bool`
+
+                Create CERA config file?
+
+                Standard value: `True`
+
+            + `openct_variant` : `str`
+
+                When reconstruction config files are created,
+                the variant of the OpenCT config file.
+
+                Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
+
+                Standard value: `&#34;free&#34;`
+
+            + `openct_abspaths` : `bool`
+
+                Use absolute paths in OpenCT config file?
+
+                Standard value: `False`
+
+            + `create_vgi` : `bool`
+
+                Create VGI file for the reconstruction volume?
+
+                Standard value: `True`
+
+            + `overwrite` : `bool`
+
+                Overwrite existing output files?
+
+                Standard value: `False`
+        &#34;&#34;&#34;
+
+        # Default values for keyword arguments:
+        settings = {
+            &#34;openct&#34;: True,
+            &#34;cera&#34;: True,
+            &#34;openct_variant&#34;: &#34;free&#34;,
+            &#34;openct_abspaths&#34;: False,
+            &#34;create_vgi&#34;: True,
+            &#34;overwrite&#34;: False
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for metadata in metadata_files:
+            try:
+                log(f&#34;Creating recon config for: {metadata}&#34;)
+                s = Scenario()
+                s.read_metadata(filename=metadata, import_referenced_scenario=True)
+
+                recon_config_dir, recon_config_metafile = os.path.split(metadata)
+
+                basename, extension = os.path.splitext(recon_config_metafile)
+
+                # Remove &#39;_metadata&#39; from basename:
+                basename = basename.replace(&#34;_metadata&#34;, &#34;&#34;)
+
+                if settings[&#34;cera&#34;] is True:
+                    cera_filename = basename + &#34;_cera.config&#34;
+                    cera_filepath = join_dir_and_filename(recon_config_dir, cera_filename)
+                    cera_write = True
+                    if os.path.exists(cera_filepath):
+                        if settings[&#34;overwrite&#34;] is False:
+                            cera_write = False
+
+                    if cera_write is True:
+                        log(f&#34;  Writing CERA config files to:   &#39;{recon_config_dir}&#39; ...&#34;)
+                        s.write_CERA_config(
+                            save_dir=recon_config_dir,
+                            basename=f&#34;{basename}_cera&#34;,
+                            create_vgi=settings[&#34;create_vgi&#34;]
+                            )
+
+                if settings[&#34;openct&#34;] is True:
+                    openct_filename = basename + &#34;_openCT.json&#34;
+                    openct_filepath = join_dir_and_filename(recon_config_dir, openct_filename)
+                    openct_write = True
+                    if os.path.exists(openct_filepath):
+                        if settings[&#34;overwrite&#34;] is False:
+                            openct_write = False
+
+                    if openct_write is True:
+                        log(f&#34;  Writing OpenCT config files to: &#39;{recon_config_dir}&#39; ...&#34;)
+                        s.write_OpenCT_config(
+                            save_dir=recon_config_dir,
+                            basename=f&#34;{basename}_openCT&#34;,
+                            create_vgi=settings[&#34;create_vgi&#34;],
+                            variant=settings[&#34;openct_variant&#34;],
+                            abspaths=settings[&#34;openct_abspaths&#34;]
+                            )
+            except Exception as e:
+                log(f&#34;   Error: {metadata}: {str(e)}&#34;)
+
+    def post_processing(self, *directories, **kwargs):
+        &#34;&#34;&#34;Run post-processing recursively on whole directories.
+
+        Searches for metadata files in the given directories
+        (and their subdirectories) and automatically runs
+        flat-field corrections and creates reconstruction config files.
+
+        Parameters
+        ----------
+        *directories : str
+            Directories in which recursive post-processing will take place.
+
+        **kwargs
+
+            + `correction` : `bool`
+
+                Run flat-field correction where applicable?
+
+                Standard value: `False`
+
+            + `rescaleFactor` : `float`
+
+                Rescale factor after flat-field division. If `None`, the value
+                will be imported from the key `max_intensity` in the metadata
+                file, or set to `60000` if this fails.
+
+                Standard value: `None`
+
+            + `offsetAfterRescale` : `float`
+
+                Offset to be added to all pixels after flat-field correction
+                and rescaling.
+
+                Standard value: `0`
+
+            + `recon_config` : `bool`
+
+                Create reconstruction config files?
+
+                Standard value: `False`
+
+            + `openct_variant` : `str`
+
+                When reconstruction config files are created,
+                the variant of the OpenCT config file.
+
+                Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
+
+                Standard value: `&#34;free&#34;`
+
+            + `openct_abspaths` : `bool`
+
+                Use absolute paths in OpenCT config file?
+
+                Standard value: `False`
+
+            + `standardize` : `bool`
+
+                Standardize CTSimU scenario files to the
+                file format version currently supported by the toolbox.
+
+                The previous version of the file will be kept in a
+                copy called {filename}.json.old
+
+                Standard value: `False`
+
+            + `overwrite` : `bool`
+
+                Overwrite existing output files?
+
+                Does not apply to standardization: the old scenario backup
+                files will never be overwritten.
+
+                Standard value: `False`
+        &#34;&#34;&#34;
+
+        # Default values for keyword arguments:
+        settings = {
+            &#34;correction&#34;: False,
+            &#34;rescaleFactor&#34;: None,
+            &#34;offsetAfterRescale&#34;: 0,
+            &#34;recon_config&#34;: False,
+            &#34;cera&#34;: True,
+            &#34;openct&#34;: True,
+            &#34;openct_variant&#34;: &#34;free&#34;,
+            &#34;openct_abspaths&#34;: False,
+            &#34;standardize&#34;: False,
+            &#34;overwrite&#34;: False
+        }
+
+        # Change default settings for keyword arguments that are set:
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        # Walk through directories and collect paths of scenario files,
+        # projection metadata and reconstruction metadata files.
+        scenario_files = list()
+        metadata_projection = list()
+        metadata_reconstruction = list()
+        for directory in directories:
+            print(f&#34;Searching directory: {directory}&#34;)
+            walker = os.walk(directory)
+            for dirpath, dirnames, filenames in walker:
+                json_files = [f for f in filenames if f.endswith(&#34;.json&#34;)]
+                # Check JSON files:
+                for j in json_files:
+                    try:
+                        jsonpath = join_dir_and_filename(dirpath, j)
+                        jd = read_json_file(jsonpath)
+                        file_type = get_value(jd, [&#34;file&#34;, &#34;file_type&#34;])
+
+                        if file_type is not None:
+                            if file_type == &#34;CTSimU Scenario&#34;:
+                                scenario_files.append(jsonpath)
+                                log(f&#34;   Found scenario file:           {j}&#34;)
+                            elif file_type == &#34;CTSimU Metadata&#34;:
+                                if json_exists(jd, [&#34;output&#34;, &#34;tomogram&#34;, &#34;filename&#34;]):
+                                    # Seems to be a reconstruction file.
+                                    metadata_reconstruction.append(jsonpath)
+                                    log(f&#34;   Found reconstruction metadata: {j}&#34;)
+                                else:
+                                    # Assume a projection metadata file.
+                                    metadata_projection.append(jsonpath)
+                                    log(f&#34;   Found projection metadata:     {j}&#34;)
+                    except Exception as e:
+                        log(f&#34;Error: {str(e)}&#34;)
+
+        if settings[&#34;standardize&#34;] is True:
+            # Standardize scenario files.
+            for scenario_file in scenario_files:
+                try:
+                    self.standardize(scenario_file, **settings)
+                except Exception as e:
+                    log(f&#34;Error: {str(e)}&#34;)
+
+        if settings[&#34;recon_config&#34;] is True:
+            # Create reconstruction configs:
+            for metadata in metadata_reconstruction:
+                self.recon_config(metadata, **settings)
+
+        if settings[&#34;correction&#34;] is True:
+            # Run flat-field corrections:
+            for metadata in metadata_projection:
+                self.correction(metadata, **settings)
+
+        print(&#34;Done.&#34;)
+
+    def test_2D(self, test_name:str, *metadata, **kwargs) -&gt; bool:
+        &#34;&#34;&#34;Run a projection-based 2D test on projections
+        defined in one or more metadata files.
+
+        Parameters
+        ----------
+        test_name : str
+            Identifier of the CTSimU test, e.g. `&#34;2D-SW-1&#34;`.
+
+        *metadata : str
+            One or more paths to metadata files.
+
+        **kwargs : str
+            Possible subtest identifiers (as keys) and
+            associated metadata files (as values).
+
+        Returns
+        -------
+        success : bool
+        &#34;&#34;&#34;
+
+        evaluationStep = None
+        if test_name==&#34;2D-FB-2&#34;:
+            evaluationStep = Test2D_FB_2()
+        elif test_name==&#34;2D-FB-1&#34;:
+            evaluationStep = Test2D_FB_1()
+        elif test_name==&#34;2D-SW-1&#34;:
+            evaluationStep = Test2D_SW_1()
+        elif test_name==&#34;2D-SW-2&#34;:
+            evaluationStep = Test2D_SW_2()
+        elif test_name==&#34;2D-SW-3&#34;:
+            evaluationStep = Test2D_SW_3()
+        elif test_name==&#34;2D-SW-4&#34;:
+            evaluationStep = Test2D_SW_4()
+        elif test_name==&#34;2D-DW-1&#34;:
+            evaluationStep = Test2D_DW_1()
+        elif test_name==&#34;2D-WE-1&#34;:
+            evaluationStep = Test2D_WE_1()
+        elif test_name==&#34;2D-WE-2&#34;:
+            evaluationStep = Test2D_WE_2()
+        elif test_name==&#34;2D-HS-1&#34;:
+            evaluationStep = Test2D_HS_1()
+        else:
+            log(&#34;Not a valid test name: {test_name}&#34;.format(test_name=test_name))
+            return False
+
+        # The flat-field rescale factor is fixed for all tests:
+        rescaleFactor = float(60000.0)
+        offsetAfterRescale = 0
+
+        # Evaluate keyword list and see if metadata files are provided
+        # together with keywords that might identify subtest scenarios.
+        metadata_list = []
+        for key, metafile in kwargs.items():
+            if evaluationStep is not None:
+                evaluationStep.addSubtest(key)
+                metadata_list.append(metafile)
+            else:
+                log(f&#34;&#39;{test_name}&#39; is not a valid command for the toolbox.&#34;)
+                return False
+
+        # Fallback to non-keyword list. Works only for tests that require no subtest identification.
+        if len(metadata_list) == 0:
+            metadata_list = list(metadata)
+
+        for metadata_file in metadata_list:
+            if os.path.isfile(metadata_file):
+                if os.path.exists(metadata_file):
+                    metafileAbsolute = &#34;&#34;
+                    metafileAbsDir   = &#34;&#34;
+
+                    # Try to find the working directory with the metadata files:
+                    if metadata_file is not None:
+                        metafileAbsolute = os.path.abspath(metadata_file)
+                        metafileAbsDir   = os.path.dirname(metafileAbsolute)
+
+                    resultFileDir = &#34;{testname}-results&#34;.format(testname=test_name)
+                    if metafileAbsDir is not None:
+                        if isinstance(metafileAbsDir, str):
+                            if len(metafileAbsDir) &gt; 0:
+                                resultFileDir = metafileAbsDir + &#34;/&#34; + resultFileDir
+
+                    evaluationStep.setResultFileDirectory(resultFileDir)
+
+                    pipeline = self.get_ff_pipeline_from_metadata(metadata_file, rescaleFactor, offsetAfterRescale)
+                    pipeline.addStep(evaluationStep)
+
+                    # Run pipeline: FF-correction and CTSimU test.
+                    pipeline.run()
+                else:
+                    raise Exception(f&#34;Cannot access metadata file: {metadata_file}&#34;)
+            else:
+                raise Exception(f&#34;Cannot access metadata file: {metadata_file}&#34;)
+
+        # Run the follow-up procedure to output the results.
+        if evaluationStep is not None:
+            evaluationStep.followUp()
+
+        return True</code></pre>
 </details>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.toolbox.Toolbox.correction"><code class="name flex">
+<span>def <span class="ident">correction</span></span>(<span>self, *metadata_files, **kwargs) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run flat-field and dark-field correction on projections
+defined in metadata files.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*metadata_files</code></strong> :&ensp;<code>str</code></dt>
+<dd>Strings that define CTSimU metadata files for uncorrected
+projection images.</dd>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>float</code></dt>
+<dd>
+<ul>
+<li>
+<p><code>rescaleFactor</code> : float</p>
+<p>Rescale factor after flat-field division. If <code>None</code>, the value
+will be imported from the key <code>max_intensity</code> in the metadata
+file, or set to <code>60000</code> if this fails.</p>
+<p>Standard value: <code>None</code></p>
+</li>
+<li>
+<p><code>offsetAfterRescale</code> : float</p>
+<p>Offset to be added to all pixels after flat-field correction
+and rescaling.</p>
+<p>Standard value: <code>0</code></p>
+</li>
+<li>
+<p><code>overwrite</code> : bool</p>
+<p>Overwrite existing, corrected projection images?</p>
+<p>Standard value: <code>True</code></p>
+</li>
+</ul>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def correction(self, *metadata_files, **kwargs) -&gt; bool:
+    &#34;&#34;&#34;Run flat-field and dark-field correction on projections
+    defined in metadata files.
+
+    Parameters
+    ----------
+    *metadata_files : str
+        Strings that define CTSimU metadata files for uncorrected
+        projection images.
+
+    **kwargs : float
+
+        + `rescaleFactor` : float
+
+            Rescale factor after flat-field division. If `None`, the value
+            will be imported from the key `max_intensity` in the metadata
+            file, or set to `60000` if this fails.
+
+            Standard value: `None`
+
+        + `offsetAfterRescale` : float
+
+            Offset to be added to all pixels after flat-field correction
+            and rescaling.
+
+            Standard value: `0`
+
+        + `overwrite` : bool
+
+            Overwrite existing, corrected projection images?
+
+            Standard value: `True`
+
+    Returns
+    -------
+    success : bool
+    &#34;&#34;&#34;
+
+    # Default values for keyword arguments:
+    settings = {
+        &#34;rescaleFactor&#34;: None,
+        &#34;offsetAfterRescale&#34;: 0,
+        &#34;overwrite&#34;: True
+    }
+
+    # Change default settings for keyword arguments that are set:
+    for key, value in kwargs.items():
+        if key in settings:
+            settings[key] = value
+
+    for metadata_file in metadata_files:
+        # Prepare a pipeline
+        try:
+            pipeline = self.get_ff_pipeline_from_metadata(metadata_file, settings[&#34;rescaleFactor&#34;], settings[&#34;offsetAfterRescale&#34;])
+            pipeline.run(overwrite=settings[&#34;overwrite&#34;])
+        except Exception as e:
+            log(f&#34;Error: {metadata_file}: {str(e)}&#34;)
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.toolbox.Toolbox.get_ff_pipeline_from_metadata"><code class="name flex">
+<span>def <span class="ident">get_ff_pipeline_from_metadata</span></span>(<span>self, metadata_file: str, rescaleFactor: float = None, offsetAfterRescale: float = 0) ‑> <a title="ctsimu.processing.pipeline.Pipeline" href="processing/pipeline.html#ctsimu.processing.pipeline.Pipeline">Pipeline</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a pipeline with a flat-field correction step based on the given metadata file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>metadata_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to a metadata file.</dd>
+<dt><strong><code>rescaleFactor</code></strong> :&ensp;<code>float</code></dt>
+<dd>
+<p>Rescale factor after flat-field division. If <code>None</code>, the value
+will be imported from key <code>max_intensity</code> in metadata file,
+or set to <code>60000</code> if this fails.</p>
+<p>Standard value: <code>None</code></p>
+</dd>
+<dt><strong><code>offsetAfterRescale</code></strong> :&ensp;<code>float</code></dt>
+<dd>
+<p>Offset to be added to all pixels after flat-field correction
+and rescaling.</p>
+<p>Standard value: <code>0</code></p>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>pipeline</code></strong> :&ensp;<code><a title="ctsimu.processing.pipeline.Pipeline" href="processing/pipeline.html#ctsimu.processing.pipeline.Pipeline">Pipeline</a></code></dt>
+<dd>Pipeline with a flat-field correction step.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_ff_pipeline_from_metadata(self, metadata_file:str, rescaleFactor:float=None, offsetAfterRescale:float=0) -&gt; &#39;Pipeline&#39;:
+    &#34;&#34;&#34;Create a pipeline with a flat-field correction step based on the given metadata file.
+
+    Parameters
+    ----------
+    metadata_file : str
+        Path to a metadata file.
+
+    rescaleFactor : float
+        Rescale factor after flat-field division. If `None`, the value
+        will be imported from key `max_intensity` in metadata file,
+        or set to `60000` if this fails.
+
+        Standard value: `None`
+
+    offsetAfterRescale : float
+        Offset to be added to all pixels after flat-field correction
+        and rescaling.
+
+        Standard value: `0`
+
+    Returns
+    -------
+    pipeline : ctsimu.processing.pipeline.Pipeline
+        Pipeline with a flat-field correction step.
+    &#34;&#34;&#34;
+    if os.path.isfile(metadata_file):
+        if os.path.exists(metadata_file):
+            metafileAbsolute = &#34;&#34;
+            metafileAbsDir   = &#34;&#34;
+
+            log(&#34;Metadata File: {mf}&#34;.format(mf=metadata_file))
+
+            jsonDict = read_json_file(metadata_file)
+
+            # Try to find the working directory with the metadata files:
+            metafileAbsolute = os.path.abspath(metadata_file)
+            metafileAbsDir   = os.path.dirname(metafileAbsolute)
+
+            projFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;)
+            if projFilename is not None:
+                if not os.path.isabs(projFilename): # Check if an absolute path is provided
+                    # If a relative path is provided, this path is
+                    # relative to the location of the metadata file:
+                    projFilename = join_dir_and_filename(metafileAbsDir, projFilename)
+
+            projNumber = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;number&#34;)
+            projDataType = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;)
+            projByteOrder = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;)
+            projHeaderSizeFile = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;)
+            projHeaderSizeImage = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;image&#34;)
+            width  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;x&#34;, &#34;value&#34;)
+            height = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dimensions&#34;, &#34;y&#34;, &#34;value&#34;)
+
+            if rescaleFactor is None:
+                rescaleFactor = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;max_intensity&#34;], 60000)
+
+            darkFilename = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;filename&#34;)
+            if darkFilename is not None:
+                if not os.path.isabs(darkFilename): # Check if an absolute path is provided
+                    # If a relative path is provided, this path is
+                    # relative to the location of the metadata file:
+                    darkFilename = join_dir_and_filename(metafileAbsDir, darkFilename)
+
+            darkNumber    = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;number&#34;], 0)
+            darkCorrected = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;dark_field&#34;, &#34;projections_corrected&#34;], False)
+
+            flatFilename  = get_value_or_none(jsonDict, &#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;filename&#34;)
+            if flatFilename is not None:
+                if not os.path.isabs(flatFilename): # Check if an absolute path is provided
+                    # If a relative path is provided, this path is
+                    # relative to the location of the metadata file:
+                    flatFilename = join_dir_and_filename(metafileAbsDir, flatFilename)
+
+            flatNumber    = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;number&#34;], 0)
+            flatCorrected = get_value(jsonDict, [&#34;output&#34;, &#34;projections&#34;, &#34;flat_field&#34;, &#34;projections_corrected&#34;], False)
+
+            if projFilename is None:
+                raise Exception(f&#34;No projection filename provided in metadata file: {metadata_file}&#34;)
+
+            projections = ImageStack(
+                filePattern=projFilename,
+                width=width,
+                height=height,
+                dataType=projDataType,
+                byteOrder=projByteOrder,
+                rawFileHeaderSize=projHeaderSizeFile,
+                rawImageHeaderSize=projHeaderSizeImage,
+                slices=projNumber,
+                flipByteOrder=False
+                )
+
+            ffCorrection = Step_FlatFieldCorrection()
+            ffCorrection.setFlatFieldRescaleFactor(rescaleFactor, offsetAfterRescale)
+
+            pipeline = Pipeline()
+            pipeline.setInputFileStack(projections)
+            pipeline.setOutputFileStack(None)  # set later, if corrections will be applied
+            ffCorrection.setOffsetCorrection(False)
+            ffCorrection.setGainCorrection(False)
+
+            correctedFilename = os.path.dirname(projFilename) + &#34;/corrected/&#34; + os.path.basename(projFilename)
+            outputFiles = ImageStack(
+                filePattern=correctedFilename,
+                width=width,
+                height=height,
+                dataType=projDataType,
+                byteOrder=projByteOrder,
+                rawFileHeaderSize=projHeaderSizeFile,
+                rawImageHeaderSize=projHeaderSizeImage,
+                slices=projNumber,
+                flipByteOrder=False
+                )
+            #log(&#34;Corrected projections are stored in: {correctedPath}&#34;.format(correctedPath=correctedFilename))
+
+            if not darkCorrected:
+                if darkNumber &gt; 0:
+                    if darkFilename is not None:
+                        darkStack = ImageStack(
+                                        filePattern=darkFilename,
+                                        width=width,
+                                        height=height,
+                                        dataType=projDataType,
+                                        byteOrder=projByteOrder,
+                                        rawFileHeaderSize=projHeaderSizeFile,
+                                        rawImageHeaderSize=projHeaderSizeImage,
+                                        slices=darkNumber,
+                                        flipByteOrder=False
+                                    )
+                        ffCorrection.setDarkFileStack(darkStack)
+                        pipeline.setOutputFileStack(outputFiles)
+
+            if not flatCorrected:
+                if flatNumber &gt; 0:
+                    if flatFilename is not None:
+                        flatStack = ImageStack(
+                                        filePattern=flatFilename,
+                                        width=width,
+                                        height=height,
+                                        dataType=projDataType,
+                                        byteOrder=projByteOrder,
+                                        rawFileHeaderSize=projHeaderSizeFile,
+                                        rawImageHeaderSize=projHeaderSizeImage,
+                                        slices=flatNumber,
+                                        flipByteOrder=False
+                                    )
+                        ffCorrection.setFlatFileStack(flatStack)
+                        pipeline.setOutputFileStack(outputFiles)
+
+            pipeline.addStep(ffCorrection)
+
+            return pipeline
+        else:
+            raise Exception(f&#34;Metadata file does not exist: {metadata_file}&#34;)
+    else:
+        raise Exception(f&#34;Invalid metadata file path: {metadata_file}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.toolbox.Toolbox.info"><code class="name flex">
+<span>def <span class="ident">info</span></span>(<span>self, *scenario_files: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Print geometry information about given scenario files.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*scenario_files</code></strong> :&ensp;<code>str</code></dt>
+<dd>Strings that define CTSimU scenario files.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def info(self, *scenario_files:str) -&gt; bool:
+    &#34;&#34;&#34;Print geometry information about given scenario files.
+
+    Parameters
+    ----------
+    *scenario_files : str
+        Strings that define CTSimU scenario files.
+
+    Returns
+    -------
+    success : bool
+    &#34;&#34;&#34;
+
+    for scenario_file in scenario_files:
+        s = Scenario(scenario_file)
+        s.set_frame(0)
+        geo = s.current_geometry()
+        print(geo.info())
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.toolbox.Toolbox.post_processing"><code class="name flex">
+<span>def <span class="ident">post_processing</span></span>(<span>self, *directories, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run post-processing recursively on whole directories.</p>
+<p>Searches for metadata files in the given directories
+(and their subdirectories) and automatically runs
+flat-field corrections and creates reconstruction config files.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*directories</code></strong> :&ensp;<code>str</code></dt>
+<dd>Directories in which recursive post-processing will take place.</dd>
+<dt><strong><code>**kwargs</code></strong></dt>
+<dd>
+<ul>
+<li>
+<p><code>correction</code> : <code>bool</code></p>
+<p>Run flat-field correction where applicable?</p>
+<p>Standard value: <code>False</code></p>
+</li>
+<li>
+<p><code>rescaleFactor</code> : <code>float</code></p>
+<p>Rescale factor after flat-field division. If <code>None</code>, the value
+will be imported from the key <code>max_intensity</code> in the metadata
+file, or set to <code>60000</code> if this fails.</p>
+<p>Standard value: <code>None</code></p>
+</li>
+<li>
+<p><code>offsetAfterRescale</code> : <code>float</code></p>
+<p>Offset to be added to all pixels after flat-field correction
+and rescaling.</p>
+<p>Standard value: <code>0</code></p>
+</li>
+<li>
+<p><code>recon_config</code> : <code>bool</code></p>
+<p>Create reconstruction config files?</p>
+<p>Standard value: <code>False</code></p>
+</li>
+<li>
+<p><code>openct_variant</code> : <code>str</code></p>
+<p>When reconstruction config files are created,
+the variant of the OpenCT config file.</p>
+<p>Possible values: <code>"free"</code>, <code>"circular"</code></p>
+<p>Standard value: <code>"free"</code></p>
+</li>
+<li>
+<p><code>openct_abspaths</code> : <code>bool</code></p>
+<p>Use absolute paths in OpenCT config file?</p>
+<p>Standard value: <code>False</code></p>
+</li>
+<li>
+<p><code>standardize</code> : <code>bool</code></p>
+<p>Standardize CTSimU scenario files to the
+file format version currently supported by the toolbox.</p>
+<p>The previous version of the file will be kept in a
+copy called {filename}.json.old</p>
+<p>Standard value: <code>False</code></p>
+</li>
+<li>
+<p><code>overwrite</code> : <code>bool</code></p>
+<p>Overwrite existing output files?</p>
+<p>Does not apply to standardization: the old scenario backup
+files will never be overwritten.</p>
+<p>Standard value: <code>False</code></p>
+</li>
+</ul>
+</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def post_processing(self, *directories, **kwargs):
+    &#34;&#34;&#34;Run post-processing recursively on whole directories.
+
+    Searches for metadata files in the given directories
+    (and their subdirectories) and automatically runs
+    flat-field corrections and creates reconstruction config files.
+
+    Parameters
+    ----------
+    *directories : str
+        Directories in which recursive post-processing will take place.
+
+    **kwargs
+
+        + `correction` : `bool`
+
+            Run flat-field correction where applicable?
+
+            Standard value: `False`
+
+        + `rescaleFactor` : `float`
+
+            Rescale factor after flat-field division. If `None`, the value
+            will be imported from the key `max_intensity` in the metadata
+            file, or set to `60000` if this fails.
+
+            Standard value: `None`
+
+        + `offsetAfterRescale` : `float`
+
+            Offset to be added to all pixels after flat-field correction
+            and rescaling.
+
+            Standard value: `0`
+
+        + `recon_config` : `bool`
+
+            Create reconstruction config files?
+
+            Standard value: `False`
+
+        + `openct_variant` : `str`
+
+            When reconstruction config files are created,
+            the variant of the OpenCT config file.
+
+            Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
+
+            Standard value: `&#34;free&#34;`
+
+        + `openct_abspaths` : `bool`
+
+            Use absolute paths in OpenCT config file?
+
+            Standard value: `False`
+
+        + `standardize` : `bool`
+
+            Standardize CTSimU scenario files to the
+            file format version currently supported by the toolbox.
+
+            The previous version of the file will be kept in a
+            copy called {filename}.json.old
+
+            Standard value: `False`
+
+        + `overwrite` : `bool`
+
+            Overwrite existing output files?
+
+            Does not apply to standardization: the old scenario backup
+            files will never be overwritten.
+
+            Standard value: `False`
+    &#34;&#34;&#34;
+
+    # Default values for keyword arguments:
+    settings = {
+        &#34;correction&#34;: False,
+        &#34;rescaleFactor&#34;: None,
+        &#34;offsetAfterRescale&#34;: 0,
+        &#34;recon_config&#34;: False,
+        &#34;cera&#34;: True,
+        &#34;openct&#34;: True,
+        &#34;openct_variant&#34;: &#34;free&#34;,
+        &#34;openct_abspaths&#34;: False,
+        &#34;standardize&#34;: False,
+        &#34;overwrite&#34;: False
+    }
+
+    # Change default settings for keyword arguments that are set:
+    for key, value in kwargs.items():
+        if key in settings:
+            settings[key] = value
+
+    # Walk through directories and collect paths of scenario files,
+    # projection metadata and reconstruction metadata files.
+    scenario_files = list()
+    metadata_projection = list()
+    metadata_reconstruction = list()
+    for directory in directories:
+        print(f&#34;Searching directory: {directory}&#34;)
+        walker = os.walk(directory)
+        for dirpath, dirnames, filenames in walker:
+            json_files = [f for f in filenames if f.endswith(&#34;.json&#34;)]
+            # Check JSON files:
+            for j in json_files:
+                try:
+                    jsonpath = join_dir_and_filename(dirpath, j)
+                    jd = read_json_file(jsonpath)
+                    file_type = get_value(jd, [&#34;file&#34;, &#34;file_type&#34;])
+
+                    if file_type is not None:
+                        if file_type == &#34;CTSimU Scenario&#34;:
+                            scenario_files.append(jsonpath)
+                            log(f&#34;   Found scenario file:           {j}&#34;)
+                        elif file_type == &#34;CTSimU Metadata&#34;:
+                            if json_exists(jd, [&#34;output&#34;, &#34;tomogram&#34;, &#34;filename&#34;]):
+                                # Seems to be a reconstruction file.
+                                metadata_reconstruction.append(jsonpath)
+                                log(f&#34;   Found reconstruction metadata: {j}&#34;)
+                            else:
+                                # Assume a projection metadata file.
+                                metadata_projection.append(jsonpath)
+                                log(f&#34;   Found projection metadata:     {j}&#34;)
+                except Exception as e:
+                    log(f&#34;Error: {str(e)}&#34;)
+
+    if settings[&#34;standardize&#34;] is True:
+        # Standardize scenario files.
+        for scenario_file in scenario_files:
+            try:
+                self.standardize(scenario_file, **settings)
+            except Exception as e:
+                log(f&#34;Error: {str(e)}&#34;)
+
+    if settings[&#34;recon_config&#34;] is True:
+        # Create reconstruction configs:
+        for metadata in metadata_reconstruction:
+            self.recon_config(metadata, **settings)
+
+    if settings[&#34;correction&#34;] is True:
+        # Run flat-field corrections:
+        for metadata in metadata_projection:
+            self.correction(metadata, **settings)
+
+    print(&#34;Done.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.toolbox.Toolbox.recon_config"><code class="name flex">
+<span>def <span class="ident">recon_config</span></span>(<span>self, *metadata_files, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create reconstruction configuration files for
+given metadata files.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*metadata_files</code></strong> :&ensp;<code>str</code></dt>
+<dd>Metadata files that describe reconstruction data.</dd>
+<dt><strong><code>**kwargs</code></strong></dt>
+<dd>
+<ul>
+<li>
+<p><code>openct</code> : <code>bool</code></p>
+<p>Create OpenCT config file?</p>
+<p>Standard value: <code>True</code></p>
+</li>
+<li>
+<p><code>cera</code> : <code>bool</code></p>
+<p>Create CERA config file?</p>
+<p>Standard value: <code>True</code></p>
+</li>
+<li>
+<p><code>openct_variant</code> : <code>str</code></p>
+<p>When reconstruction config files are created,
+the variant of the OpenCT config file.</p>
+<p>Possible values: <code>"free"</code>, <code>"circular"</code></p>
+<p>Standard value: <code>"free"</code></p>
+</li>
+<li>
+<p><code>openct_abspaths</code> : <code>bool</code></p>
+<p>Use absolute paths in OpenCT config file?</p>
+<p>Standard value: <code>False</code></p>
+</li>
+<li>
+<p><code>create_vgi</code> : <code>bool</code></p>
+<p>Create VGI file for the reconstruction volume?</p>
+<p>Standard value: <code>True</code></p>
+</li>
+<li>
+<p><code>overwrite</code> : <code>bool</code></p>
+<p>Overwrite existing output files?</p>
+<p>Standard value: <code>False</code></p>
+</li>
+</ul>
+</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def recon_config(self, *metadata_files, **kwargs):
+    &#34;&#34;&#34;Create reconstruction configuration files for
+    given metadata files.
+
+    Parameters
+    ----------
+    *metadata_files : str
+        Metadata files that describe reconstruction data.
+
+    **kwargs
+
+        + `openct` : `bool`
+
+            Create OpenCT config file?
+
+            Standard value: `True`
+
+        + `cera` : `bool`
+
+            Create CERA config file?
+
+            Standard value: `True`
+
+        + `openct_variant` : `str`
+
+            When reconstruction config files are created,
+            the variant of the OpenCT config file.
+
+            Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
+
+            Standard value: `&#34;free&#34;`
+
+        + `openct_abspaths` : `bool`
+
+            Use absolute paths in OpenCT config file?
+
+            Standard value: `False`
+
+        + `create_vgi` : `bool`
+
+            Create VGI file for the reconstruction volume?
+
+            Standard value: `True`
+
+        + `overwrite` : `bool`
+
+            Overwrite existing output files?
+
+            Standard value: `False`
+    &#34;&#34;&#34;
+
+    # Default values for keyword arguments:
+    settings = {
+        &#34;openct&#34;: True,
+        &#34;cera&#34;: True,
+        &#34;openct_variant&#34;: &#34;free&#34;,
+        &#34;openct_abspaths&#34;: False,
+        &#34;create_vgi&#34;: True,
+        &#34;overwrite&#34;: False
+    }
+
+    # Change default settings for keyword arguments that are set:
+    for key, value in kwargs.items():
+        if key in settings:
+            settings[key] = value
+
+    for metadata in metadata_files:
+        try:
+            log(f&#34;Creating recon config for: {metadata}&#34;)
+            s = Scenario()
+            s.read_metadata(filename=metadata, import_referenced_scenario=True)
+
+            recon_config_dir, recon_config_metafile = os.path.split(metadata)
+
+            basename, extension = os.path.splitext(recon_config_metafile)
+
+            # Remove &#39;_metadata&#39; from basename:
+            basename = basename.replace(&#34;_metadata&#34;, &#34;&#34;)
+
+            if settings[&#34;cera&#34;] is True:
+                cera_filename = basename + &#34;_cera.config&#34;
+                cera_filepath = join_dir_and_filename(recon_config_dir, cera_filename)
+                cera_write = True
+                if os.path.exists(cera_filepath):
+                    if settings[&#34;overwrite&#34;] is False:
+                        cera_write = False
+
+                if cera_write is True:
+                    log(f&#34;  Writing CERA config files to:   &#39;{recon_config_dir}&#39; ...&#34;)
+                    s.write_CERA_config(
+                        save_dir=recon_config_dir,
+                        basename=f&#34;{basename}_cera&#34;,
+                        create_vgi=settings[&#34;create_vgi&#34;]
+                        )
+
+            if settings[&#34;openct&#34;] is True:
+                openct_filename = basename + &#34;_openCT.json&#34;
+                openct_filepath = join_dir_and_filename(recon_config_dir, openct_filename)
+                openct_write = True
+                if os.path.exists(openct_filepath):
+                    if settings[&#34;overwrite&#34;] is False:
+                        openct_write = False
+
+                if openct_write is True:
+                    log(f&#34;  Writing OpenCT config files to: &#39;{recon_config_dir}&#39; ...&#34;)
+                    s.write_OpenCT_config(
+                        save_dir=recon_config_dir,
+                        basename=f&#34;{basename}_openCT&#34;,
+                        create_vgi=settings[&#34;create_vgi&#34;],
+                        variant=settings[&#34;openct_variant&#34;],
+                        abspaths=settings[&#34;openct_abspaths&#34;]
+                        )
+        except Exception as e:
+            log(f&#34;   Error: {metadata}: {str(e)}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.toolbox.Toolbox.standardize"><code class="name flex">
+<span>def <span class="ident">standardize</span></span>(<span>self, *scenario_files, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Standardize CTSimU scenario files to the
+file format version currently supported by the toolbox.</p>
+<p>The previous version of the file will be kept in a
+copy called {filename}.json.old</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*scenario_files</code></strong> :&ensp;<code>str</code></dt>
+<dd>Scenario files to be standardized.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def standardize(self, *scenario_files, **kwargs):
+    &#34;&#34;&#34;Standardize CTSimU scenario files to the
+    file format version currently supported by the toolbox.
+
+    The previous version of the file will be kept in a
+    copy called {filename}.json.old
+
+    Parameters
+    ----------
+    *scenario_files : str
+        Scenario files to be standardized.
+    &#34;&#34;&#34;
+    settings = {
+
+    }
+
+    # Change default settings for keyword arguments that are set:
+    for key, value in kwargs.items():
+        if key in settings:
+            settings[key] = value
+
+    now = datetime.now()
+
+    for scenario_file in scenario_files:
+        if os.path.isfile(scenario_file):
+            if os.path.exists(scenario_file):
+                log(f&#34;Standardizing {scenario_file} ...&#34;)
+                scenario_file_old = scenario_file + &#34;.old&#34;
+                if os.path.exists(scenario_file_old):
+                    # An old version seems to already exist.
+                    # Skip standardization of this file.
+                    log(f&#34;   Skipped standardization, old file exists:&#34;)
+                    log(f&#34;   {scenario_file_old}&#34;)
+                    continue
+                else:
+                    try:
+                        # Try to read scenario:
+                        s = Scenario(scenario_file)
+
+                        # Backup previous file:
+                        shutil.copy2(scenario_file, scenario_file_old)
+
+                        # Check if backup exists:
+                        if os.path.exists(scenario_file_old):
+                            s.file.date_changed.set(now.strftime(&#34;%Y-%m-%d&#34;))
+                            s.file.file_format_version.major.set(ctsimu_supported_scenario_version[&#34;major&#34;])
+                            s.file.file_format_version.minor.set(ctsimu_supported_scenario_version[&#34;minor&#34;])
+                            s.write(scenario_file)
+                        else:
+                            raise Exception(f&#34;Failed to create scenario backup file: {scenario_file_old}&#34;)
+                    except Exception as e:
+                        log(f&#34;   Error: {str(e)}&#34;)
+            else:
+                log(f&#34;   Error: file not found: &#39;{scenario_file}&#39;&#34;)
+        else:
+            log(f&#34;   Error: not a scenario file: &#39;{scenario_file}&#39;&#34;)</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.toolbox.Toolbox.test_2D"><code class="name flex">
+<span>def <span class="ident">test_2D</span></span>(<span>self, test_name: str, *metadata, **kwargs) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run a projection-based 2D test on projections
+defined in one or more metadata files.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>test_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifier of the CTSimU test, e.g. <code>"2D-SW-1"</code>.</dd>
+<dt><strong><code>*metadata</code></strong> :&ensp;<code>str</code></dt>
+<dd>One or more paths to metadata files.</dd>
+<dt><strong><code>**kwargs</code></strong> :&ensp;<code>str</code></dt>
+<dd>Possible subtest identifiers (as keys) and
+associated metadata files (as values).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_2D(self, test_name:str, *metadata, **kwargs) -&gt; bool:
+    &#34;&#34;&#34;Run a projection-based 2D test on projections
+    defined in one or more metadata files.
+
+    Parameters
+    ----------
+    test_name : str
+        Identifier of the CTSimU test, e.g. `&#34;2D-SW-1&#34;`.
+
+    *metadata : str
+        One or more paths to metadata files.
+
+    **kwargs : str
+        Possible subtest identifiers (as keys) and
+        associated metadata files (as values).
+
+    Returns
+    -------
+    success : bool
+    &#34;&#34;&#34;
+
+    evaluationStep = None
+    if test_name==&#34;2D-FB-2&#34;:
+        evaluationStep = Test2D_FB_2()
+    elif test_name==&#34;2D-FB-1&#34;:
+        evaluationStep = Test2D_FB_1()
+    elif test_name==&#34;2D-SW-1&#34;:
+        evaluationStep = Test2D_SW_1()
+    elif test_name==&#34;2D-SW-2&#34;:
+        evaluationStep = Test2D_SW_2()
+    elif test_name==&#34;2D-SW-3&#34;:
+        evaluationStep = Test2D_SW_3()
+    elif test_name==&#34;2D-SW-4&#34;:
+        evaluationStep = Test2D_SW_4()
+    elif test_name==&#34;2D-DW-1&#34;:
+        evaluationStep = Test2D_DW_1()
+    elif test_name==&#34;2D-WE-1&#34;:
+        evaluationStep = Test2D_WE_1()
+    elif test_name==&#34;2D-WE-2&#34;:
+        evaluationStep = Test2D_WE_2()
+    elif test_name==&#34;2D-HS-1&#34;:
+        evaluationStep = Test2D_HS_1()
+    else:
+        log(&#34;Not a valid test name: {test_name}&#34;.format(test_name=test_name))
+        return False
+
+    # The flat-field rescale factor is fixed for all tests:
+    rescaleFactor = float(60000.0)
+    offsetAfterRescale = 0
+
+    # Evaluate keyword list and see if metadata files are provided
+    # together with keywords that might identify subtest scenarios.
+    metadata_list = []
+    for key, metafile in kwargs.items():
+        if evaluationStep is not None:
+            evaluationStep.addSubtest(key)
+            metadata_list.append(metafile)
+        else:
+            log(f&#34;&#39;{test_name}&#39; is not a valid command for the toolbox.&#34;)
+            return False
+
+    # Fallback to non-keyword list. Works only for tests that require no subtest identification.
+    if len(metadata_list) == 0:
+        metadata_list = list(metadata)
+
+    for metadata_file in metadata_list:
+        if os.path.isfile(metadata_file):
+            if os.path.exists(metadata_file):
+                metafileAbsolute = &#34;&#34;
+                metafileAbsDir   = &#34;&#34;
+
+                # Try to find the working directory with the metadata files:
+                if metadata_file is not None:
+                    metafileAbsolute = os.path.abspath(metadata_file)
+                    metafileAbsDir   = os.path.dirname(metafileAbsolute)
+
+                resultFileDir = &#34;{testname}-results&#34;.format(testname=test_name)
+                if metafileAbsDir is not None:
+                    if isinstance(metafileAbsDir, str):
+                        if len(metafileAbsDir) &gt; 0:
+                            resultFileDir = metafileAbsDir + &#34;/&#34; + resultFileDir
+
+                evaluationStep.setResultFileDirectory(resultFileDir)
+
+                pipeline = self.get_ff_pipeline_from_metadata(metadata_file, rescaleFactor, offsetAfterRescale)
+                pipeline.addStep(evaluationStep)
+
+                # Run pipeline: FF-correction and CTSimU test.
+                pipeline.run()
+            else:
+                raise Exception(f&#34;Cannot access metadata file: {metadata_file}&#34;)
+        else:
+            raise Exception(f&#34;Cannot access metadata file: {metadata_file}&#34;)
+
+    # Run the follow-up procedure to output the results.
+    if evaluationStep is not None:
+        evaluationStep.followUp()
+
+    return True</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -548,7 +2596,12 @@ class Toolbox:
 </header>
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#flat-field-correction">Flat-field correction</a></li>
+<li><a href="#reconstruction-configurations">Reconstruction configurations</a></li>
+<li><a href="#scenario-standardization">Scenario standardization</a></li>
+<li><a href="#recursive-post-processing">Recursive post-processing</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
@@ -560,6 +2613,15 @@ class Toolbox:
 <ul>
 <li>
 <h4><code><a title="ctsimu.toolbox.Toolbox" href="#ctsimu.toolbox.Toolbox">Toolbox</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.toolbox.Toolbox.correction" href="#ctsimu.toolbox.Toolbox.correction">correction</a></code></li>
+<li><code><a title="ctsimu.toolbox.Toolbox.get_ff_pipeline_from_metadata" href="#ctsimu.toolbox.Toolbox.get_ff_pipeline_from_metadata">get_ff_pipeline_from_metadata</a></code></li>
+<li><code><a title="ctsimu.toolbox.Toolbox.info" href="#ctsimu.toolbox.Toolbox.info">info</a></code></li>
+<li><code><a title="ctsimu.toolbox.Toolbox.post_processing" href="#ctsimu.toolbox.Toolbox.post_processing">post_processing</a></code></li>
+<li><code><a title="ctsimu.toolbox.Toolbox.recon_config" href="#ctsimu.toolbox.Toolbox.recon_config">recon_config</a></code></li>
+<li><code><a title="ctsimu.toolbox.Toolbox.standardize" href="#ctsimu.toolbox.Toolbox.standardize">standardize</a></code></li>
+<li><code><a title="ctsimu.toolbox.Toolbox.test_2D" href="#ctsimu.toolbox.Toolbox.test_2D">test_2D</a></code></li>
+</ul>
 </li>
 </ul>
 </li>

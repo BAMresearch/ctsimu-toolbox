@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ctsimu.evaluation.test2D_FB_2 API documentation</title>
+<meta name="description" content="Test 2D-FB-2: Laws of distance and radiation incidence …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.evaluation.test2D_FB_2</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="test-2d-fb-2-laws-of-distance-and-radiation-incidence">Test 2D-FB-2: Laws of distance and radiation incidence</h1>
+<p>This test scenario checks if the intensity profile is correctly rendered under the assumption of an isotropic point source. The inverse square law and the law of radiation incidence must be obeyed:</p>
+<p><span><span class="MathJax_Preview">I\sim \cos(\alpha)/r^2</span><script type="math/tex; mode=display">I\sim \cos(\alpha)/r^2</script></span></p>
+<p>The test compares the central horizontal row of pixels at index <code>y=250</code> with the analytical intensity profile.</p>
+<p>To run this test evaluation, you can simply pass the name of the test and the metadata file which describes the projection that you want to evaluate to the <code><a title="ctsimu.toolbox.Toolbox" href="../toolbox.html#ctsimu.toolbox.Toolbox">Toolbox</a></code>:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;2D-FB-2&quot;, &quot;2D-FB-2_metadata.json&quot;)
+</code></pre>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;# Test 2D-FB-2: Laws of distance and radiation incidence
+
+.. include:: ./test2D_FB_2.md
+&#34;&#34;&#34;
+
+from ..test import *
+from ..helpers import *
+from ..scenario import Scenario
+
+class Test2D_FB_2(generalTest):
+    &#34;&#34;&#34; CTSimU test 2D-FB-2: 1/r^2 law, cos(alpha) intensity on pixel. &#34;&#34;&#34;
+    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
+        generalTest.__init__(
+            self,
+            testName=&#34;2D-FB-2&#34;,
+            name=name,
+            nExpectedRuns=1,
+            resultFileDirectory=resultFileDirectory,
+            rawOutput=rawOutput)
+        
+        self.geometry = None
+        self.analyticalIntensityProfileImage = None  # stores the image after preparation
+
+        # Horizontal profile data:
+        self.lineNr = 0
+        self.profile_analytical = None
+        self.profile_measured   = None
+
+        # Maximum absolute grey value difference between analytical image and mesured image: 
+        self.maxDiff = 0
+
+        # RMS of GV differences:
+        self.rmsGVDiff = 0
+
+
+    def prepare(self):
+        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+        if not isinstance(self.pipe, Pipeline):
+            self.prepared = False
+            raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
+
+        if not self.prepared:
+            self.jsonScenarioFile = &#34;2D-FB-2_2021-03-24v06r00dp.json&#34;
+
+            if(self.jsonScenarioFile is not None):
+                self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+                self.geometry = self.scenario.current_geometry()
+                self.geometry.update()
+                self.analyticalIntensityProfileImage = self.geometry.create_detector_flat_field_analytical()
+
+                # Raise normalized image to maximum grey value of 60000,
+                # as demanded by test 2D-FB-2:
+                self.analyticalIntensityProfileImage.renormalize(newMin=0, newMax=60000.0, currentMin=0)
+
+                self.prepared = True
+            else:
+                raise Exception(&#34;Test 2D-FB-2: Please provide a JSON scenario description.&#34;)
+
+
+    def run(self, image):
+        self.prepare()
+        self.currentRun += 1
+
+        self.lineNr = int(round(self.geometry.brightest_spot_detector.y()))
+        log(&#34;Getting horizontal profile for detector row {l}.&#34;.format(l=self.lineNr))
+
+        # Horizontal profile of the analytical image along the central line:
+        self.profile_analytical = self.analyticalIntensityProfileImage.horizontalProfile(self.lineNr)
+
+        # Horizontal profile of the image to be evaluated:
+        self.profile_measured = image.horizontalProfile(self.lineNr)
+
+        return image
+
+
+    def followUp(self):
+        log(&#34;Writing evaluation results...&#34;)
+        nPixels = len(self.profile_analytical)
+        if len(self.profile_analytical) == len(self.profile_measured):
+            csvText = &#34;# x [px]\tAnalytical GV\tMeasured GV\tDifference\tRel. Deviation [%]\n&#34;
+            squaresSum = 0
+            self.maxDiff = 0
+            for i in range(nPixels):
+                gv0 = self.profile_analytical[i]
+                gv1 = self.profile_measured[i]
+                delta = gv0 - gv1
+                relativeDeviation = 0.0
+                if gv0 != 0:
+                    relativeDeviation = (100.0*delta)/gv0
+
+                squaresSum += delta*delta
+
+                if abs(delta) &gt; self.maxDiff:
+                    self.maxDiff = abs(delta)
+
+                csvText += &#34;{i}\t{gvAnalytical:.3f}\t{gvMeasured:.3f}\t{delta:.3f}\t{relDev:.3f}\n&#34;.format(i=i, gvAnalytical=gv0, gvMeasured=gv1, delta=delta, relDev=relativeDeviation)
+
+            self.rmsGVDiff = math.sqrt(squaresSum / nPixels)
+
+            # Write evaluation text file:
+            header = &#34;# Evaluation of Test {name}:\n# Max Absolute GV Difference: {maxAbsDiff:.5f}\n# RMS GV Difference:  {rms:.5f}\n# \n# Horizontal profile along y={line}:\n&#34;.format(name=self.name, maxAbsDiff=self.maxDiff, rms=self.rmsGVDiff, line=self.lineNr)
+            csvText = header + csvText
+
+            csvFileName = &#34;{dir}/{name}_summary.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+            with open(csvFileName, &#39;w&#39;) as csvFile:
+                csvFile.write(csvText)
+                csvFile.close()
+
+
+            # Write analytical image:
+            if self.rawOutput:
+                self.analyticalIntensityProfileImage.saveRAW(&#34;{dir}/{name}_analytical.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+            else: # TIFF
+                self.analyticalIntensityProfileImage.save(&#34;{dir}/{name}_analytical.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+
+            self.plotResults()
+
+            log(&#34;Evaluation data for test {name} written to {dir}.&#34;.format(name=self.name, dir=self.resultFileDirectory))
+
+        else:
+            raise Exception(&#34;Profile width mismatch between analytical result ({}) and measured result ({}).&#34;.format(len(profile_analytical), len(profile_measured)))
+
+    def plotResults(self):
+        try:
+            log(&#34;Plotting evaluation results...&#34;)
+            import matplotlib
+            import matplotlib.pyplot
+            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
+            xValues = numpy.linspace(0, len(self.profile_analytical), len(self.profile_analytical), endpoint=False)
+            absDev = self.profile_analytical - self.profile_measured
+            relDev = 100.0*absDev / self.profile_analytical
+
+            matplotlib.use(&#34;agg&#34;)
+
+            fig, (axUpper, axLower) = matplotlib.pyplot.subplots(nrows=2, ncols=1, figsize=(9, 9))
+            
+            # Grey Value Profile:
+            axUpper.plot(xValues, self.profile_analytical, linewidth=8.0, label=&#34;Analytical&#34;, color=&#39;#ffaa00&#39;)
+            axUpper.plot(xValues, self.profile_measured,   linewidth=2.0, label=&#34;Measured&#34;, color=&#39;#1f77b4&#39;)
+            axUpper.set_xlabel(&#34;Horizontal distance in px&#34;)
+            axUpper.set_ylabel(&#34;Grey value&#34;)
+            axUpper.set_title(&#34;Grey value line profile along y = {line} px&#34;.format(line=self.lineNr))
+            axUpper.xaxis.set_major_locator(MultipleLocator(100))
+            axUpper.xaxis.set_major_formatter(FormatStrFormatter(&#39;%d&#39;))
+            axUpper.xaxis.set_minor_locator(MultipleLocator(50))
+            axUpper.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            axUpper.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            axUpper.legend()
+
+            # Absolute Deviation:
+            line_absolute = axLower.plot(xValues, absDev, linewidth=1.25, label=&#34;Absolute&#34;, color=&#39;#ffaa00&#39;)
+            axLower.set_xlabel(&#34;Horizontal distance in px&#34;)
+            axLower.set_ylabel(&#34;Absolute deviation in grey values&#34;)
+            axLower.set_title(&#34;Deviation = Analytical - Measured&#34;)
+            axLower.xaxis.set_major_locator(MultipleLocator(100))
+            axLower.xaxis.set_major_formatter(FormatStrFormatter(&#39;%d&#39;))
+            axLower.xaxis.set_minor_locator(MultipleLocator(50))
+            axLower.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            axLower.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            
+            # Relative Deviation:
+            axLower2 = axLower.twinx()
+            axLower2.axhline(0, linestyle=&#39;-&#39;, linewidth=1.25, color=&#39;#000000&#39;)
+            line_relative = axLower2.plot(xValues, relDev, linewidth=1.25, label=&#34;Relative&#34;, color=&#39;#1f77b4&#39;)
+            axLower2.set_ylabel(&#34;Relative deviation in %&#34;)
+            maxDev = max(abs(relDev.min()), abs(relDev.max()))
+            axLower2.set_ylim([-1.5*maxDev, 1.5*maxDev])
+
+            # Add all relevant lines to legend:
+            lines_all = line_absolute + line_relative
+            labels = [l.get_label() for l in lines_all]
+            axLower.legend(lines_all, labels, loc=0)      
+
+            fig.tight_layout(pad=5.0)
+
+            plotFilename = &#34;{dir}/{name}_results.png&#34;.format(dir=self.resultFileDirectory, name=self.name)
+            matplotlib.pyplot.savefig(plotFilename)
+            fig.clf()
+            matplotlib.pyplot.close(&#39;all&#39;)
+        except Exception as e:
+            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.evaluation.test2D_FB_2.Test2D_FB_2"><code class="flex name class">
+<span>class <span class="ident">Test2D_FB_2</span></span>
+<span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CTSimU test 2D-FB-2: 1/r^2 law, cos(alpha) intensity on pixel.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Test2D_FB_2(generalTest):
+    &#34;&#34;&#34; CTSimU test 2D-FB-2: 1/r^2 law, cos(alpha) intensity on pixel. &#34;&#34;&#34;
+    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
+        generalTest.__init__(
+            self,
+            testName=&#34;2D-FB-2&#34;,
+            name=name,
+            nExpectedRuns=1,
+            resultFileDirectory=resultFileDirectory,
+            rawOutput=rawOutput)
+        
+        self.geometry = None
+        self.analyticalIntensityProfileImage = None  # stores the image after preparation
+
+        # Horizontal profile data:
+        self.lineNr = 0
+        self.profile_analytical = None
+        self.profile_measured   = None
+
+        # Maximum absolute grey value difference between analytical image and mesured image: 
+        self.maxDiff = 0
+
+        # RMS of GV differences:
+        self.rmsGVDiff = 0
+
+
+    def prepare(self):
+        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+        if not isinstance(self.pipe, Pipeline):
+            self.prepared = False
+            raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
+
+        if not self.prepared:
+            self.jsonScenarioFile = &#34;2D-FB-2_2021-03-24v06r00dp.json&#34;
+
+            if(self.jsonScenarioFile is not None):
+                self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+                self.geometry = self.scenario.current_geometry()
+                self.geometry.update()
+                self.analyticalIntensityProfileImage = self.geometry.create_detector_flat_field_analytical()
+
+                # Raise normalized image to maximum grey value of 60000,
+                # as demanded by test 2D-FB-2:
+                self.analyticalIntensityProfileImage.renormalize(newMin=0, newMax=60000.0, currentMin=0)
+
+                self.prepared = True
+            else:
+                raise Exception(&#34;Test 2D-FB-2: Please provide a JSON scenario description.&#34;)
+
+
+    def run(self, image):
+        self.prepare()
+        self.currentRun += 1
+
+        self.lineNr = int(round(self.geometry.brightest_spot_detector.y()))
+        log(&#34;Getting horizontal profile for detector row {l}.&#34;.format(l=self.lineNr))
+
+        # Horizontal profile of the analytical image along the central line:
+        self.profile_analytical = self.analyticalIntensityProfileImage.horizontalProfile(self.lineNr)
+
+        # Horizontal profile of the image to be evaluated:
+        self.profile_measured = image.horizontalProfile(self.lineNr)
+
+        return image
+
+
+    def followUp(self):
+        log(&#34;Writing evaluation results...&#34;)
+        nPixels = len(self.profile_analytical)
+        if len(self.profile_analytical) == len(self.profile_measured):
+            csvText = &#34;# x [px]\tAnalytical GV\tMeasured GV\tDifference\tRel. Deviation [%]\n&#34;
+            squaresSum = 0
+            self.maxDiff = 0
+            for i in range(nPixels):
+                gv0 = self.profile_analytical[i]
+                gv1 = self.profile_measured[i]
+                delta = gv0 - gv1
+                relativeDeviation = 0.0
+                if gv0 != 0:
+                    relativeDeviation = (100.0*delta)/gv0
+
+                squaresSum += delta*delta
+
+                if abs(delta) &gt; self.maxDiff:
+                    self.maxDiff = abs(delta)
+
+                csvText += &#34;{i}\t{gvAnalytical:.3f}\t{gvMeasured:.3f}\t{delta:.3f}\t{relDev:.3f}\n&#34;.format(i=i, gvAnalytical=gv0, gvMeasured=gv1, delta=delta, relDev=relativeDeviation)
+
+            self.rmsGVDiff = math.sqrt(squaresSum / nPixels)
+
+            # Write evaluation text file:
+            header = &#34;# Evaluation of Test {name}:\n# Max Absolute GV Difference: {maxAbsDiff:.5f}\n# RMS GV Difference:  {rms:.5f}\n# \n# Horizontal profile along y={line}:\n&#34;.format(name=self.name, maxAbsDiff=self.maxDiff, rms=self.rmsGVDiff, line=self.lineNr)
+            csvText = header + csvText
+
+            csvFileName = &#34;{dir}/{name}_summary.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+            with open(csvFileName, &#39;w&#39;) as csvFile:
+                csvFile.write(csvText)
+                csvFile.close()
+
+
+            # Write analytical image:
+            if self.rawOutput:
+                self.analyticalIntensityProfileImage.saveRAW(&#34;{dir}/{name}_analytical.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
+            else: # TIFF
+                self.analyticalIntensityProfileImage.save(&#34;{dir}/{name}_analytical.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
+
+            self.plotResults()
+
+            log(&#34;Evaluation data for test {name} written to {dir}.&#34;.format(name=self.name, dir=self.resultFileDirectory))
+
+        else:
+            raise Exception(&#34;Profile width mismatch between analytical result ({}) and measured result ({}).&#34;.format(len(profile_analytical), len(profile_measured)))
+
+    def plotResults(self):
+        try:
+            log(&#34;Plotting evaluation results...&#34;)
+            import matplotlib
+            import matplotlib.pyplot
+            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
+            xValues = numpy.linspace(0, len(self.profile_analytical), len(self.profile_analytical), endpoint=False)
+            absDev = self.profile_analytical - self.profile_measured
+            relDev = 100.0*absDev / self.profile_analytical
+
+            matplotlib.use(&#34;agg&#34;)
+
+            fig, (axUpper, axLower) = matplotlib.pyplot.subplots(nrows=2, ncols=1, figsize=(9, 9))
+            
+            # Grey Value Profile:
+            axUpper.plot(xValues, self.profile_analytical, linewidth=8.0, label=&#34;Analytical&#34;, color=&#39;#ffaa00&#39;)
+            axUpper.plot(xValues, self.profile_measured,   linewidth=2.0, label=&#34;Measured&#34;, color=&#39;#1f77b4&#39;)
+            axUpper.set_xlabel(&#34;Horizontal distance in px&#34;)
+            axUpper.set_ylabel(&#34;Grey value&#34;)
+            axUpper.set_title(&#34;Grey value line profile along y = {line} px&#34;.format(line=self.lineNr))
+            axUpper.xaxis.set_major_locator(MultipleLocator(100))
+            axUpper.xaxis.set_major_formatter(FormatStrFormatter(&#39;%d&#39;))
+            axUpper.xaxis.set_minor_locator(MultipleLocator(50))
+            axUpper.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            axUpper.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            axUpper.legend()
+
+            # Absolute Deviation:
+            line_absolute = axLower.plot(xValues, absDev, linewidth=1.25, label=&#34;Absolute&#34;, color=&#39;#ffaa00&#39;)
+            axLower.set_xlabel(&#34;Horizontal distance in px&#34;)
+            axLower.set_ylabel(&#34;Absolute deviation in grey values&#34;)
+            axLower.set_title(&#34;Deviation = Analytical - Measured&#34;)
+            axLower.xaxis.set_major_locator(MultipleLocator(100))
+            axLower.xaxis.set_major_formatter(FormatStrFormatter(&#39;%d&#39;))
+            axLower.xaxis.set_minor_locator(MultipleLocator(50))
+            axLower.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+            axLower.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
+            
+            # Relative Deviation:
+            axLower2 = axLower.twinx()
+            axLower2.axhline(0, linestyle=&#39;-&#39;, linewidth=1.25, color=&#39;#000000&#39;)
+            line_relative = axLower2.plot(xValues, relDev, linewidth=1.25, label=&#34;Relative&#34;, color=&#39;#1f77b4&#39;)
+            axLower2.set_ylabel(&#34;Relative deviation in %&#34;)
+            maxDev = max(abs(relDev.min()), abs(relDev.max()))
+            axLower2.set_ylim([-1.5*maxDev, 1.5*maxDev])
+
+            # Add all relevant lines to legend:
+            lines_all = line_absolute + line_relative
+            labels = [l.get_label() for l in lines_all]
+            axLower.legend(lines_all, labels, loc=0)      
+
+            fig.tight_layout(pad=5.0)
+
+            plotFilename = &#34;{dir}/{name}_results.png&#34;.format(dir=self.resultFileDirectory, name=self.name)
+            matplotlib.pyplot.savefig(plotFilename)
+            fig.clf()
+            matplotlib.pyplot.close(&#39;all&#39;)
+        except Exception as e:
+            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
+<li><a title="ctsimu.processing.step.Step" href="../processing/step.html#ctsimu.processing.step.Step">Step</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.evaluation.test2D_FB_2.Test2D_FB_2.prepare"><code class="name flex">
+<span>def <span class="ident">prepare</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare(self):
+    &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+    if not isinstance(self.pipe, Pipeline):
+        self.prepared = False
+        raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
+
+    if not self.prepared:
+        self.jsonScenarioFile = &#34;2D-FB-2_2021-03-24v06r00dp.json&#34;
+
+        if(self.jsonScenarioFile is not None):
+            self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
+            self.geometry = self.scenario.current_geometry()
+            self.geometry.update()
+            self.analyticalIntensityProfileImage = self.geometry.create_detector_flat_field_analytical()
+
+            # Raise normalized image to maximum grey value of 60000,
+            # as demanded by test 2D-FB-2:
+            self.analyticalIntensityProfileImage.renormalize(newMin=0, newMax=60000.0, currentMin=0)
+
+            self.prepared = True
+        else:
+            raise Exception(&#34;Test 2D-FB-2: Please provide a JSON scenario description.&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ctsimu.test.generalTest.followUp" href="../processing/step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.plotResults" href="../test.html#ctsimu.test.generalTest.plotResults">plotResults</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.run" href="../processing/step.html#ctsimu.processing.step.Step.run">run</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setName" href="../test.html#ctsimu.test.generalTest.setName">setName</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setRawOutput" href="../test.html#ctsimu.test.generalTest.setRawOutput">setRawOutput</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setResultFileDirectory" href="../test.html#ctsimu.test.generalTest.setResultFileDirectory">setResultFileDirectory</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#test-2d-fb-2-laws-of-distance-and-radiation-incidence">Test 2D-FB-2: Laws of distance and radiation incidence</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu.evaluation" href="index.html">ctsimu.evaluation</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.evaluation.test2D_FB_2.Test2D_FB_2" href="#ctsimu.evaluation.test2D_FB_2.Test2D_FB_2">Test2D_FB_2</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.evaluation.test2D_FB_2.Test2D_FB_2.prepare" href="#ctsimu.evaluation.test2D_FB_2.Test2D_FB_2.prepare">prepare</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

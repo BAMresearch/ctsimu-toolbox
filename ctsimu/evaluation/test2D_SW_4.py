@@ -1,4 +1,8 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-SW-4: Scattering
+
+.. include:: ./test2D_SW_4.md
+"""
 from ..test import *
 from ..helpers import *
 

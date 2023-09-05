@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-FB-2: Laws of distance and radiation incidence
+
+.. include:: ./test2D_FB_2.md
+"""
+
 from ..test import *
 from ..helpers import *
 from ..scenario import Scenario

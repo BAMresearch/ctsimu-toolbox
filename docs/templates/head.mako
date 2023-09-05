@@ -23,3 +23,18 @@
 
 <style>${homelink()}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+    border-top: 2px solid #000;
+    border-bottom:1px solid #000;
+}
+tbody {
+    border-bottom: 2px solid #000;
+}
+th, td {
+    padding: 0.1em;
+    padding-right: 1em;
+    white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>

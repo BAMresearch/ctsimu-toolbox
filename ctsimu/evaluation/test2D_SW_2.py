@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-SW-2: Spectral filtering
+
+.. include:: ./test2D_SW_2.md
+"""
+
 from ..test import *
 from ..helpers import *
 

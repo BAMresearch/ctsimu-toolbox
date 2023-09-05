@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-SW-1: Scintillator characteristics
+
+.. include:: ./test2D_SW_1.md
+"""
+
 from ..test import *
 from ..helpers import *
 

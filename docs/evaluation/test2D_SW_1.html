@@ -1,0 +1,1561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>ctsimu.evaluation.test2D_SW_1 API documentation</title>
+<meta name="description" content="Test 2D-SW-1: Scintillator characteristics …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.evaluation.test2D_SW_1</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="test-2d-sw-1-scintillator-characteristics">Test 2D-SW-1: Scintillator characteristics</h1>
+<p>In this scenario, the imaging characteristics of specific scintillators is tested for different X-ray source spectra and two different object materials. Two spherical step wedges are used, one made of aluminum, the other one of iron. Each wedge features nine steps of different thickness. The test compares their gray values (as well as the free beam gray value) for each combination of scintillator, material and spectrum (both monochromatic and polychromatic) to a corresponding ideal image taken with an <em>ideal</em> detector, i.e., one whose gray values correspond linearly to the intensity of incident radiation.</p>
+<p>The following table lists all the scenarios that need to be simulated for this test, along with the keyword that needs to be used to correctly identify each projection metadata file for the toolbox.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keyword</th>
+<th style="text-align: left;">Material</th>
+<th style="text-align: left;">Spectrum</th>
+<th style="text-align: left;">Scintillator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>D1_Al_50</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">50 keV mono</td>
+<td style="text-align: left;">ideal</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D1_Al_120</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">120 kV poly</td>
+<td style="text-align: left;">ideal</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D1_Fe_100</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">100 keV mono</td>
+<td style="text-align: left;">ideal</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D1_Fe_200</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">200 kV poly</td>
+<td style="text-align: left;">ideal</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D2_Al_50</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">50 keV mono</td>
+<td style="text-align: left;">200 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D2_Al_120</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">120 kV poly</td>
+<td style="text-align: left;">200 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D2_Fe_100</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">100 keV mono</td>
+<td style="text-align: left;">200 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D2_Fe_200</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">200 kV poly</td>
+<td style="text-align: left;">200 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D3_Al_50</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">50 keV mono</td>
+<td style="text-align: left;">500 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D3_Al_120</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">120 kV poly</td>
+<td style="text-align: left;">500 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D3_Fe_100</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">100 keV mono</td>
+<td style="text-align: left;">500 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D3_Fe_200</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">200 kV poly</td>
+<td style="text-align: left;">500 &mu;m CsI</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D4_Al_50</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">50 keV mono</td>
+<td style="text-align: left;">500 &mu;m Gd<sub>2</sub>O<sub>2</sub>S</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D4_Al_120</code></td>
+<td style="text-align: left;">Al</td>
+<td style="text-align: left;">120 kV poly</td>
+<td style="text-align: left;">500 &mu;m Gd<sub>2</sub>O<sub>2</sub>S</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D4_Fe_100</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">100 keV mono</td>
+<td style="text-align: left;">500 &mu;m Gd<sub>2</sub>O<sub>2</sub>S</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>D4_Fe_200</code></td>
+<td style="text-align: left;">Fe</td>
+<td style="text-align: left;">200 kV poly</td>
+<td style="text-align: left;">500 &mu;m Gd<sub>2</sub>O<sub>2</sub>S</td>
+</tr>
+</tbody>
+</table>
+<p>An example call for this test scenario looks like this:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;2D-SW-1&quot;,
+    D1_Al_50  = &quot;2D-SW-1_Al_Detector1_50keV-mono_metadata.json&quot;,
+    D1_Al_120 = &quot;2D-SW-1_Al_Detector1_120kV-poly_metadata.json&quot;,
+    D1_Fe_100 = &quot;2D-SW-1_Fe_Detector1_100keV-mono_metadata.json&quot;,
+    D1_Fe_200 = &quot;2D-SW-1_Fe_Detector1_200kV-poly_metadata.json&quot;,
+    D2_Al_50  = &quot;2D-SW-1_Al_Detector2_50keV-mono_metadata.json&quot;,
+    D2_Al_120 = &quot;2D-SW-1_Al_Detector2_120kV-poly_metadata.json&quot;,
+    D2_Fe_100 = &quot;2D-SW-1_Fe_Detector2_100keV-mono_metadata.json&quot;,
+    D2_Fe_200 = &quot;2D-SW-1_Fe_Detector2_200kV-poly_metadata.json&quot;,
+    D3_Al_50  = &quot;2D-SW-1_Al_Detector3_50keV-mono_metadata.json&quot;,
+    D3_Al_120 = &quot;2D-SW-1_Al_Detector3_120kV-poly_metadata.json&quot;,
+    D3_Fe_100 = &quot;2D-SW-1_Fe_Detector3_100keV-mono_metadata.json&quot;,
+    D3_Fe_200 = &quot;2D-SW-1_Fe_Detector3_200kV-poly_metadata.json&quot;,
+    D4_Al_50  = &quot;2D-SW-1_Al_Detector4_50keV-mono_metadata.json&quot;,
+    D4_Al_120 = &quot;2D-SW-1_Al_Detector4_120kV-poly_metadata.json&quot;,
+    D4_Fe_100 = &quot;2D-SW-1_Fe_Detector4_100keV-mono_metadata.json&quot;,
+    D4_Fe_200 = &quot;2D-SW-1_Fe_Detector4_200kV-poly_metadata.json&quot;
+)
+</code></pre>
+<p>If only a sub-sample should be tested, it is not necessary to provide all simulation results at once. However, if a scintillator scenario misses its corresponding ideal detector scenario, it cannot be evaluated.</p>
+<p>For the evaluation, the ratio of scintillator gray value to ideal detector gray value is calculated for each step of the spherical wedge, as well as for a free beam region. The grey values are measured as the pixel mean within the regions of interest (ROI) given in the table below and illustrated in the following image, defined as rectangles with an upper left corner coordinate (x<sub>0</sub>, y<sub>0</sub>) in the pixel coordinate system which is included in the ROI, and a lower right corner coordinate (x<sub>1</sub>, y<sub>1</sub>) which is not included anymore in the ROI.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Step</th>
+<th style="text-align: left;">x<sub>0</sub></th>
+<th style="text-align: left;">y<sub>0</sub></th>
+<th style="text-align: left;">x<sub>1</sub></th>
+<th style="text-align: left;">y<sub>1</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">854</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">875</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">763</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">784</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">672</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">693</td>
+</tr>
+<tr>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">581</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">602</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">490</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">511</td>
+</tr>
+<tr>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">399</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">420</td>
+</tr>
+<tr>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">308</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">329</td>
+</tr>
+<tr>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">217</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">238</td>
+</tr>
+<tr>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">126</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">147</td>
+</tr>
+<tr>
+<td style="text-align: left;">free beam</td>
+<td style="text-align: left;">510</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">530</td>
+<td style="text-align: left;">56</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Regions of interest on the step wedge" src="../pictures/wedge_ROIs.png" title="Regions of interest on the step wedge"></p>
+<p>The gray value ratios are compared to reference ratios obtained from particle transport Monte-Carlo simulations. The gray value results of such simulations are subject to stochastic noise. For a given mean Monte-Carlo gray value intensity &mu;<sub>scint</sub> in a scintillator scenario, and a corresponding gray value intensity for the ideal detector &mu;<sub>ideal</sub>, Gaussian error propagation gives the error <em>u</em> of the Monte-Carlo gray value ratio, given the standard deviations <span><span class="MathJax_Preview">\sigma_\text{scint}</span><script type="math/tex">\sigma_\text{scint}</script></span> and <span><span class="MathJax_Preview">\sigma_\text{ideal}</span><script type="math/tex">\sigma_\text{ideal}</script></span> of the grey values inside the ROI under consideration:</p>
+<p><span><span class="MathJax_Preview"> u\left(\frac{\mu_\text{scint}}{\mu_\text{ideal}}\right) = \sqrt{\frac{\sigma_\text{scint}^2}{\mu_\text{ideal}^2} + \frac{\sigma_\text{ideal}^2 \mu_\text{scint}^2}{\mu_\text{ideal}^4}} </span><script type="math/tex; mode=display"> u\left(\frac{\mu_\text{scint}}{\mu_\text{ideal}}\right) = \sqrt{\frac{\sigma_\text{scint}^2}{\mu_\text{ideal}^2} + \frac{\sigma_\text{ideal}^2 \mu_\text{scint}^2}{\mu_\text{ideal}^4}} </script></span></p>
+<p>During the Monte-Carlo simulations, the effects of primary radiation and scatter radiation can be separated. Accordingly, the evaluation provides two sets of results: one where only primary radiation is considered (file names contain <code>primary</code>), and one where both scattered radiation and primary radiation are considered (file names contain <code>scatter</code>). Depending on which kind of software is tested, the correct comparison set should be chosen from the two options.</p>
+<p>An evaluation run will produce plots such as the example shown below. These plots display the measured gray value ratios and show them in relation to the results from the Monte-Carlo simulations with their corresponding uncertainty <em>u</em>.</p>
+<p>The following example evaluation result plot displays the gray value ratios between detector 2 (200 &mu;m CsI) and detector 1 (the ideal detector). Small crosses represent the gray value ratios calculated from the Monte-Carlo simulations. Their error bars cover the ratio's uncertainty <em>u</em> in both directions. Solid shapes without error bars show the measured ratios from the projections of the simulation software.</p>
+<p><img alt="2D-SW-1 example evaluation result" src="../pictures/2D-SW-1_D2.png" title="2D-SW-1"></p>
+<p>Additionally, the following data files are created:</p>
+<ul>
+<li>
+<p><code>2D-SW-1_all_GV_means.txt</code></p>
+<p>lists all the mean grey values in one file.</p>
+</li>
+<li>
+<p><code>2D-SW-1_all_GV_ratios_to_D1.txt</code></p>
+<p>lists the grey value ratios for detectors D2, D3 and D4 to the scenarios from detector D1. It is self-evident that the grey value ratios of detector D1 to itself are all 1, but they are listed as well for clarity.</p>
+</li>
+<li>
+<p><code>2D-SW-1_all_MCprimary_reference_ratios.txt</code></p>
+<p>lists all the grey value ratios and their uncertainties <em>u</em> calculated from the Monte-Carlo simulations for the case of only primary radiation simulated (i.e., no scatter radiation taken into account).</p>
+</li>
+<li>
+<p><code>2D-SW-1_all_MCscatter_reference_ratios.txt</code></p>
+<p>lists all the grey value ratios and their uncertainties <em>u</em> calculated from the Monte-Carlo simulations for the case of both primary and scatter radiation simulated.</p>
+</li>
+<li>
+<p>For each sub test, a file such as <code>2D-SW-1_D1_Al_50_grey_values.txt</code> is generated which contains the ROI information and mean grey values.</p>
+</li>
+</ul>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: UTF-8 -*-
+&#34;&#34;&#34;# Test 2D-SW-1: Scintillator characteristics
+
+.. include:: ./test2D_SW_1.md
+&#34;&#34;&#34;
+
+from ..test import *
+from ..helpers import *
+
+import pkgutil
+import io
+
+class Test2D_SW_1_results:
+    &#34;&#34;&#34; Results for one sub test of the filtering scenario. &#34;&#34;&#34;
+
+    def __init__(self):
+        self.subtestName = &#34;&#34;
+        self.longName = &#34;&#34;
+
+        # Grey value means and ratios (per wedge step):
+        self.means             = []     # Mean value for each step (measured for simulation software)
+        self.ratios_to_D1      = None   # grey value ratios to ideal detector (measured for simulation software)
+
+        # Grey values from Monte-Carlo simuation:
+        self.means_rosi_total    = None   # accounting for scatter radiation
+        self.means_rosi_primary  = None   # accounting only for primary radiation
+        self.means_mcray_total    = None   # accounting for scatter radiation
+        self.means_mcray_primary  = None   # accounting only for primary radiation
+
+
+        # Reference values for Monte-Carlo simulation (calculated in loadReference())
+        self.means_mc_total    = None   # accounting for scatter radiation
+        self.means_mc_primary  = None   # accounting only for primary radiation
+        self.error_mc_total_upper   = None
+        self.error_mc_total_lower   = None
+        self.error_mc_primary_upper = None
+        self.error_mc_primary_lower = None
+
+        self.ratios_to_D1_mc_total = None
+        self.ratios_to_D1_mc_primary = None
+        self.error_ratios_to_D1_mc_total_upper = None
+        self.error_ratios_to_D1_mc_total_lower = None
+        self.error_ratios_to_D1_mc_primary_upper = None
+        self.error_ratios_to_D1_mc_primary_lower = None
+
+    def loadReference(self, name):
+        dataText = pkgutil.get_data(__name__, &#34;data/2D-SW-1_scenario{name}.txt&#34;.format(name=name)).decode()
+        dataIO = io.StringIO(dataText)
+        allData = numpy.loadtxt(dataIO, delimiter=&#39;\t&#39;)  # ignore free beam
+
+        # --- total radiation
+        means_rosi_total  = allData[:,1]
+        means_mcray_total = allData[:,4]
+        means_total = (means_rosi_total + means_mcray_total) * 0.5
+        delta_total = numpy.absolute(means_rosi_total - means_mcray_total)
+
+        stddev_rosi_total  = allData[:,2]
+        stddev_mcray_total = allData[:,5]
+
+        #err_total = 0.5*(delta_total + numpy.sqrt(numpy.square(stddev_rosi_total) + numpy.square(stddev_mcray_total)))
+        err_total_rosi  = numpy.fmax(stddev_rosi_total,  stddev_mcray_total-delta_total) + 0.5*delta_total
+        err_total_mcray = numpy.fmax(stddev_mcray_total, stddev_rosi_total-delta_total)  + 0.5*delta_total
+        err_total_upper = numpy.zeros_like(err_total_rosi)
+        err_total_lower = numpy.zeros_like(err_total_rosi)
+        for i in range(len(err_total_upper)):
+            if means_rosi_total[i] &gt; means_total[i]:  # ROSI is upper bound
+                err_total_upper[i] = err_total_rosi[i]
+                err_total_lower[i] = err_total_mcray[i]
+            else:   # McRay is upper bound
+                err_total_upper[i] = err_total_mcray[i]
+                err_total_lower[i] = err_total_rosi[i]
+
+
+        # --- primary radiation
+        means_rosi_primary  = allData[:,9]
+        means_mcray_primary = allData[:,12]
+        means_primary = (means_rosi_primary + means_mcray_primary) * 0.5
+        delta_primary = numpy.absolute(means_rosi_primary - means_mcray_primary)
+
+        stddev_rosi_primary  = allData[:,10]
+        stddev_mcray_primary = allData[:,13]
+
+        #err_primary = 0.5*(delta_primary + numpy.sqrt(numpy.square(stddev_rosi_primary) + numpy.square(stddev_mcray_primary)))
+        err_primary_rosi  = numpy.fmax(stddev_rosi_primary,  stddev_mcray_primary-delta_primary) + 0.5*delta_primary
+        err_primary_mcray = numpy.fmax(stddev_mcray_primary, stddev_rosi_primary-delta_primary)  + 0.5*delta_primary
+        err_primary_upper = numpy.zeros_like(err_primary_rosi)
+        err_primary_lower = numpy.zeros_like(err_primary_rosi)
+        for i in range(len(err_primary_upper)):
+            if means_rosi_primary[i] &gt; means_primary[i]:  # ROSI is upper bound
+                err_primary_upper[i] = err_primary_rosi[i]
+                err_primary_lower[i] = err_primary_mcray[i]
+            else:   # McRay is upper bound
+                err_primary_upper[i] = err_primary_mcray[i]
+                err_primary_lower[i] = err_primary_rosi[i]
+
+
+        self.means_rosi_total    = means_rosi_total
+        self.means_rosi_primary  = means_rosi_primary
+        self.means_mcray_total    = means_mcray_total
+        self.means_mcray_primary  = means_mcray_primary
+
+        self.means_mc_total         = means_total
+        self.means_mc_primary       = means_primary
+        self.error_mc_total_upper   = err_total_upper
+        self.error_mc_total_lower   = err_total_lower
+        self.error_mc_primary_upper = err_primary_upper
+        self.error_mc_primary_lower = err_primary_lower
+
+        dataIO.close()
+
+
+class Test2D_SW_1(generalTest):
+    &#34;&#34;&#34; CTSimU test 2D-SW-1: detector models / scintillators. &#34;&#34;&#34;
+
+    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
+        generalTest.__init__(
+            self,
+            testName=&#34;2D-SW-1&#34;,
+            name=name,
+            resultFileDirectory=resultFileDirectory,
+            rawOutput=rawOutput)
+
+        self.validSubtests = [&#34;D1_Al_50&#34;, &#34;D1_Al_120&#34;, &#34;D1_Fe_100&#34;, &#34;D1_Fe_200&#34;, &#34;D2_Al_50&#34;, &#34;D2_Al_120&#34;, &#34;D2_Fe_100&#34;, &#34;D2_Fe_200&#34;, &#34;D3_Al_50&#34;, &#34;D3_Al_120&#34;, &#34;D3_Fe_100&#34;, &#34;D3_Fe_200&#34;, &#34;D4_Al_50&#34;, &#34;D4_Al_120&#34;, &#34;D4_Fe_100&#34;, &#34;D4_Fe_200&#34;]
+
+        self.results = len(self.validSubtests)*[None]
+        self.currentIndex = None
+
+        self.shrink = 35
+        self.leftOffset = 510 - self.shrink
+        self.nPixels = 20 + 2*self.shrink
+
+        # Absolute step definitions. Will be shrunk to accept tolerance border,
+        # but these absolute definitions are needed for grey value rescaling and clipping.
+        self.steps = [
+            ImageROI(self.leftOffset, 819, self.leftOffset+self.nPixels, 910),
+            ImageROI(self.leftOffset, 728, self.leftOffset+self.nPixels, 819),
+            ImageROI(self.leftOffset, 637, self.leftOffset+self.nPixels, 728),
+            ImageROI(self.leftOffset, 546, self.leftOffset+self.nPixels, 637),
+            ImageROI(self.leftOffset, 455, self.leftOffset+self.nPixels, 546),
+            ImageROI(self.leftOffset, 364, self.leftOffset+self.nPixels, 455),
+            ImageROI(self.leftOffset, 273, self.leftOffset+self.nPixels, 364),
+            ImageROI(self.leftOffset, 182, self.leftOffset+self.nPixels, 273),
+            ImageROI(self.leftOffset,  91, self.leftOffset+self.nPixels, 182),
+            ImageROI(self.leftOffset,   0, self.leftOffset+self.nPixels,  91)  # free beam
+        ]
+
+    def prepare(self):
+        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+        self.prepared = True
+
+    def prepareRun(self, i):
+        if i &lt; len(self.subtests):
+            if self.subtests[i] in self.validSubtests:
+                self.currentIndex = self.validSubtests.index(self.subtests[i])
+            else:
+                raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}. Identifiers from the following list are accepted: {valids}.&#34;.format(key=self.subtests[i], test=self.testName, valids=self.validSubtests))
+
+            # Load the correct GV reference data into results:
+            results = Test2D_SW_1_results()
+            results.subtestName = self.subtests[i]
+
+            if self.subtests[i] == &#34;D1_Al_50&#34;:
+                results.loadReference(&#34;07_Al_noFilter_050keV-mono_Ideal&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), ideal detector&#34;
+            elif self.subtests[i] == &#34;D1_Al_120&#34;:
+                results.loadReference(&#34;09_Al_noFilter_120kV-poly_Ideal&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), ideal detector&#34;
+            elif self.subtests[i] == &#34;D1_Fe_100&#34;:
+                results.loadReference(&#34;11_Fe_noFilter_100kV-mono_Ideal&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), ideal detector&#34;
+            elif self.subtests[i] == &#34;D1_Fe_200&#34;:
+                results.loadReference(&#34;13_Fe_noFilter_200kV-poly_Ideal&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), ideal detector&#34;
+
+            elif self.subtests[i] == &#34;D2_Al_50&#34;:
+                results.loadReference(&#34;15_Al_noFilter_050keV-mono_200mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), 200 µm CsI&#34;
+            elif self.subtests[i] == &#34;D2_Al_120&#34;:
+                results.loadReference(&#34;17_Al_noFilter_120kV-poly_200mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), 200 µm CsI&#34;
+            elif self.subtests[i] == &#34;D2_Fe_100&#34;:
+                results.loadReference(&#34;19_Fe_noFilter_100keV-mono_200mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), 200 µm CsI&#34;
+            elif self.subtests[i] == &#34;D2_Fe_200&#34;:
+                results.loadReference(&#34;21_Fe_noFilter_200kV-poly_200mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), 200 µm CsI&#34;
+
+            elif self.subtests[i] == &#34;D3_Al_50&#34;:
+                results.loadReference(&#34;23_Al_noFilter_050keV-mono_500mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), 500 µm CsI&#34;
+            elif self.subtests[i] == &#34;D3_Al_120&#34;:
+                results.loadReference(&#34;25_Al_noFilter_120kV-poly_500mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), 500 µm CsI&#34;
+            elif self.subtests[i] == &#34;D3_Fe_100&#34;:
+                results.loadReference(&#34;27_Fe_noFilter_100keV-mono_500mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), 500 µm CsI&#34;
+            elif self.subtests[i] == &#34;D3_Fe_200&#34;:
+                results.loadReference(&#34;29_Fe_noFilter_200kV-poly_500mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), 500 µm CsI&#34;
+
+            elif self.subtests[i] == &#34;D4_Al_50&#34;:
+                results.loadReference(&#34;31_Al_noFilter_050kV-mono_500mum-GOS&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), 500 µm Gd2O2S&#34;
+            elif self.subtests[i] == &#34;D4_Al_120&#34;:
+                results.loadReference(&#34;33_Al_noFilter_120kV-poly_500mum-GOS&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), 500 µm Gd2O2S&#34;
+            elif self.subtests[i] == &#34;D4_Fe_100&#34;:
+                results.loadReference(&#34;35_Fe_noFilter_100keV-mono_500mum-GOS&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), 500 µm Gd2O2S&#34;
+            elif self.subtests[i] == &#34;D4_Fe_200&#34;:
+                results.loadReference(&#34;37_Fe_noFilter_200kV-poly_500mum-GOS&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), 500 µm Gd2O2S&#34;
+
+            self.results[self.currentIndex] = results
+        else:
+            if len(self.subtests) == 0:
+                raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts identifiers from the following list: {valids}.&#34;.format(testname=self.testName, valids=self.validSubtests))
+            else:
+                raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))
+
+    def run(self, image):
+        self.prepare()
+        self.prepareRun(self.currentRun)
+        i = self.currentIndex
+        subtestName = self.subtests[self.currentRun]
+
+        # Grey value summary
+        statsText = &#34;# Evaluation of Test {name}, {subname}:\n&#34;.format(name=self.name, subname=subtestName)
+        statsText += &#34;# {longDesc}\n&#34;.format(longDesc=self.results[i].longName)
+        statsText += &#34;# \n&#34;
+        statsText += &#34;# ROI mean grey value per step\n&#34;
+        statsText += &#34;# step\tx0\ty0\tx1\ty1\twidth [px]\theight [px]\tarea [px]\tmean [GV]\n&#34;
+
+        step = 0
+        for roi in self.steps:
+            step += 1
+            smallerROI = copy.deepcopy(roi)
+            smallerROI.grow(-self.shrink)
+            stats = image.stats(smallerROI)
+
+            statsText += &#34;{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{:.3f}\n&#34;.format(step, smallerROI.x0, smallerROI.y0, smallerROI.x1, smallerROI.y1, stats[&#34;width&#34;], stats[&#34;height&#34;], stats[&#34;area&#34;], stats[&#34;mean&#34;])
+
+            self.results[i].means.append(stats[&#34;mean&#34;])
+
+        statsFileName = &#34;{dir}/{name}_{subname}_grey_values.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
+        with open(statsFileName, &#39;w&#39;) as statsFile:
+            statsFile.write(statsText)
+            statsFile.close()
+
+        self.currentRun += 1
+        return image
+
+    def followUp(self):
+        # Means
+        meansText = &#34;# step&#34;
+        for r in range(len(self.results)):
+            meansText += &#34;\t{}&#34;.format(self.validSubtests[r])
+
+        meansText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            meansText += &#34;{}&#34;.format(step+1)
+
+            for result in self.results:
+                if result is not None:
+                    meansText += &#34;\t{:.3f}&#34;.format(result.means[step])
+                else:
+                    meansText += &#34;\t-&#34;
+
+            meansText += &#34;\n&#34;
+
+        meansFileName = &#34;{dir}/{name}_all_GV_means.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(meansFileName, &#39;w&#39;) as meansFile:
+            meansFile.write(meansText)
+            meansFile.close()
+
+
+        # Calculate and write ratios to D1 (ideal detector)
+        for r in range(len(self.results)):
+            result = self.results[r]
+            D1result = self.results[r%4]
+
+            if D1result is not None:
+                if result is not None:
+                    result.ratios_to_D1 = len(self.steps)*[None]
+                    result.ratios_to_D1_mc_primary = len(self.steps)*[None]
+                    result.ratios_to_D1_mc_total = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_primary_lower = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_primary_upper = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_total_lower = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_total_upper = len(self.steps)*[None]
+
+                    for step in range(len(self.steps)):
+                        result.ratios_to_D1[step] = result.means[step] / D1result.means[step]
+                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_upper[step] = divide_and_error(
+                                muA = result.means_mc_primary[step],
+                                muB = D1result.means_mc_primary[step],
+                                errA = result.error_mc_primary_upper[step],
+                                errB = D1result.error_mc_primary_upper[step]
+                            )
+                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_lower[step] = divide_and_error(
+                                muA = result.means_mc_primary[step],
+                                muB = D1result.means_mc_primary[step],
+                                errA = result.error_mc_primary_lower[step],
+                                errB = D1result.error_mc_primary_lower[step]
+                            )
+
+                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_upper[step] = divide_and_error(
+                                muA = result.means_mc_total[step],
+                                muB = D1result.means_mc_total[step],
+                                errA = result.error_mc_total_upper[step],
+                                errB = D1result.error_mc_total_upper[step]
+                            )
+                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_lower[step] = divide_and_error(
+                                muA = result.means_mc_total[step],
+                                muB = D1result.means_mc_total[step],
+                                errA = result.error_mc_total_lower[step],
+                                errB = D1result.error_mc_total_lower[step]
+                            )
+
+                        if r &lt; 4: # this is an ideal detector, set ratio uncertainty to zero
+                            result.error_ratios_to_D1_mc_primary_upper[step] = 0
+                            result.error_ratios_to_D1_mc_primary_lower[step] = 0
+                            result.error_ratios_to_D1_mc_total_upper[step] = 0
+                            result.error_ratios_to_D1_mc_total_lower[step] = 0
+
+        # Measured ratios
+        ratiosText = &#34;# step&#34;
+        for i in range(len(self.results)):
+            ratiosText += &#34;\t{}&#34;.format(self.validSubtests[i])
+
+        ratiosText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            ratiosText += &#34;{}&#34;.format(step+1)
+            for r in range(len(self.results)):
+                result = self.results[r]
+                D1result = self.results[r%4]
+                if result is not None:
+                    if D1result is not None:
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.ratios_to_D1[step])
+                    else:
+                        ratiosText += &#34;\t-&#34;
+                else:
+                    ratiosText += &#34;\t-&#34;
+
+            ratiosText += &#34;\n&#34;
+
+        ratiosFileName = &#34;{dir}/{name}_all_GV_ratios_to_Det1.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(ratiosFileName, &#39;w&#39;) as ratiosFile:
+            ratiosFile.write(ratiosText)
+            ratiosFile.close()
+
+
+        # Monte-Carlo reference results (only primary radiation accounted for)
+        ratiosText = &#34;# step&#34;
+        for i in range(len(self.results)):
+            ratiosText += &#34;\t{name}\tu_lower({name})\tu_upper({name})&#34;.format(name=self.validSubtests[i])
+
+        ratiosText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            ratiosText += &#34;{}&#34;.format(step+1)
+            for r in range(len(self.results)):
+                result = self.results[r]
+                D1result = self.results[r%4]
+                if result is not None:
+                    if D1result is not None:
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.ratios_to_D1_mc_primary[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_primary_lower[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_primary_upper[step])
+                    else:
+                        ratiosText += &#34;\t-&#34;
+                        ratiosText += &#34;\t-&#34;
+                else:
+                    ratiosText += &#34;\t-&#34;
+                    ratiosText += &#34;\t-&#34;
+
+            ratiosText += &#34;\n&#34;
+
+        ratiosFileName = &#34;{dir}/{name}_all_MCprimary_reference_ratios.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(ratiosFileName, &#39;w&#39;) as ratiosFile:
+            ratiosFile.write(ratiosText)
+            ratiosFile.close()
+
+
+        # Monte-Carlo reference results (scatter radiation accounted for)
+        ratiosText = &#34;# step&#34;
+        for i in range(len(self.results)):
+            ratiosText += &#34;\t{name}\tu_lower({name})\tu_upper({name})&#34;.format(name=self.validSubtests[i])
+
+        ratiosText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            ratiosText += &#34;{}&#34;.format(step+1)
+            for r in range(len(self.results)):
+                result = self.results[r]
+                D1result = self.results[r%4]
+                if result is not None:
+                    if D1result is not None:
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.ratios_to_D1_mc_total[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_total_lower[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_total_upper[step])
+                    else:
+                        ratiosText += &#34;\t-&#34;
+                        ratiosText += &#34;\t-&#34;
+                else:
+                    ratiosText += &#34;\t-&#34;
+                    ratiosText += &#34;\t-&#34;
+
+            ratiosText += &#34;\n&#34;
+
+        ratiosFileName = &#34;{dir}/{name}_all_MCtotal_reference_ratios.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(ratiosFileName, &#39;w&#39;) as ratiosFile:
+            ratiosFile.write(ratiosText)
+            ratiosFile.close()
+
+        self.plotResults()
+
+    def plotResults(self):
+        xValues = numpy.linspace(0, len(self.steps), len(self.steps), endpoint=False)
+        xLabels = (&#34;1&#34;, &#34;2&#34;, &#34;3&#34;, &#34;4&#34;, &#34;5&#34;, &#34;6&#34;, &#34;7&#34;, &#34;8&#34;, &#34;9&#34;, &#34;10&#34;)
+
+        # minor x ticks:
+        mxValues = numpy.linspace(0.5, len(self.steps)-0.5, len(self.steps)-1, endpoint=False)
+
+        try:
+            import matplotlib
+            import matplotlib.pyplot
+            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
+            matplotlib.use(&#34;agg&#34;)
+
+            subDetails   = [&#34;Al 50 keV (mono)&#34;, &#34;Al 120 kV (poly)&#34;, &#34;Fe 100 keV (mono)&#34;, &#34;Fe 200 kV (poly)&#34;]
+            subDetectors = [&#34;Ideal&#34;, &#34;200 µm CsI&#34;, &#34;500 µm CsI&#34;, &#34;500 µm Gd2O2S&#34;]
+            colors = [&#39;#ffb000&#39;, &#39;#fe6100&#39;, &#39;#dc267f&#39;, &#39;#648fff&#39;]
+
+            d = 0
+            epsilon = numpy.array([-1.5, -0.5, 0.5, 1.5]) * 0.18   # data point spacing
+            markers = [&#34;x&#34;, &#34;x&#34;, &#34;x&#34;, &#34;x&#34;]
+
+            for detector in [&#34;Det2&#34;, &#34;Det3&#34;, &#34;Det4&#34;]:
+                d += 1
+                subDetector = subDetectors[d]
+                dOffset = 4*d
+
+                for mode in (&#34;primary&#34;, &#34;total&#34;):
+                    fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 6))
+
+                    for t in range(0, 4):  # 4 sub-tests per detector
+                        subDetail = subDetails[t]
+
+                        r = dOffset + t
+                        subtestName = self.results[r].subtestName
+
+                        # Grey value ratios:
+                        if mode == &#34;primary&#34;:
+                            modeDescription = &#34;primary radiation&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_primary, xerr=None, yerr=[self.results[r].error_ratios_to_D1_mc_primary_lower, self.results[r].error_ratios_to_D1_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_primary, &#39;_&#39;, markersize=11.0, label=&#34;{detail}, Monte-Carlo&#34;.format(detail=subDetail), color=colors[t])
+                        else:
+                            modeDescription = &#34;total radiation (scatter+primary)&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_total, xerr=None, yerr=[self.results[r].error_ratios_to_D1_mc_total_lower, self.results[r].error_ratios_to_D1_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_total, &#39;_&#39;, markersize=11.0, label=&#34;{detail}, Monte-Carlo&#34;.format(detail=subDetail), color=colors[t])
+
+                        ax.plot(xValues+epsilon[t], self.results[r].ratios_to_D1, markers[t], markersize=6.0, label=&#34;{detail}, measured&#34;.format(detail=subDetail), color=colors[t])
+
+                        &#34;&#34;&#34;
+                        # Grey values:
+                        if mode == &#34;primary&#34;:
+                            modeDescription = &#34;primary radiation&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].means_mc_primary, xerr=None, yerr=[self.results[r].error_mc_primary_lower, self.results[r].error_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mc_primary, &#39;_&#39;, markersize=7.0, label=&#34;{detail}, MC ± 1u&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mcray_primary, &#39;o&#39;, markersize=4.0, label=&#34;{detail}, McRay&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_rosi_primary,  &#39;v&#39;, markersize=4.0, label=&#34;{detail}, ROSI&#34;.format(detail=subDetail), color=colors[t])
+                        else:
+                            modeDescription = &#34;total radiation (scatter+primary)&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].means_mc_total, xerr=None, yerr=[self.results[r].error_mc_total_lower, self.results[r].error_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mc_total, &#39;_&#39;, markersize=7.0, label=&#34;{detail}, MC ± 1u&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mcray_total, &#39;o&#39;, markersize=4.0, label=&#34;{detail}, McRay&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_rosi_total,  &#39;v&#39;, markersize=4.0, label=&#34;{detail}, ROSI&#34;.format(detail=subDetail), color=colors[t])
+                        &#34;&#34;&#34;
+
+
+                    ax.set_xlim([-0.5, 9.5])
+                    ax.set_xlabel(&#34;step&#34;)
+                    ax.set_ylabel(&#34;grey value ratio&#34;)
+                    ax.set_title(label=&#34;2D-SW-1, ratio {detector}/Det1 ({subDet} to ideal), {details}&#34;.format(detector=detector, subDet=subDetector, details=modeDescription), loc=&#39;left&#39;, fontsize=10)
+
+                    ax.set_xticks(xValues, minor=False)
+                    ax.set_xticks(mxValues, minor=True)
+                    ax.xaxis.set_ticklabels(xLabels)
+                    ax.grid(visible=True, which=&#39;major&#39;, axis=&#39;y&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+                    ax.grid(visible=True, which=&#39;minor&#39;, axis=&#39;x&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+                    ax.grid(visible=False, which=&#39;major&#39;, axis=&#39;x&#39;)
+                    ax.legend(loc=&#39;upper center&#39;, bbox_to_anchor=(0.5, -0.15), ncol=2)
+
+                    ax.tick_params(axis=&#34;x&#34;, which=&#34;major&#34;, length=0, color=&#34;#ffffff&#34;)
+                    ax.tick_params(axis=&#34;x&#34;, which=&#34;minor&#34;, length=5)
+
+                    fig.tight_layout(pad=2.5)
+
+                    plotFilename = &#34;{dir}/{name}_{detector}_ratios_{mode}.png&#34;.format(dir=self.resultFileDirectory, name=self.name, detector=detector, mode=mode)
+                    matplotlib.pyplot.savefig(plotFilename)
+                    fig.clf()
+                    matplotlib.pyplot.close(&#39;all&#39;)
+
+        except Exception as e:
+            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1"><code class="flex name class">
+<span>class <span class="ident">Test2D_SW_1</span></span>
+<span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CTSimU test 2D-SW-1: detector models / scintillators.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Test2D_SW_1(generalTest):
+    &#34;&#34;&#34; CTSimU test 2D-SW-1: detector models / scintillators. &#34;&#34;&#34;
+
+    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
+        generalTest.__init__(
+            self,
+            testName=&#34;2D-SW-1&#34;,
+            name=name,
+            resultFileDirectory=resultFileDirectory,
+            rawOutput=rawOutput)
+
+        self.validSubtests = [&#34;D1_Al_50&#34;, &#34;D1_Al_120&#34;, &#34;D1_Fe_100&#34;, &#34;D1_Fe_200&#34;, &#34;D2_Al_50&#34;, &#34;D2_Al_120&#34;, &#34;D2_Fe_100&#34;, &#34;D2_Fe_200&#34;, &#34;D3_Al_50&#34;, &#34;D3_Al_120&#34;, &#34;D3_Fe_100&#34;, &#34;D3_Fe_200&#34;, &#34;D4_Al_50&#34;, &#34;D4_Al_120&#34;, &#34;D4_Fe_100&#34;, &#34;D4_Fe_200&#34;]
+
+        self.results = len(self.validSubtests)*[None]
+        self.currentIndex = None
+
+        self.shrink = 35
+        self.leftOffset = 510 - self.shrink
+        self.nPixels = 20 + 2*self.shrink
+
+        # Absolute step definitions. Will be shrunk to accept tolerance border,
+        # but these absolute definitions are needed for grey value rescaling and clipping.
+        self.steps = [
+            ImageROI(self.leftOffset, 819, self.leftOffset+self.nPixels, 910),
+            ImageROI(self.leftOffset, 728, self.leftOffset+self.nPixels, 819),
+            ImageROI(self.leftOffset, 637, self.leftOffset+self.nPixels, 728),
+            ImageROI(self.leftOffset, 546, self.leftOffset+self.nPixels, 637),
+            ImageROI(self.leftOffset, 455, self.leftOffset+self.nPixels, 546),
+            ImageROI(self.leftOffset, 364, self.leftOffset+self.nPixels, 455),
+            ImageROI(self.leftOffset, 273, self.leftOffset+self.nPixels, 364),
+            ImageROI(self.leftOffset, 182, self.leftOffset+self.nPixels, 273),
+            ImageROI(self.leftOffset,  91, self.leftOffset+self.nPixels, 182),
+            ImageROI(self.leftOffset,   0, self.leftOffset+self.nPixels,  91)  # free beam
+        ]
+
+    def prepare(self):
+        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+        self.prepared = True
+
+    def prepareRun(self, i):
+        if i &lt; len(self.subtests):
+            if self.subtests[i] in self.validSubtests:
+                self.currentIndex = self.validSubtests.index(self.subtests[i])
+            else:
+                raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}. Identifiers from the following list are accepted: {valids}.&#34;.format(key=self.subtests[i], test=self.testName, valids=self.validSubtests))
+
+            # Load the correct GV reference data into results:
+            results = Test2D_SW_1_results()
+            results.subtestName = self.subtests[i]
+
+            if self.subtests[i] == &#34;D1_Al_50&#34;:
+                results.loadReference(&#34;07_Al_noFilter_050keV-mono_Ideal&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), ideal detector&#34;
+            elif self.subtests[i] == &#34;D1_Al_120&#34;:
+                results.loadReference(&#34;09_Al_noFilter_120kV-poly_Ideal&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), ideal detector&#34;
+            elif self.subtests[i] == &#34;D1_Fe_100&#34;:
+                results.loadReference(&#34;11_Fe_noFilter_100kV-mono_Ideal&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), ideal detector&#34;
+            elif self.subtests[i] == &#34;D1_Fe_200&#34;:
+                results.loadReference(&#34;13_Fe_noFilter_200kV-poly_Ideal&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), ideal detector&#34;
+
+            elif self.subtests[i] == &#34;D2_Al_50&#34;:
+                results.loadReference(&#34;15_Al_noFilter_050keV-mono_200mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), 200 µm CsI&#34;
+            elif self.subtests[i] == &#34;D2_Al_120&#34;:
+                results.loadReference(&#34;17_Al_noFilter_120kV-poly_200mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), 200 µm CsI&#34;
+            elif self.subtests[i] == &#34;D2_Fe_100&#34;:
+                results.loadReference(&#34;19_Fe_noFilter_100keV-mono_200mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), 200 µm CsI&#34;
+            elif self.subtests[i] == &#34;D2_Fe_200&#34;:
+                results.loadReference(&#34;21_Fe_noFilter_200kV-poly_200mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), 200 µm CsI&#34;
+
+            elif self.subtests[i] == &#34;D3_Al_50&#34;:
+                results.loadReference(&#34;23_Al_noFilter_050keV-mono_500mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), 500 µm CsI&#34;
+            elif self.subtests[i] == &#34;D3_Al_120&#34;:
+                results.loadReference(&#34;25_Al_noFilter_120kV-poly_500mum-CsI&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), 500 µm CsI&#34;
+            elif self.subtests[i] == &#34;D3_Fe_100&#34;:
+                results.loadReference(&#34;27_Fe_noFilter_100keV-mono_500mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), 500 µm CsI&#34;
+            elif self.subtests[i] == &#34;D3_Fe_200&#34;:
+                results.loadReference(&#34;29_Fe_noFilter_200kV-poly_500mum-CsI&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), 500 µm CsI&#34;
+
+            elif self.subtests[i] == &#34;D4_Al_50&#34;:
+                results.loadReference(&#34;31_Al_noFilter_050kV-mono_500mum-GOS&#34;)
+                results.longName = &#34;Al wedge, 50 keV (mono), 500 µm Gd2O2S&#34;
+            elif self.subtests[i] == &#34;D4_Al_120&#34;:
+                results.loadReference(&#34;33_Al_noFilter_120kV-poly_500mum-GOS&#34;)
+                results.longName = &#34;Al wedge, 120 kV (poly), 500 µm Gd2O2S&#34;
+            elif self.subtests[i] == &#34;D4_Fe_100&#34;:
+                results.loadReference(&#34;35_Fe_noFilter_100keV-mono_500mum-GOS&#34;)
+                results.longName = &#34;Fe wedge, 100 keV (mono), 500 µm Gd2O2S&#34;
+            elif self.subtests[i] == &#34;D4_Fe_200&#34;:
+                results.loadReference(&#34;37_Fe_noFilter_200kV-poly_500mum-GOS&#34;)
+                results.longName = &#34;Fe wedge, 120 kV (poly), 500 µm Gd2O2S&#34;
+
+            self.results[self.currentIndex] = results
+        else:
+            if len(self.subtests) == 0:
+                raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts identifiers from the following list: {valids}.&#34;.format(testname=self.testName, valids=self.validSubtests))
+            else:
+                raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))
+
+    def run(self, image):
+        self.prepare()
+        self.prepareRun(self.currentRun)
+        i = self.currentIndex
+        subtestName = self.subtests[self.currentRun]
+
+        # Grey value summary
+        statsText = &#34;# Evaluation of Test {name}, {subname}:\n&#34;.format(name=self.name, subname=subtestName)
+        statsText += &#34;# {longDesc}\n&#34;.format(longDesc=self.results[i].longName)
+        statsText += &#34;# \n&#34;
+        statsText += &#34;# ROI mean grey value per step\n&#34;
+        statsText += &#34;# step\tx0\ty0\tx1\ty1\twidth [px]\theight [px]\tarea [px]\tmean [GV]\n&#34;
+
+        step = 0
+        for roi in self.steps:
+            step += 1
+            smallerROI = copy.deepcopy(roi)
+            smallerROI.grow(-self.shrink)
+            stats = image.stats(smallerROI)
+
+            statsText += &#34;{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{:.3f}\n&#34;.format(step, smallerROI.x0, smallerROI.y0, smallerROI.x1, smallerROI.y1, stats[&#34;width&#34;], stats[&#34;height&#34;], stats[&#34;area&#34;], stats[&#34;mean&#34;])
+
+            self.results[i].means.append(stats[&#34;mean&#34;])
+
+        statsFileName = &#34;{dir}/{name}_{subname}_grey_values.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
+        with open(statsFileName, &#39;w&#39;) as statsFile:
+            statsFile.write(statsText)
+            statsFile.close()
+
+        self.currentRun += 1
+        return image
+
+    def followUp(self):
+        # Means
+        meansText = &#34;# step&#34;
+        for r in range(len(self.results)):
+            meansText += &#34;\t{}&#34;.format(self.validSubtests[r])
+
+        meansText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            meansText += &#34;{}&#34;.format(step+1)
+
+            for result in self.results:
+                if result is not None:
+                    meansText += &#34;\t{:.3f}&#34;.format(result.means[step])
+                else:
+                    meansText += &#34;\t-&#34;
+
+            meansText += &#34;\n&#34;
+
+        meansFileName = &#34;{dir}/{name}_all_GV_means.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(meansFileName, &#39;w&#39;) as meansFile:
+            meansFile.write(meansText)
+            meansFile.close()
+
+
+        # Calculate and write ratios to D1 (ideal detector)
+        for r in range(len(self.results)):
+            result = self.results[r]
+            D1result = self.results[r%4]
+
+            if D1result is not None:
+                if result is not None:
+                    result.ratios_to_D1 = len(self.steps)*[None]
+                    result.ratios_to_D1_mc_primary = len(self.steps)*[None]
+                    result.ratios_to_D1_mc_total = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_primary_lower = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_primary_upper = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_total_lower = len(self.steps)*[None]
+                    result.error_ratios_to_D1_mc_total_upper = len(self.steps)*[None]
+
+                    for step in range(len(self.steps)):
+                        result.ratios_to_D1[step] = result.means[step] / D1result.means[step]
+                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_upper[step] = divide_and_error(
+                                muA = result.means_mc_primary[step],
+                                muB = D1result.means_mc_primary[step],
+                                errA = result.error_mc_primary_upper[step],
+                                errB = D1result.error_mc_primary_upper[step]
+                            )
+                        result.ratios_to_D1_mc_primary[step], result.error_ratios_to_D1_mc_primary_lower[step] = divide_and_error(
+                                muA = result.means_mc_primary[step],
+                                muB = D1result.means_mc_primary[step],
+                                errA = result.error_mc_primary_lower[step],
+                                errB = D1result.error_mc_primary_lower[step]
+                            )
+
+                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_upper[step] = divide_and_error(
+                                muA = result.means_mc_total[step],
+                                muB = D1result.means_mc_total[step],
+                                errA = result.error_mc_total_upper[step],
+                                errB = D1result.error_mc_total_upper[step]
+                            )
+                        result.ratios_to_D1_mc_total[step], result.error_ratios_to_D1_mc_total_lower[step] = divide_and_error(
+                                muA = result.means_mc_total[step],
+                                muB = D1result.means_mc_total[step],
+                                errA = result.error_mc_total_lower[step],
+                                errB = D1result.error_mc_total_lower[step]
+                            )
+
+                        if r &lt; 4: # this is an ideal detector, set ratio uncertainty to zero
+                            result.error_ratios_to_D1_mc_primary_upper[step] = 0
+                            result.error_ratios_to_D1_mc_primary_lower[step] = 0
+                            result.error_ratios_to_D1_mc_total_upper[step] = 0
+                            result.error_ratios_to_D1_mc_total_lower[step] = 0
+
+        # Measured ratios
+        ratiosText = &#34;# step&#34;
+        for i in range(len(self.results)):
+            ratiosText += &#34;\t{}&#34;.format(self.validSubtests[i])
+
+        ratiosText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            ratiosText += &#34;{}&#34;.format(step+1)
+            for r in range(len(self.results)):
+                result = self.results[r]
+                D1result = self.results[r%4]
+                if result is not None:
+                    if D1result is not None:
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.ratios_to_D1[step])
+                    else:
+                        ratiosText += &#34;\t-&#34;
+                else:
+                    ratiosText += &#34;\t-&#34;
+
+            ratiosText += &#34;\n&#34;
+
+        ratiosFileName = &#34;{dir}/{name}_all_GV_ratios_to_Det1.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(ratiosFileName, &#39;w&#39;) as ratiosFile:
+            ratiosFile.write(ratiosText)
+            ratiosFile.close()
+
+
+        # Monte-Carlo reference results (only primary radiation accounted for)
+        ratiosText = &#34;# step&#34;
+        for i in range(len(self.results)):
+            ratiosText += &#34;\t{name}\tu_lower({name})\tu_upper({name})&#34;.format(name=self.validSubtests[i])
+
+        ratiosText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            ratiosText += &#34;{}&#34;.format(step+1)
+            for r in range(len(self.results)):
+                result = self.results[r]
+                D1result = self.results[r%4]
+                if result is not None:
+                    if D1result is not None:
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.ratios_to_D1_mc_primary[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_primary_lower[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_primary_upper[step])
+                    else:
+                        ratiosText += &#34;\t-&#34;
+                        ratiosText += &#34;\t-&#34;
+                else:
+                    ratiosText += &#34;\t-&#34;
+                    ratiosText += &#34;\t-&#34;
+
+            ratiosText += &#34;\n&#34;
+
+        ratiosFileName = &#34;{dir}/{name}_all_MCprimary_reference_ratios.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(ratiosFileName, &#39;w&#39;) as ratiosFile:
+            ratiosFile.write(ratiosText)
+            ratiosFile.close()
+
+
+        # Monte-Carlo reference results (scatter radiation accounted for)
+        ratiosText = &#34;# step&#34;
+        for i in range(len(self.results)):
+            ratiosText += &#34;\t{name}\tu_lower({name})\tu_upper({name})&#34;.format(name=self.validSubtests[i])
+
+        ratiosText += &#34;\n&#34;
+        for step in range(len(self.steps)):
+            ratiosText += &#34;{}&#34;.format(step+1)
+            for r in range(len(self.results)):
+                result = self.results[r]
+                D1result = self.results[r%4]
+                if result is not None:
+                    if D1result is not None:
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.ratios_to_D1_mc_total[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_total_lower[step])
+                        ratiosText += &#34;\t{:.5f}&#34;.format(result.error_ratios_to_D1_mc_total_upper[step])
+                    else:
+                        ratiosText += &#34;\t-&#34;
+                        ratiosText += &#34;\t-&#34;
+                else:
+                    ratiosText += &#34;\t-&#34;
+                    ratiosText += &#34;\t-&#34;
+
+            ratiosText += &#34;\n&#34;
+
+        ratiosFileName = &#34;{dir}/{name}_all_MCtotal_reference_ratios.txt&#34;.format(dir=self.resultFileDirectory, name=self.name)
+        with open(ratiosFileName, &#39;w&#39;) as ratiosFile:
+            ratiosFile.write(ratiosText)
+            ratiosFile.close()
+
+        self.plotResults()
+
+    def plotResults(self):
+        xValues = numpy.linspace(0, len(self.steps), len(self.steps), endpoint=False)
+        xLabels = (&#34;1&#34;, &#34;2&#34;, &#34;3&#34;, &#34;4&#34;, &#34;5&#34;, &#34;6&#34;, &#34;7&#34;, &#34;8&#34;, &#34;9&#34;, &#34;10&#34;)
+
+        # minor x ticks:
+        mxValues = numpy.linspace(0.5, len(self.steps)-0.5, len(self.steps)-1, endpoint=False)
+
+        try:
+            import matplotlib
+            import matplotlib.pyplot
+            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
+            matplotlib.use(&#34;agg&#34;)
+
+            subDetails   = [&#34;Al 50 keV (mono)&#34;, &#34;Al 120 kV (poly)&#34;, &#34;Fe 100 keV (mono)&#34;, &#34;Fe 200 kV (poly)&#34;]
+            subDetectors = [&#34;Ideal&#34;, &#34;200 µm CsI&#34;, &#34;500 µm CsI&#34;, &#34;500 µm Gd2O2S&#34;]
+            colors = [&#39;#ffb000&#39;, &#39;#fe6100&#39;, &#39;#dc267f&#39;, &#39;#648fff&#39;]
+
+            d = 0
+            epsilon = numpy.array([-1.5, -0.5, 0.5, 1.5]) * 0.18   # data point spacing
+            markers = [&#34;x&#34;, &#34;x&#34;, &#34;x&#34;, &#34;x&#34;]
+
+            for detector in [&#34;Det2&#34;, &#34;Det3&#34;, &#34;Det4&#34;]:
+                d += 1
+                subDetector = subDetectors[d]
+                dOffset = 4*d
+
+                for mode in (&#34;primary&#34;, &#34;total&#34;):
+                    fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 6))
+
+                    for t in range(0, 4):  # 4 sub-tests per detector
+                        subDetail = subDetails[t]
+
+                        r = dOffset + t
+                        subtestName = self.results[r].subtestName
+
+                        # Grey value ratios:
+                        if mode == &#34;primary&#34;:
+                            modeDescription = &#34;primary radiation&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_primary, xerr=None, yerr=[self.results[r].error_ratios_to_D1_mc_primary_lower, self.results[r].error_ratios_to_D1_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_primary, &#39;_&#39;, markersize=11.0, label=&#34;{detail}, Monte-Carlo&#34;.format(detail=subDetail), color=colors[t])
+                        else:
+                            modeDescription = &#34;total radiation (scatter+primary)&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_total, xerr=None, yerr=[self.results[r].error_ratios_to_D1_mc_total_lower, self.results[r].error_ratios_to_D1_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].ratios_to_D1_mc_total, &#39;_&#39;, markersize=11.0, label=&#34;{detail}, Monte-Carlo&#34;.format(detail=subDetail), color=colors[t])
+
+                        ax.plot(xValues+epsilon[t], self.results[r].ratios_to_D1, markers[t], markersize=6.0, label=&#34;{detail}, measured&#34;.format(detail=subDetail), color=colors[t])
+
+                        &#34;&#34;&#34;
+                        # Grey values:
+                        if mode == &#34;primary&#34;:
+                            modeDescription = &#34;primary radiation&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].means_mc_primary, xerr=None, yerr=[self.results[r].error_mc_primary_lower, self.results[r].error_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mc_primary, &#39;_&#39;, markersize=7.0, label=&#34;{detail}, MC ± 1u&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mcray_primary, &#39;o&#39;, markersize=4.0, label=&#34;{detail}, McRay&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_rosi_primary,  &#39;v&#39;, markersize=4.0, label=&#34;{detail}, ROSI&#34;.format(detail=subDetail), color=colors[t])
+                        else:
+                            modeDescription = &#34;total radiation (scatter+primary)&#34;
+                            ax.errorbar(xValues+epsilon[t], self.results[r].means_mc_total, xerr=None, yerr=[self.results[r].error_mc_total_lower, self.results[r].error_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mc_total, &#39;_&#39;, markersize=7.0, label=&#34;{detail}, MC ± 1u&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_mcray_total, &#39;o&#39;, markersize=4.0, label=&#34;{detail}, McRay&#34;.format(detail=subDetail), color=colors[t])
+                            ax.plot(xValues+epsilon[t], self.results[r].means_rosi_total,  &#39;v&#39;, markersize=4.0, label=&#34;{detail}, ROSI&#34;.format(detail=subDetail), color=colors[t])
+                        &#34;&#34;&#34;
+
+
+                    ax.set_xlim([-0.5, 9.5])
+                    ax.set_xlabel(&#34;step&#34;)
+                    ax.set_ylabel(&#34;grey value ratio&#34;)
+                    ax.set_title(label=&#34;2D-SW-1, ratio {detector}/Det1 ({subDet} to ideal), {details}&#34;.format(detector=detector, subDet=subDetector, details=modeDescription), loc=&#39;left&#39;, fontsize=10)
+
+                    ax.set_xticks(xValues, minor=False)
+                    ax.set_xticks(mxValues, minor=True)
+                    ax.xaxis.set_ticklabels(xLabels)
+                    ax.grid(visible=True, which=&#39;major&#39;, axis=&#39;y&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+                    ax.grid(visible=True, which=&#39;minor&#39;, axis=&#39;x&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
+                    ax.grid(visible=False, which=&#39;major&#39;, axis=&#39;x&#39;)
+                    ax.legend(loc=&#39;upper center&#39;, bbox_to_anchor=(0.5, -0.15), ncol=2)
+
+                    ax.tick_params(axis=&#34;x&#34;, which=&#34;major&#34;, length=0, color=&#34;#ffffff&#34;)
+                    ax.tick_params(axis=&#34;x&#34;, which=&#34;minor&#34;, length=5)
+
+                    fig.tight_layout(pad=2.5)
+
+                    plotFilename = &#34;{dir}/{name}_{detector}_ratios_{mode}.png&#34;.format(dir=self.resultFileDirectory, name=self.name, detector=detector, mode=mode)
+                    matplotlib.pyplot.savefig(plotFilename)
+                    fig.clf()
+                    matplotlib.pyplot.close(&#39;all&#39;)
+
+        except Exception as e:
+            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
+<li><a title="ctsimu.processing.step.Step" href="../processing/step.html#ctsimu.processing.step.Step">Step</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1.prepare"><code class="name flex">
+<span>def <span class="ident">prepare</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepare(self):
+    &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
+    self.prepared = True</code></pre>
+</details>
+</dd>
+<dt id="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1.prepareRun"><code class="name flex">
+<span>def <span class="ident">prepareRun</span></span>(<span>self, i)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def prepareRun(self, i):
+    if i &lt; len(self.subtests):
+        if self.subtests[i] in self.validSubtests:
+            self.currentIndex = self.validSubtests.index(self.subtests[i])
+        else:
+            raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}. Identifiers from the following list are accepted: {valids}.&#34;.format(key=self.subtests[i], test=self.testName, valids=self.validSubtests))
+
+        # Load the correct GV reference data into results:
+        results = Test2D_SW_1_results()
+        results.subtestName = self.subtests[i]
+
+        if self.subtests[i] == &#34;D1_Al_50&#34;:
+            results.loadReference(&#34;07_Al_noFilter_050keV-mono_Ideal&#34;)
+            results.longName = &#34;Al wedge, 50 keV (mono), ideal detector&#34;
+        elif self.subtests[i] == &#34;D1_Al_120&#34;:
+            results.loadReference(&#34;09_Al_noFilter_120kV-poly_Ideal&#34;)
+            results.longName = &#34;Al wedge, 120 kV (poly), ideal detector&#34;
+        elif self.subtests[i] == &#34;D1_Fe_100&#34;:
+            results.loadReference(&#34;11_Fe_noFilter_100kV-mono_Ideal&#34;)
+            results.longName = &#34;Fe wedge, 100 keV (mono), ideal detector&#34;
+        elif self.subtests[i] == &#34;D1_Fe_200&#34;:
+            results.loadReference(&#34;13_Fe_noFilter_200kV-poly_Ideal&#34;)
+            results.longName = &#34;Fe wedge, 120 kV (poly), ideal detector&#34;
+
+        elif self.subtests[i] == &#34;D2_Al_50&#34;:
+            results.loadReference(&#34;15_Al_noFilter_050keV-mono_200mum-CsI&#34;)
+            results.longName = &#34;Al wedge, 50 keV (mono), 200 µm CsI&#34;
+        elif self.subtests[i] == &#34;D2_Al_120&#34;:
+            results.loadReference(&#34;17_Al_noFilter_120kV-poly_200mum-CsI&#34;)
+            results.longName = &#34;Al wedge, 120 kV (poly), 200 µm CsI&#34;
+        elif self.subtests[i] == &#34;D2_Fe_100&#34;:
+            results.loadReference(&#34;19_Fe_noFilter_100keV-mono_200mum-CsI&#34;)
+            results.longName = &#34;Fe wedge, 100 keV (mono), 200 µm CsI&#34;
+        elif self.subtests[i] == &#34;D2_Fe_200&#34;:
+            results.loadReference(&#34;21_Fe_noFilter_200kV-poly_200mum-CsI&#34;)
+            results.longName = &#34;Fe wedge, 120 kV (poly), 200 µm CsI&#34;
+
+        elif self.subtests[i] == &#34;D3_Al_50&#34;:
+            results.loadReference(&#34;23_Al_noFilter_050keV-mono_500mum-CsI&#34;)
+            results.longName = &#34;Al wedge, 50 keV (mono), 500 µm CsI&#34;
+        elif self.subtests[i] == &#34;D3_Al_120&#34;:
+            results.loadReference(&#34;25_Al_noFilter_120kV-poly_500mum-CsI&#34;)
+            results.longName = &#34;Al wedge, 120 kV (poly), 500 µm CsI&#34;
+        elif self.subtests[i] == &#34;D3_Fe_100&#34;:
+            results.loadReference(&#34;27_Fe_noFilter_100keV-mono_500mum-CsI&#34;)
+            results.longName = &#34;Fe wedge, 100 keV (mono), 500 µm CsI&#34;
+        elif self.subtests[i] == &#34;D3_Fe_200&#34;:
+            results.loadReference(&#34;29_Fe_noFilter_200kV-poly_500mum-CsI&#34;)
+            results.longName = &#34;Fe wedge, 120 kV (poly), 500 µm CsI&#34;
+
+        elif self.subtests[i] == &#34;D4_Al_50&#34;:
+            results.loadReference(&#34;31_Al_noFilter_050kV-mono_500mum-GOS&#34;)
+            results.longName = &#34;Al wedge, 50 keV (mono), 500 µm Gd2O2S&#34;
+        elif self.subtests[i] == &#34;D4_Al_120&#34;:
+            results.loadReference(&#34;33_Al_noFilter_120kV-poly_500mum-GOS&#34;)
+            results.longName = &#34;Al wedge, 120 kV (poly), 500 µm Gd2O2S&#34;
+        elif self.subtests[i] == &#34;D4_Fe_100&#34;:
+            results.loadReference(&#34;35_Fe_noFilter_100keV-mono_500mum-GOS&#34;)
+            results.longName = &#34;Fe wedge, 100 keV (mono), 500 µm Gd2O2S&#34;
+        elif self.subtests[i] == &#34;D4_Fe_200&#34;:
+            results.loadReference(&#34;37_Fe_noFilter_200kV-poly_500mum-GOS&#34;)
+            results.longName = &#34;Fe wedge, 120 kV (poly), 500 µm Gd2O2S&#34;
+
+        self.results[self.currentIndex] = results
+    else:
+        if len(self.subtests) == 0:
+            raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts identifiers from the following list: {valids}.&#34;.format(testname=self.testName, valids=self.validSubtests))
+        else:
+            raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ctsimu.test.generalTest.followUp" href="../processing/step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.plotResults" href="../test.html#ctsimu.test.generalTest.plotResults">plotResults</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.run" href="../processing/step.html#ctsimu.processing.step.Step.run">run</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setName" href="../test.html#ctsimu.test.generalTest.setName">setName</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setRawOutput" href="../test.html#ctsimu.test.generalTest.setRawOutput">setRawOutput</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setResultFileDirectory" href="../test.html#ctsimu.test.generalTest.setResultFileDirectory">setResultFileDirectory</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1_results"><code class="flex name class">
+<span>class <span class="ident">Test2D_SW_1_results</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Results for one sub test of the filtering scenario.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Test2D_SW_1_results:
+    &#34;&#34;&#34; Results for one sub test of the filtering scenario. &#34;&#34;&#34;
+
+    def __init__(self):
+        self.subtestName = &#34;&#34;
+        self.longName = &#34;&#34;
+
+        # Grey value means and ratios (per wedge step):
+        self.means             = []     # Mean value for each step (measured for simulation software)
+        self.ratios_to_D1      = None   # grey value ratios to ideal detector (measured for simulation software)
+
+        # Grey values from Monte-Carlo simuation:
+        self.means_rosi_total    = None   # accounting for scatter radiation
+        self.means_rosi_primary  = None   # accounting only for primary radiation
+        self.means_mcray_total    = None   # accounting for scatter radiation
+        self.means_mcray_primary  = None   # accounting only for primary radiation
+
+
+        # Reference values for Monte-Carlo simulation (calculated in loadReference())
+        self.means_mc_total    = None   # accounting for scatter radiation
+        self.means_mc_primary  = None   # accounting only for primary radiation
+        self.error_mc_total_upper   = None
+        self.error_mc_total_lower   = None
+        self.error_mc_primary_upper = None
+        self.error_mc_primary_lower = None
+
+        self.ratios_to_D1_mc_total = None
+        self.ratios_to_D1_mc_primary = None
+        self.error_ratios_to_D1_mc_total_upper = None
+        self.error_ratios_to_D1_mc_total_lower = None
+        self.error_ratios_to_D1_mc_primary_upper = None
+        self.error_ratios_to_D1_mc_primary_lower = None
+
+    def loadReference(self, name):
+        dataText = pkgutil.get_data(__name__, &#34;data/2D-SW-1_scenario{name}.txt&#34;.format(name=name)).decode()
+        dataIO = io.StringIO(dataText)
+        allData = numpy.loadtxt(dataIO, delimiter=&#39;\t&#39;)  # ignore free beam
+
+        # --- total radiation
+        means_rosi_total  = allData[:,1]
+        means_mcray_total = allData[:,4]
+        means_total = (means_rosi_total + means_mcray_total) * 0.5
+        delta_total = numpy.absolute(means_rosi_total - means_mcray_total)
+
+        stddev_rosi_total  = allData[:,2]
+        stddev_mcray_total = allData[:,5]
+
+        #err_total = 0.5*(delta_total + numpy.sqrt(numpy.square(stddev_rosi_total) + numpy.square(stddev_mcray_total)))
+        err_total_rosi  = numpy.fmax(stddev_rosi_total,  stddev_mcray_total-delta_total) + 0.5*delta_total
+        err_total_mcray = numpy.fmax(stddev_mcray_total, stddev_rosi_total-delta_total)  + 0.5*delta_total
+        err_total_upper = numpy.zeros_like(err_total_rosi)
+        err_total_lower = numpy.zeros_like(err_total_rosi)
+        for i in range(len(err_total_upper)):
+            if means_rosi_total[i] &gt; means_total[i]:  # ROSI is upper bound
+                err_total_upper[i] = err_total_rosi[i]
+                err_total_lower[i] = err_total_mcray[i]
+            else:   # McRay is upper bound
+                err_total_upper[i] = err_total_mcray[i]
+                err_total_lower[i] = err_total_rosi[i]
+
+
+        # --- primary radiation
+        means_rosi_primary  = allData[:,9]
+        means_mcray_primary = allData[:,12]
+        means_primary = (means_rosi_primary + means_mcray_primary) * 0.5
+        delta_primary = numpy.absolute(means_rosi_primary - means_mcray_primary)
+
+        stddev_rosi_primary  = allData[:,10]
+        stddev_mcray_primary = allData[:,13]
+
+        #err_primary = 0.5*(delta_primary + numpy.sqrt(numpy.square(stddev_rosi_primary) + numpy.square(stddev_mcray_primary)))
+        err_primary_rosi  = numpy.fmax(stddev_rosi_primary,  stddev_mcray_primary-delta_primary) + 0.5*delta_primary
+        err_primary_mcray = numpy.fmax(stddev_mcray_primary, stddev_rosi_primary-delta_primary)  + 0.5*delta_primary
+        err_primary_upper = numpy.zeros_like(err_primary_rosi)
+        err_primary_lower = numpy.zeros_like(err_primary_rosi)
+        for i in range(len(err_primary_upper)):
+            if means_rosi_primary[i] &gt; means_primary[i]:  # ROSI is upper bound
+                err_primary_upper[i] = err_primary_rosi[i]
+                err_primary_lower[i] = err_primary_mcray[i]
+            else:   # McRay is upper bound
+                err_primary_upper[i] = err_primary_mcray[i]
+                err_primary_lower[i] = err_primary_rosi[i]
+
+
+        self.means_rosi_total    = means_rosi_total
+        self.means_rosi_primary  = means_rosi_primary
+        self.means_mcray_total    = means_mcray_total
+        self.means_mcray_primary  = means_mcray_primary
+
+        self.means_mc_total         = means_total
+        self.means_mc_primary       = means_primary
+        self.error_mc_total_upper   = err_total_upper
+        self.error_mc_total_lower   = err_total_lower
+        self.error_mc_primary_upper = err_primary_upper
+        self.error_mc_primary_lower = err_primary_lower
+
+        dataIO.close()</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1_results.loadReference"><code class="name flex">
+<span>def <span class="ident">loadReference</span></span>(<span>self, name)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def loadReference(self, name):
+    dataText = pkgutil.get_data(__name__, &#34;data/2D-SW-1_scenario{name}.txt&#34;.format(name=name)).decode()
+    dataIO = io.StringIO(dataText)
+    allData = numpy.loadtxt(dataIO, delimiter=&#39;\t&#39;)  # ignore free beam
+
+    # --- total radiation
+    means_rosi_total  = allData[:,1]
+    means_mcray_total = allData[:,4]
+    means_total = (means_rosi_total + means_mcray_total) * 0.5
+    delta_total = numpy.absolute(means_rosi_total - means_mcray_total)
+
+    stddev_rosi_total  = allData[:,2]
+    stddev_mcray_total = allData[:,5]
+
+    #err_total = 0.5*(delta_total + numpy.sqrt(numpy.square(stddev_rosi_total) + numpy.square(stddev_mcray_total)))
+    err_total_rosi  = numpy.fmax(stddev_rosi_total,  stddev_mcray_total-delta_total) + 0.5*delta_total
+    err_total_mcray = numpy.fmax(stddev_mcray_total, stddev_rosi_total-delta_total)  + 0.5*delta_total
+    err_total_upper = numpy.zeros_like(err_total_rosi)
+    err_total_lower = numpy.zeros_like(err_total_rosi)
+    for i in range(len(err_total_upper)):
+        if means_rosi_total[i] &gt; means_total[i]:  # ROSI is upper bound
+            err_total_upper[i] = err_total_rosi[i]
+            err_total_lower[i] = err_total_mcray[i]
+        else:   # McRay is upper bound
+            err_total_upper[i] = err_total_mcray[i]
+            err_total_lower[i] = err_total_rosi[i]
+
+
+    # --- primary radiation
+    means_rosi_primary  = allData[:,9]
+    means_mcray_primary = allData[:,12]
+    means_primary = (means_rosi_primary + means_mcray_primary) * 0.5
+    delta_primary = numpy.absolute(means_rosi_primary - means_mcray_primary)
+
+    stddev_rosi_primary  = allData[:,10]
+    stddev_mcray_primary = allData[:,13]
+
+    #err_primary = 0.5*(delta_primary + numpy.sqrt(numpy.square(stddev_rosi_primary) + numpy.square(stddev_mcray_primary)))
+    err_primary_rosi  = numpy.fmax(stddev_rosi_primary,  stddev_mcray_primary-delta_primary) + 0.5*delta_primary
+    err_primary_mcray = numpy.fmax(stddev_mcray_primary, stddev_rosi_primary-delta_primary)  + 0.5*delta_primary
+    err_primary_upper = numpy.zeros_like(err_primary_rosi)
+    err_primary_lower = numpy.zeros_like(err_primary_rosi)
+    for i in range(len(err_primary_upper)):
+        if means_rosi_primary[i] &gt; means_primary[i]:  # ROSI is upper bound
+            err_primary_upper[i] = err_primary_rosi[i]
+            err_primary_lower[i] = err_primary_mcray[i]
+        else:   # McRay is upper bound
+            err_primary_upper[i] = err_primary_mcray[i]
+            err_primary_lower[i] = err_primary_rosi[i]
+
+
+    self.means_rosi_total    = means_rosi_total
+    self.means_rosi_primary  = means_rosi_primary
+    self.means_mcray_total    = means_mcray_total
+    self.means_mcray_primary  = means_mcray_primary
+
+    self.means_mc_total         = means_total
+    self.means_mc_primary       = means_primary
+    self.error_mc_total_upper   = err_total_upper
+    self.error_mc_total_lower   = err_total_lower
+    self.error_mc_primary_upper = err_primary_upper
+    self.error_mc_primary_lower = err_primary_lower
+
+    dataIO.close()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#test-2d-sw-1-scintillator-characteristics">Test 2D-SW-1: Scintillator characteristics</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu.evaluation" href="index.html">ctsimu.evaluation</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1" href="#ctsimu.evaluation.test2D_SW_1.Test2D_SW_1">Test2D_SW_1</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1.prepare" href="#ctsimu.evaluation.test2D_SW_1.Test2D_SW_1.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1.prepareRun" href="#ctsimu.evaluation.test2D_SW_1.Test2D_SW_1.prepareRun">prepareRun</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1_results" href="#ctsimu.evaluation.test2D_SW_1.Test2D_SW_1_results">Test2D_SW_1_results</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.evaluation.test2D_SW_1.Test2D_SW_1_results.loadReference" href="#ctsimu.evaluation.test2D_SW_1.Test2D_SW_1_results.loadReference">loadReference</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

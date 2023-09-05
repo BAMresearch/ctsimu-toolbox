@@ -275,7 +275,7 @@ def pkg_scenario(filename:str, level:str="root") -> str:
         Path to the scenario within the package.
     """
     if level == "root":
-        return f"ctsimu_evaluations/scenarios/{filename}"
+        return f"evaluation/scenarios/{filename}"
     elif level == "test":
         return f"scenarios/{filename}"
 

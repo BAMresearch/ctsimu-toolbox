@@ -4,6 +4,4 @@
 .. include:: ./documentation.md
 """
 
-# Exclude the CTSimU test evaluations from the online documentation.
 __pdoc__ = {}
-__pdoc__["ctsimu_evaluations"] = False

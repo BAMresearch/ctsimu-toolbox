@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+"""# Test 2D-DW-1: Detector unsharpness
+
+.. include:: ./test2D_DW_1.md
+"""
+
 from ..test import *
 from ..helpers import *
 from ..primitives import *

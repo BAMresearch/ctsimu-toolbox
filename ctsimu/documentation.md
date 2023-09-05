@@ -64,6 +64,12 @@ CTSimU scenarios:
 
 [CTSimU scenario description files]: https://bamresearch.github.io/ctsimu-scenarios/
 
+2D test evaluations
+-------------------
+The **`ctsimu.evaluation`** sub-module provides scripts and documentation
+for CTSimU 2D test evaluations.
+
+
 Getting started
 ===============
 
