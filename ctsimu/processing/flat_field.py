@@ -10,14 +10,14 @@ from .step import Step
 class Step_FlatFieldCorrection(Step):
     """ Flat field correction for the processing pipeline. """
 
-    def __init__(self, flatFileStack=None, darkFileStack=None):
+    def __init__(self, flatFileStack=None, darkFileStack=None, rescaleFactor:float=None, offsetAfterRescale:float=None):
         Step.__init__(self, "Flatfield Correction")
 
         # Parameters:
         self.flatFileStack        = None
         self.darkFileStack        = None
-        self.flatFieldRescaleFactor = 1
-        self.offsetAfterRescale     = 0
+        self.rescaleFactor        = None
+        self.offsetAfterRescale   = None
         self.doOffsetCorrection   = False
         self.doGainCorrection     = False
 
@@ -31,6 +31,7 @@ class Step_FlatFieldCorrection(Step):
 
         self.setFlatFileStack(flatFileStack)
         self.setDarkFileStack(darkFileStack)
+        self.setFlatFieldRescaleFactor(rescaleFactor, offsetAfterRescale)
 
     def setFlatFileStack(self, flatFileStack):
         self.flatFileStack = createImageStack(flatFileStack)
@@ -57,16 +58,24 @@ class Step_FlatFieldCorrection(Step):
         self.setPrepared(False)
 
     def setFlatFieldRescaleFactor(self, factor, offsetAfterRescale=0):
-        self.flatFieldRescaleFactor = factor
-        self.offsetAfterRescale     = offsetAfterRescale
+        if factor is not None:
+            self.rescaleFactor = factor
+        else:
+            self.rescaleFactor = 1.0
+
+        if offsetAfterRescale is not None:
+            self.offsetAfterRescale = offsetAfterRescale
+        else:
+            self.offsetAfterRescale = 0
+
         self.setPrepared(False)
 
-    def setAnalyticalCorrection(self, doAnalytical, jsonScenarioFile=None, offsetValue=0, flatFieldRescaleFactor=1):
+    def setAnalyticalCorrection(self, doAnalytical, jsonScenarioFile=None, offsetValue=0, rescaleFactor=1):
         """ Configure the analytical flat field correction. """
         self.analyticalCorrection = doAnalytical
         self.jsonScene = jsonScenarioFile
         self.analyticalOffset = offsetValue
-        self.setFlatFieldRescaleFactor(flatFieldRescaleFactor)
+        self.setFlatFieldRescaleFactor(rescaleFactor)
         self.setPrepared(False)
         if doAnalytical:
             self.setGainCorrection(True)
@@ -112,8 +121,8 @@ class Step_FlatFieldCorrection(Step):
                     if(self.jsonScene is not None):
                         ctsimuGeometry = Geometry(self.jsonScene)
                         self.gainImage = ctsimuGeometry.create_detector_flat_field_analytical()
-                        if self.flatFieldRescaleFactor != 1:
-                            print("WARNING: For analytical correction, a rescale factor of 1 is recommended. Your current choice: {}".format(self.flatFieldRescaleFactor))
+                        if self.rescaleFactor != 1:
+                            print("WARNING: For analytical correction, a rescale factor of 1 is recommended. Your current choice: {}".format(self.rescaleFactor))
                     else:
                         raise Exception("A JSON scenario description must be specified when using analytical flat field correction.")
 
@@ -130,7 +139,7 @@ class Step_FlatFieldCorrection(Step):
                 image.applyDark(self.darkImage)
 
         if self.doGainCorrection:
-            image.applyFlatfield(self.gainImage, self.flatFieldRescaleFactor)
+            image.applyFlatfield(self.gainImage, self.rescaleFactor)
 
         if self.offsetAfterRescale != 0:
             image.add(self.offsetAfterRescale)

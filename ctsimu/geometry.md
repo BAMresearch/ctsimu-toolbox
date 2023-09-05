@@ -1,6 +1,6 @@
 # Coordinate Systems
 
-The geometry subpackage provides a `CoordinateSystem` class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (`center`) and three basis vectors (`u`, `v`, `w`). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The `center` acts as the pivot point for rotations.
+The geometry subpackage provides a `CoordinateSystem` class that lets you create and manipulate objects in a virtual CT scene. Such an oject has a position (`center`) and three basis vectors (`u`, `v`, `w`). These basis vectors are assumed to be orthogonal, but they do not have to be unit vectors. The `center` acts as the pivot point for rotations if no other pivot is specified.
 
 Example for creating and manipulating an object:
 
@@ -10,7 +10,7 @@ Example for creating and manipulating an object:
 
 # Full CT Geometry
 
-For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The `Geometry` class bundles three coordinate systems (one for each of those components), and additional information about the detector (using the `Detector` class, an extension of a regular `CoordinateSystem`). The following figure shows their standard orientations when a CT geometry is initialized.
+For a full CT, we need an X-ray source, a stage for the specimens, and a detector. The `Geometry` class bundles three coordinate systems (one for each of those components) and additional information about the detector (using the `DetectorGeometry` class, an extension of a regular `CoordinateSystem`). The following figure shows their standard orientations when a CT geometry is initialized.
 
 ![Standard coordinate system](pictures/geometry.png "Standard coordinate system")
 
@@ -94,13 +94,13 @@ We can use this concept to describe translations in space with a matrix multipli
 
 ![Translation Matrix](pictures/pmatrix_translation.png "Translation Matrix")
 
-We now consider two coordinate systems: the stage coordinate system (our origin) and the detector coordinate system (our target). The world coordinate system is not important in this context. In the following picture, 3D (Euclidean) coordinates are expressed in terms of the stage coordinate system, and 2D (Euclidean) coordinates are expressed in terms of the detector coordinate system (ignoring its *w* axis).
+We now consider two coordinate systems: the stage coordinate system (our origin) and the detector coordinate system (our target). The world coordinate system is not important in this context. In the following picture, 3D coordinates (x, y, z) are expressed in terms of the stage coordinate system and 2D coordinates (u, v) are expressed in terms of the detector coordinate system (ignoring its *w* axis).
 
 ![Projective system](pictures/geometry_stage_projection.png "Projective system")
 
 To calculate a projection matrix for the current geometry, we have to consider five subsequent transformations. Each transformation is expressed by a matrix. The final projection matrix is then the product of these five transformation matrices.
 
-1. We shift the origin of the coordinate system from the stage to the source, which is our center of projection.
+1. We shift the origin of the coordinate system from the stage to the source, which is our center of projection. The scaling factors s<sub>x</sub>, s<sub>y</sub> and s<sub>z</sub> take care of converting the volume units into the units of the world coordinate system, for example from voxels to millimeters.
 
     ![Shifting the origin to the source](pictures/pmatrix_F.png "Shifting the origin to the source")
 
@@ -120,7 +120,7 @@ To calculate a projection matrix for the current geometry, we have to consider f
 
     In the previous step, the third component of the 4-vector used to be something similar to the SOD. This has now become the *scale component* β of our homogeneous 3-vector (because a multiplication with this matrix throws away the fourth vector component, which has still been α=1). This means we are now in a projective plane β=SOD, away from the detector plane of our home world (which would be at β=1).
 
-    This problem is solved in the end by a simple renormalization of the matrix. Stay tuned!
+    This problem is solved in the end by a simple renormalization of the matrix and implicitly will give us the correct magnification factor. Stay tuned!
 
 4. We take care of the magnification and any additional scaling.
 
@@ -128,7 +128,7 @@ To calculate a projection matrix for the current geometry, we have to consider f
 
     The SDD (source-detector distance) in this case means the length of the principal ray from source to detector (i.e., the ray that is parallel to the detector normal *w* and orthogonally hits the detector plane).
 
-    This matrix simply scales any image at the projective plane β=1 such that its *u* and *v* component will obey the magnification by the SDD (source-detector distance). Sometimes, the stage coordinate system is expressed in a different unit than the detector coordinate system (e.g. mm vs. px). In this case, we can introduce scale factors s<sub>u</sub> and s<sub>v</sub> that take care of further scaling, e.g. to handle the pixel size.
+    This matrix simply scales any image at the projective plane β=1 such that its *u* and *v* component will obey the magnification by the SDD (source-detector distance). The scaling factors s<sub>u</sub> and s<sub>v</sub> take care of the unit conversion from the world coordinate system to the image coordinate system, e.g. from millimeters to pixels. The scaling factor s<sub>w</sub> for the image's normal vector is usually `1` or `-1`, depending on which kind of image coordinate system is expected by the reconstruction software.
 
     Note that the final renormalization will turn out to be a division by the SOD (as mentioned in the previous step). This will convert the SDD-factors of this matrix into the actual magnification: M=SDD/SOD. We do not incorporate this here because the SOD as a parameter is not well-defined and might lead to confusion in a non-standard geometry.
 
@@ -159,14 +159,11 @@ In the following example, we calculate a projection matrix for each software by 
 .. include:: ../examples/geometry/05_projection_matrix_modes.py
 ```
 
-openCT's definition of the detector coordinate system matches our definition. In this case, we get the same projection matrix as without the `mode` parameter.
-
-
 ### Image & Volume Coordinate Systems
 
 Depending on the reconstruction software, the **image coordinate system** of the projection image does not have to match our standard detector coordinate system. Also, the **volume coordinate system** of the reconstructed volume does not have to match the stage coordinate system.
 
-In the following three examples, we will show how to use the parameter `imageCS` and `volumeCS` to define our own image and volume coordinate systems.
+In the following three examples, we will show how to use the parameters `imageCS` and `volumeCS` to define our own image and volume coordinate systems.
 
 ![Image and volume coordinate system](pictures/image_stage_cs.png "Image and volume coordinate system")
 
@@ -174,11 +171,14 @@ In the following three examples, we will show how to use the parameter `imageCS`
 
 #### Example 1: CERA
 
-Even though we have a pre-defined more for CERA, we will use its image coordinate system (illustrated above) to show how to set up an image coordinate system for CERA manually.
+Even though we have a pre-defined mode for CERA, we will use its image coordinate system (illustrated above) to show how to set up an image coordinate system for CERA manually.
 
-CERA's volume coordinate system matches our stage coordinate system, so we won't have to create our own volume coordinate system.
+CERA's volume coordinate system matches our stage coordinate system, but we flip
+the volume's w axis. Usually, this helps importing the volume into third-party
+3D volumetric processing software. If we wouldn't do this step, the volume
+is usually flipped (mirrored) in common visualizers.
 
-CERA's image coordinate system has its origin in the center of the lower left pixel of the detector. This means we have to move its origin by half the detector's physical width to the left and half the detector's physical height downwards from the origin of the detector coordinate system, and then back by half a physical pixel size (the detector pitch). We can use the attributes `phys_width` and `phys_height`, which are automatically calculated when calling `set_size()`.
+CERA's image coordinate system has its origin in the center of the lower left pixel of the detector. This means we have to move its origin by half the detector's physical width to the left and half the detector's physical height downwards from the origin of the detector coordinate system, and then back by half a physical pixel size (the detector pitch). We can use the attributes `phys_width` and `phys_height`, which are automatically calculated when calling `ctsimu.geometry.DetectorGeometry.set_size()`.
 
 ```python
 .. include:: ../examples/geometry/06_projection_matrix_cera.py
@@ -186,9 +186,7 @@ CERA's image coordinate system has its origin in the center of the lower left pi
 
 #### Example 2: openCT
 
-In the case of openCT, the image coordinate system matches our detector coordinate system. Also, the volume coordinate system matches our definition of the stage coordinate system. In this case, we can simply call the `projection_matrix()` function without any parameters.
-
-However, for the sake of clarity, we create a standard coordinate system for both the image and volume coordinate system. Because they are expressed in terms of their respective reference coordinate systems (detector and stage), they exactly represent their respective reference CS as seen from the outside world.
+In the case of openCT, the image coordinate system matches our detector coordinate system. Also, the volume coordinate system matches our definition of the stage coordinate system. However, as in the case of CERA, we will flip the reconstruction volume to make it easier to import it into 3D visualization software.
 
 ```python
 .. include:: ../examples/geometry/07_projection_matrix_openCT.py
@@ -210,9 +208,9 @@ We also scale the basis vectors of the volume coordinate system by the voxel siz
 
 A single projection matrix is not enough to describe a full CT scan. We need one projection matrix for each frame (i.e., for each projection image).
 
-We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `create_openCT_config()` or `create_CERA_config()` to create specific reconstruction configuration files for each reconstruction software.
+We can use a loop to set up each frame and collect the projection matrices in a list. Afterwards, we can pass this list of matrices to the function `ctsimu.geometry.create_OpenCT_config()` or `ctsimu.geometry.create_CERA_config()` to create specific reconstruction configuration files for each reconstruction software.
 
-In the loop, it is advisable not to rotate the stage incrementally for each frame by a certain angular increment. This could lead to the accumulation of small floating-point rounding inaccuracies. Instead, we create a backup of the initial setup (at frame zero) using the `Geometry.store()` function. In each step of the loop, we restore this initial configuration by calling `Geometry.restore()` and then rotate the stage to its current absolute angle. This approach of parameterizing the whole CT trajectory as a deterministic function that only depends on the initial configuration and the current frame number is preferred over incremental changes in a loop, but might not always be feasible.
+In the loop, it is advisable not to rotate the stage incrementally for each frame by a certain angular increment. This could lead to the accumulation of small floating-point rounding inaccuracies. Instead, we create a backup of the initial setup (at frame zero) using the `Geometry.store()` function. In each step of the loop, we restore this initial configuration by calling `Geometry.restore()` and then rotate the stage to its current absolute angle. This approach parameterizes the whole CT trajectory as a deterministic function that only depends on the initial configuration and the current frame number. It is preferred over incremental changes in a loop, but might not always be feasible.
 
 The following example shows how to simulate a simple CT scan (one full stage rotation with 3000 equidistant projection images) and how to create configuration files for the reconstruction.
 

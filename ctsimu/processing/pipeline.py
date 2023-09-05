@@ -9,6 +9,18 @@ class Pipeline:
     """ Perform given processing steps on input images, save as output. """
 
     def __init__(self, inputFileStack=None, outputFileStack=None):
+        """
+        Parameters
+        ----------
+        inputFileStack : ctsimu.image.ImageStack or str
+            A string or an `ctsimu.image.ImageStack` object that specifies
+            the path of the input image file(s).
+
+        outputFileStack : ctsimu.image.ImageStack or str
+            A string or an `ctsimu.image.ImageStack` object that specifies
+            the path of the output image file(s).
+        """
+
         self.inputFileStack   = None
         self.outputFileStack  = None
 
@@ -18,27 +30,64 @@ class Pipeline:
         self.processingSteps = []
 
     def setInputFileStack(self, inputFileStack):
+        """Set the input file stack.
+
+        Parameters
+        ----------
+        inputFileStack : ctsimu.image.ImageStack or str
+            A string or an `ctsimu.image.ImageStack` object that specifies
+            the path of the input image file(s).
+        """
         self.inputFileStack = createImageStack(inputFileStack)
 
     def setOutputFileStack(self, outputFileStack):
+        """Set the output file parameters.
+
+        Parameters
+        ----------
+        outputFileStack : ctsimu.image.ImageStack or str
+            A string or an `ctsimu.image.ImageStack` object that specifies
+            the path of the output image file(s).
+        """
         self.outputFileStack = createImageStack(outputFileStack)
 
     def addStep(self, step):
-        """ Add a processing step to the pipeline. """
+        """Add a processing step to the pipeline.
+
+        Parameters
+        ----------
+        step : ctsimu.processing.step.Step
+        """
         if isinstance(step, Step):
             step.setPipeline(self)
             self.processingSteps.append(step)
         else:
             raise Exception("Failed to add processing step. Not a valid type of processing step: {}".format(step))
 
-    def step(self, i):
+    def step(self, i:int):
+        """Return step at position `i` in the pipeline.
+
+        Parameters
+        ----------
+        i : int
+            Step index (starting at zero).
+        """
+
         if i < len(self.processingSteps):
             return self.processingSteps[i]
         else:
             raise Exception("Processing Pipeline: Requested processing step id (#{i}) exceeds number of stored processing steps ({n}).".format(i=i, n=len(self.processingSteps)))
 
-    def run(self, overwrite=True):
-        """ Run the processing pipeline with its current configuration. """
+    def run(self, overwrite:bool=True):
+        """Run the processing pipeline with its current configuration.
+
+        Parameters
+        ----------
+        overwrite : bool
+            Overwrite existing image files?
+
+            Default value: `True`
+        """
         if self.inputFileStack is not None:
             nImagesProcessed = 0
             nImagesSkipped   = 0

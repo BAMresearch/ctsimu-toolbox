@@ -1,0 +1,203 @@
+{
+	"file": {
+		"name": "Simple circular scan trajectory",
+		"description": "Tetrahedron on a circular scan trajectory, one full rotation.",
+
+		"contact": "David Plotzki",
+		"date_created": "2023-01-24",
+		"date_changed": "2023-02-11",
+		"version": {"major": 1, "minor": 2},
+
+		"file_type": "CTSimU Scenario",
+		"file_format_version": {"major": 1, "minor": 2}
+	},
+
+	"environment": {
+		"comment": "Simple vacuum environment.",
+		"material_id": null,
+		"temperature": null
+	},
+
+	"geometry": {
+		"detector": {
+			"center": {
+				"x": {"value": 400, "unit": "mm"},
+				"y": {"value":   0, "unit": "mm"},
+				"z": {"value":   0, "unit": "mm"}
+			},
+
+			"vector_u": {
+				"x": {"value":  0},
+				"y": {"value": -1},
+				"z": {"value":  0}
+			},
+			"vector_w": {
+				"x": {"value":  1},
+				"y": {"value":  0},
+				"z": {"value":  0}
+			},
+
+			"deviations": []
+		},
+
+		"source": {
+			"type": "cone",
+
+			"center": {
+				"x": {"value": 0, "unit": "mm"},
+				"y": {"value": 0, "unit": "mm"},
+				"z": {"value": 0, "unit": "mm"}
+			},
+
+			"vector_u": {
+				"x": {"value":  0},
+				"y": {"value": -1},
+				"z": {"value":  0}
+			},
+			"vector_w": {
+				"x": {"value":  1},
+				"y": {"value":  0},
+				"z": {"value":  0}
+			},
+
+			"deviations": []
+		},
+
+		"stage": {
+			"center": {
+				"x": {"value": 300, "unit": "mm"},
+				"y": {"value":   0, "unit": "mm"},
+				"z": {"value":   0, "unit": "mm"}
+			},
+
+			"vector_u": {
+				"x": {"value":  1},
+				"y": {"value":  0},
+				"z": {"value":  0}
+			},
+			"vector_w": {
+				"x": {"value":  0},
+				"y": {"value":  0},
+				"z": {"value":  1}
+			},
+
+			"deviations": []
+		}
+	},
+
+	"detector": {
+		"model":        "",
+		"manufacturer": "",
+		"type":         "ideal",
+		"columns":      {"value": 150, "unit": "px"},
+		"rows":         {"value": 150, "unit": "px"},
+		"pixel_pitch": {
+			"u": {"value": 1.3, "unit": "mm"},
+			"v": {"value": 1.3, "unit": "mm"}
+		},
+		"bit_depth":  {"value": 16},
+		"integration_time": {"value": 0.5, "unit": "s"},
+		"dead_time":  null,
+		"image_lag":  null,
+		"gray_value": {
+			"imax":   {"value": 60000},
+			"imin":   {"value":   120}
+		},
+		"noise": null,
+		"gain": null,
+		"unsharpness": null,
+		"bad_pixel_map": null,
+		"scintillator": null,
+		"window": null,
+		"filters": null
+	},
+
+	"source": {
+		"model":        "",
+		"manufacturer": "",
+		"voltage": {"value": 130, "unit": "kV"},
+		"current": {"value": 120, "unit": "uA"},
+		"target": null,
+		"spot": null,
+		"spectrum": {
+			"monochromatic": true,
+			"file": null
+		},
+		"window": [],
+		"filters": []
+	},
+
+	"samples": [
+		{
+			"name": "Tetrahedron",
+			"file": {"value": "tetra.stl", "drifts": null},
+			"unit": "mm",
+			"scaling_factor": {
+				"r": {"value": 1.0, "drifts": null},
+				"s": {"value": 1.0, "drifts": null},
+				"t": {"value": 1.0, "drifts": null}
+			},
+			"material_id": "Fe",
+			"position": {
+				"center": {
+					"comment": "Place tetrahedron tip at rotation axis.",
+					"u": {"value": 9.428083, "unit": "mm"},
+					"v": {"value": 0, "unit": "mm"},
+					"w": {"value": 8.888888, "unit": "mm"}
+				},
+
+				"vector_r": {
+					"u": {"value":  1},
+					"v": {"value":  0},
+					"w": {"value":  0}
+				},
+				"vector_t": {
+					"u": {"value":  0},
+					"v": {"value":  0},
+					"w": {"value":  1}
+				},
+
+				"deviations": []
+			}
+		}
+	],
+
+	"acquisition": {
+		"start_angle": {"value":   0, "unit": "deg"},
+		"stop_angle":  {"value": 360, "unit": "deg"},
+		"direction": "CCW",
+		"scan_mode": "stop+go",
+		"scan_speed": null,
+		"number_of_projections": 21,
+		"include_final_angle": true,
+		"frame_average": null,
+		"dark_field": {
+		  "number": 1,
+		  "frame_average": 1,
+		  "ideal": true,
+		  "correction": false
+		},
+		"flat_field": {
+		  "number": 3,
+		  "frame_average": 1,
+		  "ideal": false,
+		  "correction": false
+		},
+		"pixel_binning": {"u": 1, "v": 1},
+		"scattering": false
+	},
+
+	"materials": [
+		{
+			"id":   "Fe",
+			"name": "Iron",
+			"density": {"value": 7.874, "unit": "g/cm^3"},
+			"composition": [
+				{
+					"formula": {"value": "Fe"},
+					"mass_fraction": {"value": 1}
+				}
+			]
+		}
+	]
+}

@@ -1,8 +1,6 @@
 __pycache__
 dist
 ctsimu.egg-info
-docs
-test
 .vscode
 *.log
 *.sublime-project

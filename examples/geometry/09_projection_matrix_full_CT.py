@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+# File: examples/geometry/09_projection_matrix_full_CT.py
+
 import math
 from ctsimu.geometry import *
 
@@ -23,7 +25,7 @@ scan_range  = 360.0  # degrees. One full CT rotation.
 
 # We assume that the projections are stored in single TIFF image files,
 # sequentially numbered with four digits, starting at "img_0000.tif".
-projection_filename = "img_{:04d}.tif"    # for openCT
+projection_filename = "img_{:04d}.tif"   # for OpenCT
 projection_file_pattern = "img_%04d.tif" # for CERA
 
 # The following two lists will store the projection matrices

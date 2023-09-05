@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+# File: examples/geometry/07_projection_matrix_openCT.py
+
 from ctsimu.geometry import *
 
 # Set up a quick CT geometry:

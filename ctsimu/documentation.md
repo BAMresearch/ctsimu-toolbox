@@ -45,10 +45,10 @@ Geometry tools
 --------------
 The **`ctsimu.geometry`** sub-module provides tools for
 
-* Virtual representation and manipulation of a CT scene in Python,
-* Importing CT geometries from [CTSimU scenario description files],
+* Geometric representation and manipulation of a CT scan,
+* Calculation of projection matrices,
 * Creation of reconstruction configurations for openCT (VGSTUDIO) and CERA,
-* Calculation of projection matrices.
+  even though it is easier to use the `ctsimu.scenario` sub-module for this.
 
 [CTSimU scenario description files]: https://bamresearch.github.io/ctsimu-scenarios/
 [metadata files]: https://bamresearch.github.io/ctsimu-scenarios/metadata.html

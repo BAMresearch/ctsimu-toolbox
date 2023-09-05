@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+# File: examples/geometry/01_coordinate_systems.py
+
 import math
 from ctsimu.geometry import *
 

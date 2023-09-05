@@ -1767,7 +1767,59 @@ class ImageStack:
     """ Specify an image stack from a single file (RAW chunk) or
         a collection of single 2D RAW or TIFF files. """
 
-    def __init__(self, filePattern=None, width=None, height=None, dataType=None, byteOrder=None, rawFileHeaderSize=0, rawImageHeaderSize=0, slices=None, startNumber=0, flipByteOrder=False):
+    def __init__(self, filePattern:str=None, width:int=None, height:int=None, dataType:str=None, byteOrder:str=None, rawFileHeaderSize:int=0, rawImageHeaderSize:int=0, slices:int=None, startNumber:int=0, flipByteOrder:bool=False):
+        """The constructor takes the following optional parameters.
+
+        Parameters
+        ----------
+        filePattern : str
+            Name of a single file or a numbered file stack.
+            If file names end on `.tif` or `.tiff`, those are assumed to be TIFF files.
+
+        width : int
+            Image width (in pixels) of a raw file or chunk.
+            Required for RAW input.
+
+        height : int
+            Image height (in pixels) of a raw file or chunk.
+            Required for RAW input.
+
+        dataType : str
+            Data type of the gray value representation.
+            Required for RAW input and output and TIFF output.
+
+            Options are: `"int8"`, `"int16"`, `"int32"`, `"int64"`,
+            `"uint8"`, `"uint16"`, `"uint32"`, `"uint64"`, `"float32"`, and `"float64"`.
+
+        byteOrder : str
+            Byte order (endianness) of the raw data.
+
+            Default value: system default.
+
+            Options: `"little"`, `"big"`, `None` (system default)
+
+        rawFileHeaderSize : int
+            File header size (in bytes) of an input RAW file.
+
+            Default value: `0`
+
+        rawImageHeaderSize : int
+            Image header size (in bytes) for each image in an input RAW chunk that contains several image slices.
+
+            Default value: `0`
+
+        slices : int
+            Number of image slices to be read from a given input RAW file, or number of image files to be read from a given image sequence.
+
+            Default value: the number of slices will be determined automatically from the RAW chunk file size or from the number of images in the provided sequence.
+
+        startNumber : int
+            For image sequences. The index in the sequential number in the input filename where to start reading files for this stack.
+
+        flipByteOrder : bool
+            Only for TIFF input. The byte order (big or little endian) should be determined by the TIFF loader and be imported correctly. If not, you can use this parameter to flip the byte order after reading a TIFF file.
+        """
+
         self.files = ImageFile(filePattern, dataType, byteOrder, flipByteOrder)
 
         # Has this stack already been built?

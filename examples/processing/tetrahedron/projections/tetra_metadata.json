@@ -1,0 +1,110 @@
+{
+    "file":                 {
+        "name":                "tetra",
+        "description":         "Tetrahedron on a circular scan trajectory, one full rotation.",
+        "contact":             "David Plotzki",
+        "date_created":        "2023-09-05",
+        "date_changed":        "2023-09-05",
+        "file_type":           "CTSimU Metadata",
+        "file_format_version": {
+            "major": 1,
+            "minor": 2
+        }
+    },
+    "output":               {
+        "system":        "aRTist v2.12.6-0-g30fb1d33, CTSimU Scenario Loader 1.2.3",
+        "date_measured": "2023-09-05",
+        "projections":   {
+            "filename":      "tetra_projections.raw",
+            "number":        21,
+            "frame_average": 1,
+            "max_intensity": 60000,
+            "datatype":      "uint16",
+            "byteorder":     "little",
+            "headersize":    {
+                "file":  0,
+                "image": 0
+            },
+            "dimensions":    {
+                "x": {
+                    "value": 150,
+                    "unit":  "px"
+                },
+                "y": {
+                    "value": 150,
+                    "unit":  "px"
+                }
+            },
+            "pixelsize":     {
+                "x": {
+                    "value": 1.3,
+                    "unit":  "mm"
+                },
+                "y": {
+                    "value": 1.3,
+                    "unit":  "mm"
+                }
+            },
+            "dark_field":    {
+                "number":        1,
+                "frame_average": 1,
+                "filename":      "tetra_dark.raw",
+                "projections_corrected": false
+            },
+            "flat_field":    {
+                "number":        3,
+                "frame_average": 1,
+                "filename":      "tetra_flat_%04d.raw",
+                "projections_corrected": false
+            },
+            "bad_pixel_map": {
+                "filename": null,
+                "projections_corrected": false
+            }
+        },
+        "tomogram":      {
+            "filename":   null,
+            "datatype":   "float32",
+            "byteorder":  "little",
+            "headersize": {
+                "file":  0,
+                "image": 0
+            },
+            "dimensions": {
+                "x": {
+                    "value": 150,
+                    "unit":  "px"
+                },
+                "y": {
+                    "value": 150,
+                    "unit":  "px"
+                },
+                "z": {
+                    "value": 150,
+                    "unit":  "px"
+                }
+            },
+            "voxelsize":  {
+                "x": {
+                    "value": 0.975,
+                    "unit":  "mm"
+                },
+                "y": {
+                    "value": 0.975,
+                    "unit":  "mm"
+                },
+                "z": {
+                    "value": 0.975,
+                    "unit":  "mm"
+                }
+            }
+        }
+    },
+    "acquisition_geometry": {
+        "path_to_CTSimU_JSON": "../tetra.json"
+    },
+    "reconstruction":       {
+        "software": null,
+        "settings": {}
+    }
+}

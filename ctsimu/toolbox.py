@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-Quick metdata-based post-processing with simple commands.
+Quick metadata-based post-processing with simple commands.
 
 .. include:: ./toolbox.md
 """

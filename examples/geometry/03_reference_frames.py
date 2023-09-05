@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
-import math
-from ctsimu.geometry import *
+# File: examples/geometry/03_reference_frames.py
 
-world = CoordinateSystem()
+import math
+from ctsimu.geometry import * # also contains ctsimu_world
 
 # Set up a quick CT geometry with a tilted stage axis:
 myCT = Geometry()
@@ -20,7 +20,8 @@ mySpecimen.translate_z(5.0)
 # the world coordinate system:
 mySpecimen.change_reference_frame(
 	cs_from = myCT.stage,
-	cs_to = world)
+	cs_to = ctsimu_world
+)
 
 print("The specimen's world coordinates:")
 print(mySpecimen)

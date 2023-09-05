@@ -9,7 +9,22 @@ from .step import Step
 class Step_Binning(Step):
     """ Binning operation for the processing pipeline. """
 
-    def __init__(self, binSizeX=1, binSizeY=1, binningOperation="mean"):
+    def __init__(self, binSizeX:int=1, binSizeY:int=1, binningOperation:str="mean"):
+        """
+        Parameters
+        ----------
+        binSizeX : int
+            Bin size in x direction.
+
+        binSizeY : int
+            Bin size in y direction.
+
+        binningOperation : str
+            Operation used to calculate the binned gray value.
+
+            Options: `"mean"`, `"min"`, `"max"`, `"sum"`
+        """
+
         Step.__init__(self, "Binning")
         self.binSizeX = 1
         self.binSizeY = 1

@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+# File: examples/geometry/02_simple_CT_geometry.py
+
 from ctsimu.geometry import *
 
 # General CT parameters:
@@ -22,7 +24,7 @@ myCT.detector.set_size(
     pixels_v = pixelRows,
     pitch_u = pixelSize,
     pitch_v = pixelSize
-    )
+)
 
 myCT.update() # calculates derived geometry parameters
 
