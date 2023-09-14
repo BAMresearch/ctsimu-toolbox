@@ -95,6 +95,12 @@ class Test2D_SW_3(generalTest):
         else:
             return (abs(other) < self.gv_deviation_limit)   # If the expected difference is 0, the maximum abs. GV deviation should be within the expected limit.
 
+    def is_about(self, expected, other):
+        if expected != 0:  # relative deviation no more than 50%
+            return ((abs(other-expected)/abs(expected)) < 0.5)   # 50% maximum deviation from expectation value
+        else:
+            return (abs(other) < self.gv_deviation_limit*200)   # If the expected difference is 0, the maximum abs. GV deviation should be within the expected limit.
+
     def run(self, image):
         self.prepare()
         self.prepareRun(self.currentRun)
@@ -122,6 +128,9 @@ class Test2D_SW_3(generalTest):
 
         derivative.saveTIFF(filename="{dir}/{name}_{subname}_derivative_cleaned.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
 
+        # Prepare second derivative image:
+        derivative2 = copy.deepcopy(derivative)
+        derivative2.px[:,:] = 0.0
 
         # Calculate expected grey values:
         gvAl = [gvAir*att for att in self.attenuationsAl]
@@ -226,6 +235,9 @@ class Test2D_SW_3(generalTest):
                         elif (y in self.forbidden_lines) and (not any(diff < 0 for diff in derivative.px[y,498:500])):
                             derivative.px[y,498:500] = 0
                         else:
+                            # Set second derivative image
+                            if not self.is_about(diff_air_al, sum_across_boundary_to_air):
+                                derivative2.px[y,498:500] = derivative.px[y,498:500]
                             # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                             derivative.px[y,498:500] = 0
                             derivative.px[y,499] = diff_air_al
@@ -238,6 +250,9 @@ class Test2D_SW_3(generalTest):
                         elif (y in self.forbidden_lines) and (not any(diff > 0 for diff in derivative.px[y,x_gap_right0:x_gap_right1+1])):
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
                         else:
+                            # Set second derivative image
+                            if not self.is_about(-diff_air_right, sum_across_boundary_to_right_material):
+                                derivative2.px[y,x_gap_right0:x_gap_right1+1] = derivative.px[y,x_gap_right0:x_gap_right1+1]
                             # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
                             derivative.px[y,x_gap_right0] = -diff_air_right
@@ -247,11 +262,15 @@ class Test2D_SW_3(generalTest):
                         if self.is_near(diff_right_al, sum_across_complete_gap) or (y in self.forbidden_lines):
                             derivative.px[y,498:x_gap_right1+1] = 0
                         else:
+                            # Set second derivative image
+                            if not self.is_about(diff_right_al, sum_across_complete_gap):
+                                derivative2.px[y,498:x_gap_right1+1] = derivative.px[y,498:x_gap_right1+1]
                             # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                             derivative.px[y,498:x_gap_right1+1] = 0
                             derivative.px[y,499] = diff_right_al
-                elif subtestName == "Al_Ti":
+                #elif subtestName == "Al_Ti":
                     # We can skip Al_Al because the expected boundary difference is zero.
+                else:
 
                     x_boundary_left  = 499 - 1
                     x_boundary_right = 499 + 1
@@ -267,6 +286,10 @@ class Test2D_SW_3(generalTest):
                     elif (y in self.forbidden_lines) and (not any(diff > 0 for diff in derivative.px[y,x_boundary_left:x_boundary_right+1])):
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
                     else:
+                        # Set second derivative image
+                        if not self.is_about(diff_right_al, sum_across_boundary):
+                            derivative2.px[y,x_boundary_left:x_boundary_right+1] = derivative.px[y,x_boundary_left:x_boundary_right+1]
+
                         # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
                         derivative.px[y,x_boundary_right] = diff_right_al
@@ -274,6 +297,7 @@ class Test2D_SW_3(generalTest):
 
 
         derivative.saveTIFF(filename="{dir}/{name}_{subname}_anomalies.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
+        derivative2.saveTIFF(filename="{dir}/{name}_{subname}_anomalies2.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
 
         absDevSum = numpy.sum(numpy.absolute(derivative.px))
         anomalies = numpy.where(numpy.absolute(derivative.px) > 0)
@@ -282,13 +306,26 @@ class Test2D_SW_3(generalTest):
         if anomalyCount > 0:
             anomalyMean = absDevSum / anomalyCount
 
+        absDevSum2 = numpy.sum(numpy.absolute(derivative2.px))
+        anomalies2 = numpy.where(numpy.absolute(derivative2.px) > 0)
+        anomalyCount2 = len(anomalies2[0])
+        anomalyMean2 = "-"
+        if anomalyCount2 > 0:
+            anomalyMean2 = absDevSum2 / anomalyCount2
+
         print("Number of detected grey value anomalies: {}".format(anomalyCount))
         print("Mean grey value difference of all anomalies: {}".format(anomalyMean))
+
+        print("Number of detected grey value anomalies (2): {}".format(anomalyCount2))
+        print("Mean grey value difference of all anomalies (2): {}".format(anomalyMean2))
 
         summaryText  = "# Evaluation of Test {name}, {subname}:\n".format(name=self.name, subname=subtestName)
         summaryText += "# \n"
         summaryText += "# Number of detected grey value anomalies: {} \n".format(anomalyCount)
         summaryText += "# Mean anomaly grey value: {} \n".format(anomalyMean)
+        summaryText += "# \n"
+        summaryText += "# Number of detected grey value anomalies (2): {} \n".format(anomalyCount2)
+        summaryText += "# Mean anomaly grey value (2): {} \n".format(anomalyMean2)
 
         if anomalyCount > 0:
             summaryText += "# \n"
