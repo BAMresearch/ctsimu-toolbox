@@ -36,7 +36,7 @@ class Test2D_SW_3(generalTest):
         self.nPixels = 100 + 2*self.shrink
 
         self.steps = [
-            ImageROI(self.leftOffset, 818, self.leftOffset+self.nPixels, 910),
+            ImageROI(self.leftOffset, 818, self.leftOffset+self.nPixels, 909), # y==909 not treated.
             ImageROI(self.leftOffset, 727, self.leftOffset+self.nPixels, 818),
             ImageROI(self.leftOffset, 636, self.leftOffset+self.nPixels, 727),
             ImageROI(self.leftOffset, 545, self.leftOffset+self.nPixels, 636),
@@ -95,12 +95,6 @@ class Test2D_SW_3(generalTest):
         else:
             return (abs(other) < self.gv_deviation_limit)   # If the expected difference is 0, the maximum abs. GV deviation should be within the expected limit.
 
-    def is_about(self, expected, other):
-        if expected != 0:  # relative deviation no more than 50%
-            return ((abs(other-expected)/abs(expected)) < 0.5)   # 50% maximum deviation from expectation value
-        else:
-            return (abs(other) < self.gv_deviation_limit*200)   # If the expected difference is 0, the maximum abs. GV deviation should be within the expected limit.
-
     def run(self, image):
         self.prepare()
         self.prepareRun(self.currentRun)
@@ -128,9 +122,9 @@ class Test2D_SW_3(generalTest):
 
         derivative.saveTIFF(filename="{dir}/{name}_{subname}_derivative_cleaned.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
 
-        # Prepare second derivative image:
-        derivative2 = copy.deepcopy(derivative)
-        derivative2.px[:,:] = 0.0
+        # Prepare image of treated-pixel mask:
+        treated = copy.deepcopy(derivative)
+        treated.px[:,:] = 0
 
         # Calculate expected grey values:
         gvAl = [gvAir*att for att in self.attenuationsAl]
@@ -146,8 +140,8 @@ class Test2D_SW_3(generalTest):
             y1 = roi.y1
 
             for y in range(y1-1, y0-1, -1):
-                # -- LEFT BOUNDARY
                 """
+                # -- LEFT BOUNDARY
                 # Calculate GV drop for the left boundary at x=89,90:
                 sum_across_left_boundary = numpy.sum(derivative.px[y,89:91])
 
@@ -202,8 +196,6 @@ class Test2D_SW_3(generalTest):
                 derivative.px[y,80:100] = 0
                 derivative.px[y,870:920] = 0
 
-
-
                 # Width of air gap in the upper third of the wedge, for upper and lower y-line boundary:
                 w_gap_upper = (-11*5/(3*1000))*(y - (4*1000)/11)
                 w_gap_lower = (-11*5/(3*1000))*((y+1) - (4*1000)/11)
@@ -219,58 +211,54 @@ class Test2D_SW_3(generalTest):
 
                 # -- CENTRAL BOUNDARIES
                 if w_gap_lower > 0:  # air gap, steps 7, 8, 9
-                    # Right x locations of the gap boundary (left is always at 500).
+                    # Right x locations of the gap boundary (left is always at 499).
                     # In the variable names, left and right refer to the leftmost
                     # and rightmost pixel to consider for the sloped edge.
-                    x_gap_right0 = 500 + int(math.trunc(w_gap_lower)) - 1
-                    x_gap_right1 = 500 + int(math.trunc(w_gap_upper))
+                    x_gap_right0 = 499 - 0 + int(math.trunc(w_gap_lower))
+                    x_gap_right1 = 499 + 1 + int(math.trunc(w_gap_upper))
+                    x_gap_left0 = 499 - 1
+                    x_gap_left1 = 499 + 0
 
                     # If the gap is far enough to separate Al, air and Al/Ti:
                     if w_gap_lower > 1:
                         # Check if there is a GV rise to air at x=498,499
-                        sum_across_boundary_to_air = numpy.sum(derivative.px[y,498:500])
+                        sum_across_boundary_to_air = numpy.sum(derivative.px[y,x_gap_left0:x_gap_left1+1])
+                        treated.px[y,x_gap_left0:x_gap_left1+1] += 10
                         if self.is_near(diff_air_al, sum_across_boundary_to_air):
                             # Set both of them to zero so that they are not counted as an anomaly:
-                            derivative.px[y,498:500] = 0
-                        elif (y in self.forbidden_lines) and (not any(diff < 0 for diff in derivative.px[y,498:500])):
-                            derivative.px[y,498:500] = 0
+                            derivative.px[y,x_gap_left0:x_gap_left1+1] = 0
+                        elif (y in self.forbidden_lines) and (not any(diff < 0 for diff in derivative.px[y,x_gap_left0:x_gap_left1+1])):
+                            derivative.px[y,x_gap_left0:x_gap_left1+1] = 0
                         else:
-                            # Set second derivative image
-                            if not self.is_about(diff_air_al, sum_across_boundary_to_air):
-                                derivative2.px[y,498:500] = derivative.px[y,498:500]
                             # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
-                            derivative.px[y,498:500] = 0
-                            derivative.px[y,499] = diff_air_al
+                            derivative.px[y,x_gap_left0:x_gap_left1+1] = 0
+                            derivative.px[y,x_gap_left1] = abs(sum_across_boundary_to_air-diff_air_al)/abs(diff_air_al) #diff_air_al
 
                         # Check if there is a GV drop to the material at the right of the gap (Al/Ti):
                         sum_across_boundary_to_right_material = numpy.sum(derivative.px[y,x_gap_right0:x_gap_right1+1])
+                        treated.px[y,x_gap_right0:x_gap_right1+1] += 11
                         if self.is_near(-diff_air_right, sum_across_boundary_to_right_material):
                             # Set right gap boundary pixels to zero so that they are not counted as an anomaly:
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
                         elif (y in self.forbidden_lines) and (not any(diff > 0 for diff in derivative.px[y,x_gap_right0:x_gap_right1+1])):
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
                         else:
-                            # Set second derivative image
-                            if not self.is_about(-diff_air_right, sum_across_boundary_to_right_material):
-                                derivative2.px[y,x_gap_right0:x_gap_right1+1] = derivative.px[y,x_gap_right0:x_gap_right1+1]
                             # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
-                            derivative.px[y,x_gap_right0] = -diff_air_right
+                            derivative.px[y,x_gap_right0] = abs(sum_across_boundary_to_right_material-(-diff_air_right))/abs(diff_air_right) #-diff_air_right
                     else:  # if the gap is too narrow to separate left and right materials from the air gap
                         # Only the total sum over the gap has to match the material GV difference:
                         sum_across_complete_gap = numpy.sum(derivative.px[y,498:x_gap_right1+1])
+                        treated.px[y,498:x_gap_right1+1] += 12
                         if self.is_near(diff_right_al, sum_across_complete_gap) or (y in self.forbidden_lines):
                             derivative.px[y,498:x_gap_right1+1] = 0
                         else:
-                            # Set second derivative image
-                            if not self.is_about(diff_right_al, sum_across_complete_gap):
-                                derivative2.px[y,498:x_gap_right1+1] = derivative.px[y,498:x_gap_right1+1]
                             # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                             derivative.px[y,498:x_gap_right1+1] = 0
-                            derivative.px[y,499] = diff_right_al
-                #elif subtestName == "Al_Ti":
+                            if diff_right_al != 0:
+                                derivative.px[y,499] = abs(sum_across_complete_gap-diff_right_al)/abs(diff_right_al) #diff_right_al
+                elif subtestName == "Al_Ti":
                     # We can skip Al_Al because the expected boundary difference is zero.
-                else:
 
                     x_boundary_left  = 499 - 1
                     x_boundary_right = 499 + 1
@@ -281,23 +269,21 @@ class Test2D_SW_3(generalTest):
 
                     # Check if sum over central boundary matches expected grey value drop from left to right material:
                     sum_across_boundary = numpy.sum(derivative.px[y,x_boundary_left:x_boundary_right+1])
+                    treated.px[y,x_boundary_left:x_boundary_right+1] += 13
                     if self.is_near(diff_right_al, sum_across_boundary):
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
                     elif (y in self.forbidden_lines) and (not any(diff > 0 for diff in derivative.px[y,x_boundary_left:x_boundary_right+1])):
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
                     else:
-                        # Set second derivative image
-                        if not self.is_about(diff_right_al, sum_across_boundary):
-                            derivative2.px[y,x_boundary_left:x_boundary_right+1] = derivative.px[y,x_boundary_left:x_boundary_right+1]
-
                         # Set one of the pixels to the expectation value, the others to zero. -> introduces anomaly
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
-                        derivative.px[y,x_boundary_right] = diff_right_al
+                        derivative.px[y,x_boundary_right] = abs(sum_across_boundary-diff_right_al)/abs(diff_right_al) #diff_right_al
 
-
+        # We only consider anomalies of explicitly treated pixels.
+        derivative.px[treated.px == 0] = 0
 
         derivative.saveTIFF(filename="{dir}/{name}_{subname}_anomalies.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
-        derivative2.saveTIFF(filename="{dir}/{name}_{subname}_anomalies2.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
+        treated.saveTIFF(filename="{dir}/{name}_{subname}_tested.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
 
         absDevSum = numpy.sum(numpy.absolute(derivative.px))
         anomalies = numpy.where(numpy.absolute(derivative.px) > 0)
@@ -306,26 +292,19 @@ class Test2D_SW_3(generalTest):
         if anomalyCount > 0:
             anomalyMean = absDevSum / anomalyCount
 
-        absDevSum2 = numpy.sum(numpy.absolute(derivative2.px))
-        anomalies2 = numpy.where(numpy.absolute(derivative2.px) > 0)
-        anomalyCount2 = len(anomalies2[0])
-        anomalyMean2 = "-"
-        if anomalyCount2 > 0:
-            anomalyMean2 = absDevSum2 / anomalyCount2
+        checked = numpy.where(numpy.absolute(treated.px) > 0)
+        checkedCount = len(checked[0])
 
+        print("Number of treated pixels: {}".format(checkedCount))
         print("Number of detected grey value anomalies: {}".format(anomalyCount))
         print("Mean grey value difference of all anomalies: {}".format(anomalyMean))
 
-        print("Number of detected grey value anomalies (2): {}".format(anomalyCount2))
-        print("Mean grey value difference of all anomalies (2): {}".format(anomalyMean2))
-
         summaryText  = "# Evaluation of Test {name}, {subname}:\n".format(name=self.name, subname=subtestName)
         summaryText += "# \n"
-        summaryText += "# Number of detected grey value anomalies: {} \n".format(anomalyCount)
-        summaryText += "# Mean anomaly grey value: {} \n".format(anomalyMean)
+        summaryText += "# Number of treated pixels: {} \n".format(checkedCount)
         summaryText += "# \n"
-        summaryText += "# Number of detected grey value anomalies (2): {} \n".format(anomalyCount2)
-        summaryText += "# Mean anomaly grey value (2): {} \n".format(anomalyMean2)
+        summaryText += "# Number of detected grey value anomalies: {} \n".format(anomalyCount)
+        summaryText += "# Mean anomaly grey value (relative): {} \n".format(anomalyMean)
 
         if anomalyCount > 0:
             summaryText += "# \n"
