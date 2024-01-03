@@ -4,6 +4,7 @@
 import math
 import numpy
 from scipy import optimize, fft
+import csv
 
 def MTF(positions, ESF=None, LSF=None, ESFsmoothingWidth=8):
     """ Calculate the MTF for given edge spread function (ESF) or line spread function (LSF) and positions. """
@@ -138,3 +139,21 @@ def MTFfreq(MTFpos, MTF, modulation=0.2):
             break
 
     return mtf_freq
+
+def SaveMTF(MTFpos, MTF, filename="mtf.csv", cutoff_frequency=0.5):
+    """ Write CSV file with MTF up to cutoff frequency. """
+    
+    header = ["f","MTF"]
+    data = []
+    n = len(MTFpos)
+    i = 0
+    while i<n:
+        data.append([MTFpos[i],MTF[i]])
+        i = i+1
+        if MTFpos[i]>cutoff_frequency:
+            break
+
+    with open(filename, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        writer.writerows(data)
