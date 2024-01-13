@@ -286,25 +286,30 @@ class Test2D_SW_3(generalTest):
         treated.saveTIFF(filename="{dir}/{name}_{subname}_tested.tif".format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType="float32")
 
         absDevSum = numpy.sum(numpy.absolute(derivative.px))
+        absDevSqrSum = numpy.sum(numpy.square(derivative.px))
         anomalies = numpy.where(numpy.absolute(derivative.px) > 0)
         anomalyCount = len(anomalies[0])
-        anomalyMean = "-"
+        anomalyMean = 0
+        anomalyRMSE = 0
         if anomalyCount > 0:
             anomalyMean = absDevSum / anomalyCount
+            anomalyRMSE = math.sqrt(absDevSqrSum / anomalyCount)
 
-        checked = numpy.where(numpy.absolute(treated.px) > 0)
+        checked = numpy.where(treated.px > 0)
         checkedCount = len(checked[0])
 
         print("Number of treated pixels: {}".format(checkedCount))
         print("Number of detected grey value anomalies: {}".format(anomalyCount))
         print("Mean grey value difference of all anomalies: {}".format(anomalyMean))
+        print("RMSE of all anomalies: {}".format(anomalyRMSE))
 
         summaryText  = "# Evaluation of Test {name}, {subname}:\n".format(name=self.name, subname=subtestName)
         summaryText += "# \n"
         summaryText += "# Number of treated pixels: {} \n".format(checkedCount)
         summaryText += "# \n"
         summaryText += "# Number of detected grey value anomalies: {} \n".format(anomalyCount)
-        summaryText += "# Mean anomaly grey value (relative): {} \n".format(anomalyMean)
+        summaryText += "# Mean grey value difference of all anomalies: {} \n".format(anomalyMean)
+        summaryText += "# RMSE of all anomalies: {} \n".format(anomalyRMSE)
 
         if anomalyCount > 0:
             summaryText += "# \n"
