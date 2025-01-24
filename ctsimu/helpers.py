@@ -7,6 +7,8 @@ import pkgutil
 import numpy
 import numbers
 from scipy import optimize, fft
+import numpy as np
+import pandas as pd
 
 ctsimu_supported_scenario_version = {
     "major": 1,
@@ -401,6 +403,25 @@ def read_csv_file(filename:str) -> dict:
                 values[col].append(entry)
 
     return values
+
+
+
+def clean_values(values, system):
+
+    values = np.where(pd.Series(values).apply(lambda x: isinstance(x, str)), values, 'NaN')
+    # Clean values
+    if system == "german":
+        values = [str(value).replace(' °', '').replace(' mm', '').replace(',', '.') for value in values]
+        values = [float(value) if value != 'NaN' else np.nan for value in values]
+    elif system == "english":
+        values = [str(value).replace(' °', '').replace(' mm', '') for value in values]
+        values = [float(value) if value != 'NaN' else np.nan for value in values]
+
+
+    return values
+
+def convert_str_to_float(string):
+    return float(string.replace(' °', '').replace(' mm', '').replace(',', '.'))
 
 def value_is_null(value) -> bool:
     """Check if a specific JSON value is set to `null`.
