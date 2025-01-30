@@ -24,6 +24,8 @@ from .evaluation.test2D_DW_1 import Test2D_DW_1
 from .evaluation.test2D_WE_1 import Test2D_WE_1
 from .evaluation.test2D_WE_2 import Test2D_WE_2
 from .evaluation.test2D_HS_1 import Test2D_HS_1
+from .evaluation.testDigTwin import TestDigTwin
+from .responses.measurands import Measurands
 
 class Toolbox:
     """ Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. """
@@ -41,6 +43,8 @@ class Toolbox:
         elif operation.startswith("2D-"):
             # Possibly a 2D test... try it!
             self.test_2D(operation, *args, **kwargs)
+        elif operation == "testDigitalTwin":
+            self.testDigitalTwin(*args, **kwargs)
 
     def info(self, *scenario_files:str) -> bool:
         """Print geometry information about given scenario files.
@@ -699,3 +703,26 @@ class Toolbox:
             evaluationStep.followUp()
 
         return True
+
+    def testDigitalTwin(self, *metadata_files, **kwargs):
+        for key, value in kwargs.items():
+            if key in settings:
+                settings[key] = value
+
+        for metadata_file in metadata_files:
+            # Prepare a pipeline
+            try:
+                #print(metadata_file)
+                dataprep = TestDigTwin(metadata_file)
+                #print(bla)
+                dataprep.read_and_filter_csv_files(metadata_file)
+                #self.testDigTwin(metadata_file)
+                #pipeline.run(overwrite=settings["overwrite"])
+               
+
+
+
+            except Exception as e:
+                log(f"Error: {metadata_file}: {str(e)}")
+        #evaluationStep = testDigTwin(metadata)
+
