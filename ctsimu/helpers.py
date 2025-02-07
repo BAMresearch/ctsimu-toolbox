@@ -404,8 +404,6 @@ def read_csv_file(filename:str) -> dict:
 
     return values
 
-
-
 def clean_values(values, system):
 
     values = np.where(pd.Series(values).apply(lambda x: isinstance(x, str)), values, 'NaN')

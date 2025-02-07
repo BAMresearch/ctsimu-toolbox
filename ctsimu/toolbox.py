@@ -705,9 +705,9 @@ class Toolbox:
         return True
 
     def testDigitalTwin(self, *metadata_files, **kwargs):
-        for key, value in kwargs.items():
-            if key in settings:
-                settings[key] = value
+        #for key, value in kwargs.items():
+        #    if key in settings:
+        #        settings[key] = value
 
         for metadata_file in metadata_files:
             # Prepare a pipeline
@@ -715,9 +715,13 @@ class Toolbox:
                 #print(metadata_file)
                 dataprep = TestDigTwin(metadata_file)
                 #print(bla)
-                dataprep.read_and_filter_csv_files(metadata_file)
+                self.RealValues = dataprep.read_and_filter_csv_files(dataprep.real_folder_path)
+                print(self.RealValues)
+                self.SimValues = dataprep.read_and_filter_csv_files(dataprep.sim_folder_path)
+                print(self.SimValues)
                 #self.testDigTwin(metadata_file)
                 #pipeline.run(overwrite=settings["overwrite"])
+                dataprep.En_calc(self.RealValues, self.SimValues)
                
 
 
