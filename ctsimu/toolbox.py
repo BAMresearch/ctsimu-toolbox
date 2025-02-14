@@ -715,13 +715,18 @@ class Toolbox:
                 #print(metadata_file)
                 dataprep = TestDigTwin(metadata_file)
                 #print(bla)
-                self.RealValues = dataprep.read_and_filter_csv_files(dataprep.real_folder_path)
-                print(self.RealValues)
-                self.SimValues = dataprep.read_and_filter_csv_files(dataprep.sim_folder_path)
-                print(self.SimValues)
+                
+                self.RealValues = dataprep.read_and_filter_csv_files(dataprep.real_folder_path, "real_ct")
+                #print(self.RealValues)
+                
+                self.SimValues = dataprep.read_and_filter_csv_files(dataprep.sim_folder_path, "simulation_ct")
+                #print(self.SimValues)
                 #self.testDigTwin(metadata_file)
                 #pipeline.run(overwrite=settings["overwrite"])
                 dataprep.En_calc(self.RealValues, self.SimValues)
+                
+                dataprep.plotResults()
+                dataprep.TwinTest_report()
                
 
 

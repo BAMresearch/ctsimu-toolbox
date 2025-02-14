@@ -20,20 +20,20 @@ class Measurands:
         self.MU = ()
 
 
-    def Diff_MW_KW(self):
+    def Diff_MW_KW(self, CalValues):
         if isinstance(self.Values, float):
             #print(self.file_names)
-            return self.Values-self.CalValues[self.file_names]
+            return self.Values-CalValues[self.file_names]
         elif isinstance(self.Values, dict):
             #print(self.Values)
-            return self.Values-self.CalValues[self.Values.name]
+            return self.Values-CalValues[self.Values.name]
         #self.file_names
         #print(self.CalValues[self.Values.name])
         #length(Messgröße)
         else: # or somehow is instance of a Series
             #print("ERROR")
             #print(type(self.Values))
-            return self.Values-self.CalValues[self.Values.name]
+            return self.Values-CalValues[self.Values.name]
 
     def Mittelwert(self):
         return self.Values.mean()
