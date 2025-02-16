@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>ctsimu.scenario API documentation</title>
-<meta name="description" content="Read, write, handle and manipulate a CTSimU scenario …" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Read, write, handle and manipulate a CTSimU scenario …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
 <style>
@@ -369,1017 +384,6 @@ s.write_OpenCT_config(
     abspaths=True
 )
 </code></pre>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python"># -*- coding: UTF-8 -*-
-&#34;&#34;&#34;Read, write, handle and manipulate a CTSimU scenario.
-
-.. include:: ./documentation.md
-&#34;&#34;&#34;
-
-import math
-import os
-from datetime import datetime
-
-from ..helpers import *
-from ..geometry import *
-from . import *
-
-from .detector import Detector
-from .source import Source
-from .stage import Stage
-from .sample import Sample
-from .file import File
-from .environment import Environment
-from .acquisition import Acquisition
-from .material import Material
-from .metadata import Metadata
-
-class Scenario:
-    &#34;&#34;&#34;Representation of a CTSimU scenario. Reads, writes, manages
-    and manipulates scenarios.
-
-    Attributes
-    ----------
-    detector : ctsimu.scenario.detector.Detector
-        Detector object of the scenario.
-
-    source : ctsimu.scenario.source.Source
-        X-ray source object of the scenario.
-
-    stage : ctsimu.scenario.stage.Stage
-        Sample stage object of the scenario.
-
-    samples : list
-        List of samples in the scenario, each an object of class
-        `ctsimu.scenario.sample.Sample`.
-
-    file : ctsimu.scenario.file.File
-        Information about the scenario file.
-
-    environment : ctsimu.scenario.environment.Environment
-        Environment properties of the scenario.
-
-    acquisition : ctsimu.scenario.acquisition.Acquisition
-        CT acquisition parameters.
-
-    materials : list
-        List of materials used in the scenario, each an object of
-        class `ctsimu.scenario.material.Material`.
-
-    simulation : dict
-        Dictionary of simulation software-specific properties
-        from the scenario file.
-
-    metadata : ctsimu.scenario.metadata.Metadata
-        Metadata information about projection images and
-        the reconstruction volume. This information depends on the output
-        of the CT scanner or simulation software, not on the scenario
-        itself.
-    &#34;&#34;&#34;
-    def __init__(self, filename:str=None, json_dict:dict=None):
-        &#34;&#34;&#34;The scenario can optionally constructed by passing the path to
-        a scenario file or by passing a Python dictionary that contains
-        scenario information:
-
-        Parameters
-        ----------
-        filename : str, optional
-            Path to a [CTSimU scenario] file.
-            [CTSimU scenario]: https://bamresearch.github.io/ctsimu-scenarios
-
-        json_dict : dict, optional
-            A Python dictionary containing a CTSimU scenario.
-            The dictionary must obey the same structure as a
-            CTSimU JSON scenario file.
-        &#34;&#34;&#34;
-
-        self.detector = Detector(_root=self)
-        self.source   = Source(_root=self)
-        self.stage    = Stage(_root=self)
-        self.samples  = list()
-
-        self.file = File(_root=self)
-        self.environment = Environment(_root=self)
-        self.acquisition = Acquisition(_root=self)
-        self.materials = list()
-        self.simulation = None # simply imported as dict
-
-        # CTSimU metadata structure:
-        # Necessary for generation of reconstruction configs.
-        self.metadata = Metadata(_root=self)
-
-        # Subgroups are necessary for the &#39;get&#39; and &#39;set&#39; command:
-        self.subgroups = [
-            self.detector,
-            self.source,
-            self.stage,
-            self.file,
-            self.environment,
-            self.acquisition,
-            self.metadata
-        ]
-
-        self.current_frame = 0
-        self.current_scenario_path = None
-        self.current_scenario_file = None
-        self.current_scenario_basename = None
-        self.current_scenario_directory = None
-
-        self.current_metadata_path = None
-        self.current_metadata_file = None
-        self.current_metadata_basename = None
-        self.current_metadata_directory = None
-        self.metadata_is_set = False
-
-        if filename is not None:
-            self.read(filename=filename)
-        elif json_dict is not None:
-            self.read(json_dict=json_dict)
-
-    def read(self, filename:str=None, json_dict:dict=None):
-        &#34;&#34;&#34;Import a CTSimU scenario from a file or a given
-        scenario dictionary.
-
-        Parameters
-        ----------
-        filename : str
-            Path to a CTSimU scenario file.
-
-            Default value: `None`
-
-        json_dict : dict
-            Provide a dictionary with a scenario structure instead of a file.
-
-            Default value: `None`
-        &#34;&#34;&#34;
-        self.current_scenario_path = None
-        self.reset()
-
-        if filename is not None:
-            json_dict = read_json_file(filename=filename)
-            self.current_scenario_path = filename
-            self.current_scenario_directory = os.path.dirname(filename)
-            self.current_scenario_file = os.path.basename(filename)
-            self.current_scenario_basename, extension = os.path.splitext(self.current_scenario_file)
-        elif not isinstance(json_dict, dict):
-            raise Exception(&#34;Scenario: read() function expects either a filename as a string or a CTSimU JSON dictionary as a Python dict.&#34;)
-            return False
-
-        # If a file is read, we want to make sure that it is a valid
-        # and supported scenario file:
-        if isinstance(json_dict, dict):
-            file_type = get_value(json_dict, [&#34;file&#34;, &#34;file_type&#34;])
-            if file_type != &#34;CTSimU Scenario&#34;:
-                raise Exception(f&#34;Invalid scenario structure: the string &#39;CTSimU Scenario&#39; was not found in &#39;file.file_type&#39; in the scenario file {file}.&#34;)
-
-            file_format_version = get_value(json_dict, [&#34;file&#34;, &#34;file_format_version&#34;])
-            if not is_version_supported(ctsimu_supported_scenario_version, file_format_version):
-                raise Exception(f&#34;Unsupported or invalid metadata version. Currently supported: up to {ctsimu_supported_metadata_version[&#39;major&#39;]}.{ctsimu_supported_metadata_version[&#39;minor&#39;]}.&#34;)
-        else:
-            raise Exception(f&#34;Error when reading the scenario file: {filename}. read_json_file did not return a Python dictionary.&#34;)
-
-
-        self.detector.set_from_json(json_dict)
-        self.source.set_from_json(json_dict)
-        self.stage.set_from_json(json_dict)
-
-        json_samples = json_extract(json_dict, [&#34;samples&#34;])
-        if json_samples is not None:
-            for json_sample in json_samples:
-                s = Sample(_root=self)
-                s.set_from_json(json_sample, self.stage.coordinate_system)
-                self.samples.append(s)
-
-        self.file.set_from_json(json_extract(json_dict, [self.file._name]))
-        self.environment.set_from_json(json_extract(json_dict, [self.environment._name]))
-        self.acquisition.set_from_json(json_extract(json_dict, [self.acquisition._name]))
-        self.simulation = json_extract(json_dict, [&#34;simulation&#34;])
-
-        json_materials = json_extract(json_dict, [&#34;materials&#34;])
-        for json_material in json_materials:
-            m = Material(_root=self)
-            m.set_from_json(json_material)
-            self.materials.append(m)
-
-        self.set_frame(0, reconstruction=False)
-
-        if not self.metadata_is_set:
-            self.create_default_metadata()
-
-    def reset(self):
-        &#34;&#34;&#34;Reset scenario: delete all drifts, deviations and
-        sample and material information.&#34;&#34;&#34;
-
-        for group in self.subgroups:
-            group.reset()
-
-    def reset_metadata(self):
-        &#34;&#34;&#34;Reset scenario&#39;s metadata information.&#34;&#34;&#34;
-        self.current_metadata_path = None
-        self.current_metadata_file = None
-        self.current_metadata_basename = None
-        self.current_metadata_directory = None
-        self.metadata_is_set = False
-
-        # Create new, empty metadata:
-        self.metadata = Metadata()
-
-    def read_metadata(self, filename:str=None, json_dict:dict=None, import_referenced_scenario:bool=False):
-        &#34;&#34;&#34;Import metadata from a CTSimU metadata file or a given
-        metadata dictionary.
-
-        Parameters
-        ----------
-        filename : str
-            Path to a CTSimU metadata file.
-
-            Default value: `None`
-
-        json_dict : dict
-            Provide a dictionary with a metadata structure instead of a file.
-
-            Default value: `None`
-
-        import_referenced_scenario : bool
-            Import the scenario JSON file that&#39;s referenced in the metadata file?
-            Generates a warning if this fails.
-
-            The scenario definition will be searched at two locations in the following order:
-
-            1. Try to read from external file defined by `acquisition_geometry.path_to_CTSimU_JSON`.
-
-            2. Try to read embedded scenario definition from
-            `simulation.ctsimu_scenario`. Note that external drift files
-            specified in the scenario will likely fail to load. An error
-            will be issued in this case.
-
-            Default value: `False`
-        &#34;&#34;&#34;
-        if filename is not None:
-            json_dict = read_json_file(filename=filename)
-            self.current_metadata_path = filename
-            self.current_metadata_directory = os.path.dirname(filename)
-            self.current_metadata_file = os.path.basename(filename)
-            self.current_metadata_basename, extension = os.path.splitext(self.current_metadata_file)
-
-        # If a file is read, we want to make sure that it is a valid
-        # and supported metadata file:
-        if isinstance(json_dict, dict):
-            file_type = get_value(json_dict, [&#34;file&#34;, &#34;file_type&#34;])
-            if file_type != &#34;CTSimU Metadata&#34;:
-                raise Exception(f&#34;Invalid metadata structure: the string &#39;CTSimU Metadata&#39; was not found in &#39;file.file_type&#39; in the metadata file {file}.&#34;)
-
-            fileformatversion = get_value(json_dict, [&#34;file&#34;, &#34;file_format_version&#34;])
-            if not is_version_supported(ctsimu_supported_metadata_version, fileformatversion):
-                raise Exception(f&#34;Unsupported or invalid metadata version. Currently supported: up to {ctsimu_supported_metadata_version[&#39;major&#39;]}.{ctsimu_supported_metadata_version[&#39;minor&#39;]}.&#34;)
-        else:
-            raise Exception(f&#34;Error when reading the metadata file: {filename}. read_json_file did not return a Python dictionary.&#34;)
-
-        # If we get a `json_dict` as function parameter, we do not
-        # test for a valid version because reduced/simplified metadata
-        # structures should be supported as well.
-        self.metadata.set_from_json(json_dict)
-        self.metadata_is_set = True
-
-        if import_referenced_scenario:
-            # Import the scenario that&#39;s referenced in the metadata file.
-            ref_file = self.metadata.get([&#34;acquisition_geometry&#34;, &#34;path_to_CTSimU_JSON&#34;])
-
-            import_success = False
-
-            try:
-                if (ref_file is not None) and (ref_file != &#34;&#34;):
-                    if isinstance(ref_file, str):
-                        ref_file = abspath_of_referenced_file(self.current_metadata_path, ref_file)
-                    else:
-                        raise Exception(&#34;read_metadata: path_to_CTSimU_JSON is not a string.&#34;)
-
-                    # Try to import scenario:
-                    self.read(filename=ref_file)
-                    import_success = True
-            except Exception as e:
-                warnings.warn(str(e))
-                import_success = False
-
-            if not import_success:
-                # Try to import the embedded scenario structure.
-                if json_exists_and_not_null(json_dict, [&#34;simulation&#34;, &#34;ctsimu_scenario&#34;]):
-                    self.read(json_dict=json_dict[&#34;simulation&#34;][&#34;ctsimu_scenario&#34;])
-                    import_success = True
-
-            # Create default metadata in case the original
-            # metadata file did not contain all information that&#39;s needed:
-            self.create_default_metadata()
-            # Re-import metadata:
-            self.metadata.set_from_json(json_dict)
-
-
-    def create_default_metadata(self):
-        &#34;&#34;&#34;Set default metadata from scenario information,
-        to use if no metadata file is available.&#34;&#34;&#34;
-        self.reset_metadata()
-
-        geo = self.current_geometry()
-        cera_parameters = geo.get_CERA_standard_circular_parameters()
-
-        # Basename:
-        if self.current_scenario_basename is not None:
-            self.current_metadata_basename = self.current_scenario_basename
-
-        basename = self.current_metadata_basename
-        n_projections = self.acquisition.get(&#34;number_of_projections&#34;)
-        projection_filename = f&#34;{basename}_{counter_format(n_projections)}.raw&#34;
-
-        # Prepare filename for dark fields:
-        n_darks = self.acquisition.dark_field.get(&#34;number&#34;)
-        dark_filename = None
-        if n_darks is not None:
-            if n_darks &gt; 0:
-                if n_darks &gt; 1:
-                    dark_filename = f&#34;{basename}_dark_{counter_format(n_darks)}.raw&#34;
-                else:
-                    dark_filename = f&#34;{basename}_dark.raw&#34;
-
-        # Prepare filename for flat fields:
-        n_flats = self.acquisition.flat_field.get(&#34;number&#34;)
-        flat_filename = None
-        if n_flats is not None:
-            if n_flats &gt; 0:
-                if n_flats &gt; 1:
-                    flat_filename = f&#34;{basename}_flat_{counter_format(n_flats)}.raw&#34;
-                else:
-                    flat_filename = f&#34;{basename}_flat.raw&#34;
-
-
-        n_cols = self.detector.get(&#34;columns&#34;)
-        n_rows = self.detector.get(&#34;rows&#34;)
-        pixel_size_u = self.detector.pixel_pitch.get(&#34;u&#34;)
-        pixel_size_v = self.detector.pixel_pitch.get(&#34;v&#34;)
-
-        voxels_x = n_cols
-        voxels_y = n_cols
-        voxels_z = n_rows
-
-        voxelsize_x = cera_parameters[&#34;voxelsize&#34;][&#34;x&#34;]
-        voxelsize_y = cera_parameters[&#34;voxelsize&#34;][&#34;y&#34;]
-        voxelsize_z = cera_parameters[&#34;voxelsize&#34;][&#34;z&#34;]
-
-        now = datetime.now()
-
-        metadata = {
-            &#34;file&#34;: {
-                &#34;name&#34;: basename,
-                &#34;description&#34;: self.file.get(&#34;description&#34;),
-
-                &#34;contact&#34;: self.file.get(&#34;contact&#34;),
-                &#34;date_created&#34;: now.strftime(&#34;%Y-%m-%d&#34;),
-                &#34;date_changed&#34;: now.strftime(&#34;%Y-%m-%d&#34;),
-
-                &#34;file_type&#34;: &#34;CTSimU Metadata&#34;,
-                &#34;file_format_version&#34;: {
-                    &#34;major&#34;: ctsimu_supported_metadata_version[&#34;major&#34;],
-                    &#34;minor&#34;: ctsimu_supported_metadata_version[&#34;minor&#34;]
-                }
-            },
-
-            &#34;output&#34;: {
-                &#34;system&#34;: None,
-                &#34;date_measured&#34;: None,
-                &#34;projections&#34;: {
-                    &#34;filename&#34;: projection_filename,
-                    &#34;number&#34;: n_projections,
-                    &#34;frame_average&#34;: self.acquisition.get(&#34;frame_average&#34;),
-                    &#34;max_intensity&#34;: self.detector.get([&#34;gray_value&#34;, &#34;imax&#34;]),
-                    &#34;datatype&#34;: &#34;uint16&#34;,
-                    &#34;byteorder&#34;: &#34;little&#34;,
-                    &#34;headersize&#34;: {
-                        &#34;file&#34;: 0,
-                        &#34;image&#34;: 0
-                    },
-                    &#34;dimensions&#34;: {
-                        &#34;x&#34;: {&#34;value&#34;: n_cols, &#34;unit&#34;: &#34;px&#34;},
-                        &#34;y&#34;: {&#34;value&#34;: n_rows, &#34;unit&#34;: &#34;px&#34;}
-                    },
-                    &#34;pixelsize&#34;: {
-                        &#34;x&#34;: {&#34;value&#34;: pixel_size_u, &#34;unit&#34;: &#34;mm&#34;},
-                        &#34;y&#34;: {&#34;value&#34;: pixel_size_v, &#34;unit&#34;: &#34;mm&#34;}
-                    },
-                    &#34;dark_field&#34;: {
-                        &#34;number&#34;: n_darks,
-                        &#34;frame_average&#34;: self.acquisition.dark_field.get(&#34;frame_average&#34;),
-                        &#34;filename&#34;: dark_filename,
-                        &#34;projections_corrected&#34;: False
-                    },
-                    &#34;flat_field&#34;: {
-                        &#34;number&#34;: n_flats,
-                        &#34;frame_average&#34;: self.acquisition.flat_field.get(&#34;frame_average&#34;),
-                        &#34;filename&#34;: flat_filename,
-                        &#34;projections_corrected&#34;: False
-                    },
-                    &#34;bad_pixel_map&#34;: {
-                        &#34;filename&#34;: None,
-                        &#34;projections_corrected&#34;: False
-                    }
-                },
-                &#34;tomogram&#34;:
-                {
-                    &#34;filename&#34;:  f&#34;{basename}_recon.raw&#34;,
-                    &#34;datatype&#34;:  &#34;float32&#34;,
-                    &#34;byteorder&#34;: &#34;little&#34;,
-                    &#34;headersize&#34;: {
-                        &#34;file&#34;: 0,
-                        &#34;image&#34;: 0
-                    },
-                    &#34;dimensions&#34;: {
-                        &#34;x&#34;: {&#34;value&#34;: voxels_x, &#34;unit&#34;: &#34;px&#34;},
-                        &#34;y&#34;: {&#34;value&#34;: voxels_y, &#34;unit&#34;: &#34;px&#34;},
-                        &#34;z&#34;: {&#34;value&#34;: voxels_z, &#34;unit&#34;: &#34;px&#34;}
-                    },
-                    &#34;voxelsize&#34;: {
-                        &#34;x&#34;: {&#34;value&#34;: voxelsize_x, &#34;unit&#34;: &#34;mm&#34;},
-                        &#34;y&#34;: {&#34;value&#34;: voxelsize_y, &#34;unit&#34;: &#34;mm&#34;},
-                        &#34;z&#34;: {&#34;value&#34;: voxelsize_z, &#34;unit&#34;: &#34;mm&#34;}
-                    }
-                }
-            },
-
-            &#34;acquisition_geometry&#34;: {
-                &#34;path_to_CTSimU_JSON&#34;: self.current_scenario_path
-            },
-
-            &#34;reconstruction&#34;: {
-                &#34;software&#34;: None,
-                &#34;settings&#34;: { }
-            },
-
-            &#34;simulation&#34;: {
-                &#34;ctsimu_scenario&#34;: None
-            }
-        }
-
-        self.read_metadata(json_dict=metadata, import_referenced_scenario=False)
-
-    def write(self, filename:str):
-        &#34;&#34;&#34;Write a scenario JSON file.
-
-        Parameters
-        ----------
-        filename : str
-            Filename for the scenario file.
-        &#34;&#34;&#34;
-        if filename is not None:
-            self.file.file_format_version.set(&#34;major&#34;, ctsimu_supported_scenario_version[&#34;major&#34;])
-            self.file.file_format_version.set(&#34;minor&#34;, ctsimu_supported_scenario_version[&#34;minor&#34;])
-
-            write_json_file(filename=filename, dictionary=self.json_dict())
-
-    def write_metadata(self, filename:str):
-        &#34;&#34;&#34;Write a metadata JSON file for the scenario.
-
-        Parameters
-        ----------
-        filename : str
-            Filename for the metadata file.
-        &#34;&#34;&#34;
-        if filename is not None:
-            metadata_dict = self.metadata.json_dict()
-            # potentially add simulation.ctsimu_scenario here:
-            metadata_dict[&#34;simulation&#34;][&#34;ctsimu_scenario&#34;] = self.json_dict()
-            write_json_file(filename=filename, dictionary=metadata_dict)
-
-    def get(self, key:list) -&gt; float | str | bool:
-        &#34;&#34;&#34;Get the current value of the parameter identified by a list of keys.
-
-        Parameters
-        ----------
-        key : list
-            List of strings that identify the key of the requested
-            parameter within the CTSimU scenario structure.
-
-        Returns
-        -------
-        value : float or str or bool
-            Current value of the requested parameter.
-        &#34;&#34;&#34;
-        if isinstance(key, list):
-            # Special treatment for the source geometry extras: type or beam_divergence:
-            if len(key) &gt; 2:
-                if key[0:2] == [&#34;geometry&#34;, &#34;source&#34;]:
-                    return self.source.source_geometry_extras.get(key[2:])
-
-            # Standard treatment:
-            if len(key) &gt; 1:
-                for s in self.subgroups:
-                    if s._name == key[0]:
-                        return s.get(key[1:])
-
-        raise Exception(f&#34;Error in get: key not found: {key}&#34;)
-
-    def path_of_external_file(self, filename:str) -&gt; str:
-        &#34;&#34;&#34;Get the path of an external file referenced in the currently
-        imported JSON scenario.
-
-        Parameters
-        ----------
-        filename : str
-            Possibly relative file path from JSON scenario file.
-
-        Returns
-        -------
-        abs_path : str
-            Absolute path to the referenced external file.
-        &#34;&#34;&#34;
-        if os.path.isabs(filename):
-            # Already absolute path?
-            return filename
-
-        if self.current_scenario_path is not None:
-            if isinstance(self.current_scenario_path, str):
-                json_dirname = os.path.dirname(self.current_scenario_path)
-                filename = f&#34;{json_dirname}/{filename}&#34;
-
-        # On fail, simply return the filename.
-        return filename
-
-    def json_dict(self) -&gt; dict:
-        &#34;&#34;&#34;Create a CTSimU JSON dictionary from the scenario.
-
-        Returns
-        -------
-        json_dict : dict
-        &#34;&#34;&#34;
-        jd = dict()
-        jd[&#34;file&#34;]        = self.file.json_dict()
-        jd[&#34;environment&#34;] = self.environment.json_dict()
-
-        jd[&#34;geometry&#34;]    = dict()
-        jd[&#34;geometry&#34;][&#34;detector&#34;] = self.detector.geometry_dict()
-
-        jd[&#34;geometry&#34;][&#34;source&#34;] = self.source.geometry_dict()
-
-        jd[&#34;geometry&#34;][&#34;stage&#34;] = self.stage.geometry_dict()
-
-        jd[&#34;detector&#34;] = self.detector.json_dict()
-        jd[&#34;source&#34;]   = self.source.json_dict()
-        jd[&#34;samples&#34;]  = []
-        for sample in self.samples:
-            jd[&#34;samples&#34;].append(sample.json_dict())
-
-        jd[&#34;acquisition&#34;] = self.acquisition.json_dict()
-        jd[&#34;materials&#34;] = []
-        for material in self.materials:
-            jd[&#34;materials&#34;].append(material.json_dict())
-
-        jd[&#34;simulation&#34;] = self.simulation
-
-        return jd
-
-    def n_frames(self) -&gt; int:
-        &#34;&#34;&#34;Number of frames in the scenario.
-
-        Returns
-        -------
-        n_frames : int
-            Number of frames in the scenario.
-        &#34;&#34;&#34;
-
-        # &#39;Frame&#39; is in this context a projection image.
-        # However, if we assume frame averaging, the number of
-        # frames could also be: n_frames = nProjection * nFrameAverages
-        n_frames = self.acquisition.get(&#34;number_of_projections&#34;)
-        return n_frames
-
-    def current_stage_angle(self):
-        &#34;&#34;&#34;Stage rotation angle (in deg) for the current frame.
-
-        Returns
-        -------
-        stage_rotation_angle : float
-            Current stage rotation angle (in deg).
-        &#34;&#34;&#34;
-
-        start_angle = float(self.acquisition.get(&#34;start_angle&#34;))
-        stop_angle  = float(self.acquisition.get(&#34;stop_angle&#34;))
-        nPositions  = float(self.n_frames())
-
-        # If the final projection is taken at the stop angle
-        # (and not one step before), the number of positions
-        # has to be decreased by 1, resulting in one less
-        # angular step being performed.
-        if self.acquisition.get(&#34;include_final_angle&#34;) is True:
-            if nPositions &gt; 0:
-                nPositions -= 1
-
-        angular_range = 0
-        if start_angle &lt;= stop_angle:
-            angular_range = stop_angle - start_angle
-        else:
-            raise Exception(&#34;The start angle cannot be greater than the stop angle. Scan direction must be specified by the acquisition &#39;direction&#39; keyword (CCW or CW).&#34;)
-
-        angular_position = start_angle
-        if nPositions != 0:
-            angular_position = start_angle + self.current_frame*angular_range/nPositions
-
-        # Mathematically negative:
-        if self.acquisition.get(&#34;direction&#34;) == &#34;CW&#34;:
-            angular_position = -angular_position
-
-        return angular_position
-
-    def set_frame(self, frame:float=0, reconstruction:bool=False):
-        &#34;&#34;&#34;Set the current frame representation of the scenario.
-
-        Parameters
-        ----------
-        frame : float
-            Frame number, starting at zero and usually
-            going to `{n_projections}-1`.
-
-            Default value: `0`
-
-        reconstruction : bool
-            Set the scenario geometry as seen by the reconstruction software?
-            If `True`, this will only obey drifts and deviations that
-            are `known_to_reconstruction`.
-
-            Default value: `False`
-        &#34;&#34;&#34;
-
-        self.current_frame = frame
-
-        # Number of frames:
-        n_frames = self.n_frames()
-
-        stage_deg = self.current_stage_angle()
-        stage_rot = math.radians(stage_deg)
-
-        # Update materials:
-        for material in self.materials:
-            material.set_frame(frame, n_frames, reconstruction)
-
-        # Update stage, source, detector and other parameters:
-        self.stage.set_frame(frame, n_frames, stage_rot, None, reconstruction)
-        self.source.set_frame(frame, n_frames, 0, None, reconstruction)
-        self.detector.set_frame(frame, n_frames, 0, None, reconstruction)
-
-        self.file.set_frame(frame, n_frames, reconstruction)
-        self.environment.set_frame(frame, n_frames, reconstruction)
-        self.acquisition.set_frame(frame, n_frames, reconstruction)
-
-        # Update samples:
-        stage_cs = self.stage.coordinate_system
-        for sample in self.samples:
-            sample.set_frame(frame, n_frames, 0, stage_cs, reconstruction)
-
-    def current_geometry(self) -&gt; &#39;ctsimu.geometry.Geometry&#39;:
-        &#34;&#34;&#34;Return a `ctsimu.geometry.Geometry` object for the
-        current setup of the scenario.
-
-        Returns
-        -------
-        geometry : ctsimu.geometry.Geometry
-            Geometry for current frame.
-        &#34;&#34;&#34;
-        geo = Geometry()
-        geo.detector.copy_cs(self.detector.coordinate_system)
-        geo.source.copy_cs(self.source.coordinate_system)
-        geo.stage.copy_cs(self.stage.coordinate_system)
-
-        geo.detector.set_size(
-            pixels_u=self.detector.get(&#34;columns&#34;),
-            pixels_v=self.detector.get(&#34;rows&#34;),
-            pitch_u=self.detector.pixel_pitch.get(&#34;u&#34;),
-            pitch_v=self.detector.pixel_pitch.get(&#34;v&#34;)
-        )
-
-        return geo
-
-    def write_recon_VGI(self, name:str=&#34;&#34;, volume_filename:str=&#34;&#34;, vgi_filename:str=None):
-        &#34;&#34;&#34;Write a VGI file for the reconstruction volume such that it can be loaded with VGSTUDIO.&#34;&#34;&#34;
-
-        voxels_x = self.metadata.output.get([&#34;tomogram&#34;, &#34;dimensions&#34;, &#34;x&#34;])
-        voxels_y = self.metadata.output.get([&#34;tomogram&#34;, &#34;dimensions&#34;, &#34;y&#34;])
-        voxels_z = self.metadata.output.get([&#34;tomogram&#34;, &#34;dimensions&#34;, &#34;z&#34;])
-
-        voxelsize_x = self.metadata.output.get([&#34;tomogram&#34;, &#34;voxelsize&#34;, &#34;x&#34;])
-        voxelsize_y = self.metadata.output.get([&#34;tomogram&#34;, &#34;voxelsize&#34;, &#34;y&#34;])
-        voxelsize_z = self.metadata.output.get([&#34;tomogram&#34;, &#34;voxelsize&#34;, &#34;z&#34;])
-
-        output_datatype = self.metadata.output.get([&#34;tomogram&#34;, &#34;datatype&#34;])
-        if output_datatype == &#34;uint16&#34;:
-            dataTypeOutput = &#34;unsigned integer&#34;
-            bits = 16
-            datarangelower = 0
-            datarangeupper = -1
-        else:
-            dataTypeOutput = &#34;float&#34;
-            bits = 32
-            datarangelower = -1
-            datarangeupper = 1
-
-        vgi_content = f&#34;&#34;&#34;{{volume1}}
-[representation]
-size = {voxels_x} {voxels_y} {voxels_z}
-datatype = {dataTypeOutput}
-datarange = {datarangelower} {datarangeupper}
-bitsperelement = {bits}
-[file1]
-SkipHeader = 0
-FileFormat = raw
-Size = {voxels_x} {voxels_y} {voxels_z}
-Name = {volume_filename}
-Datatype = {dataTypeOutput}
-datarange = {datarangelower} {datarangeupper}
-BitsPerElement = {bits}
-{{volumeprimitive12}}
-[geometry]
-resolution = {voxelsize_x} {voxelsize_y} {voxelsize_z}
-unit = mm
-[volume]
-volume = volume1
-[description]
-text = {name}&#34;&#34;&#34;
-
-        if vgi_filename is not None:
-            touch_directory(vgi_filename)
-            with open(vgi_filename, &#39;w&#39;) as f:
-                f.write(vgi_content)
-                f.close()
-
-        return vgi_content
-
-    def write_CERA_config(self, save_dir:str=None, basename:str=None, create_vgi:bool=False):
-        &#34;&#34;&#34;Write CERA reconstruction config files.
-
-        Parameters
-        ----------
-        save_dir : str
-            Folder where to place the CERA config files. This is meant to be the
-            same directory where the reconstruction metadata file is located,
-            such that relative paths will match.
-
-            If `None` is given, a directory will be inferred:
-
-            - If only a JSON scenario file was imported to set up the scenario,
-            the config files will be stored in a subdirectory next to the
-            JSON scenario file of the following pattern:
-
-                `{json_scenario_basename}/reconstruction`
-
-            - If a reconstruction metadata file was imported, the config files
-            will be stored next to the metadata file.
-
-            Default value: `None`
-
-        basename : str
-            Base name for the created files. If `None` is given, the base
-            name will be inferred from the scenario&#39;s metadata.
-
-            Default value: `None`
-
-        create_vgi : bool
-            Write VGI file for future reconstruction volume?
-        &#34;&#34;&#34;
-
-        matrices = []
-
-        if basename is None:
-            # Extract base name from metadata
-            metadata_basename = self.metadata.get([&#34;file&#34;, &#34;name&#34;])
-            if metadata_basename is not None:
-                basename = f&#34;{metadata_basename}_recon_cera&#34;
-            else:
-                basename = f&#34;recon_cera&#34;
-
-        # Projection files
-        n_projections = self.acquisition.get(&#34;number_of_projections&#34;)
-        projection_file_pattern = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;filename&#34;])
-        projection_datatype = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;])
-        projection_file_byteorder = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;])
-        projection_headersize = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;])
-
-        projection_filetype = &#34;tiff&#34;
-        if projection_file_pattern.lower().endswith(&#34;.raw&#34;):
-            projection_filetype = &#34;raw&#34;
-
-        # Acquisition
-        start_angle = self.acquisition.get(&#34;start_angle&#34;)
-        stop_angle  = self.acquisition.get(&#34;stop_angle&#34;)
-        total_angle = stop_angle - start_angle
-
-        for p in range(n_projections):
-            self.set_frame(frame=p, reconstruction=True)
-
-            # CERA projection matrix for projection p:
-            m = self.current_geometry().projection_matrix(mode=&#34;CERA&#34;)
-            matrices.append(m)
-
-        # Go back to frame zero:
-        self.set_frame(frame=0, reconstruction=True)
-
-        if create_vgi:
-            vgi_filename = join_dir_and_filename(save_dir, f&#34;{basename}.vgi&#34;)
-            volume_filename = f&#34;{basename}.raw&#34;
-
-            self.write_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
-
-        create_CERA_config(
-            geo=self.current_geometry(),
-            projection_file_pattern=projection_file_pattern,
-            basename=basename,
-            save_dir=save_dir,
-            n_projections=n_projections,
-            projection_datatype=projection_datatype,
-            projection_filetype=projection_filetype,
-            projection_byteorder=projection_file_byteorder,
-            projection_headersize=projection_headersize,
-            start_angle=0,  # do not compensate the scenario start angle in the reconstruction
-            total_angle=total_angle,
-            scan_direction=self.acquisition.get(&#34;direction&#34;),
-            voxels_x=self.metadata.output.tomogram.dimensions.x.get(),
-            voxels_y=self.metadata.output.tomogram.dimensions.y.get(),
-            voxels_z=self.metadata.output.tomogram.dimensions.z.get(),
-            voxelsize_x=self.metadata.output.tomogram.voxelsize.x.get(),
-            voxelsize_y=self.metadata.output.tomogram.voxelsize.y.get(),
-            voxelsize_z=self.metadata.output.tomogram.voxelsize.z.get(),
-            i0max=self.metadata.output.get([&#34;projections&#34;, &#34;max_intensity&#34;]),
-            output_datatype=convert(cera_converter[&#34;datatype&#34;], self.metadata.output.get([&#34;tomogram&#34;, &#34;datatype&#34;])),
-            matrices=matrices
-        )
-
-    def write_OpenCT_config(self, save_dir:str=None, basename:str=None, create_vgi:bool=False, variant:str=&#39;free&#39;, abspaths:bool=False):
-        &#34;&#34;&#34;Write OpenCT reconstruction config files.
-
-        Parameters
-        ----------
-        save_dir : str
-            Folder where to place the CERA config files. This is meant to be the
-            same directory where the reconstruction metadata file is located,
-            such that relative paths will match.
-
-            If `None` is given, a directory will be inferred:
-
-            - If only a JSON scenario file was imported to set up the scenario,
-            the config files will be stored in a subdirectory next to the
-            JSON scenario file of the following pattern:
-
-                `{json_scenario_basename}/reconstruction`
-
-            - If a reconstruction metadata file was imported, the config files
-            will be stored next to the metadata file.
-
-            Default value: `None`
-
-        basename : str
-            Base name for the created config file. If `None` is given, the base
-            name will be inferred from the scenario&#39;s metadata.
-
-            Default value: `None`
-
-        create_vgi : bool
-            Write VGI file for future reconstruction volume?
-
-        variant : str
-            Which variant of the OpenCT file format will be created: free trajectory
-            or circular trajectory.
-
-            Possible values: `&#34;free&#34;`, `&#34;circular&#34;`
-
-            Default value: `&#34;free&#34;`
-
-        abspaths : bool
-            Set to `True` if absolute paths should be used in the OpenCT
-            config file.
-
-            Default value: `False` (relative paths)
-
-        Returns
-        -------
-        openct_dict : dict
-            Dictionary with the OpenCT JSON structure.
-        &#34;&#34;&#34;
-
-        matrices = []
-
-        if basename is None:
-            # Extract base name from metadata
-            metadata_basename = self.metadata.get([&#34;file&#34;, &#34;name&#34;])
-            if metadata_basename is not None:
-                basename = f&#34;{metadata_basename}_recon_openCT&#34;
-            else:
-                basename = f&#34;recon_openCT&#34;
-
-        # Name of config file:
-        openct_config_filename = join_dir_and_filename(save_dir, f&#34;{basename}.json&#34;)
-
-        def projections_from_pattern(json_dict:dict):
-            n = get_value(json_dict, [&#34;number&#34;]) # number of images
-            pattern  = None
-            filedir  = None
-            filename = None
-            filelist = list()
-
-            if n is not None:
-                if n &gt; 0:
-                    pattern = get_value(json_dict, [&#34;filename&#34;])
-                    if abspaths is True:
-                        pattern = abspath_of_referenced_file(openct_config_filename, pattern)
-
-                    if pattern is not None:
-                        filedir, filename = os.path.split(pattern)
-
-                    # Generate list of projection files:
-                    if filename is not None:
-                        # Auto-generate projection file list.
-                        # List of sequentially numbered projection images,
-                        # starting at 0000.
-                        for p in range(n):
-                            if &#39;%&#39; in filename:
-                                try:
-                                    filelist.append(filename % p)
-                                except Exception as e:
-                                    raise Exception(f&#34;Error in sequentially numbered filename pattern. Please give a percentage sign, followed by the number of digits and a &#39;d&#39; character: &#39;example_%04d.tif&#39;. You gave: &#39;{filename}&#39;&#34;)
-                            else:
-                                filelist.append(filename)
-
-            return n, filedir, filename, filelist
-
-        # Projection files
-        n_projections, projection_filedir, projection_filename, projection_filelist = projections_from_pattern(self.metadata.output.projections.json_dict())
-
-        projection_datatype = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;datatype&#34;])
-        projection_file_byteorder = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;byteorder&#34;])
-        projection_headersize = self.metadata.get([&#34;output&#34;, &#34;projections&#34;, &#34;headersize&#34;, &#34;file&#34;])
-
-        projection_filetype = &#34;tiff&#34;
-        if projection_filename is not None:
-            if projection_filename.lower().endswith(&#34;.raw&#34;):
-                projection_filetype = &#34;raw&#34;
-
-        # Dark files; only is corrections need to be applied.
-        openct_dark_image = None
-        if not self.metadata.output.projections.dark_field.projections_corrected.get() is True:
-            n_darks, dark_filedir, dark_filename, dark_filelist = projections_from_pattern(self.metadata.output.projections.dark_field.json_dict())
-            if isinstance(dark_filelist, list):
-                if len(dark_filelist) &gt; 0:
-                    openct_dark_image = join_dir_and_filename(dark_filedir, dark_filelist[0])
-
-        # Bright files; only is corrections need to be applied.
-        flat_filedir = None
-        flat_filelist = None
-        if not self.metadata.output.projections.flat_field.projections_corrected.get() is True:
-            n_flats, flat_filedir, flat_filename, flat_filelist = projections_from_pattern(self.metadata.output.projections.flat_field.json_dict())
-
-        # Acquisition
-        start_angle = self.acquisition.get(&#34;start_angle&#34;)
-        stop_angle  = self.acquisition.get(&#34;stop_angle&#34;)
-        total_angle = stop_angle - start_angle
-
-        for p in range(n_projections):
-            self.set_frame(frame=p, reconstruction=True)
-
-            # CERA projection matrix for projection p:
-            m = self.current_geometry().projection_matrix(mode=&#34;OpenCT&#34;)
-            matrices.append(m)
-
-        # Go back to frame zero:
-        self.set_frame(frame=0, reconstruction=True)
-
-        volume_filename = f&#34;{basename}.img&#34;
-        if create_vgi:
-            vgi_filename = join_dir_and_filename(save_dir, f&#34;{basename}.vgi&#34;)
-
-            self.write_recon_VGI(vgi_filename=vgi_filename, name=basename, volume_filename=volume_filename)
-
-        openct_dict = create_OpenCT_config(
-            geo=self.current_geometry(),
-            filename=openct_config_filename,
-            variant=variant,
-            projection_files=projection_filelist,
-            projection_dir=projection_filedir,
-            projection_datatype=projection_datatype,
-            projection_filetype=projection_filetype,
-            projection_headersize=projection_headersize,
-            projection_byteorder=projection_file_byteorder,
-            total_angle=total_angle,
-            scan_direction=self.acquisition.get(&#34;direction&#34;),
-            matrices=matrices,
-            volumename=volume_filename,
-            voxels_x=self.metadata.output.tomogram.dimensions.x.get(),
-            voxels_y=self.metadata.output.tomogram.dimensions.y.get(),
-            voxels_z=self.metadata.output.tomogram.dimensions.z.get(),
-            voxelsize_x=self.metadata.output.tomogram.voxelsize.x.get(),
-            voxelsize_y=self.metadata.output.tomogram.voxelsize.y.get(),
-            voxelsize_z=self.metadata.output.tomogram.voxelsize.z.get(),
-            bright_image_dir=flat_filedir,
-            bright_images=flat_filelist,
-            dark_image=openct_dark_image)
-
-        return openct_dict</code></pre>
-</details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
@@ -1461,49 +465,6 @@ It can be converted between these coordinate systems and handles drifts.</p></di
 <span>(</span><span>filename: str = None, json_dict: dict = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Representation of a CTSimU scenario. Reads, writes, manages
-and manipulates scenarios.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>detector</code></strong> :&ensp;<code><a title="ctsimu.scenario.detector.Detector" href="detector.html#ctsimu.scenario.detector.Detector">Detector</a></code></dt>
-<dd>Detector object of the scenario.</dd>
-<dt><strong><code>source</code></strong> :&ensp;<code><a title="ctsimu.scenario.source.Source" href="source.html#ctsimu.scenario.source.Source">Source</a></code></dt>
-<dd>X-ray source object of the scenario.</dd>
-<dt><strong><code>stage</code></strong> :&ensp;<code><a title="ctsimu.scenario.stage.Stage" href="stage.html#ctsimu.scenario.stage.Stage">Stage</a></code></dt>
-<dd>Sample stage object of the scenario.</dd>
-<dt><strong><code>samples</code></strong> :&ensp;<code>list</code></dt>
-<dd>List of samples in the scenario, each an object of class
-<code><a title="ctsimu.scenario.sample.Sample" href="sample.html#ctsimu.scenario.sample.Sample">Sample</a></code>.</dd>
-<dt><strong><code>file</code></strong> :&ensp;<code><a title="ctsimu.scenario.file.File" href="file.html#ctsimu.scenario.file.File">File</a></code></dt>
-<dd>Information about the scenario file.</dd>
-<dt><strong><code>environment</code></strong> :&ensp;<code><a title="ctsimu.scenario.environment.Environment" href="environment.html#ctsimu.scenario.environment.Environment">Environment</a></code></dt>
-<dd>Environment properties of the scenario.</dd>
-<dt><strong><code>acquisition</code></strong> :&ensp;<code><a title="ctsimu.scenario.acquisition.Acquisition" href="acquisition.html#ctsimu.scenario.acquisition.Acquisition">Acquisition</a></code></dt>
-<dd>CT acquisition parameters.</dd>
-<dt><strong><code>materials</code></strong> :&ensp;<code>list</code></dt>
-<dd>List of materials used in the scenario, each an object of
-class <code><a title="ctsimu.scenario.material.Material" href="material.html#ctsimu.scenario.material.Material">Material</a></code>.</dd>
-<dt><strong><code>simulation</code></strong> :&ensp;<code>dict</code></dt>
-<dd>Dictionary of simulation software-specific properties
-from the scenario file.</dd>
-<dt><strong><code>metadata</code></strong> :&ensp;<code><a title="ctsimu.scenario.metadata.Metadata" href="metadata.html#ctsimu.scenario.metadata.Metadata">Metadata</a></code></dt>
-<dd>Metadata information about projection images and
-the reconstruction volume. This information depends on the output
-of the CT scanner or simulation software, not on the scenario
-itself.</dd>
-</dl>
-<p>The scenario can optionally constructed by passing the path to
-a scenario file or by passing a Python dictionary that contains
-scenario information:</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Path to a <a href="https://bamresearch.github.io/ctsimu-scenarios">CTSimU scenario</a> file.</dd>
-<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code>, optional</dt>
-<dd>A Python dictionary containing a CTSimU scenario.
-The dictionary must obey the same structure as a
-CTSimU JSON scenario file.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2491,14 +1452,55 @@ text = {name}&#34;&#34;&#34;
 
         return openct_dict</code></pre>
 </details>
+<div class="desc"><p>Representation of a CTSimU scenario. Reads, writes, manages
+and manipulates scenarios.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>detector</code></strong> :&ensp;<code><a title="ctsimu.scenario.detector.Detector" href="detector.html#ctsimu.scenario.detector.Detector">Detector</a></code></dt>
+<dd>Detector object of the scenario.</dd>
+<dt><strong><code>source</code></strong> :&ensp;<code><a title="ctsimu.scenario.source.Source" href="source.html#ctsimu.scenario.source.Source">Source</a></code></dt>
+<dd>X-ray source object of the scenario.</dd>
+<dt><strong><code>stage</code></strong> :&ensp;<code><a title="ctsimu.scenario.stage.Stage" href="stage.html#ctsimu.scenario.stage.Stage">Stage</a></code></dt>
+<dd>Sample stage object of the scenario.</dd>
+<dt><strong><code>samples</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of samples in the scenario, each an object of class
+<code><a title="ctsimu.scenario.sample.Sample" href="sample.html#ctsimu.scenario.sample.Sample">Sample</a></code>.</dd>
+<dt><strong><code>file</code></strong> :&ensp;<code><a title="ctsimu.scenario.file.File" href="file.html#ctsimu.scenario.file.File">File</a></code></dt>
+<dd>Information about the scenario file.</dd>
+<dt><strong><code>environment</code></strong> :&ensp;<code><a title="ctsimu.scenario.environment.Environment" href="environment.html#ctsimu.scenario.environment.Environment">Environment</a></code></dt>
+<dd>Environment properties of the scenario.</dd>
+<dt><strong><code>acquisition</code></strong> :&ensp;<code><a title="ctsimu.scenario.acquisition.Acquisition" href="acquisition.html#ctsimu.scenario.acquisition.Acquisition">Acquisition</a></code></dt>
+<dd>CT acquisition parameters.</dd>
+<dt><strong><code>materials</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of materials used in the scenario, each an object of
+class <code><a title="ctsimu.scenario.material.Material" href="material.html#ctsimu.scenario.material.Material">Material</a></code>.</dd>
+<dt><strong><code>simulation</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary of simulation software-specific properties
+from the scenario file.</dd>
+<dt><strong><code>metadata</code></strong> :&ensp;<code><a title="ctsimu.scenario.metadata.Metadata" href="metadata.html#ctsimu.scenario.metadata.Metadata">Metadata</a></code></dt>
+<dd>Metadata information about projection images and
+the reconstruction volume. This information depends on the output
+of the CT scanner or simulation software, not on the scenario
+itself.</dd>
+</dl>
+<p>The scenario can optionally constructed by passing the path to
+a scenario file or by passing a Python dictionary that contains
+scenario information:</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Path to a <a href="https://bamresearch.github.io/ctsimu-scenarios">CTSimU scenario</a> file.</dd>
+<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code>, optional</dt>
+<dd>A Python dictionary containing a CTSimU scenario.
+The dictionary must obey the same structure as a
+CTSimU JSON scenario file.</dd>
+</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.scenario.Scenario.create_default_metadata"><code class="name flex">
 <span>def <span class="ident">create_default_metadata</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set default metadata from scenario information,
-to use if no metadata file is available.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2648,18 +1650,13 @@ to use if no metadata file is available.</p></div>
 
     self.read_metadata(json_dict=metadata, import_referenced_scenario=False)</code></pre>
 </details>
+<div class="desc"><p>Set default metadata from scenario information,
+to use if no metadata file is available.</p></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.current_geometry"><code class="name flex">
 <span>def <span class="ident">current_geometry</span></span>(<span>self) ‑> <a title="ctsimu.geometry.Geometry" href="../geometry.html#ctsimu.geometry.Geometry">Geometry</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return a <code><a title="ctsimu.geometry.Geometry" href="../geometry.html#ctsimu.geometry.Geometry">Geometry</a></code> object for the
-current setup of the scenario.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>geometry</code></strong> :&ensp;<code><a title="ctsimu.geometry.Geometry" href="../geometry.html#ctsimu.geometry.Geometry">Geometry</a></code></dt>
-<dd>Geometry for current frame.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2687,17 +1684,18 @@ current setup of the scenario.</p>
 
     return geo</code></pre>
 </details>
+<div class="desc"><p>Return a <code><a title="ctsimu.geometry.Geometry" href="../geometry.html#ctsimu.geometry.Geometry">Geometry</a></code> object for the
+current setup of the scenario.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>geometry</code></strong> :&ensp;<code><a title="ctsimu.geometry.Geometry" href="../geometry.html#ctsimu.geometry.Geometry">Geometry</a></code></dt>
+<dd>Geometry for current frame.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.current_stage_angle"><code class="name flex">
 <span>def <span class="ident">current_stage_angle</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Stage rotation angle (in deg) for the current frame.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>stage_rotation_angle</code></strong> :&ensp;<code>float</code></dt>
-<dd>Current stage rotation angle (in deg).</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2739,23 +1737,17 @@ current setup of the scenario.</p>
 
     return angular_position</code></pre>
 </details>
+<div class="desc"><p>Stage rotation angle (in deg) for the current frame.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>stage_rotation_angle</code></strong> :&ensp;<code>float</code></dt>
+<dd>Current stage rotation angle (in deg).</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>self, key: list) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the current value of the parameter identified by a list of keys.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>key</code></strong> :&ensp;<code>list</code></dt>
-<dd>List of strings that identify the key of the requested
-parameter within the CTSimU scenario structure.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
-<dd>Current value of the requested parameter.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2788,17 +1780,23 @@ parameter within the CTSimU scenario structure.</dd>
 
     raise Exception(f&#34;Error in get: key not found: {key}&#34;)</code></pre>
 </details>
+<div class="desc"><p>Get the current value of the parameter identified by a list of keys.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>key</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of strings that identify the key of the requested
+parameter within the CTSimU scenario structure.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
+<dd>Current value of the requested parameter.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.json_dict"><code class="name flex">
 <span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a CTSimU JSON dictionary from the scenario.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2836,17 +1834,17 @@ parameter within the CTSimU scenario structure.</dd>
 
     return jd</code></pre>
 </details>
+<div class="desc"><p>Create a CTSimU JSON dictionary from the scenario.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.n_frames"><code class="name flex">
 <span>def <span class="ident">n_frames</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Number of frames in the scenario.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of frames in the scenario.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2866,23 +1864,17 @@ parameter within the CTSimU scenario structure.</dd>
     n_frames = self.acquisition.get(&#34;number_of_projections&#34;)
     return n_frames</code></pre>
 </details>
+<div class="desc"><p>Number of frames in the scenario.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of frames in the scenario.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.path_of_external_file"><code class="name flex">
 <span>def <span class="ident">path_of_external_file</span></span>(<span>self, filename: str) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the path of an external file referenced in the currently
-imported JSON scenario.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>Possibly relative file path from JSON scenario file.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>abs_path</code></strong> :&ensp;<code>str</code></dt>
-<dd>Absolute path to the referenced external file.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2913,26 +1905,23 @@ imported JSON scenario.</p>
     # On fail, simply return the filename.
     return filename</code></pre>
 </details>
+<div class="desc"><p>Get the path of an external file referenced in the currently
+imported JSON scenario.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Possibly relative file path from JSON scenario file.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>abs_path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Absolute path to the referenced external file.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.read"><code class="name flex">
 <span>def <span class="ident">read</span></span>(<span>self, filename: str = None, json_dict: dict = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Import a CTSimU scenario from a file or a given
-scenario dictionary.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>
-<p>Path to a CTSimU scenario file.</p>
-<p>Default value: <code>None</code></p>
-</dd>
-<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
-<dd>
-<p>Provide a dictionary with a scenario structure instead of a file.</p>
-<p>Default value: <code>None</code></p>
-</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3007,44 +1996,26 @@ scenario dictionary.</p>
     if not self.metadata_is_set:
         self.create_default_metadata()</code></pre>
 </details>
-</dd>
-<dt id="ctsimu.scenario.Scenario.read_metadata"><code class="name flex">
-<span>def <span class="ident">read_metadata</span></span>(<span>self, filename: str = None, json_dict: dict = None, import_referenced_scenario: bool = False)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Import metadata from a CTSimU metadata file or a given
-metadata dictionary.</p>
+<div class="desc"><p>Import a CTSimU scenario from a file or a given
+scenario dictionary.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
 <dd>
-<p>Path to a CTSimU metadata file.</p>
+<p>Path to a CTSimU scenario file.</p>
 <p>Default value: <code>None</code></p>
 </dd>
 <dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
 <dd>
-<p>Provide a dictionary with a metadata structure instead of a file.</p>
+<p>Provide a dictionary with a scenario structure instead of a file.</p>
 <p>Default value: <code>None</code></p>
 </dd>
-<dt><strong><code>import_referenced_scenario</code></strong> :&ensp;<code>bool</code></dt>
-<dd>
-<p>Import the scenario JSON file that's referenced in the metadata file?
-Generates a warning if this fails.</p>
-<p>The scenario definition will be searched at two locations in the following order:</p>
-<ol>
-<li>
-<p>Try to read from external file defined by <code>acquisition_geometry.path_to_CTSimU_JSON</code>.</p>
-</li>
-<li>
-<p>Try to read embedded scenario definition from
-<code>simulation.ctsimu_scenario</code>. Note that external drift files
-specified in the scenario will likely fail to load. An error
-will be issued in this case.</p>
-</li>
-</ol>
-<p>Default value: <code>False</code></p>
-</dd>
 </dl></div>
+</dd>
+<dt id="ctsimu.scenario.Scenario.read_metadata"><code class="name flex">
+<span>def <span class="ident">read_metadata</span></span>(<span>self,<br>filename: str = None,<br>json_dict: dict = None,<br>import_referenced_scenario: bool = False)</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3138,13 +2109,44 @@ will be issued in this case.</p>
         # Re-import metadata:
         self.metadata.set_from_json(json_dict)</code></pre>
 </details>
+<div class="desc"><p>Import metadata from a CTSimU metadata file or a given
+metadata dictionary.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Path to a CTSimU metadata file.</p>
+<p>Default value: <code>None</code></p>
+</dd>
+<dt><strong><code>json_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>
+<p>Provide a dictionary with a metadata structure instead of a file.</p>
+<p>Default value: <code>None</code></p>
+</dd>
+<dt><strong><code>import_referenced_scenario</code></strong> :&ensp;<code>bool</code></dt>
+<dd>
+<p>Import the scenario JSON file that's referenced in the metadata file?
+Generates a warning if this fails.</p>
+<p>The scenario definition will be searched at two locations in the following order:</p>
+<ol>
+<li>
+<p>Try to read from external file defined by <code>acquisition_geometry.path_to_CTSimU_JSON</code>.</p>
+</li>
+<li>
+<p>Try to read embedded scenario definition from
+<code>simulation.ctsimu_scenario</code>. Note that external drift files
+specified in the scenario will likely fail to load. An error
+will be issued in this case.</p>
+</li>
+</ol>
+<p>Default value: <code>False</code></p>
+</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.reset"><code class="name flex">
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reset scenario: delete all drifts, deviations and
-sample and material information.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3156,12 +2158,13 @@ sample and material information.</p></div>
     for group in self.subgroups:
         group.reset()</code></pre>
 </details>
+<div class="desc"><p>Reset scenario: delete all drifts, deviations and
+sample and material information.</p></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.reset_metadata"><code class="name flex">
 <span>def <span class="ident">reset_metadata</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reset scenario's metadata information.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3177,28 +2180,12 @@ sample and material information.</p></div>
     # Create new, empty metadata:
     self.metadata = Metadata()</code></pre>
 </details>
+<div class="desc"><p>Reset scenario's metadata information.</p></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.set_frame"><code class="name flex">
 <span>def <span class="ident">set_frame</span></span>(<span>self, frame: float = 0, reconstruction: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the current frame representation of the scenario.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
-<dd>
-<p>Frame number, starting at zero and usually
-going to <code>{n_projections}-1</code>.</p>
-<p>Default value: <code>0</code></p>
-</dd>
-<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
-<dd>
-<p>Set the scenario geometry as seen by the reconstruction software?
-If <code>True</code>, this will only obey drifts and deviations that
-are <code>known_to_reconstruction</code>.</p>
-<p>Default value: <code>False</code></p>
-</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3248,17 +2235,28 @@ are <code>known_to_reconstruction</code>.</p>
     for sample in self.samples:
         sample.set_frame(frame, n_frames, 0, stage_cs, reconstruction)</code></pre>
 </details>
+<div class="desc"><p>Set the current frame representation of the scenario.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>
+<p>Frame number, starting at zero and usually
+going to <code>{n_projections}-1</code>.</p>
+<p>Default value: <code>0</code></p>
+</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>
+<p>Set the scenario geometry as seen by the reconstruction software?
+If <code>True</code>, this will only obey drifts and deviations that
+are <code>known_to_reconstruction</code>.</p>
+<p>Default value: <code>False</code></p>
+</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.write"><code class="name flex">
 <span>def <span class="ident">write</span></span>(<span>self, filename: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write a scenario JSON file.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>Filename for the scenario file.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3277,43 +2275,17 @@ are <code>known_to_reconstruction</code>.</p>
 
         write_json_file(filename=filename, dictionary=self.json_dict())</code></pre>
 </details>
+<div class="desc"><p>Write a scenario JSON file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Filename for the scenario file.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.write_CERA_config"><code class="name flex">
 <span>def <span class="ident">write_CERA_config</span></span>(<span>self, save_dir: str = None, basename: str = None, create_vgi: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write CERA reconstruction config files.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>save_dir</code></strong> :&ensp;<code>str</code></dt>
-<dd>
-<p>Folder where to place the CERA config files. This is meant to be the
-same directory where the reconstruction metadata file is located,
-such that relative paths will match.</p>
-<p>If <code>None</code> is given, a directory will be inferred:</p>
-<ul>
-<li>
-<p>If only a JSON scenario file was imported to set up the scenario,
-the config files will be stored in a subdirectory next to the
-JSON scenario file of the following pattern:</p>
-<p><code>{json_scenario_basename}/reconstruction</code></p>
-</li>
-<li>
-<p>If a reconstruction metadata file was imported, the config files
-will be stored next to the metadata file.</p>
-</li>
-</ul>
-<p>Default value: <code>None</code></p>
-</dd>
-<dt><strong><code>basename</code></strong> :&ensp;<code>str</code></dt>
-<dd>
-<p>Base name for the created files. If <code>None</code> is given, the base
-name will be inferred from the scenario's metadata.</p>
-<p>Default value: <code>None</code></p>
-</dd>
-<dt><strong><code>create_vgi</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Write VGI file for future reconstruction volume?</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3417,12 +2389,7 @@ name will be inferred from the scenario's metadata.</p>
         matrices=matrices
     )</code></pre>
 </details>
-</dd>
-<dt id="ctsimu.scenario.Scenario.write_OpenCT_config"><code class="name flex">
-<span>def <span class="ident">write_OpenCT_config</span></span>(<span>self, save_dir: str = None, basename: str = None, create_vgi: bool = False, variant: str = 'free', abspaths: bool = False)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Write OpenCT reconstruction config files.</p>
+<div class="desc"><p>Write CERA reconstruction config files.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>save_dir</code></strong> :&ensp;<code>str</code></dt>
@@ -3447,31 +2414,18 @@ will be stored next to the metadata file.</p>
 </dd>
 <dt><strong><code>basename</code></strong> :&ensp;<code>str</code></dt>
 <dd>
-<p>Base name for the created config file. If <code>None</code> is given, the base
+<p>Base name for the created files. If <code>None</code> is given, the base
 name will be inferred from the scenario's metadata.</p>
 <p>Default value: <code>None</code></p>
 </dd>
 <dt><strong><code>create_vgi</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Write VGI file for future reconstruction volume?</dd>
-<dt><strong><code>variant</code></strong> :&ensp;<code>str</code></dt>
-<dd>
-<p>Which variant of the OpenCT file format will be created: free trajectory
-or circular trajectory.</p>
-<p>Possible values: <code>"free"</code>, <code>"circular"</code></p>
-<p>Default value: <code>"free"</code></p>
-</dd>
-<dt><strong><code>abspaths</code></strong> :&ensp;<code>bool</code></dt>
-<dd>
-<p>Set to <code>True</code> if absolute paths should be used in the OpenCT
-config file.</p>
-<p>Default value: <code>False</code> (relative paths)</p>
-</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>openct_dict</code></strong> :&ensp;<code>dict</code></dt>
-<dd>Dictionary with the OpenCT JSON structure.</dd>
 </dl></div>
+</dd>
+<dt id="ctsimu.scenario.Scenario.write_OpenCT_config"><code class="name flex">
+<span>def <span class="ident">write_OpenCT_config</span></span>(<span>self,<br>save_dir: str = None,<br>basename: str = None,<br>create_vgi: bool = False,<br>variant: str = 'free',<br>abspaths: bool = False)</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3646,17 +2600,61 @@ config file.</p>
 
     return openct_dict</code></pre>
 </details>
+<div class="desc"><p>Write OpenCT reconstruction config files.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>save_dir</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Folder where to place the CERA config files. This is meant to be the
+same directory where the reconstruction metadata file is located,
+such that relative paths will match.</p>
+<p>If <code>None</code> is given, a directory will be inferred:</p>
+<ul>
+<li>
+<p>If only a JSON scenario file was imported to set up the scenario,
+the config files will be stored in a subdirectory next to the
+JSON scenario file of the following pattern:</p>
+<p><code>{json_scenario_basename}/reconstruction</code></p>
+</li>
+<li>
+<p>If a reconstruction metadata file was imported, the config files
+will be stored next to the metadata file.</p>
+</li>
+</ul>
+<p>Default value: <code>None</code></p>
+</dd>
+<dt><strong><code>basename</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Base name for the created config file. If <code>None</code> is given, the base
+name will be inferred from the scenario's metadata.</p>
+<p>Default value: <code>None</code></p>
+</dd>
+<dt><strong><code>create_vgi</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Write VGI file for future reconstruction volume?</dd>
+<dt><strong><code>variant</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Which variant of the OpenCT file format will be created: free trajectory
+or circular trajectory.</p>
+<p>Possible values: <code>"free"</code>, <code>"circular"</code></p>
+<p>Default value: <code>"free"</code></p>
+</dd>
+<dt><strong><code>abspaths</code></strong> :&ensp;<code>bool</code></dt>
+<dd>
+<p>Set to <code>True</code> if absolute paths should be used in the OpenCT
+config file.</p>
+<p>Default value: <code>False</code> (relative paths)</p>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>openct_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with the OpenCT JSON structure.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.write_metadata"><code class="name flex">
 <span>def <span class="ident">write_metadata</span></span>(<span>self, filename: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write a metadata JSON file for the scenario.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>Filename for the metadata file.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3675,12 +2673,17 @@ config file.</p>
         metadata_dict[&#34;simulation&#34;][&#34;ctsimu_scenario&#34;] = self.json_dict()
         write_json_file(filename=filename, dictionary=metadata_dict)</code></pre>
 </details>
+<div class="desc"><p>Write a metadata JSON file for the scenario.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>Filename for the metadata file.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.Scenario.write_recon_VGI"><code class="name flex">
 <span>def <span class="ident">write_recon_VGI</span></span>(<span>self, name: str = '', volume_filename: str = '', vgi_filename: str = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Write a VGI file for the reconstruction volume such that it can be loaded with VGSTUDIO.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3739,6 +2742,7 @@ text = {name}&#34;&#34;&#34;
 
         return vgi_content</code></pre>
 </details>
+<div class="desc"><p>Write a VGI file for the reconstruction volume such that it can be loaded with VGSTUDIO.</p></div>
 </dd>
 </dl>
 </dd>
@@ -3751,7 +2755,6 @@ text = {name}&#34;&#34;&#34;
 <img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul>
 <li><a href="#reading-and-writing-scenario-files">Reading and writing scenario files</a></li>
@@ -3827,7 +2830,7 @@ text = {name}&#34;&#34;&#34;
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

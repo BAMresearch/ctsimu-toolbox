@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>ctsimu.evaluation.test2D_SW_2 API documentation</title>
-<meta name="description" content="Test 2D-SW-2: Spectral filtering …" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Test 2D-SW-2: Spectral filtering …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
 <style>
@@ -55,334 +70,6 @@ Toolbox(&quot;2D-SW-2&quot;,
 <p>The result files list the measured grey values and their corresponding ROIs, as well as the measured grey value ratios between subsequent steps. For the ratios, it also lists the Monte-Carlo reference values and their uncertainties. Just like for scenario 2D-SW-1, values are given for simulations considering only <code>primary</code> radiation (without scatter radiation), and simulations which consider both (labelled <code>scatter</code> in the result files). Plots such as the example shown below are produced for each sub-test.</p>
 <p><img alt="2D-SW-2 example evaluation result" src="../pictures/2D-SW-2_FeCu.png" title="2D-SW-2"></p>
 <p>The example evaluation result displays the gray value ratios between each pair of neighboring steps of the iron wedge. Small crosses represent the grey value ratios calculated from the Monte-Carlo simulations. Their error bars cover the ratio's uncertainty <em>u</em> in both directions. Solid circles without error bars show the measured ratios from the projections of the simulation software.</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python"># -*- coding: UTF-8 -*-
-&#34;&#34;&#34;# Test 2D-SW-2: Spectral filtering
-
-.. include:: ./test2D_SW_2.md
-&#34;&#34;&#34;
-
-from ..test import *
-from ..helpers import *
-
-import pkgutil
-import io
-
-class Test2D_SW_2_results:
-    &#34;&#34;&#34; Results for one sub test of the filtering scenario. &#34;&#34;&#34;
-
-    def __init__(self):
-        self.longName = &#34;&#34;
-
-        # Grey value means and ratios (per wedge step):
-        self.means             = []     # Mean value for each step
-        self.ratios            = None   # Grey value ratios between the steps
-
-        # Grey values from Monte-Carlo simuation:
-        self.means_rosi_total    = None   # accounting for scatter radiation
-        self.means_rosi_primary  = None   # accounting only for primary radiation
-        self.means_mcray_total    = None   # accounting for scatter radiation
-        self.means_mcray_primary  = None   # accounting only for primary radiation
-
-        # Reference values for Monte-Carlo simulation (calculated in loadReference())
-        self.means_mc_total    = None   # accounting for scatter radiation
-        self.means_mc_primary  = None   # accounting only for primary radiation
-        self.error_mc_total_upper   = None
-        self.error_mc_total_lower   = None
-        self.error_mc_primary_upper = None
-        self.error_mc_primary_lower = None
-
-        # reference grey value ratios
-        self.ratios_mc_total = None
-        self.ratios_mc_primary = None
-        self.error_ratios_mc_total_upper = []
-        self.error_ratios_mc_total_lower = []
-        self.error_ratios_mc_primary_upper = []
-        self.error_ratios_mc_primary_lower = []
-
-    def loadReference(self, name):
-        dataText = pkgutil.get_data(__name__, &#34;data/2D-SW-2_scenario{name}.txt&#34;.format(name=name)).decode()
-        dataIO = io.StringIO(dataText)
-        allData = numpy.loadtxt(dataIO, delimiter=&#39;\t&#39;)  # ignore free beam
-
-        # --- total radiation
-        means_rosi_total  = allData[:,1]
-        means_mcray_total = allData[:,4]
-        means_total = (means_rosi_total + means_mcray_total) * 0.5
-        delta_total = numpy.absolute(means_rosi_total - means_mcray_total)
-
-        stddev_rosi_total  = allData[:,2]
-        stddev_mcray_total = allData[:,5]
-
-        #err_total = 0.5*(delta_total + numpy.sqrt(numpy.square(stddev_rosi_total) + numpy.square(stddev_mcray_total)))
-        err_total_rosi  = numpy.fmax(stddev_rosi_total,  stddev_mcray_total-delta_total) + 0.5*delta_total
-        err_total_mcray = numpy.fmax(stddev_mcray_total, stddev_rosi_total-delta_total)  + 0.5*delta_total
-        err_total_upper = numpy.zeros_like(err_total_rosi)
-        err_total_lower = numpy.zeros_like(err_total_rosi)
-        for i in range(len(err_total_upper)):
-            if means_rosi_total[i] &gt; means_total[i]:  # ROSI is upper bound
-                err_total_upper[i] = err_total_rosi[i]
-                err_total_lower[i] = err_total_mcray[i]
-            else:   # McRay is upper bound
-                err_total_upper[i] = err_total_mcray[i]
-                err_total_lower[i] = err_total_rosi[i]
-
-
-        # --- primary radiation
-        means_rosi_primary  = allData[:,9]
-        means_mcray_primary = allData[:,12]
-        means_primary = (means_rosi_primary + means_mcray_primary) * 0.5
-        delta_primary = numpy.absolute(means_rosi_primary - means_mcray_primary)
-
-        stddev_rosi_primary  = allData[:,10]
-        stddev_mcray_primary = allData[:,13]
-
-        #err_primary = 0.5*(delta_primary + numpy.sqrt(numpy.square(stddev_rosi_primary) + numpy.square(stddev_mcray_primary)))
-        err_primary_rosi  = numpy.fmax(stddev_rosi_primary,  stddev_mcray_primary-delta_primary) + 0.5*delta_primary
-        err_primary_mcray = numpy.fmax(stddev_mcray_primary, stddev_rosi_primary-delta_primary)  + 0.5*delta_primary
-        err_primary_upper = numpy.zeros_like(err_primary_rosi)
-        err_primary_lower = numpy.zeros_like(err_primary_rosi)
-        for i in range(len(err_primary_upper)):
-            if means_rosi_primary[i] &gt; means_primary[i]:  # ROSI is upper bound
-                err_primary_upper[i] = err_primary_rosi[i]
-                err_primary_lower[i] = err_primary_mcray[i]
-            else:   # McRay is upper bound
-                err_primary_upper[i] = err_primary_mcray[i]
-                err_primary_lower[i] = err_primary_rosi[i]
-
-
-        self.means_rosi_total    = means_rosi_total
-        self.means_rosi_primary  = means_rosi_primary
-        self.means_mcray_total    = means_mcray_total
-        self.means_mcray_primary  = means_mcray_primary
-
-        self.means_mc_total         = means_total
-        self.means_mc_primary       = means_primary
-        self.error_mc_total_upper   = err_total_upper
-        self.error_mc_total_lower   = err_total_lower
-        self.error_mc_primary_upper = err_primary_upper
-        self.error_mc_primary_lower = err_primary_lower
-
-        dataIO.close()
-
-        self.ratios_mc_total   = ratios(self.means_mc_total)
-        self.ratios_mc_primary = ratios(self.means_mc_primary)
-
-        # calculate maximum uncertainties of MC ratios:
-        for v in range(1, len(self.ratios_mc_primary)+1):
-            c, uncertainty_total_upper = divide_and_error(
-                muA = self.means_mc_total[v-1],
-                muB = self.means_mc_total[v],
-                errA = self.error_mc_total_upper[v],
-                errB = self.error_mc_total_upper[v-1]
-                )
-            c, uncertainty_primary_upper = divide_and_error(
-                muA = self.means_mc_primary[v-1],
-                muB = self.means_mc_primary[v],
-                errA = self.error_mc_primary_upper[v],
-                errB = self.error_mc_primary_upper[v-1]
-                )
-
-            c, uncertainty_total_lower = divide_and_error(
-                muA = self.means_mc_total[v-1],
-                muB = self.means_mc_total[v],
-                errA = self.error_mc_total_lower[v],
-                errB = self.error_mc_total_lower[v-1]
-                )
-            c, uncertainty_primary_lower = divide_and_error(
-                muA = self.means_mc_primary[v-1],
-                muB = self.means_mc_primary[v],
-                errA = self.error_mc_primary_lower[v],
-                errB = self.error_mc_primary_lower[v-1]
-                )
-
-            self.error_ratios_mc_total_upper.append(uncertainty_total_upper)
-            self.error_ratios_mc_primary_upper.append(uncertainty_primary_upper)
-            self.error_ratios_mc_total_lower.append(uncertainty_total_lower)
-            self.error_ratios_mc_primary_lower.append(uncertainty_primary_lower)
-
-class Test2D_SW_2(generalTest):
-    &#34;&#34;&#34; CTSimU test 2D-SW-1: detector models / scintillators.
-        CTSimU test 2D-SW-2: spectral filtering. &#34;&#34;&#34;
-
-    def __init__(self, resultFileDirectory=&#34;.&#34;, name=None, rawOutput=False):
-        generalTest.__init__(
-            self,
-            testName=&#34;2D-SW-2&#34;,
-            name=name,
-            resultFileDirectory=resultFileDirectory,
-            rawOutput=rawOutput)
-
-        self.results = []
-
-        self.shrink = 35
-        self.leftOffset = 510 - self.shrink
-        self.nPixels = 20 + 2*self.shrink
-
-        # Absolute step definitions. Will be shrunk to accept tolerance border,
-        # but these absolute definitions are needed for grey value rescaling and clipping.
-        self.steps = [
-            ImageROI(self.leftOffset, 819, self.leftOffset+self.nPixels, 910),
-            ImageROI(self.leftOffset, 728, self.leftOffset+self.nPixels, 819),
-            ImageROI(self.leftOffset, 637, self.leftOffset+self.nPixels, 728),
-            ImageROI(self.leftOffset, 546, self.leftOffset+self.nPixels, 637),
-            ImageROI(self.leftOffset, 455, self.leftOffset+self.nPixels, 546),
-            ImageROI(self.leftOffset, 364, self.leftOffset+self.nPixels, 455),
-            ImageROI(self.leftOffset, 273, self.leftOffset+self.nPixels, 364),
-            ImageROI(self.leftOffset, 182, self.leftOffset+self.nPixels, 273),
-            ImageROI(self.leftOffset,  91, self.leftOffset+self.nPixels, 182),
-            ImageROI(self.leftOffset,   0, self.leftOffset+self.nPixels,  91)  # free beam
-        ]
-
-    def prepare(self):
-        &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
-        self.prepared = True
-
-    def prepareRun(self, i):
-        if i &lt; len(self.subtests):
-            results = Test2D_SW_2_results()
-
-            if self.subtests[i] == &#34;Al&#34;:
-                results.loadReference(&#34;01_Al_noFilter_200kV-poly_Ideal&#34;)
-                results.longName = &#34;Al wedge, no filter&#34;
-            elif self.subtests[i] == &#34;AlCu&#34;:
-                results.loadReference(&#34;02_Al_CuFilter_200kV-poly_Ideal&#34;)
-                results.longName = &#34;Al wedge, 2 mm Cu filter&#34;
-            elif self.subtests[i] == &#34;Fe&#34;:
-                results.loadReference(&#34;03_Fe_noFilter_200kV-poly_Ideal&#34;)
-                results.longName = &#34;Fe wedge, no filter&#34;
-            elif self.subtests[i] == &#34;FeCu&#34;:
-                results.loadReference(&#34;04_Fe_CuFilter_200kV-poly_Ideal&#34;)
-                results.longName = &#34;Fe wedge, 2 mm Cu filter&#34;
-            else:
-                raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}&#34;.format(key=self.subtests[i], test=self.testName))
-
-            self.name = self.testName
-            self.results.append(results)
-        else:
-            if len(self.subtests) == 0:
-                raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts the following keywords: &#39;Al&#39;, &#39;AlCu&#39;, &#39;Fe&#39; and &#39;FeCu&#39;.&#34;.format(testname=self.testName))
-            else:
-                raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))
-
-    def run(self, image):
-        self.prepare()
-        self.prepareRun(self.currentRun)
-        i = self.currentRun
-        subtestName = self.subtests[i]
-
-        # Grey value summary
-        statsText = &#34;# Evaluation of Test {name}, {subname}:\n&#34;.format(name=self.name, subname=subtestName)
-        statsText += &#34;# {longDesc}\n&#34;.format(longDesc=self.results[i].longName)
-        statsText += &#34;# \n&#34;
-        statsText += &#34;# ROI mean grey value per step\n&#34;
-        statsText += &#34;# step\tx0\ty0\tx1\ty1\twidth [px]\theight [px]\tarea [px]\tmean [GV]\n&#34;
-
-        step = 0
-        for roi in self.steps:
-            step += 1
-            smallerROI = copy.deepcopy(roi)
-            smallerROI.grow(-self.shrink)
-            stats = image.stats(smallerROI)
-
-            statsText += &#34;{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{:.3f}\n&#34;.format(step, smallerROI.x0, smallerROI.y0, smallerROI.x1, smallerROI.y1, stats[&#34;width&#34;], stats[&#34;height&#34;], stats[&#34;area&#34;], stats[&#34;mean&#34;])
-
-            self.results[i].means.append(stats[&#34;mean&#34;])
-
-        self.results[i].ratios = ratios(self.results[i].means)
-
-        statsFileName = &#34;{dir}/{name}_{subname}_grey_values.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
-        with open(statsFileName, &#39;w&#39;) as statsFile:
-            statsFile.write(statsText)
-            statsFile.close()
-
-        # Ratio summary
-        ratioText = &#34;# Evaluation of Test {name}, {subname}:\n&#34;.format(name=self.name, subname=subtestName)
-        ratioText += &#34;# {longDesc}\n&#34;.format(longDesc=self.results[i].longName)
-        ratioText += &#34;# \n&#34;
-
-        ratioText += &#34;# Grey value ratios\n&#34;
-        ratioText += &#34;# step A\tstep B\tratio (A/B)\treference ratio (primary)\terror_lower (ref. primary)\terror_upper (ref. primary)\trel. deviation (primary)\treference ratio (total)\terror_lower (ref. total)\terror_upper (ref. total)\trel. deviation (total)\n&#34;
-
-        for r in range(len(self.results[i].ratios)):
-            ratioText += &#34;{A}\t{B}\t{ratio:.5f}\t{refPrimary:.5f}\t{errorPrimaryLower:.5f}\t{errorPrimaryUpper:.5f}\t{devFacPrimary:.5f}\t{reftotal:.5f}\t{errorTotalLower:.5f}\t{errorTotalUpper:.5f}\t{devFacTotal:.5f}\n&#34;.format(
-                    A = (r+2),
-                    B = (r+1),
-                    ratio = self.results[i].ratios[r],
-                    refPrimary = self.results[i].ratios_mc_primary[r],
-                    errorPrimaryLower = self.results[i].error_ratios_mc_primary_lower[r],
-                    errorPrimaryUpper = self.results[i].error_ratios_mc_primary_upper[r],
-                    devFacPrimary = (self.results[i].ratios[r] / self.results[i].ratios_mc_primary[r] - 1),
-                    reftotal = self.results[i].ratios_mc_total[r],
-                    errorTotalLower = self.results[i].error_ratios_mc_total_lower[r],
-                    errorTotalUpper = self.results[i].error_ratios_mc_total_upper[r],
-                    devFacTotal = (self.results[i].ratios[r] / self.results[i].ratios_mc_total[r] - 1)
-                )
-
-
-        ratioFileName = &#34;{dir}/{name}_{subname}_ratios.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName)
-        with open(ratioFileName, &#39;w&#39;) as ratiosFile:
-            ratiosFile.write(ratioText)
-            ratiosFile.close()
-
-        self.plotResults()
-
-        self.currentRun += 1
-        return image
-
-    def followUp(self):
-        pass
-
-    def plotResults(self):
-        i = self.currentRun
-        subtestName = self.subtests[i]
-        xValues = numpy.linspace(0, len(self.results[i].ratios)-1, len(self.results[i].ratios), endpoint=True)
-        xLabels = (&#34;2 by 1&#34;, &#34;3 by 2&#34;, &#34;4 by 3&#34;, &#34;5 by 4&#34;, &#34;6 by 5&#34;, &#34;7 by 6&#34;, &#34;8 by 7&#34;, &#34;9 by 8&#34;, &#34;10 by 9&#34;)
-
-        try:
-            import matplotlib
-            import matplotlib.pyplot
-            from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
-
-            matplotlib.use(&#34;agg&#34;)
-
-            for mode in (&#34;primary&#34;, &#34;total&#34;):
-                fig, ax = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 5))
-
-                # Grey Value Profile:
-                if mode == &#34;primary&#34;:
-                    modeDescription = &#34;primary radiation&#34;
-                    ax.errorbar(xValues, self.results[i].ratios_mc_primary, xerr=None, yerr=[self.results[i].error_ratios_mc_primary_lower, self.results[i].error_ratios_mc_primary_upper], linewidth=0, elinewidth=2.0, ecolor=&#39;#fe6100&#39;)
-                    ax.plot(xValues, self.results[i].ratios_mc_primary, &#39;_&#39;, markersize=11.0, label=&#34;Monte-Carlo reference&#34;, color=&#39;#fe6100&#39;)
-                else:
-                    modeDescription = &#34;total radiation (scatter+primary)&#34;
-                    ax.errorbar(xValues, self.results[i].ratios_mc_total, xerr=None, yerr=[self.results[i].error_ratios_mc_total_lower, self.results[i].error_ratios_mc_total_upper], linewidth=0, elinewidth=2.0, ecolor=&#39;#fe6100&#39;)
-                    ax.plot(xValues, self.results[i].ratios_mc_total, &#39;_&#39;, markersize=11.0, label=&#34;Monte-Carlo reference&#34;, color=&#39;#fe6100&#39;)
-
-                ax.plot(xValues, self.results[i].ratios, &#39;o&#39;, markersize=5.0, label=&#34;measured&#34;, color=&#39;#1f77b4&#39;)
-
-                ax.set_xlabel(&#34;step pair division&#34;)
-                ax.set_ylabel(&#34;grey value ratio&#34;)
-                ax.set_title(&#34;2D-SW-2, {sub}, {details}&#34;.format(sub=self.results[i].longName, details=modeDescription), loc=&#34;left&#34;, fontsize=10)
-                ax.set_xticks(xValues)
-                ax.xaxis.set_ticklabels(xLabels)
-                ax.grid(visible=True, which=&#39;major&#39;, axis=&#39;both&#39;, color=&#39;#d9d9d9&#39;, linestyle=&#39;dashed&#39;)
-                ax.grid(visible=True, which=&#39;minor&#39;, axis=&#39;both&#39;, color=&#39;#e7e7e7&#39;, linestyle=&#39;dotted&#39;)
-                ax.legend(loc=&#39;lower left&#39;)
-
-                fig.tight_layout(pad=2.5)
-
-                plotFilename = &#34;{dir}/{name}_{subname}_ratios_{mode}.png&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName, mode=mode)
-                matplotlib.pyplot.savefig(plotFilename)
-                fig.clf()
-                matplotlib.pyplot.close(&#39;all&#39;)
-
-        except Exception as e:
-            log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -398,8 +85,6 @@ class Test2D_SW_2(generalTest):
 <span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>CTSimU test 2D-SW-1: detector models / scintillators.
-CTSimU test 2D-SW-2: spectral filtering.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -583,6 +268,8 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
         except Exception as e:
             log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
 </details>
+<div class="desc"><p>CTSimU test 2D-SW-1: detector models / scintillators.
+CTSimU test 2D-SW-2: spectral filtering.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
@@ -594,7 +281,6 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -603,12 +289,12 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
     &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
     self.prepared = True</code></pre>
 </details>
+<div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_SW_2.Test2D_SW_2.prepareRun"><code class="name flex">
 <span>def <span class="ident">prepareRun</span></span>(<span>self, i)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -640,6 +326,7 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
         else:
             raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -660,7 +347,6 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
 <span>class <span class="ident">Test2D_SW_2_results</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Results for one sub test of the filtering scenario.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -798,13 +484,13 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
             self.error_ratios_mc_total_lower.append(uncertainty_total_lower)
             self.error_ratios_mc_primary_lower.append(uncertainty_primary_lower)</code></pre>
 </details>
+<div class="desc"><p>Results for one sub test of the filtering scenario.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.evaluation.test2D_SW_2.Test2D_SW_2_results.loadReference"><code class="name flex">
 <span>def <span class="ident">loadReference</span></span>(<span>self, name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -910,6 +596,7 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
         self.error_ratios_mc_total_lower.append(uncertainty_total_lower)
         self.error_ratios_mc_primary_lower.append(uncertainty_primary_lower)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -922,7 +609,6 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
 <img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul>
 <li><a href="#test-2d-sw-2-spectral-filtering">Test 2D-SW-2: Spectral filtering</a></li>
@@ -955,7 +641,7 @@ CTSimU test 2D-SW-2: spectral filtering.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

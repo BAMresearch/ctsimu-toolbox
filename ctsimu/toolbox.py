@@ -705,6 +705,19 @@ class Toolbox:
         return True
 
     def testDigitalTwin(self, *metadata_files, **kwargs):
+        """Run the digital twin test on dimensional measurements
+        defined in a metadata file.
+
+        Parameters
+        ----------
+        *metadata : str
+            One or more paths to metadata files.
+
+        **kwargs : str
+            Possible subtest identifiers (as keys) and
+            associated metadata files (as values).
+        """
+
         #for key, value in kwargs.items():
         #    if key in settings:
         #        settings[key] = value
@@ -727,9 +740,6 @@ class Toolbox:
                 
                 dataprep.plotResults()
                 dataprep.TwinTest_report()
-               
-
-
 
             except Exception as e:
                 log(f"Error: {metadata_file}: {str(e)}")

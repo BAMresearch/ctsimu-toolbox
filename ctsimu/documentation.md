@@ -135,3 +135,4 @@ The following people contributed to code and documentation of the toolbox.
 * Tamara Reuter
 * Fabrício Borges de Oliveira
 * Carsten Bellon
+* Anthony Orth

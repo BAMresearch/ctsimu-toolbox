@@ -1,8 +1,14 @@
+# -*- coding: UTF-8 -*-
+"""# Test of digital twin
+
+.. include:: ./testTwin.md
+"""
+
 import json
 import pandas as pd
 from ..test import *
 from ..helpers import *
-from ..responses.run import *
+#from ..responses.run import *
 #from ..responses.measurands import *
 from ..primitives import Vector, Polygon
 from ..scenario import Scenario
@@ -17,8 +23,9 @@ from reportlab.lib import colors
 import matplotlib.pyplot as plt
 
 
-
 class TestDigTwin(generalTest):
+    """ CTSimU2 test of digital twin. """
+
     def __init__(self, metadatafile):
         #empty declarations
         self.Zusatz_krit_real = []
@@ -64,10 +71,9 @@ class TestDigTwin(generalTest):
         self.uncertaintyCol = self.data['calibration']['uncertainty_columns']
         self.STLvalCol = self.data['calibration']['STL-value_columns_nr']
         #self.calibration_values = self.data['calibration']['calibration_csv_path']
-        
-        
+
         self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
-        
+
         #Calibration Values
         self.CalValues = self.data_RefWerte[self.CalValCol]  # muss an json angepasst werden!
         self.CalUncertainty = self.data_RefWerte[self.uncertaintyCol] # muss an json angepasst werden!
@@ -83,7 +89,6 @@ class TestDigTwin(generalTest):
         #self.image = 'image.jpg'
 
 
-
     def read_and_filter_csv_files(self, folder_paths, ct_type):
     # Variables needed for the function
         #self.real_folder_path = self.data[ct_type]['csv_path']
@@ -93,7 +98,7 @@ class TestDigTwin(generalTest):
         self.measurement_name_col = self.data[ct_type]['name_column']
         self.measurement_value_col = self.data[ct_type]['value_column']
         self.meas_name_col_nr = self.data[ct_type]['name_column_nr']
-        
+
         self.output_path = self.data[ct_type]['csv_output_path']
 
         self.meas_value_col_nr = self.data[ct_type]['value_column_nr']
@@ -108,10 +113,8 @@ class TestDigTwin(generalTest):
     # Open and read the JSON file
         #with open(json_file, 'r') as file:
         #    data = json.load(file)
-        
-        # Extract the folder path, column names, and measurements of interest
-        
 
+        # Extract the folder path, column names, and measurements of interest
 
         #self.runNames =  self.data['calibration_info']['material_alpha']
 
@@ -130,11 +133,11 @@ class TestDigTwin(generalTest):
 
                     # Filter the DataFrame to include only the columns of interest
                     df_filtered = df[[self.measurement_name_col, self.measurement_value_col]]
-                    
+
                     #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].str[:-3].apply(convert_str_to_float)
                     # Filter the DataFrame to include only the measurements of interest
                     df_filtered = df_filtered[df_filtered[self.measurement_name_col].isin(self.measurements_of_interest)]
-                    
+
                     df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(convert_str_to_float)
                     #print(df_filtered)
                     #if len(Tmeas) != len()
@@ -142,7 +145,6 @@ class TestDigTwin(generalTest):
                     df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
                     # print(df_filtered)
                     combined_df_test = pd.concat([combined_df_test, df_filtered[self.measurement_value_col]], axis=1)
-                    
 
                     # Append the file name to the list
                     file_names.append(filename)
@@ -153,41 +155,39 @@ class TestDigTwin(generalTest):
             #print(combined_df_test)
 
             # Create a DataFrame from the dictionary
-            
+
             combined_df_test.index = self.measurements_of_interest
             combined_df_test.columns = file_names
-                      
 
             #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(), axis=1)
             #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(self.CalValues), axis=1)
             combined_df_subtracted = combined_df_test.apply(lambda x: self.Diff_MW_KW(x, file_names, self.CalValues), axis=1)
-            
+
             print(combined_df_subtracted)
             combined_df_test.to_csv(self.output_path, self.sep, decimal=self.decimal, index=True)
             return combined_df_subtracted
 
     def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
-        
         return Mvalue*(1-(alpha*(Tmeas-Tcal)))
-        
+
     def Diff_MW_KW(self, values, file_names, CalValues):
         #print(values.name)
         #print(CalValues)
         #print(values-CalValues[values.name])
         return values-CalValues[values.name]
-    
-        
+
+
     def En_calc(self, RealValues, SimValues):
 
         #self.RealValues = self.read_and_filter_csv_files(self, self.real_folder_path)
         #self.SimValues = self.read_and_filter_csv_files(self, self.sim_folder_path)
-        
+
         #print(SimValues)
         #print(RealValues)
         #print(SimValues)
         self.RealValues_avg = RealValues.mean(axis=1)
         self.SimValues_avg = SimValues.mean(axis=1)
-        
+
         u_sim = SimValues.std(axis=1)
         u_p = RealValues.std(axis=1)
         u_drift = 0
@@ -200,7 +200,6 @@ class TestDigTwin(generalTest):
         self.df["SimValues_avg"] = SimValues.mean(axis=1)
         self.df["SimValues_u"] = SimValues.std(axis=1)
 
-        
         #print(self.SimValues_avg)
         #Berechnung EN-Wert, noch zu verändern.
         self.EN = ((self.SimValues_avg) - (self.RealValues_avg)) * ((self.MUSim.pow(2) + self.MU.pow(2)).pow(1/2)).pow(-1)
@@ -253,7 +252,7 @@ class TestDigTwin(generalTest):
         #pdfmetrics.registerFont( 
         #TTFont('abc', 'SakBunderan.ttf') 
         #) 
-  
+
         # creating the title by setting it's font  
         # and putting it on the canvas 
         #pdf.setFont('abc', 36)
@@ -266,7 +265,6 @@ class TestDigTwin(generalTest):
         pdf.setFont("Courier-Bold", 24) 
         pdf.drawCentredString(290, 720, self.subTitle) 
 
-
         # drawing a line
         pdf.line(30, 710, 550, 710)
         # creating a multiline text using
@@ -274,14 +272,14 @@ class TestDigTwin(generalTest):
         text = pdf.beginText(40, 680)
         text.setFont("Courier", 18)
         text.setFillColor(colors.red)
-        
+
         for line in self.textLines:
             text.textLine(line)
         pdf.drawText(text)
         # drawing a image at the  
         # specified (x.y) position 
         #pdf.drawInlineImage(image, 130, 400) 
-  
+
         # saving the pdf 
         pdf.save()
         return
