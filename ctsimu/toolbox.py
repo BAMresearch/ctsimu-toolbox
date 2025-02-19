@@ -24,7 +24,7 @@ from .evaluation.test2D_DW_1 import Test2D_DW_1
 from .evaluation.test2D_WE_1 import Test2D_WE_1
 from .evaluation.test2D_WE_2 import Test2D_WE_2
 from .evaluation.test2D_HS_1 import Test2D_HS_1
-from .evaluation.testDigTwin import TestDigTwin
+from .evaluation.testTwin import testTwin
 from .responses.measurands import Measurands
 
 class Toolbox:
@@ -43,8 +43,11 @@ class Toolbox:
         elif operation.startswith("2D-"):
             # Possibly a 2D test... try it!
             self.test_2D(operation, *args, **kwargs)
-        elif operation == "testDigitalTwin":
-            self.testDigitalTwin(*args, **kwargs)
+        elif operation == "twin":
+            self.test_twin(*args, **kwargs)
+        else:
+            log(f"  Not a valid operation: {operation}")
+
 
     def info(self, *scenario_files:str) -> bool:
         """Print geometry information about given scenario files.
@@ -704,7 +707,7 @@ class Toolbox:
 
         return True
 
-    def testDigitalTwin(self, *metadata_files, **kwargs):
+    def test_twin(self, *metadata, **kwargs):
         """Run the digital twin test on dimensional measurements
         defined in a metadata file.
 
@@ -718,30 +721,22 @@ class Toolbox:
             associated metadata files (as values).
         """
 
-        #for key, value in kwargs.items():
-        #    if key in settings:
-        #        settings[key] = value
-
-        for metadata_file in metadata_files:
-            # Prepare a pipeline
+        for metadata_file in metadata:
             try:
                 #print(metadata_file)
-                dataprep = TestDigTwin(metadata_file)
-                #print(bla)
-                
-                self.RealValues = dataprep.read_and_filter_csv_files(dataprep.real_folder_path, "real_ct")
-                #print(self.RealValues)
-                
-                self.SimValues = dataprep.read_and_filter_csv_files(dataprep.sim_folder_path, "simulation_ct")
-                #print(self.SimValues)
-                #self.testDigTwin(metadata_file)
-                #pipeline.run(overwrite=settings["overwrite"])
-                dataprep.En_calc(self.RealValues, self.SimValues)
-                
-                dataprep.plotResults()
-                dataprep.TwinTest_report()
-
+                twin = testTwin(metadata_file)
             except Exception as e:
-                log(f"Error: {metadata_file}: {str(e)}")
-        #evaluationStep = testDigTwin(metadata)
+                log(f"   Error: {metadata_file}: {str(e)}")
+                return
+               
+            self.RealValues = twin.read_and_filter_csv_files(twin.real_folder_path, "real-ct")
+            print(self.RealValues)
+                
+            self.SimValues = twin.read_and_filter_csv_files(twin.sim_folder_path, "sim-ct")
+            #print(self.SimValues)
+            twin.En_calc(self.RealValues, self.SimValues)
+            
+            twin.plotResults()
+            twin.TwinTest_report()
+
 

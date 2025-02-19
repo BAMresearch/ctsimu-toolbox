@@ -13,7 +13,7 @@ from ..helpers import *
 from ..primitives import Vector, Polygon
 from ..scenario import Scenario
 import numpy as np
-from ..responses.measurands import Measurands
+#from ..responses.measurands import Measurands
 #from ..responses import *
 from reportlab.pdfgen import canvas 
 from reportlab.pdfbase.ttfonts import TTFont 
@@ -23,7 +23,7 @@ from reportlab.lib import colors
 import matplotlib.pyplot as plt
 
 
-class TestDigTwin(generalTest):
+class testTwin(generalTest):
     """ CTSimU2 test of digital twin. """
 
     def __init__(self, metadatafile):
@@ -35,30 +35,31 @@ class TestDigTwin(generalTest):
         #metadatfile --> Json File
         self.metadatafile = metadatafile
         self.data = read_json_file(self.metadatafile)
-        print(self.data['real_ct']['csv_path'])
+        print(self.data['real-ct']['csv_path'])
 
         #general Information for the test
+        self.name = self.data['general']['name']
         self.measurements_of_interest = self.data['general']['measurements_of_interest']
-        self.csv_test_output_path = self.data['general']['csv_test_output_path']
+        self.output_path = self.data['general']['output_path']
 
         # Real CT Scan information
-        self.real_folder_path = self.data['real_ct']['csv_path']
+        self.real_folder_path = self.data['real-ct']['csv_path']
         #print(self.real_folder_path)
-        self.output_path = self.data['real_ct']['csv_output_path']
-        self.sep = self.data['real_ct']['csv_sep']
-        self.decimal = self.data['real_ct']['csv_decimal']
-        self.measurement_name_col = self.data['real_ct']['name_column']
-        self.measurement_value_col = self.data['real_ct']['value_column']
-        self.meas_name_col_nr = self.data['real_ct']['name_column_nr']
-        self.meas_value_col_nr = self.data['real_ct']['value_column_nr']
-        self.temperature = self.data['real_ct']['temperature']
-        self.scaling_factor = self.data['real_ct']["scaling_factor"]
+        #self.output_path = self.data['real-ct']['csv_output_path']
+        self.sep = self.data['real-ct']['csv_sep']
+        self.decimal = self.data['real-ct']['csv_decimal']
+        self.measurement_name_col = self.data['real-ct']['name_column']
+        self.measurement_value_col = self.data['real-ct']['value_column']
+        self.meas_name_col_nr = self.data['real-ct']['name_column_nr']
+        self.meas_value_col_nr = self.data['real-ct']['value_column_nr']
+        self.temperature = self.data['real-ct']['temperature']
+        self.scaling_factor = self.data['real-ct']["scaling_factor"]
         
 
         #Simulation Scan information
-        self.sim_folder_path = self.data['simulation_ct']['csv_path']
+        self.sim_folder_path = self.data['sim-ct']['csv_path']
         
-        self.sim_output_path = self.data['simulation_ct']['csv_output_path']
+        self.sim_output_path = self.data['sim-ct']['csv_output_path']
         print(self.sim_output_path)
 
         #Calibration Information
@@ -78,7 +79,7 @@ class TestDigTwin(generalTest):
         self.CalValues = self.data_RefWerte[self.CalValCol]  # muss an json angepasst werden!
         self.CalUncertainty = self.data_RefWerte[self.uncertaintyCol] # muss an json angepasst werden!
 
-        self.fileName = 'sample.pdf'
+        #self.fileName = 'sample.pdf'
         self.documentTitle = 'sample'
         self.title = 'Report Test Digital Twin'
         self.subTitle = 'CTSimU2'
@@ -99,10 +100,10 @@ class TestDigTwin(generalTest):
         self.measurement_value_col = self.data[ct_type]['value_column']
         self.meas_name_col_nr = self.data[ct_type]['name_column_nr']
 
-        self.output_path = self.data[ct_type]['csv_output_path']
+        #self.output_path = self.data[ct_type]['csv_output_path']
 
         self.meas_value_col_nr = self.data[ct_type]['value_column_nr']
-        if ct_type == "simulation_ct":
+        if ct_type == "sim-ct":
             self.temperature = 20
             self.scaling_factor = 1
             #self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
@@ -142,7 +143,7 @@ class TestDigTwin(generalTest):
                     #print(df_filtered)
                     #if len(Tmeas) != len()
                     #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
-                    df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                    df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(self.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
                     # print(df_filtered)
                     combined_df_test = pd.concat([combined_df_test, df_filtered[self.measurement_value_col]], axis=1)
 
@@ -164,7 +165,7 @@ class TestDigTwin(generalTest):
             combined_df_subtracted = combined_df_test.apply(lambda x: self.Diff_MW_KW(x, file_names, self.CalValues), axis=1)
 
             print(combined_df_subtracted)
-            combined_df_test.to_csv(self.output_path, self.sep, decimal=self.decimal, index=True)
+            combined_df_test.to_csv(f"{self.output_path}/{self.name}-{ct_type}.csv", sep=self.sep, decimal=self.decimal, index=True)
             return combined_df_subtracted
 
     def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
@@ -217,7 +218,7 @@ class TestDigTwin(generalTest):
         self.df["Test_Result"] = np.where((abs(self.df["EN-wert"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
         print(self.df)
 
-        self.df.to_csv(self.csv_test_output_path, self.sep, decimal=self.decimal, index=True)
+        self.df.to_csv(f"{self.output_path}/{self.name}-result.csv", sep=self.sep, decimal=self.decimal, index=True)
 
         return
 
@@ -238,13 +239,15 @@ class TestDigTwin(generalTest):
         plt.ylabel('EN-wert')
         plt.title('EN-wert Series')
 
+
         # Show the plot
-        plt.show()
+        #plt.show()
+        plt.savefig(f"{self.output_path}/{self.name}.png")
 
 
     def TwinTest_report(self):
         # creating a pdf object
-        pdf = canvas.Canvas(self.fileName)
+        pdf = canvas.Canvas(f"{self.output_path}/{self.name}.pdf")
         # setting the title of the document
         pdf.setTitle(self.documentTitle)
 
