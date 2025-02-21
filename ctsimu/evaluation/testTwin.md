@@ -2,5 +2,5 @@ To run this test evaluation, you can simply pass the name of the test and the me
 
 ```python
 from ctsimu.toolbox import Toolbox
-Toolbox("testDigitalTwin", "Twin_metadata.json")
+Toolbox("twin", "TwinTest_metadata.json")
 ```

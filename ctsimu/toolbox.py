@@ -723,20 +723,19 @@ class Toolbox:
 
         for metadata_file in metadata:
             try:
-                #print(metadata_file)
                 twin = testTwin(metadata_file)
             except Exception as e:
                 log(f"   Error: {metadata_file}: {str(e)}")
                 return
                
-            self.RealValues = twin.read_and_filter_csv_files(twin.real_folder_path, "real-ct")
-            print(self.RealValues)
+            # self.RealValues = twin.read_and_filter_csv_files(twin.real_folder_path, "values-real")
+            # print(self.RealValues)
                 
-            self.SimValues = twin.read_and_filter_csv_files(twin.sim_folder_path, "sim-ct")
-            #print(self.SimValues)
-            twin.En_calc(self.RealValues, self.SimValues)
+            # self.SimValues = twin.read_and_filter_csv_files(twin.sim_folder_path, "values-sim")
+            # #print(self.SimValues)
+            # twin.En_calc(self.RealValues, self.SimValues)
             
-            twin.plotResults()
-            twin.TwinTest_report()
+            # twin.plotResults()
+            # twin.TwinTest_report()
 
-
+            twin.run()

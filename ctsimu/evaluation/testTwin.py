@@ -4,7 +4,7 @@
 .. include:: ./testTwin.md
 """
 
-import json
+import io
 import pandas as pd
 from ..test import *
 from ..helpers import *
@@ -19,110 +19,155 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont 
 from reportlab.pdfbase import pdfmetrics 
 from reportlab.lib import colors 
-
+from PIL import Image
 import matplotlib.pyplot as plt
 
 
-class testTwin(generalTest):
+table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
+
+ctsimu_twin_test_supported_version = {
+    "major": 0,
+    "minor": 2
+}
+
+
+class testTwin():
     """ CTSimU2 test of digital twin. """
 
-    def __init__(self, metadatafile):
-        #empty declarations
+    def __init__(self, filename:str=None):
+        # empty declarations
         self.Zusatz_krit_real = []
         self.Zusatz_krit_sim = []
         self.combined_df = []
         self.df = pd.DataFrame()
-        #metadatfile --> Json File
-        self.metadatafile = metadatafile
-        self.data = read_json_file(self.metadatafile)
-        print(self.data['real-ct']['csv_path'])
+        self.img_buf = io.BytesIO()
+        # metadatafile --> Json File
+        #self.metadatafile = metadatafile
+        #self.metadata = read_json_file(self.metadatafile)
+        self.metadata = {}
+        self.current_metadata_path = None
+        self.current_metadata_file = None
+        self.current_metadata_basename = None
+        self.current_metadata_directory = None
+        self.metadata_is_set = False
+
+        if filename is not None:
+            self.read_metadata(filename)
+
+
+    def reset_metadata(self):
+        """Reset scenario's metadata information."""
+        self.current_metadata_path = None
+        self.current_metadata_file = None
+        self.current_metadata_basename = None
+        self.current_metadata_directory = None
+        self.metadata_is_set = False
+
+        # Create new, empty metadata:
+        self.metadata = {}
+
+
+    def read_metadata(self, filename:str=None):
+        """Import metadata from a CTSimU Twin Test file or a given
+        metadata dictionary.
+
+        Parameters
+        ----------
+        filename : str
+            Path to a CTSimU Twin Test file.
+
+            Default value: `None`
+        """
+        if filename is not None:
+            json_dict = read_json_file(filename=filename)
+            self.current_metadata_path = filename
+            self.current_metadata_directory = os.path.dirname(filename)
+            self.current_metadata_file = os.path.basename(filename)
+            self.current_metadata_basename, extension = os.path.splitext(self.current_metadata_file)
+
+        print(ctsimu_twin_test_supported_version)
+        print(get_value(json_dict, ["file", "file_format_version"]))
+        print(is_version_supported(ctsimu_twin_test_supported_version, get_value(json_dict, ["file", "file_format_version"])))
+        # If a file is read, we want to make sure that it is a valid
+        # and supported metadata file:
+        if isinstance(json_dict, dict):
+            file_type = get_value(json_dict, ["file", "file_type"])
+            if file_type != "CTSimU Twin Test":
+                raise Exception(f"Invalid metadata structure: the string 'CTSimU Twin Test' was not found in 'file.file_type' in the metadata file {filename}.")
+
+            fileformatversion = get_value(json_dict, ["file", "file_format_version"])
+            if not is_version_supported(ctsimu_twin_test_supported_version, fileformatversion):
+                raise Exception(f"Unsupported or invalid metadata version. Currently supported: up to {ctsimu_twin_test_supported_version['major']}.{ctsimu_twin_test_supported_version['minor']}.")
+        else:
+            raise Exception(f"Error when reading the metadata file: {filename}. read_json_file did not return a Python dictionary.")
+
+        self.metadata = json_dict
+        self.metadata_is_set = True
 
         #general Information for the test
-        self.name = self.data['general']['name']
-        self.measurements_of_interest = self.data['general']['measurements_of_interest']
-        self.output_path = self.data['general']['output_path']
+        self.name = self.metadata['general']['name']
+        self.measurements_of_interest = self.metadata['general']['measurements_of_interest']
+        self.output_path = self.metadata['general']['output_path']
 
-        # Real CT Scan information
-        self.real_folder_path = self.data['real-ct']['csv_path']
-        #print(self.real_folder_path)
-        #self.output_path = self.data['real-ct']['csv_output_path']
-        self.sep = self.data['real-ct']['csv_sep']
-        self.decimal = self.data['real-ct']['csv_decimal']
-        self.measurement_name_col = self.data['real-ct']['name_column']
-        self.measurement_value_col = self.data['real-ct']['value_column']
-        self.meas_name_col_nr = self.data['real-ct']['name_column_nr']
-        self.meas_value_col_nr = self.data['real-ct']['value_column_nr']
-        self.temperature = self.data['real-ct']['temperature']
-        self.scaling_factor = self.data['real-ct']["scaling_factor"]
-        
 
-        #Simulation Scan information
-        self.sim_folder_path = self.data['sim-ct']['csv_path']
-        
-        self.sim_output_path = self.data['sim-ct']['csv_output_path']
-        print(self.sim_output_path)
+    def prepare_data(self):
+        for table_id in [table_ids[2]]:
+            print(table_id)
+            folder_path = self.metadata[table_id]['csv_path']
+            sep = self.metadata[table_id]['csv_sep']
+            decimal = self.metadata[table_id]['csv_decimal']
+            name_col = self.metadata[table_id]['name_column']
+            value_col = self.metadata[table_id]['value_column']
+            name_col_nr = self.metadata[table_id]['name_column_nr']
+            value_col_nr = self.metadata[table_id]['value_column_nr']
 
-        #Calibration Information
-        self.CalPath = self.data['calibration']['calibration_csv_path'] #CalPath
-        self.cal_sep = self.data['calibration']['csv_sep'] #sep
-        self.cal_decimal = self.data['calibration']['csv_decimal'] #sep
-        self.alpha = self.data['calibration']['material_alpha']
-        self.Tcal = self.data['calibration']['temperature_calib']
-        self.CalValCol = self.data['calibration']['values_column']
-        self.uncertaintyCol = self.data['calibration']['uncertainty_columns']
-        self.STLvalCol = self.data['calibration']['STL-value_columns_nr']
-        #self.calibration_values = self.data['calibration']['calibration_csv_path']
+            if table_id == table_ids[2]: # 'reference-real'
+            #Calibration Information
+                self.alpha = self.metadata[table_id]['material_alpha']
+                self.Tcal = self.metadata[table_id]['temperature_calib']
+                uncertaintyCol = self.metadata[table_id]['uncertainty_column']
+                STLvalCol = self.metadata[table_id]['STL-value_column']
 
-        self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
+                self.data_RefWerte = pd.read_csv(folder_path, sep=sep, decimal=decimal, header=0, index_col=0)
 
-        #Calibration Values
-        self.CalValues = self.data_RefWerte[self.CalValCol]  # muss an json angepasst werden!
-        self.CalUncertainty = self.data_RefWerte[self.uncertaintyCol] # muss an json angepasst werden!
+                #Calibration Values
+                self.CalValues = self.data_RefWerte[value_col]
+                self.CalUncertainty = self.data_RefWerte[uncertaintyCol]
+                self.CalValuesSTL = self.data_RefWerte[STLvalCol]
 
-        #self.fileName = 'sample.pdf'
-        self.documentTitle = 'sample'
-        self.title = 'Report Test Digital Twin'
-        self.subTitle = 'CTSimU2'
-        self.textLines = [ 
-            'Text for the Report', 
-            'Anything that matters', 
-            ] 
-        #self.image = 'image.jpg'
+        for table_id in [table_ids[0]]:
+            print(table_id)
+            folder_path = self.metadata[table_id]['csv_path']
+            self.RealValues = self.read_and_filter_csv_files(folder_path, table_id)
+
+        for table_id in [table_ids[1]]:
+            print(table_id)
+            folder_path = self.metadata[table_id]['csv_path']
+            self.SimValues = self.read_and_filter_csv_files(folder_path, table_id)
 
 
     def read_and_filter_csv_files(self, folder_paths, ct_type):
-    # Variables needed for the function
-        #self.real_folder_path = self.data[ct_type]['csv_path']
-        self.real_output_path = self.data[ct_type]['csv_output_path']
-        self.sep = self.data[ct_type]['csv_sep']
-        self.decimal = self.data[ct_type]['csv_decimal']
-        self.measurement_name_col = self.data[ct_type]['name_column']
-        self.measurement_value_col = self.data[ct_type]['value_column']
-        self.meas_name_col_nr = self.data[ct_type]['name_column_nr']
-
-        #self.output_path = self.data[ct_type]['csv_output_path']
-
-        self.meas_value_col_nr = self.data[ct_type]['value_column_nr']
-        if ct_type == "sim-ct":
+        print(ct_type)
+        # Variables needed for the function
+        #self.real_folder_path = self.metadata[ct_type]['csv_path']
+        sep = self.metadata[ct_type]['csv_sep']
+        decimal = self.metadata[ct_type]['csv_decimal']
+        name_col = self.metadata[ct_type]['name_column']
+        value_col = self.metadata[ct_type]['value_column']
+        name_col_nr = self.metadata[ct_type]['name_column_nr']
+        value_col_nr = self.metadata[ct_type]['value_column_nr']
+        
+        if ct_type == "values-sim":
             self.temperature = 20
             self.scaling_factor = 1
             #self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
             #Calibration Values
-            self.CalValues = self.data_RefWerte[self.STLvalCol]  # muss an json angepasst werden!
+            self.CalValues = self.CalValuesSTL  # muss an json angepasst werden!
             #self.CalUncertainty = self.data_RefWerte['Kalibrierunsicherheit'] # muss an json angepasst werden!
+        else:
+            self.temperature = self.metadata[ct_type]['temperature']
+            self.scaling_factor = self.metadata[ct_type]["scaling_factor"]
 
-    # Open and read the JSON file
-        #with open(json_file, 'r') as file:
-        #    data = json.load(file)
-
-        # Extract the folder path, column names, and measurements of interest
-
-        #self.runNames =  self.data['calibration_info']['material_alpha']
-
-         # Dictionary to store measurement values for each file
-        #measurements_dict = {measurement: [] for measurement in self.measurements_of_interest}
-        # List to store DataFrames
-        #dataframes = []
         combined_df_test = pd.DataFrame()
          # List to store file names
         file_names = []
@@ -130,22 +175,22 @@ class testTwin(generalTest):
             for filename in os.listdir(folder_path):
                 if filename.endswith('.csv'):
                     file_path = os.path.join(folder_path, filename)
-                    df = pd.read_csv(file_path,sep=self.sep, decimal=self.decimal, usecols=[ int(self.meas_name_col_nr), int(self.meas_value_col_nr)])
+                    df = pd.read_csv(file_path,sep=sep, decimal=decimal, usecols=[ int(name_col_nr), int(value_col_nr)])
 
                     # Filter the DataFrame to include only the columns of interest
-                    df_filtered = df[[self.measurement_name_col, self.measurement_value_col]]
+                    df_filtered = df[[name_col, value_col]]
 
-                    #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].str[:-3].apply(convert_str_to_float)
+                    #df_filtered[value_col] = df_filtered[value_col].str[:-3].apply(convert_str_to_float)
                     # Filter the DataFrame to include only the measurements of interest
-                    df_filtered = df_filtered[df_filtered[self.measurement_name_col].isin(self.measurements_of_interest)]
+                    df_filtered = df_filtered[df_filtered[name_col].isin(self.measurements_of_interest)]
 
-                    df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(convert_str_to_float)
+                    df_filtered[value_col] = df_filtered[value_col].apply(convert_str_to_float)
                     #print(df_filtered)
                     #if len(Tmeas) != len()
-                    #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
-                    df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(self.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                    #df_filtered[value_col] = df_filtered[value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                    df_filtered[value_col] = df_filtered[value_col].apply(self.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
                     # print(df_filtered)
-                    combined_df_test = pd.concat([combined_df_test, df_filtered[self.measurement_value_col]], axis=1)
+                    combined_df_test = pd.concat([combined_df_test, df_filtered[value_col]], axis=1)
 
                     # Append the file name to the list
                     file_names.append(filename)
@@ -160,16 +205,23 @@ class testTwin(generalTest):
             combined_df_test.index = self.measurements_of_interest
             combined_df_test.columns = file_names
 
-            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(), axis=1)
-            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(self.CalValues), axis=1)
+            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.metadata, file_names).Diff_MW_KW(), axis=1)
+            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.metadata, file_names).Diff_MW_KW(self.CalValues), axis=1)
             combined_df_subtracted = combined_df_test.apply(lambda x: self.Diff_MW_KW(x, file_names, self.CalValues), axis=1)
 
             print(combined_df_subtracted)
-            combined_df_test.to_csv(f"{self.output_path}/{self.name}-{ct_type}.csv", sep=self.sep, decimal=self.decimal, index=True)
+
+            from pathlib import Path
+            path = Path(self.output_path)
+            if not path.is_dir():
+                path.mkdir(parents=True, exist_ok=True) 
+            combined_df_test.to_csv(f"{self.output_path}/{self.name}_{ct_type}.csv", sep=sep, decimal=decimal, index=True)
             return combined_df_subtracted
+
 
     def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
         return Mvalue*(1-(alpha*(Tmeas-Tcal)))
+
 
     def Diff_MW_KW(self, values, file_names, CalValues):
         #print(values.name)
@@ -179,9 +231,6 @@ class testTwin(generalTest):
 
 
     def En_calc(self, RealValues, SimValues):
-
-        #self.RealValues = self.read_and_filter_csv_files(self, self.real_folder_path)
-        #self.SimValues = self.read_and_filter_csv_files(self, self.sim_folder_path)
 
         #print(SimValues)
         #print(RealValues)
@@ -209,23 +258,24 @@ class testTwin(generalTest):
 
         self.Zusatz_krit_real = self.MU / self.CalUncertainty
         self.Zusatz_krit_sim = self.MUSim / self.MU
-        self.df["EN-wert"] = self.EN
+        self.df["E_DM-value"] = self.EN
         self.df["Zusatz_krit_real"] = self.MU / self.CalUncertainty
         self.df["Zusatz_krit_sim"] = self.MUSim / self.MU
         self.df["Zusatz_krit_summe"] = self.MUSim / self.MU + self.MU / self.CalUncertainty
         self.df["Test_Result"] = self.EN
-        #self.df["Test_Result"] = np.where((self.df["EN-wert"] < 1) & (self.df["EN-wert"] > 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
-        self.df["Test_Result"] = np.where((abs(self.df["EN-wert"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
+        #self.df["Test_Result"] = np.where((self.df["E_DM-value"] < 1) & (self.df["E_DM-value"] > 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
+        self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
         print(self.df)
 
-        self.df.to_csv(f"{self.output_path}/{self.name}-result.csv", sep=self.sep, decimal=self.decimal, index=True)
-
-        return
+        # Save results.
+        sep = self.metadata['general']['csv_sep']
+        decimal = self.metadata['general']['csv_decimal']
+        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=sep, decimal=decimal, index=True)
 
 
     def plotResults(self):
         plt.figure(figsize=(10, 6))
-        plt.plot(self.df['EN-wert'], marker='o')
+        plt.plot(self.df['E_DM-value'], marker='o')
 
         # Add horizontal lines at -1 and +1
         plt.axhline(y=-1, color='r', linestyle='--')
@@ -235,10 +285,11 @@ class testTwin(generalTest):
         plt.xticks(ticks=range(len(self.measurements_of_interest)), labels=self.measurements_of_interest, rotation=90)
 
         # Add labels and title
-        plt.xlabel('Measurements')
-        plt.ylabel('EN-wert')
-        plt.title('EN-wert Series')
+        plt.xlabel('Measurand')
+        plt.ylabel('E_DM value')
+        plt.title('CTSimU2 Test Result')
 
+        plt.savefig(self.img_buf, format='png')
 
         # Show the plot
         #plt.show()
@@ -246,10 +297,21 @@ class testTwin(generalTest):
 
 
     def TwinTest_report(self):
+        from datetime import datetime
+
+        documentTitle = f"{self.output_path}/{self.name}.pdf"
+        title = 'Digital Twin Test Report'
+        subTitle = 'CTSimU2'
+        textLines = [
+            f'Metadata file: {self.current_metadata_file}', 
+            f'Name: {self.name}', 
+            f'Measurands: {", ".join(self.measurements_of_interest)}', 
+            ] 
+        
         # creating a pdf object
-        pdf = canvas.Canvas(f"{self.output_path}/{self.name}.pdf")
+        pdf = canvas.Canvas(documentTitle)
         # setting the title of the document
-        pdf.setTitle(self.documentTitle)
+        #pdf.setTitle(self.documentTitle)
 
         # registering a external font in python 
         #pdfmetrics.registerFont( 
@@ -259,30 +321,48 @@ class testTwin(generalTest):
         # creating the title by setting it's font  
         # and putting it on the canvas 
         #pdf.setFont('abc', 36)
-        pdf.setFont("Courier-Bold", 36)
-        pdf.drawCentredString(300, 770, self.title)
+        pdf.setFont("Helvetica-Bold", 36)
+        pdf.drawCentredString(300, 770, title)
 
         # creating the subtitle by setting it's font,  
         # colour and putting it on the canvas 
         pdf.setFillColorRGB(0, 0, 255) 
-        pdf.setFont("Courier-Bold", 24) 
-        pdf.drawCentredString(290, 720, self.subTitle) 
+        pdf.setFont("Helvetica-Bold", 24) 
+        pdf.drawCentredString(290, 720, subTitle) 
 
         # drawing a line
         pdf.line(30, 710, 550, 710)
         # creating a multiline text using
         # textline and for loop 
         text = pdf.beginText(40, 680)
-        text.setFont("Courier", 18)
-        text.setFillColor(colors.red)
+        text.setFont("Helvetica", 12)
+        text.setFillColor(colors.black)
 
-        for line in self.textLines:
+        now = datetime.now()
+        text.textLine(f"Date: {now}")
+        for line in textLines:
             text.textLine(line)
         pdf.drawText(text)
         # drawing a image at the  
         # specified (x.y) position 
-        #pdf.drawInlineImage(image, 130, 400) 
+        pdf.drawInlineImage(Image.open(self.img_buf), 0, 0, 600, None, True) 
 
         # saving the pdf 
-        pdf.save()
-        return
+        try:
+            pdf.save()
+        except Exception as e:
+            log(f"   Error: {str(e)}")
+
+    def run(self):
+        #self.RealValues = self.read_and_filter_csv_files(self.real_folder_path, "values-real")
+        #print(self.RealValues)
+        self.prepare_data()
+            
+        #self.SimValues = self.read_and_filter_csv_files(self.sim_folder_path, "values-sim")
+        #print(self.SimValues)
+
+
+        self.En_calc(self.RealValues, self.SimValues)
+        
+        self.plotResults()
+        self.TwinTest_report()
