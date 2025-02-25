@@ -6,6 +6,7 @@
 
 import io
 import pandas as pd
+pd.options.mode.copy_on_write = True
 from ..test import *
 from ..helpers import *
 #from ..responses.run import *
@@ -27,7 +28,7 @@ table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
 
 ctsimu_twin_test_supported_version = {
     "major": 0,
-    "minor": 2
+    "minor": 3
 }
 
 
@@ -85,9 +86,6 @@ class testTwin():
             self.current_metadata_file = os.path.basename(filename)
             self.current_metadata_basename, extension = os.path.splitext(self.current_metadata_file)
 
-        print(ctsimu_twin_test_supported_version)
-        print(get_value(json_dict, ["file", "file_format_version"]))
-        print(is_version_supported(ctsimu_twin_test_supported_version, get_value(json_dict, ["file", "file_format_version"])))
         # If a file is read, we want to make sure that it is a valid
         # and supported metadata file:
         if isinstance(json_dict, dict):
@@ -108,87 +106,72 @@ class testTwin():
         self.name = self.metadata['general']['name']
         self.measurements_of_interest = self.metadata['general']['measurements_of_interest']
         self.output_path = self.metadata['general']['output_path']
+        self.alpha = self.metadata['general']['material_alpha']
 
 
     def prepare_data(self):
-        for table_id in [table_ids[2]]:
+        for table_id in table_ids[::-1]:
             print(table_id)
             folder_path = self.metadata[table_id]['csv_path']
             sep = self.metadata[table_id]['csv_sep']
             decimal = self.metadata[table_id]['csv_decimal']
             name_col = self.metadata[table_id]['name_column']
             value_col = self.metadata[table_id]['value_column']
-            name_col_nr = self.metadata[table_id]['name_column_nr']
-            value_col_nr = self.metadata[table_id]['value_column_nr']
 
             if table_id == table_ids[2]: # 'reference-real'
-            #Calibration Information
-                self.alpha = self.metadata[table_id]['material_alpha']
-                self.Tcal = self.metadata[table_id]['temperature_calib']
+                self.RealRefT = self.metadata[table_id]['temperature_calib']
+
+                data = pd.read_csv(folder_path, sep=sep, decimal=decimal, header=0, index_col=0)
+                self.RealValuesRef = data[value_col]
                 uncertaintyCol = self.metadata[table_id]['uncertainty_column']
-                STLvalCol = self.metadata[table_id]['STL-value_column']
+                self.RealRefUncertainty = data[uncertaintyCol]
+            elif table_id == table_ids[3]: # 'reference-sim'
+                self.SimRefT = self.metadata[table_id]['temperature_calib']
 
-                self.data_RefWerte = pd.read_csv(folder_path, sep=sep, decimal=decimal, header=0, index_col=0)
-
-                #Calibration Values
-                self.CalValues = self.data_RefWerte[value_col]
-                self.CalUncertainty = self.data_RefWerte[uncertaintyCol]
-                self.CalValuesSTL = self.data_RefWerte[STLvalCol]
-
-        for table_id in [table_ids[0]]:
-            print(table_id)
-            folder_path = self.metadata[table_id]['csv_path']
-            self.RealValues = self.read_and_filter_csv_files(folder_path, table_id)
-
-        for table_id in [table_ids[1]]:
-            print(table_id)
-            folder_path = self.metadata[table_id]['csv_path']
-            self.SimValues = self.read_and_filter_csv_files(folder_path, table_id)
+                data = pd.read_csv(folder_path, sep=sep, decimal=decimal, header=0, index_col=0)
+                self.SimValuesRef = data[value_col]
+                # uncertaintyCol = self.metadata[table_id]['uncertainty_column']
+                # self.CalUncertainty = self.data[uncertaintyCol]
+            elif table_id == table_ids[0]:
+                self.RealValues = self.read_and_filter_csv_files(folder_path, table_id)
+            elif table_id == table_ids[1]:
+                self.SimValues = self.read_and_filter_csv_files(folder_path, table_id)
 
 
     def read_and_filter_csv_files(self, folder_paths, ct_type):
-        print(ct_type)
-        # Variables needed for the function
-        #self.real_folder_path = self.metadata[ct_type]['csv_path']
         sep = self.metadata[ct_type]['csv_sep']
         decimal = self.metadata[ct_type]['csv_decimal']
+        header_row = self.metadata[ct_type]['header_row']
         name_col = self.metadata[ct_type]['name_column']
         value_col = self.metadata[ct_type]['value_column']
-        name_col_nr = self.metadata[ct_type]['name_column_nr']
-        value_col_nr = self.metadata[ct_type]['value_column_nr']
+        self.temperature = self.metadata[ct_type]['temperature']
+        self.scaling_factor = self.metadata[ct_type]["scaling_factor"]
         
+        #Calibration Information
         if ct_type == "values-sim":
-            self.temperature = 20
-            self.scaling_factor = 1
-            #self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
-            #Calibration Values
-            self.CalValues = self.CalValuesSTL  # muss an json angepasst werden!
-            #self.CalUncertainty = self.data_RefWerte['Kalibrierunsicherheit'] # muss an json angepasst werden!
+            ref_values = self.SimValuesRef
+            ref_temperature = self.SimRefT
         else:
-            self.temperature = self.metadata[ct_type]['temperature']
-            self.scaling_factor = self.metadata[ct_type]["scaling_factor"]
+            ref_values = self.RealValuesRef
+            ref_temperature = self.RealRefT
 
         combined_df_test = pd.DataFrame()
-         # List to store file names
         file_names = []
         for folder_path in [folder_paths]:
             for filename in os.listdir(folder_path):
                 if filename.endswith('.csv'):
                     file_path = os.path.join(folder_path, filename)
-                    df = pd.read_csv(file_path,sep=sep, decimal=decimal, usecols=[ int(name_col_nr), int(value_col_nr)])
+                    df = pd.read_csv(file_path, sep=sep, decimal=decimal, header=int(header_row), usecols=[name_col, value_col])
+                    # df.to_csv(f'{file_path}.df', sep=sep, decimal=decimal, index=True)
 
-                    # Filter the DataFrame to include only the columns of interest
-                    df_filtered = df[[name_col, value_col]]
-
-                    #df_filtered[value_col] = df_filtered[value_col].str[:-3].apply(convert_str_to_float)
                     # Filter the DataFrame to include only the measurements of interest
-                    df_filtered = df_filtered[df_filtered[name_col].isin(self.measurements_of_interest)]
+                    df_filtered = df[df[name_col].isin(self.measurements_of_interest)]
 
                     df_filtered[value_col] = df_filtered[value_col].apply(convert_str_to_float)
                     #print(df_filtered)
-                    #if len(Tmeas) != len()
-                    #df_filtered[value_col] = df_filtered[value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
-                    df_filtered[value_col] = df_filtered[value_col].apply(self.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                    if not self.temperature == ref_temperature:
+                        print(self.temperature, ref_temperature, self.alpha)
+                        df_filtered[value_col] = df_filtered[value_col].apply(self.TempKorr, args=(float(self.temperature), float(ref_temperature), float(self.alpha)))
                     # print(df_filtered)
                     combined_df_test = pd.concat([combined_df_test, df_filtered[value_col]], axis=1)
 
@@ -200,34 +183,28 @@ class testTwin():
             #pd.set_option('display.max_colwidth', -1)
             #print(combined_df_test)
 
-            # Create a DataFrame from the dictionary
-
             combined_df_test.index = self.measurements_of_interest
             combined_df_test.columns = file_names
 
-            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.metadata, file_names).Diff_MW_KW(), axis=1)
-            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.metadata, file_names).Diff_MW_KW(self.CalValues), axis=1)
-            combined_df_subtracted = combined_df_test.apply(lambda x: self.Diff_MW_KW(x, file_names, self.CalValues), axis=1)
+            combined_df_subtracted = combined_df_test.apply(lambda x: self.Deviation(x, ref_values), axis=1)
 
             print(combined_df_subtracted)
 
-            from pathlib import Path
-            path = Path(self.output_path)
-            if not path.is_dir():
-                path.mkdir(parents=True, exist_ok=True) 
+            os.makedirs(self.output_path, exist_ok=True)
             combined_df_test.to_csv(f"{self.output_path}/{self.name}_{ct_type}.csv", sep=sep, decimal=decimal, index=True)
-            return combined_df_subtracted
+
+        return combined_df_subtracted
 
 
     def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
         return Mvalue*(1-(alpha*(Tmeas-Tcal)))
 
 
-    def Diff_MW_KW(self, values, file_names, CalValues):
+    def Deviation(self, values, ref_values):
         #print(values.name)
-        #print(CalValues)
-        #print(values-CalValues[values.name])
-        return values-CalValues[values.name]
+        #print(ref_values)
+        #print(values-ref_values[values.name])
+        return values-ref_values[values.name]
 
 
     def En_calc(self, RealValues, SimValues):
@@ -242,13 +219,13 @@ class testTwin():
         u_p = RealValues.std(axis=1)
         u_drift = 0
         u_b = 0
-        self.MU = 2*(RealValues.std(axis=1).pow(2) + self.CalUncertainty.pow(2)).pow(1/2)
+        self.MU = 2*(RealValues.std(axis=1).pow(2) + self.RealRefUncertainty.pow(2)).pow(1/2)
         self.MUSim = 2*u_sim
 
         self.df["RealValues_avg"] = RealValues.mean(axis=1)
-        self.df["RealValues_u"] = RealValues.std(axis=1)
+        self.df["RealValues_u"] = self.MU
         self.df["SimValues_avg"] = SimValues.mean(axis=1)
-        self.df["SimValues_u"] = SimValues.std(axis=1)
+        self.df["SimValues_u"] = self.MUSim
 
         #print(self.SimValues_avg)
         #Berechnung EN-Wert, noch zu verändern.
@@ -256,14 +233,13 @@ class testTwin():
         #print(((self.MUSim.pow(2) + self.MU.pow(2))).pow(1/2))
         #print(self.EN)
 
-        self.Zusatz_krit_real = self.MU / self.CalUncertainty
+        self.Zusatz_krit_real = self.MU / self.RealRefUncertainty
         self.Zusatz_krit_sim = self.MUSim / self.MU
         self.df["E_DM-value"] = self.EN
-        self.df["Zusatz_krit_real"] = self.MU / self.CalUncertainty
-        self.df["Zusatz_krit_sim"] = self.MUSim / self.MU
-        self.df["Zusatz_krit_summe"] = self.MUSim / self.MU + self.MU / self.CalUncertainty
+        self.df["Zusatz_krit_real"] = self.Zusatz_krit_real
+        self.df["Zusatz_krit_sim"] = self.Zusatz_krit_sim
+        self.df["Zusatz_krit_summe"] = self.Zusatz_krit_real + self.Zusatz_krit_sim
         self.df["Test_Result"] = self.EN
-        #self.df["Test_Result"] = np.where((self.df["E_DM-value"] < 1) & (self.df["E_DM-value"] > 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
         self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
         print(self.df)
 
@@ -320,7 +296,6 @@ class testTwin():
 
         # creating the title by setting it's font  
         # and putting it on the canvas 
-        #pdf.setFont('abc', 36)
         pdf.setFont("Helvetica-Bold", 36)
         pdf.drawCentredString(300, 770, title)
 
@@ -360,7 +335,6 @@ class testTwin():
             
         #self.SimValues = self.read_and_filter_csv_files(self.sim_folder_path, "values-sim")
         #print(self.SimValues)
-
 
         self.En_calc(self.RealValues, self.SimValues)
         
