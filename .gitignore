@@ -5,3 +5,5 @@ ctsimu.egg-info
 *.log
 *.sublime-project
 *.sublime-workspace
+/results
+FMT_Daten

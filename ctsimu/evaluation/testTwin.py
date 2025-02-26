@@ -125,6 +125,18 @@ class testTwin():
                 self.RealValuesRef = data[value_col]
                 uncertaintyCol = self.metadata[table_id]['uncertainty_column']
                 self.RealRefUncertainty = data[uncertaintyCol]
+                print(self.measurements_of_interest)
+                if len(self.measurements_of_interest) == 0:
+                    self.measurements_of_interest = data.index
+                elif len([m for m in self.measurements_of_interest if '*' in m]) > 0:
+                    moi = []
+                    for m in data.index:
+                        for pattern in [m for m in self.measurements_of_interest if '*' in m]:
+                            if m.startswith(pattern.replace('*', "")):
+                                moi.append(m)
+                    self.measurements_of_interest = moi
+                    print(moi)
+                print(self.measurements_of_interest)
             elif table_id == table_ids[3]: # 'reference-sim'
                 self.SimRefT = self.metadata[table_id]['temperature_calib']
 
@@ -207,7 +219,7 @@ class testTwin():
         return values-ref_values[values.name]
 
 
-    def En_calc(self, RealValues, SimValues):
+    def Edm_calc(self, RealValues, SimValues):
 
         #print(SimValues)
         #print(RealValues)
@@ -215,47 +227,85 @@ class testTwin():
         self.RealValues_avg = RealValues.mean(axis=1)
         self.SimValues_avg = SimValues.mean(axis=1)
 
-        u_sim = SimValues.std(axis=1)
+        u_psim = SimValues.std(axis=1)
+        k_sim = 3.0
+        u_cal = self.RealRefUncertainty
+        u_drift = 0.0
         u_p = RealValues.std(axis=1)
-        u_drift = 0
-        u_b = 0
-        self.MU = 2*(RealValues.std(axis=1).pow(2) + self.RealRefUncertainty.pow(2)).pow(1/2)
-        self.MUSim = 2*u_sim
+        u_b = 0.0
+        k_real = 3.0
+        self.U_real = k_real * (u_cal.pow(2) + u_drift*u_drift + u_p.pow(2) + u_b*u_b).pow(1/2)
+        self.U_sim = k_sim * u_psim
+        self.E_DM = ((self.SimValues_avg) - (self.RealValues_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
+        #print(self.E_DM)
+
+        # self.Zusatz_krit_real = self.U_real / self.RealRefUncertainty
+        # self.Zusatz_krit_sim = self.U_sim / self.U_real
+        self.Zusatz_krit_real = u_cal / u_p
+        self.Zusatz_krit_sim = u_psim / u_p
+        # self.Result = np.where((abs(self.E_DM) < 1) & (self.Zusatz_krit_real < 1) & (self.Zusatz_krit_sim < 1), True, False)
+        self.Result = np.where((abs(self.E_DM) < 1) & (self.Zusatz_krit_real + self.Zusatz_krit_sim < 2), True, False)
 
         self.df["RealValues_avg"] = RealValues.mean(axis=1)
-        self.df["RealValues_u"] = self.MU
+        self.df["RealValues_U"] = self.U_real
         self.df["SimValues_avg"] = SimValues.mean(axis=1)
-        self.df["SimValues_u"] = self.MUSim
-
-        #print(self.SimValues_avg)
-        #Berechnung EN-Wert, noch zu verändern.
-        self.EN = ((self.SimValues_avg) - (self.RealValues_avg)) * ((self.MUSim.pow(2) + self.MU.pow(2)).pow(1/2)).pow(-1)
-        #print(((self.MUSim.pow(2) + self.MU.pow(2))).pow(1/2))
-        #print(self.EN)
-
-        self.Zusatz_krit_real = self.MU / self.RealRefUncertainty
-        self.Zusatz_krit_sim = self.MUSim / self.MU
-        self.df["E_DM-value"] = self.EN
+        self.df["SimValues_U"] = self.U_sim
+        self.df["E_DM-value"] = self.E_DM
         self.df["Zusatz_krit_real"] = self.Zusatz_krit_real
         self.df["Zusatz_krit_sim"] = self.Zusatz_krit_sim
         self.df["Zusatz_krit_summe"] = self.Zusatz_krit_real + self.Zusatz_krit_sim
-        self.df["Test_Result"] = self.EN
         self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
+        self.df.index.name = 'Masse'
+        # self.df.reset_index()
         print(self.df)
 
         # Save results.
         sep = self.metadata['general']['csv_sep']
         decimal = self.metadata['general']['csv_decimal']
-        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=sep, decimal=decimal, index=True)
+        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=sep, decimal=decimal, index=True, index_label='Masse')
+
+
+    def plotDeviations(self):
+        import matplotlib.transforms
+        from matplotlib.transforms import offset_copy
+
+        fig = plt.figure(figsize=(10, 6))
+        # plt.plot(self.df['RealValues_avg'], marker='o')
+        plt.errorbar(self.df.index, self.df['RealValues_avg'], yerr=self.df['RealValues_U'], fmt='o')
+        plt.errorbar(self.df.index, self.df['SimValues_avg'], yerr=self.df['SimValues_U'], fmt='o')
+
+        # Add horizontal lines at -1 and +1
+        # plt.axhline(y=-1, color='r', linestyle='--')
+        # plt.axhline(y=1, color='g', linestyle='--')
+
+        # Label the x-axis with names from self.measurements_of_interest
+        # plt.xticks(ticks=range(len(self.measurements_of_interest)), labels=self.measurements_of_interest, rotation=90)
+
+        # Add labels and title
+        plt.xlabel('Measurand')
+        plt.ylabel('Devistion / mm')
+        plt.title('CTSimU2 Test Result')
+
+        plt.savefig(self.img_buf, format='png')
+
+        # Show the plot
+        #plt.show()
+        plt.savefig(f"{self.output_path}/{self.name}_2.png")
 
 
     def plotResults(self):
+
+        # assign categories and colormap
+        cat = np.where(self.df['Zusatz_krit_summe'] < 2.0, 0, 1)
+        col_map = np.array(['b', 'r'])
+        # print(col_map[cat])
+
         plt.figure(figsize=(10, 6))
-        plt.plot(self.df['E_DM-value'], marker='o')
+        plt.scatter(self.df.index, self.df['E_DM-value'], c=col_map[cat])
 
         # Add horizontal lines at -1 and +1
-        plt.axhline(y=-1, color='r', linestyle='--')
-        plt.axhline(y=1, color='g', linestyle='--')
+        plt.axhline(y=-1, color='lightgray')
+        plt.axhline(y=1, color='lightgray')
 
         # Label the x-axis with names from self.measurements_of_interest
         plt.xticks(ticks=range(len(self.measurements_of_interest)), labels=self.measurements_of_interest, rotation=90)
@@ -336,7 +386,8 @@ class testTwin():
         #self.SimValues = self.read_and_filter_csv_files(self.sim_folder_path, "values-sim")
         #print(self.SimValues)
 
-        self.En_calc(self.RealValues, self.SimValues)
-        
+        self.Edm_calc(self.RealValues, self.SimValues)
+
+        self.plotDeviations()
         self.plotResults()
         self.TwinTest_report()
