@@ -156,7 +156,7 @@ class testTwin():
         header_row = self.metadata[ct_type]['header_row']
         name_col = self.metadata[ct_type]['name_column']
         value_col = self.metadata[ct_type]['value_column']
-        self.temperature = self.metadata[ct_type]['temperature']
+        temperature = self.metadata[ct_type]['temperature']
         self.scaling_factor = self.metadata[ct_type]["scaling_factor"]
         
         #Calibration Information
@@ -181,9 +181,9 @@ class testTwin():
 
                     df_filtered[value_col] = df_filtered[value_col].apply(convert_str_to_float)
                     #print(df_filtered)
-                    if not self.temperature == ref_temperature:
-                        print(self.temperature, ref_temperature, self.alpha)
-                        df_filtered[value_col] = df_filtered[value_col].apply(self.TempKorr, args=(float(self.temperature), float(ref_temperature), float(self.alpha)))
+                    if not temperature == ref_temperature:
+                        print(temperature, ref_temperature, self.alpha)
+                        df_filtered[value_col] = df_filtered[value_col].apply(self.TempKorr, args=(float(temperature), float(ref_temperature), float(self.alpha)))
                     # print(df_filtered)
                     combined_df_test = pd.concat([combined_df_test, df_filtered[value_col]], axis=1)
 
@@ -220,6 +220,8 @@ class testTwin():
 
 
     def Edm_calc(self, RealValues, SimValues):
+        T_real = float(self.metadata['values-real']['temperature'])
+        T_ref = float(self.RealRefT)
 
         #print(SimValues)
         #print(RealValues)
@@ -230,11 +232,12 @@ class testTwin():
         u_psim = SimValues.std(axis=1)
         k_sim = 3.0
         u_cal = self.RealRefUncertainty
-        u_drift = 0.0
         u_p = RealValues.std(axis=1)
-        u_b = 0.0
+        u_ab = 0.2 * self.alpha
+        u_b = (T_real - T_ref) * u_ab * self.RealValues_avg
+        print('u_b: ',u_b)
         k_real = 3.0
-        self.U_real = k_real * (u_cal.pow(2) + u_drift*u_drift + u_p.pow(2) + u_b*u_b).pow(1/2)
+        self.U_real = k_real * (u_cal.pow(2) + u_p.pow(2) + u_b.pow(2)).pow(1/2)
         self.U_sim = k_sim * u_psim
         self.E_DM = ((self.SimValues_avg) - (self.RealValues_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
         #print(self.E_DM)
@@ -270,21 +273,22 @@ class testTwin():
         from matplotlib.transforms import offset_copy
 
         fig = plt.figure(figsize=(10, 6))
+
+        # Add horizontal lines at 0
+        plt.axhline(y=0, color='lightgray')
+
         # plt.plot(self.df['RealValues_avg'], marker='o')
         plt.errorbar(self.df.index, self.df['RealValues_avg'], yerr=self.df['RealValues_U'], fmt='o')
-        plt.errorbar(self.df.index, self.df['SimValues_avg'], yerr=self.df['SimValues_U'], fmt='o')
-
-        # Add horizontal lines at -1 and +1
-        # plt.axhline(y=-1, color='r', linestyle='--')
-        # plt.axhline(y=1, color='g', linestyle='--')
+        plt.errorbar([x+.15 for x in range(len(self.df.index))], self.df['SimValues_avg'], yerr=self.df['SimValues_U'], fmt='o')
 
         # Label the x-axis with names from self.measurements_of_interest
-        # plt.xticks(ticks=range(len(self.measurements_of_interest)), labels=self.measurements_of_interest, rotation=90)
+        xtick_labels = [s[:7].rjust(7) for s in self.measurements_of_interest]
+        plt.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
 
         # Add labels and title
-        plt.xlabel('Measurand')
+        # plt.xlabel('Measurand')
         plt.ylabel('Devistion / mm')
-        plt.title('CTSimU2 Test Result')
+        # plt.title('CTSimU2 Test Result')
 
         plt.savefig(self.img_buf, format='png')
 
@@ -301,19 +305,22 @@ class testTwin():
         # print(col_map[cat])
 
         plt.figure(figsize=(10, 6))
-        plt.scatter(self.df.index, self.df['E_DM-value'], c=col_map[cat])
 
         # Add horizontal lines at -1 and +1
         plt.axhline(y=-1, color='lightgray')
         plt.axhline(y=1, color='lightgray')
 
+        plt.scatter(self.df.index, self.df['E_DM-value'], c=col_map[cat])
+
         # Label the x-axis with names from self.measurements_of_interest
-        plt.xticks(ticks=range(len(self.measurements_of_interest)), labels=self.measurements_of_interest, rotation=90)
+        xtick_labels = [s[:7].rjust(7) for s in self.measurements_of_interest]
+        plt.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
+        # print(plt.xticks())
 
         # Add labels and title
-        plt.xlabel('Measurand')
+        # plt.xlabel('Measurand')
         plt.ylabel('E_DM value')
-        plt.title('CTSimU2 Test Result')
+        # plt.title('CTSimU2 Test Result')
 
         plt.savefig(self.img_buf, format='png')
 
