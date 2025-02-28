@@ -216,7 +216,7 @@ class testTwin():
         #print(values.name)
         #print(ref_values)
         #print(values-ref_values[values.name])
-        return values-ref_values[values.name]
+        return values - ref_values[values.name]
 
 
     def Edm_calc(self, RealValues, SimValues):
@@ -230,13 +230,13 @@ class testTwin():
         self.SimValues_avg = SimValues.mean(axis=1)
 
         u_psim = SimValues.std(axis=1)
-        k_sim = 3.0
+        k_sim = 2.0
         u_cal = self.RealRefUncertainty
         u_p = RealValues.std(axis=1)
         u_ab = 0.2 * self.alpha
         u_b = (T_real - T_ref) * u_ab * self.RealValues_avg
         print('u_b: ',u_b)
-        k_real = 3.0
+        k_real = 2.0
         self.U_real = k_real * (u_cal.pow(2) + u_p.pow(2) + u_b.pow(2)).pow(1/2)
         self.U_sim = k_sim * u_psim
         self.E_DM = ((self.SimValues_avg) - (self.RealValues_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
@@ -257,7 +257,8 @@ class testTwin():
         self.df["Zusatz_krit_real"] = self.Zusatz_krit_real
         self.df["Zusatz_krit_sim"] = self.Zusatz_krit_sim
         self.df["Zusatz_krit_summe"] = self.Zusatz_krit_real + self.Zusatz_krit_sim
-        self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
+        # self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
+        self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] + self.df["Zusatz_krit_sim"] < 2), True, False)
         self.df.index.name = 'Masse'
         # self.df.reset_index()
         print(self.df)
@@ -272,7 +273,7 @@ class testTwin():
         import matplotlib.transforms
         from matplotlib.transforms import offset_copy
 
-        fig = plt.figure(figsize=(10, 6))
+        fig = plt.figure(figsize=(7, 5))
 
         # Add horizontal lines at 0
         plt.axhline(y=0, color='lightgray')
@@ -282,15 +283,15 @@ class testTwin():
         plt.errorbar([x+.15 for x in range(len(self.df.index))], self.df['SimValues_avg'], yerr=self.df['SimValues_U'], fmt='o')
 
         # Label the x-axis with names from self.measurements_of_interest
-        xtick_labels = [s[:7].rjust(7) for s in self.measurements_of_interest]
+        xtick_labels = [s[:7] for s in self.measurements_of_interest]
         plt.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
 
         # Add labels and title
         # plt.xlabel('Measurand')
-        plt.ylabel('Devistion / mm')
+        plt.ylabel('Deviation / mm')
         # plt.title('CTSimU2 Test Result')
 
-        plt.savefig(self.img_buf, format='png')
+        # plt.savefig(self.img_buf, format='png')
 
         # Show the plot
         #plt.show()
@@ -301,7 +302,7 @@ class testTwin():
 
         # assign categories and colormap
         cat = np.where(self.df['Zusatz_krit_summe'] < 2.0, 0, 1)
-        col_map = np.array(['b', 'r'])
+        col_map = np.array(['C0', 'C3'])
         # print(col_map[cat])
 
         plt.figure(figsize=(10, 6))
@@ -313,7 +314,7 @@ class testTwin():
         plt.scatter(self.df.index, self.df['E_DM-value'], c=col_map[cat])
 
         # Label the x-axis with names from self.measurements_of_interest
-        xtick_labels = [s[:7].rjust(7) for s in self.measurements_of_interest]
+        xtick_labels = [s[:7] for s in self.measurements_of_interest]
         plt.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
         # print(plt.xticks())
 
@@ -322,11 +323,70 @@ class testTwin():
         plt.ylabel('E_DM value')
         # plt.title('CTSimU2 Test Result')
 
-        plt.savefig(self.img_buf, format='png')
+        # plt.savefig(self.img_buf, format='png')
 
         # Show the plot
         #plt.show()
-        plt.savefig(f"{self.output_path}/{self.name}.png")
+        plt.savefig(f"{self.output_path}/{self.name}_3.png")
+
+
+    def plotResult(self):
+        fig, (ax1, ax2) = plt.subplots(2, height_ratios=[2.25,1], sharex=True, dpi=120)
+        ax1.set_title(self.name)
+        # title = fig.suptitle(self.name)
+        # title.set_position([.5,.9])
+        fig.subplots_adjust(hspace = 0.05)
+
+        # Deviation plot
+        #
+        # Add horizontal lines at 0
+        ax1.axhline(y=0, color='lightgray')
+        # Add the plot
+        ax1.errorbar([s[:7] for s in self.df.index], self.df['RealValues_avg']*1e3, yerr=self.df['RealValues_U']*1e3, fmt='o', label='Real')
+        ax1.errorbar([x+.15 for x in range(len(self.df.index))], self.df['SimValues_avg']*1e3, yerr=self.df['SimValues_U']*1e3, fmt='o', label='Sim')
+        # ax1.set_ylim(-10,10)
+        # Add labels and title
+        ax1.set_axisbelow(False)
+        ax1.tick_params(which='both', direction='in', top=True, right=True)
+        # ax1.set_xlabel('Measurand')
+        # ax1.title('CTSimU2 Test Result')
+        ax1.set_ylabel('Deviation / µm')
+        ax1.legend()
+
+        # E_DM plot
+        #
+        # Add horizontal lines at -1 and +1
+        ax2.axhline(y=-1, color='lightgray', zorder=0)
+        ax2.axhline(y=1, color='lightgray', zorder=0)
+        # Add the plot
+        passed = np.where((self.df["Zusatz_krit_real"] + self.df["Zusatz_krit_sim"] < 2), self.df["E_DM-value"], None)
+        missed = np.where((self.df["Zusatz_krit_real"] + self.df["Zusatz_krit_sim"] < 2), None, self.df["E_DM-value"])
+        ax2.scatter(range(len(passed)), passed, label='passed exta criteria')
+        ax2.scatter(range(len(missed)), missed, c='C3', label='missed exta criteria')
+        ax2.set_ylim(-3,3)
+        # Add labels and title
+        ax2.set_axisbelow(False)
+        ax2.tick_params(which='both', direction='in', top=True, right=True)
+        # ax1.xlabel('Measurand')
+        # ax1.title('CTSimU2 Test Result')
+        ax2.set_ylabel('$E_{DM}$')
+        # xtick_labels = [s[:7] for s in self.measurements_of_interest]
+        # ax2.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
+        ax2.legend()
+
+        # X ticks and labels
+        mul = 1 + int(len(self.df.index) / 16)
+        # print(mul)
+        from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
+        ax2.xaxis.set_major_locator(MultipleLocator(mul))
+        ax2.xaxis.set_minor_locator(MultipleLocator(1))
+        plt.xticks(ha='right', rotation=30)
+
+        fig.savefig(self.img_buf, format='png')
+
+        # Show the plot
+        #plt.show()
+        fig.savefig(f"{self.output_path}/{self.name}.png")
 
 
     def TwinTest_report(self):
@@ -343,8 +403,9 @@ class testTwin():
         
         # creating a pdf object
         pdf = canvas.Canvas(documentTitle)
-        # setting the title of the document
-        #pdf.setTitle(self.documentTitle)
+        pdf.setTitle('Digital Twin Test Report')
+        pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
+
 
         # registering a external font in python 
         #pdfmetrics.registerFont( 
@@ -377,7 +438,7 @@ class testTwin():
         pdf.drawText(text)
         # drawing a image at the  
         # specified (x.y) position 
-        pdf.drawInlineImage(Image.open(self.img_buf), 0, 0, 600, None, True) 
+        pdf.drawInlineImage(Image.open(self.img_buf), 30, 0, 550, None, True) 
 
         # saving the pdf 
         try:
@@ -397,4 +458,5 @@ class testTwin():
 
         self.plotDeviations()
         self.plotResults()
+        self.plotResult()
         self.TwinTest_report()
