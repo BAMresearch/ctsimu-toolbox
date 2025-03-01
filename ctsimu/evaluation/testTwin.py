@@ -9,20 +9,11 @@ import pandas as pd
 pd.options.mode.copy_on_write = True
 from ..test import *
 from ..helpers import *
-#from ..responses.run import *
-#from ..responses.measurands import *
-from ..primitives import Vector, Polygon
-from ..scenario import Scenario
 import numpy as np
-#from ..responses.measurands import Measurands
-#from ..responses import *
-from reportlab.pdfgen import canvas 
-from reportlab.pdfbase.ttfonts import TTFont 
-from reportlab.pdfbase import pdfmetrics 
 from reportlab.lib import colors 
-from PIL import Image
 import matplotlib.pyplot as plt
 from ..version import *
+from ..report import Report
 
 
 table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
@@ -336,6 +327,7 @@ class testTwin():
         # title = fig.suptitle(self.name)
         # title.set_position([.5,.9])
         fig.subplots_adjust(hspace = 0.05)
+        fig.set_size_inches(10, 6)
 
         # Deviation plot
         #
@@ -375,7 +367,7 @@ class testTwin():
         ax2.legend()
 
         # X ticks and labels
-        mul = 1 + int(len(self.df.index) / 16)
+        mul = 1 + int(len(self.df.index) / 30)
         # print(mul)
         from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
         ax2.xaxis.set_major_locator(MultipleLocator(mul))
@@ -392,6 +384,8 @@ class testTwin():
     def TwinTest_report(self):
         from datetime import datetime
 
+        now = datetime.now()
+
         documentTitle = f"{self.output_path}/{self.name}.pdf"
         title = 'Digital Twin Test Report'
         subTitle = 'CTSimU2'
@@ -402,38 +396,43 @@ class testTwin():
             ] 
         
         # creating a pdf object
-        pdf = canvas.Canvas(documentTitle)
+        #pdf = canvas.Canvas(documentTitle)
+        pdf = Report(documentTitle)
+        pdf.drawHeader('CTSimU Toolbox', 'Twin Test Report', f'{now:%Y-%m-%d}')
+        pdf.drawFooter(f'{self.name}.pdf', '', '1')
+        box = pdf.getBox()
+        xCenter = pdf.getBoxXCenter()
+        #df.drawBoundary(None,box[0], box[3], box[2]-box[0], box[1]-box[3])
+
         pdf.setTitle('Digital Twin Test Report')
         pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
 
         # creating the title by setting it's font  
         # and putting it on the canvas 
         pdf.setFont("Helvetica-Bold", 36)
-        pdf.drawCentredString(300, 770, title)
+        pdf.drawCentredString(xCenter, box[1]-36, title)
 
         # creating the subtitle by setting it's font,  
         # colour and putting it on the canvas 
         pdf.setFillColorRGB(0, 0, 255) 
         pdf.setFont("Helvetica-Bold", 24) 
-        pdf.drawCentredString(290, 720, subTitle) 
+        pdf.drawCentredString(xCenter, box[1]-66, subTitle) 
 
-        # drawing a line
-        pdf.line(30, 710, 550, 710)
         # creating a multiline text using
         # textline and for loop 
-        text = pdf.beginText(40, 680)
+        text = pdf.beginText(box[0], box[1]-100)
         text.setFont("Helvetica", 12)
         text.setFillColor(colors.black)
 
-        now = datetime.now()
-        text.textLine(f"Date: {now:%Y-%m-%d %H:%M}")
+        # text.textLine(f"Date: {now:%Y-%m-%d %H:%M}")
         text.textLine(f"CTSimU Toolbox Version: {get_version()}")
         for line in textLines:
             text.textLine(line)
         pdf.drawText(text)
         # drawing a image at the  
         # specified (x.y) position 
-        pdf.drawInlineImage(Image.open(self.img_buf), 30, 0, 550, None, True) 
+        #pdf.drawInlineImage(Image.open(self.img_buf), box[0], 0, 465, None, True) 
+        pdf.drawImage(f"{self.output_path}/{self.name}.png", box[0], 100, 465, None, None, True) 
 
         # saving the pdf 
         try:
