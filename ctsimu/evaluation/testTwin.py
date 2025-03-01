@@ -22,6 +22,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.lib import colors 
 from PIL import Image
 import matplotlib.pyplot as plt
+from ..version import *
 
 
 table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
@@ -104,7 +105,7 @@ class testTwin():
 
         #general Information for the test
         self.name = self.metadata['general']['name']
-        self.measurements_of_interest = self.metadata['general']['measurements_of_interest']
+        self.measurands = self.metadata['general']['measurands']
         self.output_path = self.metadata['general']['output_path']
         self.alpha = self.metadata['general']['material_alpha']
 
@@ -125,18 +126,17 @@ class testTwin():
                 self.RealValuesRef = data[value_col]
                 uncertaintyCol = self.metadata[table_id]['uncertainty_column']
                 self.RealRefUncertainty = data[uncertaintyCol]
-                print(self.measurements_of_interest)
-                if len(self.measurements_of_interest) == 0:
-                    self.measurements_of_interest = data.index
-                elif len([m for m in self.measurements_of_interest if '*' in m]) > 0:
-                    moi = []
+                # Expand list of measurands
+                if len(self.measurands) == 0:
+                    self.measurands = data.index
+                elif len([m for m in self.measurands if '*' in m]) > 0:
+                    mds = []
                     for m in data.index:
-                        for pattern in [m for m in self.measurements_of_interest if '*' in m]:
+                        for pattern in [m for m in self.measurands if '*' in m]:
                             if m.startswith(pattern.replace('*', "")):
-                                moi.append(m)
-                    self.measurements_of_interest = moi
-                    print(moi)
-                print(self.measurements_of_interest)
+                                mds.append(m)
+                    self.measurands = mds
+                print(self.measurands)
             elif table_id == table_ids[3]: # 'reference-sim'
                 self.SimRefT = self.metadata[table_id]['temperature_calib']
 
@@ -177,7 +177,7 @@ class testTwin():
                     # df.to_csv(f'{file_path}.df', sep=sep, decimal=decimal, index=True)
 
                     # Filter the DataFrame to include only the measurements of interest
-                    df_filtered = df[df[name_col].isin(self.measurements_of_interest)]
+                    df_filtered = df[df[name_col].isin(self.measurands)]
 
                     df_filtered[value_col] = df_filtered[value_col].apply(convert_str_to_float)
                     #print(df_filtered)
@@ -195,7 +195,7 @@ class testTwin():
             #pd.set_option('display.max_colwidth', -1)
             #print(combined_df_test)
 
-            combined_df_test.index = self.measurements_of_interest
+            combined_df_test.index = self.measurands
             combined_df_test.columns = file_names
 
             combined_df_subtracted = combined_df_test.apply(lambda x: self.Deviation(x, ref_values), axis=1)
@@ -282,8 +282,8 @@ class testTwin():
         plt.errorbar(self.df.index, self.df['RealValues_avg'], yerr=self.df['RealValues_U'], fmt='o')
         plt.errorbar([x+.15 for x in range(len(self.df.index))], self.df['SimValues_avg'], yerr=self.df['SimValues_U'], fmt='o')
 
-        # Label the x-axis with names from self.measurements_of_interest
-        xtick_labels = [s[:7] for s in self.measurements_of_interest]
+        # Label the x-axis with names from self.measurands
+        xtick_labels = [s[:7] for s in self.measurands]
         plt.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
 
         # Add labels and title
@@ -313,8 +313,8 @@ class testTwin():
 
         plt.scatter(self.df.index, self.df['E_DM-value'], c=col_map[cat])
 
-        # Label the x-axis with names from self.measurements_of_interest
-        xtick_labels = [s[:7] for s in self.measurements_of_interest]
+        # Label the x-axis with names from self.measurands
+        xtick_labels = [s[:7] for s in self.measurands]
         plt.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
         # print(plt.xticks())
 
@@ -370,7 +370,7 @@ class testTwin():
         # ax1.xlabel('Measurand')
         # ax1.title('CTSimU2 Test Result')
         ax2.set_ylabel('$E_{DM}$')
-        # xtick_labels = [s[:7] for s in self.measurements_of_interest]
+        # xtick_labels = [s[:7] for s in self.measurands]
         # ax2.xticks(ticks=range(len(xtick_labels)), labels=xtick_labels, rotation=90)
         ax2.legend()
 
@@ -398,19 +398,13 @@ class testTwin():
         textLines = [
             f'Metadata file: {self.current_metadata_file}', 
             f'Name: {self.name}', 
-            f'Measurands: {", ".join(self.measurements_of_interest)}', 
+            f'Measurands: {", ".join(self.measurands)}', 
             ] 
         
         # creating a pdf object
         pdf = canvas.Canvas(documentTitle)
         pdf.setTitle('Digital Twin Test Report')
         pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
-
-
-        # registering a external font in python 
-        #pdfmetrics.registerFont( 
-        #TTFont('abc', 'SakBunderan.ttf') 
-        #) 
 
         # creating the title by setting it's font  
         # and putting it on the canvas 
@@ -432,7 +426,8 @@ class testTwin():
         text.setFillColor(colors.black)
 
         now = datetime.now()
-        text.textLine(f"Date: {now}")
+        text.textLine(f"Date: {now:%Y-%m-%d %H:%M}")
+        text.textLine(f"CTSimU Toolbox Version: {get_version()}")
         for line in textLines:
             text.textLine(line)
         pdf.drawText(text)
