@@ -383,62 +383,84 @@ class testTwin():
 
     def TwinTest_report(self):
         from datetime import datetime
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.units import mm
+        from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, Spacer, Image, Table, TableStyle
+        from reportlab.platypus import SimpleDocTemplate, Paragraph
 
         now = datetime.now()
 
         documentTitle = f"{self.output_path}/{self.name}.pdf"
-        title = 'Digital Twin Test Report'
-        subTitle = 'CTSimU2'
-        textLines = [
-            f'Metadata file: {self.current_metadata_file}', 
-            f'Name: {self.name}', 
-            f'Measurands: {", ".join(self.measurands)}', 
-            ] 
         
-        # creating a pdf object
-        #pdf = canvas.Canvas(documentTitle)
-        pdf = Report(documentTitle)
-        pdf.drawHeader('CTSimU Toolbox', 'Twin Test Report', f'{now:%Y-%m-%d}')
-        pdf.drawFooter(f'{self.name}.pdf', '', '1')
-        box = pdf.getBox()
-        xCenter = pdf.getBoxXCenter()
-        #df.drawBoundary(None,box[0], box[3], box[2]-box[0], box[1]-box[3])
+        # Create a style sheet for the document
+        styles = getSampleStyleSheet()
 
-        pdf.setTitle('Digital Twin Test Report')
-        pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
+        # Define custom styles
+        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=1, spaceBefore=10, spaceAfter=20)
+        subtitle_style = ParagraphStyle('Subtitle', parent=styles['Heading2'], alignment=1, spaceBefore=10, spaceAfter=10)
+        body_style = ParagraphStyle('Body', parent=styles['Normal'], spaceBefore=5, spaceAfter=5)
+
+        # Define the content for the document
+        title = Paragraph('Digital Twin Test Report', title_style)
+        subtitle = Paragraph('CTSimU2', subtitle_style)
+
+        # creating a pdf object
+        pdf = Report(documentTitle,
+                pagesize = A4,
+                showBoundary = 1,
+                leftMargin = 27*mm,
+                rightMargin = 20*mm,
+                topMargin = 25*mm,
+                bottomMargin = 25*mm)
+        pdf.setHeader('CTSimU Toolbox', 'Twin Test Report', f'{now:%Y-%m-%d}')
+        pdf.setFooter(f'{self.name}.pdf')
+
+        # Add the content to the PDF document
+        elements = [title, subtitle, 
+                    Paragraph(f"Date: {now:%Y-%m-%d %H:%M}"), 
+                    Paragraph(f"CTSimU Toolbox Version: {get_version()}"), 
+                    Paragraph(f'Metadata file: {self.current_metadata_file}'), 
+                    Paragraph(f'Name: {self.name}'), 
+                    PageBreak(), 
+                    Paragraph('This is some content for the PDF document Page 2.')]
+        pdf.build(elements)
+
+        # pdf.setTitle('Digital Twin Test Report')
+        # pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
 
         # creating the title by setting it's font  
         # and putting it on the canvas 
-        pdf.setFont("Helvetica-Bold", 36)
-        pdf.drawCentredString(xCenter, box[1]-36, title)
+        # pdf.setFont("Helvetica-Bold", 36)
+        # pdf.drawCentredString(xCenter, box[1]-36, title)
 
         # creating the subtitle by setting it's font,  
         # colour and putting it on the canvas 
-        pdf.setFillColorRGB(0, 0, 255) 
-        pdf.setFont("Helvetica-Bold", 24) 
-        pdf.drawCentredString(xCenter, box[1]-66, subTitle) 
+        # pdf.setFillColorRGB(0, 0, 255) 
+        # pdf.setFont("Helvetica-Bold", 24) 
+        # pdf.drawCentredString(xCenter, box[1]-66, subTitle) 
 
         # creating a multiline text using
         # textline and for loop 
-        text = pdf.beginText(box[0], box[1]-100)
-        text.setFont("Helvetica", 12)
-        text.setFillColor(colors.black)
+        # text = pdf.beginText(box[0], box[1]-100)
+        # text.setFont("Helvetica", 12)
+        # text.setFillColor(colors.black)
 
         # text.textLine(f"Date: {now:%Y-%m-%d %H:%M}")
-        text.textLine(f"CTSimU Toolbox Version: {get_version()}")
-        for line in textLines:
-            text.textLine(line)
-        pdf.drawText(text)
+        # text.textLine(f"CTSimU Toolbox Version: {get_version()}")
+        # for line in textLines:
+        #     text.textLine(line)
+        # pdf.drawText(text)
         # drawing a image at the  
         # specified (x.y) position 
         #pdf.drawInlineImage(Image.open(self.img_buf), box[0], 0, 465, None, True) 
-        pdf.drawImage(f"{self.output_path}/{self.name}.png", box[0], 100, 465, None, None, True) 
+        # pdf.drawImage(f"{self.output_path}/{self.name}.png", box[0], 100, 465, None, None, True) 
 
         # saving the pdf 
-        try:
-            pdf.save()
-        except Exception as e:
-            log(f"   Error: {str(e)}")
+        # try:
+        #     pdf.save()
+        # except Exception as e:
+        #     log(f"   Error: {str(e)}")
 
     def run(self):
         #self.RealValues = self.read_and_filter_csv_files(self.real_folder_path, "values-real")
