@@ -13,7 +13,7 @@ import numpy as np
 from reportlab.lib import colors 
 import matplotlib.pyplot as plt
 from ..version import *
-from ..report import Report
+from ..report import Report, NumberedCanvas
 
 
 table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
@@ -412,9 +412,35 @@ class testTwin():
                 leftMargin = 27*mm,
                 rightMargin = 20*mm,
                 topMargin = 25*mm,
-                bottomMargin = 25*mm)
+                bottomMargin = 25*mm,
+                allowSplitting = 1,
+                title = 'Digital Twin Test Report',
+                creator = 'CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
         pdf.setHeader('CTSimU Toolbox', 'Twin Test Report', f'{now:%Y-%m-%d}')
         pdf.setFooter(f'{self.name}.pdf')
+
+        # Define the data for the table
+        df = self.df.get(['RealValues_avg', 'E_DM-value', 'Test_Result']).reset_index()
+        data = [df.columns.values.tolist()] + df.values.tolist()
+        table = Table(data, spaceBefore=10, spaceAfter=10)
+        # Apply style to the table
+        # tuple (0, -1) > first column and last row
+        table_style = TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+            ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('BOTTOMPADDING', (0, 1), (-1, -1), 5),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ])
+        table.setStyle(table_style)
 
         # Add the content to the PDF document
         elements = [title, subtitle, 
@@ -422,9 +448,11 @@ class testTwin():
                     Paragraph(f"CTSimU Toolbox Version: {get_version()}"), 
                     Paragraph(f'Metadata file: {self.current_metadata_file}'), 
                     Paragraph(f'Name: {self.name}'), 
+                    Image(f"{self.output_path}/{self.name}.png", 450, 270),
                     PageBreak(), 
-                    Paragraph('This is some content for the PDF document Page 2.')]
-        pdf.build(elements)
+                    Paragraph('This is some content for the PDF document Page 2.'),
+                    table]
+        pdf.build(elements, canvasmaker=NumberedCanvas)
 
         # pdf.setTitle('Digital Twin Test Report')
         # pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')

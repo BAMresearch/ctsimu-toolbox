@@ -33,7 +33,7 @@ class Report(BaseDocTemplate):
         self.boddyWidth = self.pagesize[0] - self.leftMargin - self.rightMargin
         self.boddyXCenter = self.leftMargin + .5 * self.boddyWidth
         self.headerPad = 6*mm
-
+    
         # Define the page frames
         self.frame = Frame(
             self.leftMargin, self.bottomMargin, 
@@ -49,7 +49,7 @@ class Report(BaseDocTemplate):
         # Define the header and footer frames
         self.header_frame = Frame(
             self.leftMargin, self.pagesize[1] - self.topMargin + self.headerPad, self.boddyWidth, self.topMargin - self.headerPad - 6*mm,
-            id='normal'
+            id='header'
         )
         self.footer_frame = Frame(
             self.leftMargin, self.bottomMargin - self.headerPad - 6*mm, self.boddyWidth, 6*mm,
@@ -59,8 +59,8 @@ class Report(BaseDocTemplate):
         # Define the PageTemplate
         self.addPageTemplates([
             PageTemplate(
-                id='FirstPage',
-                frames=[self.frame, self.header_frame, self.footer_frame],
+                id='normal',
+                frames=[self.frame],
                 onPage=self._header,
                 onPageEnd=self._footer
             )
@@ -81,10 +81,10 @@ class Report(BaseDocTemplate):
 
     def _footer(self, canvas, doc):
         # Draw the footer
-        self.footer_style.alignment = 2 #1  # center align the footer text
-        footer_text = Paragraph("Page <seq id='PageNumber'/> of <seq id='TotalPages'/>", self.footer_style)
-        footer_text.wrapOn(canvas, self.footer_frame.width, self.footer_frame.height)
-        footer_text.drawOn(canvas, self.footer_frame.x1, self.footer_frame.y1)
+        # self.footer_style.alignment = 1  # center align the footer text
+        # footer_text = Paragraph("Page <seq id='PageNumber'/> of <seq id='TotalPages'/>", self.footer_style)
+        # footer_text.wrapOn(canvas, self.footer_frame.width, self.footer_frame.height)
+        # footer_text.drawOn(canvas, self.footer_frame.x1, self.footer_frame.y1)
         yLine = self.footer_frame.y1 + self.footer_frame.height + 1*mm
         canvas.line(self.footer_frame.x1, yLine, self.footer_frame.x1 + self.footer_frame.width, yLine)
         yText = yLine - 6 * mm
@@ -101,6 +101,30 @@ class Report(BaseDocTemplate):
         self.footerLeft = left
         self.footerCenter = center
         self.footerRight = right
+
+class NumberedCanvas(Canvas):
+    def __init__(self, *args, **kwargs):
+        Canvas.__init__(self, *args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        """add page info to each page (page x of y)"""
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_number(num_pages)
+            Canvas.showPage(self)
+        Canvas.save(self)
+
+    def draw_page_number(self, page_count):
+        self.setFont("Helvetica", 9)
+        self.drawRightString(190*mm, 14*mm,
+            "Page %d of %d" % (self._pageNumber, page_count))
+
 
 # # Create a new PDF document using the template
 # pdf_doc = Report('example_page_template_header_footer.pdf', 
