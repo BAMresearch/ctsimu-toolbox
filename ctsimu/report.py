@@ -14,9 +14,11 @@ from datetime import datetime
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import mm
-from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, Paragraph, NextPageTemplate, PageBreak
+from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, Table
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.graphics.shapes import Drawing, Line, Rect, Ellipse
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib import colors 
 
 class Report(BaseDocTemplate):
     """Template class for PDF report"""
@@ -24,36 +26,33 @@ class Report(BaseDocTemplate):
     def __init__(self, filename, **kwargs):
         super().__init__(filename, **kwargs)
 
+        self.bodyWidth = self.pagesize[0] - self.leftMargin - self.rightMargin
+        self.bodyXCenter = self.leftMargin + .5 * self.bodyWidth
+        self.headerPad = 6*mm
+        self.header_x1 = self.leftMargin
+        self.header_y1 = self.pagesize[1] - self.topMargin + self.headerPad
+        self.footer_x1 = self.leftMargin
+        self.footer_y2 = self.bottomMargin - self.headerPad
+
+        self.header_font = 'Courier'
+        self.header_fsize = 9
+        h = pdfmetrics.TypeFace(self.header_font)
+        self.header_fheight = 2 + ((h.ascent - h.descent) * self.header_fsize) / 1000
         self.headerLeft = ''
         self.headerCenter = ''
         self.headerRight = ''
         self.footerLeft = ''
+        self.footerLeft2 = ''
         self.footerCenter = ''
         self.footerRight = ''
-        self.boddyWidth = self.pagesize[0] - self.leftMargin - self.rightMargin
-        self.boddyXCenter = self.leftMargin + .5 * self.boddyWidth
-        self.headerPad = 6*mm
     
         # Define the page frames
         self.frame = Frame(
             self.leftMargin, self.bottomMargin, 
-            self.boddyWidth, self.pagesize[1] - self.topMargin - self.bottomMargin,
+            self.bodyWidth, self.pagesize[1] - self.topMargin - self.bottomMargin,
+            leftPadding=0, bottomPadding=0,
+            rightPadding=0, topPadding=0,
             id='normal'
-        )
-
-        # Define the styles for header and footer
-        self.styles = getSampleStyleSheet()
-        self.header_style = self.styles['Code']
-        self.footer_style = self.styles['Code']
-
-        # Define the header and footer frames
-        self.header_frame = Frame(
-            self.leftMargin, self.pagesize[1] - self.topMargin + self.headerPad, self.boddyWidth, self.topMargin - self.headerPad - 6*mm,
-            id='header'
-        )
-        self.footer_frame = Frame(
-            self.leftMargin, self.bottomMargin - self.headerPad - 6*mm, self.boddyWidth, 6*mm,
-            id='footer'
         )
 
         # Define the PageTemplate
@@ -68,44 +67,82 @@ class Report(BaseDocTemplate):
 
     def _header(self, canvas, doc):
         # Draw the header
-        self.header_style.alignment = 1  # center align the header text
-        # header_text = Paragraph(f'My Header Text {self.leftMargin}', self.header_style)
-        # header_text.wrapOn(canvas, self.header_frame.width, self.header_frame.height - 6*mm)
-        # header_text.drawOn(canvas, self.header_frame.x1, self.header_frame.y1)
-        yLine = self.header_frame.y1 - 1*mm
-        canvas.line(self.header_frame.x1, yLine, self.header_frame.x1 + self.header_frame.width, yLine)
-        yText = yLine + 6 * mm
+        canvas.saveState() 
+        canvas.setFont(self.header_font, self.header_fsize)
+        yLine = self.header_y1
+        canvas.line(self.header_x1, yLine, self.header_x1 + self.bodyWidth, yLine)
+        yText = yLine + 2 * mm
         canvas.drawString(self.leftMargin, yText, self.headerLeft)
-        canvas.drawCentredString(self.boddyXCenter, yText, self.headerCenter)
-        canvas.drawRightString(self.leftMargin + self.boddyWidth, yText, self.headerRight)
+        canvas.drawCentredString(self.bodyXCenter, yText, self.headerCenter)
+        canvas.drawRightString(self.leftMargin + self.bodyWidth, yText, self.headerRight)
+        canvas.restoreState()
 
     def _footer(self, canvas, doc):
         # Draw the footer
-        # self.footer_style.alignment = 1  # center align the footer text
-        # footer_text = Paragraph("Page <seq id='PageNumber'/> of <seq id='TotalPages'/>", self.footer_style)
-        # footer_text.wrapOn(canvas, self.footer_frame.width, self.footer_frame.height)
-        # footer_text.drawOn(canvas, self.footer_frame.x1, self.footer_frame.y1)
-        yLine = self.footer_frame.y1 + self.footer_frame.height + 1*mm
-        canvas.line(self.footer_frame.x1, yLine, self.footer_frame.x1 + self.footer_frame.width, yLine)
-        yText = yLine - 6 * mm
-        canvas.drawString(self.footer_frame.x1, yText, self.footerLeft)
-        canvas.drawCentredString(self.footer_frame.x1 + 0.5 * self.footer_frame.width, yText, self.footerCenter)
-        canvas.drawRightString(self.footer_frame.x1 + self.footer_frame.width, yText, self.footerRight)
+        canvas.saveState() 
+        canvas.setFont(self.header_font, self.header_fsize)
+        yLine = self.footer_y2
+        canvas.line(self.footer_x1, yLine, self.footer_x1 + self.bodyWidth, yLine)
+        yText = yLine - 2 * mm - self.header_fheight
+        canvas.drawString(self.footer_x1, yText, self.footerLeft)
+        canvas.drawCentredString(self.footer_x1 + 0.5 * self.bodyWidth, yText, self.footerCenter)
+        canvas.drawRightString(self.footer_x1 + self.bodyWidth, yText, self.footerRight)
+        if canvas._pageNumber == 1:
+            canvas.drawString(self.footer_x1, yText - self.header_fheight, self.footerLeft2)
+        canvas.restoreState()
+        # Use the right-string position for the page number in NumberedCanvas
+        try:
+            canvas.page_number_xpos = self.footer_x1 + self.bodyWidth
+            canvas.page_number_ypos = yText
+            canvas.page_number_font = self.header_font
+            canvas.page_number_fsize = self.header_fsize
+            canvas.page_number_text = 'Page %d of %d'
+        except:
+            pass
 
     def setHeader(self, left = '', center = '', right = ''):
         self.headerLeft = left
         self.headerCenter = center
         self.headerRight = right
 
-    def setFooter(self, left = '', center = '', right = ''):
+    def setFooter(self, left = '', center = '', right = '', left2 = ''):
         self.footerLeft = left
+        self.footerLeft2 = left2
         self.footerCenter = center
         self.footerRight = right
+
+    def df2table(self, df):
+        data = [df.columns.values.tolist()] + df.values.tolist()
+        return Table(data,
+            style=[
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 9),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+                ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+                ('FONTSIZE', (0, 1), (-1, -1), 10),
+                ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black)],
+            # hAlign = 'LEFT',
+            spaceBefore=10, spaceAfter=10)
 
 class NumberedCanvas(Canvas):
     def __init__(self, *args, **kwargs):
         Canvas.__init__(self, *args, **kwargs)
+
         self._saved_page_states = []
+        #print(self.getAvailableFonts())
+
+        self.page_number_xpos = 190*mm
+        self.page_number_ypos = 14*mm
+        self.page_number_font = 'Helvetica'
+        self.page_number_fsize = 9
+        self.page_number_text = 'Page %d of %d'
 
     def showPage(self):
         self._saved_page_states.append(dict(self.__dict__))
@@ -121,31 +158,35 @@ class NumberedCanvas(Canvas):
         Canvas.save(self)
 
     def draw_page_number(self, page_count):
-        self.setFont("Helvetica", 9)
-        self.drawRightString(190*mm, 14*mm,
-            "Page %d of %d" % (self._pageNumber, page_count))
+        self.setFont(self.page_number_font, self.page_number_fsize)
+        self.drawRightString(self.page_number_xpos, self.page_number_ypos,
+            self.page_number_text % (self._pageNumber, page_count))
 
 
-# # Create a new PDF document using the template
-# pdf_doc = Report('example_page_template_header_footer.pdf', 
-#                 headerText = 'qwer',
-#                 pagesize=A4,
-#                 pageTemplates=[],
-#                 showBoundary=1,
-#                 leftMargin=27*mm,
-#                 rightMargin=20*mm,
-#                 topMargin=25*mm,
-#                 bottomMargin=25*mm,
-#                 allowSplitting=1,
-#                 title=None,
-#                 author=None,
-#                 _pageBreakQuick=1,
-#                 encrypt=None)
+def main():
+    # Create a new PDF document using the template
+    pdf_doc = Report('example_page_template_header_footer.pdf', 
+                    headerText = 'qwer',
+                    pagesize=A4,
+                    pageTemplates=[],
+                    showBoundary=1,
+                    leftMargin=27*mm,
+                    rightMargin=20*mm,
+                    topMargin=25*mm,
+                    bottomMargin=25*mm,
+                    allowSplitting=1,
+                    title=None,
+                    author=None,
+                    _pageBreakQuick=1,
+                    encrypt=None)
 
-# pdf_doc.setHeader('l', 'c', 'r')
-# pdf_doc.setFooter('l')
+    pdf_doc.setHeader('l', 'c', 'r')
+    pdf_doc.setFooter('l')
 
-# # Add the content to the PDF document
-# elements = [Paragraph('This is some content for the PDF document.'), PageBreak(), Paragraph('This is some content for the PDF document Page 2.')]
+    # Add the content to the PDF document
+    elements = [Paragraph('This is some content for the PDF document.'), PageBreak(), Paragraph('This is some content for the PDF document Page 2.')]
 
-# pdf_doc.build(elements)
+    pdf_doc.build(elements)
+
+if __name__ == "__main__":
+    main()

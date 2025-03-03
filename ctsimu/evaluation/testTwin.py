@@ -14,7 +14,7 @@ from reportlab.lib import colors
 import matplotlib.pyplot as plt
 from ..version import *
 from ..report import Report, NumberedCanvas
-
+from decimal import *
 
 table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
 
@@ -29,8 +29,8 @@ class testTwin():
 
     def __init__(self, filename:str=None):
         # empty declarations
-        self.Zusatz_krit_real = []
-        self.Zusatz_krit_sim = []
+        self.Criterion_real = []
+        self.Criterion_sim = []
         self.combined_df = []
         self.df = pd.DataFrame()
         self.img_buf = io.BytesIO()
@@ -233,31 +233,31 @@ class testTwin():
         self.E_DM = ((self.SimValues_avg) - (self.RealValues_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
         #print(self.E_DM)
 
-        # self.Zusatz_krit_real = self.U_real / self.RealRefUncertainty
-        # self.Zusatz_krit_sim = self.U_sim / self.U_real
-        self.Zusatz_krit_real = u_cal / u_p
-        self.Zusatz_krit_sim = u_psim / u_p
-        # self.Result = np.where((abs(self.E_DM) < 1) & (self.Zusatz_krit_real < 1) & (self.Zusatz_krit_sim < 1), True, False)
-        self.Result = np.where((abs(self.E_DM) < 1) & (self.Zusatz_krit_real + self.Zusatz_krit_sim < 2), True, False)
+        # self.Criterion_real = self.U_real / self.RealRefUncertainty
+        # self.Criterion_sim = self.U_sim / self.U_real
+        self.Criterion_real = u_cal / u_p
+        self.Criterion_sim = u_psim / u_p
+        # self.Result = np.where((abs(self.E_DM) < 1) & (self.Criterion_real < 1) & (self.Criterion_sim < 1), True, False)
+        self.Result = np.where((abs(self.E_DM) < 1) & (self.Criterion_real + self.Criterion_sim < 2), True, False)
 
         self.df["RealValues_avg"] = RealValues.mean(axis=1)
         self.df["RealValues_U"] = self.U_real
         self.df["SimValues_avg"] = SimValues.mean(axis=1)
         self.df["SimValues_U"] = self.U_sim
         self.df["E_DM-value"] = self.E_DM
-        self.df["Zusatz_krit_real"] = self.Zusatz_krit_real
-        self.df["Zusatz_krit_sim"] = self.Zusatz_krit_sim
-        self.df["Zusatz_krit_summe"] = self.Zusatz_krit_real + self.Zusatz_krit_sim
-        # self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] < 1) & (self.df["Zusatz_krit_sim"] < 1), True, False)
-        self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Zusatz_krit_real"] + self.df["Zusatz_krit_sim"] < 2), True, False)
-        self.df.index.name = 'Masse'
+        self.df["Criterion_real"] = self.Criterion_real
+        self.df["Criterion_sim"] = self.Criterion_sim
+        self.df["Zusatz_krit_summe"] = self.Criterion_real + self.Criterion_sim
+        # self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Criterion_real"] < 1) & (self.df["Criterion_sim"] < 1), True, False)
+        self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), True, False)
+        self.df.index.name = 'Measurand'
         # self.df.reset_index()
         print(self.df)
 
         # Save results.
         sep = self.metadata['general']['csv_sep']
         decimal = self.metadata['general']['csv_decimal']
-        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=sep, decimal=decimal, index=True, index_label='Masse')
+        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=sep, decimal=decimal, index=True, index_label='Measurand')
 
 
     def plotDeviations(self):
@@ -351,8 +351,8 @@ class testTwin():
         ax2.axhline(y=-1, color='lightgray', zorder=0)
         ax2.axhline(y=1, color='lightgray', zorder=0)
         # Add the plot
-        passed = np.where((self.df["Zusatz_krit_real"] + self.df["Zusatz_krit_sim"] < 2), self.df["E_DM-value"], None)
-        missed = np.where((self.df["Zusatz_krit_real"] + self.df["Zusatz_krit_sim"] < 2), None, self.df["E_DM-value"])
+        passed = np.where((self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), self.df["E_DM-value"], None)
+        missed = np.where((self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), None, self.df["E_DM-value"])
         ax2.scatter(range(len(passed)), passed, label='passed exta criteria')
         ax2.scatter(range(len(missed)), missed, c='C3', label='missed exta criteria')
         ax2.set_ylim(-3,3)
@@ -380,7 +380,6 @@ class testTwin():
         #plt.show()
         fig.savefig(f"{self.output_path}/{self.name}.png")
 
-
     def TwinTest_report(self):
         from datetime import datetime
         from reportlab.lib.pagesizes import A4
@@ -397,9 +396,10 @@ class testTwin():
         styles = getSampleStyleSheet()
 
         # Define custom styles
-        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=1, spaceBefore=10, spaceAfter=20)
-        subtitle_style = ParagraphStyle('Subtitle', parent=styles['Heading2'], alignment=1, spaceBefore=10, spaceAfter=10)
-        body_style = ParagraphStyle('Body', parent=styles['Normal'], spaceBefore=5, spaceAfter=5)
+        title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=1, spaceBefore=10, spaceAfter=10)
+        subtitle_style = ParagraphStyle('Subtitle', parent=styles['Heading2'], alignment=1, spaceBefore=6, spaceAfter=6)
+        body_style = ParagraphStyle('Body', parent=styles['Normal'], fontSize=12, spaceBefore=0, spaceAfter=3)
+        #print(body_style.parent.listAttrs())
 
         # Define the content for the document
         title = Paragraph('Digital Twin Test Report', title_style)
@@ -408,7 +408,7 @@ class testTwin():
         # creating a pdf object
         pdf = Report(documentTitle,
                 pagesize = A4,
-                showBoundary = 1,
+                showBoundary = 0,
                 leftMargin = 27*mm,
                 rightMargin = 20*mm,
                 topMargin = 25*mm,
@@ -417,78 +417,26 @@ class testTwin():
                 title = 'Digital Twin Test Report',
                 creator = 'CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
         pdf.setHeader('CTSimU Toolbox', 'Twin Test Report', f'{now:%Y-%m-%d}')
-        pdf.setFooter(f'{self.name}.pdf')
+        pdf.setFooter(f'{self.name}.pdf', left2 = f'generated by CTSimU Toolbox {get_version()}')
 
-        # Define the data for the table
-        df = self.df.get(['RealValues_avg', 'E_DM-value', 'Test_Result']).reset_index()
-        data = [df.columns.values.tolist()] + df.values.tolist()
-        table = Table(data, spaceBefore=10, spaceAfter=10)
-        # Apply style to the table
-        # tuple (0, -1) > first column and last row
-        table_style = TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, 0), 12),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
-            ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-            ('FONTSIZE', (0, 1), (-1, -1), 10),
-            ('BOTTOMPADDING', (0, 1), (-1, -1), 5),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ])
-        table.setStyle(table_style)
+        # Prepare the data for the table
+        df = self.df.get(['E_DM-value', 'Criterion_real', 'Criterion_sim', 'Test_Result']).reset_index()
+        df['E_DM-value'] = df['E_DM-value'].apply(lambda x: round(x, 6))
+        df['Criterion_real'] = df['Criterion_real'].apply(lambda x: round(x, 6))
+        df['Criterion_sim'] = df['Criterion_sim'].apply(lambda x: round(x, 6))
 
         # Add the content to the PDF document
         elements = [title, subtitle, 
-                    Paragraph(f"Date: {now:%Y-%m-%d %H:%M}"), 
-                    Paragraph(f"CTSimU Toolbox Version: {get_version()}"), 
-                    Paragraph(f'Metadata file: {self.current_metadata_file}'), 
-                    Paragraph(f'Name: {self.name}'), 
+                    Paragraph(f"Date: {now:%Y-%m-%d %H:%M}", body_style), 
+                    Paragraph(f"CTSimU Toolbox Version: {get_version()}", body_style), 
+                    Paragraph(f'Metadata file: {self.current_metadata_file}', body_style), 
+                    Paragraph(f'Name: {self.name}', body_style), 
                     Image(f"{self.output_path}/{self.name}.png", 450, 270),
-                    PageBreak(), 
-                    Paragraph('This is some content for the PDF document Page 2.'),
-                    table]
+                    # PageBreak(), 
+                    # Paragraph('This is some content for the PDF document Page 2. ', body_style),
+                    pdf.df2table(df)]
         pdf.build(elements, canvasmaker=NumberedCanvas)
 
-        # pdf.setTitle('Digital Twin Test Report')
-        # pdf.setCreator('CTSimU Toolbox - https://github.com/BAMresearch/ctsimu-toolbox')
-
-        # creating the title by setting it's font  
-        # and putting it on the canvas 
-        # pdf.setFont("Helvetica-Bold", 36)
-        # pdf.drawCentredString(xCenter, box[1]-36, title)
-
-        # creating the subtitle by setting it's font,  
-        # colour and putting it on the canvas 
-        # pdf.setFillColorRGB(0, 0, 255) 
-        # pdf.setFont("Helvetica-Bold", 24) 
-        # pdf.drawCentredString(xCenter, box[1]-66, subTitle) 
-
-        # creating a multiline text using
-        # textline and for loop 
-        # text = pdf.beginText(box[0], box[1]-100)
-        # text.setFont("Helvetica", 12)
-        # text.setFillColor(colors.black)
-
-        # text.textLine(f"Date: {now:%Y-%m-%d %H:%M}")
-        # text.textLine(f"CTSimU Toolbox Version: {get_version()}")
-        # for line in textLines:
-        #     text.textLine(line)
-        # pdf.drawText(text)
-        # drawing a image at the  
-        # specified (x.y) position 
-        #pdf.drawInlineImage(Image.open(self.img_buf), box[0], 0, 465, None, True) 
-        # pdf.drawImage(f"{self.output_path}/{self.name}.png", box[0], 100, 465, None, None, True) 
-
-        # saving the pdf 
-        # try:
-        #     pdf.save()
-        # except Exception as e:
-        #     log(f"   Error: {str(e)}")
 
     def run(self):
         #self.RealValues = self.read_and_filter_csv_files(self.real_folder_path, "values-real")
