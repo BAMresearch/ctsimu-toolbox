@@ -13,8 +13,6 @@ import numpy as np
 from reportlab.lib import colors 
 import matplotlib.pyplot as plt
 from ..version import *
-from ..report import Report, NumberedCanvas
-from decimal import *
 
 table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
 
@@ -95,7 +93,7 @@ class testTwin():
         self.metadata_is_set = True
 
         #general Information for the test
-        self.name = self.metadata['general']['name']
+        self.name = get_value(json_dict, ["general", "name"], '')
         self.measurands = self.metadata['general']['measurands']
         self.output_path = self.metadata['general']['output_path']
         self.alpha = self.metadata['general']['material_alpha']
@@ -149,8 +147,8 @@ class testTwin():
         value_col = self.metadata[ct_type]['value_column']
         temperature = self.metadata[ct_type]['temperature']
         self.scaling_factor = self.metadata[ct_type]["scaling_factor"]
-        
-        #Calibration Information
+
+        # Choose calibration
         if ct_type == "values-sim":
             ref_values = self.SimValuesRef
             ref_temperature = self.SimRefT
@@ -167,7 +165,7 @@ class testTwin():
                     df = pd.read_csv(file_path, sep=sep, decimal=decimal, header=int(header_row), usecols=[name_col, value_col])
                     # df.to_csv(f'{file_path}.df', sep=sep, decimal=decimal, index=True)
 
-                    # Filter the DataFrame to include only the measurements of interest
+                    # Filter the DataFrame to include only the measurands of interest
                     df_filtered = df[df[name_col].isin(self.measurands)]
 
                     df_filtered[value_col] = df_filtered[value_col].apply(convert_str_to_float)
@@ -217,39 +215,40 @@ class testTwin():
         #print(SimValues)
         #print(RealValues)
         #print(SimValues)
-        self.RealValues_avg = RealValues.mean(axis=1)
-        self.SimValues_avg = SimValues.mean(axis=1)
+        self.Real_avg = RealValues.mean(axis=1)
+        self.Sim_avg = SimValues.mean(axis=1)
 
         u_psim = SimValues.std(axis=1)
         k_sim = 2.0
         u_cal = self.RealRefUncertainty
         u_p = RealValues.std(axis=1)
         u_ab = 0.2 * self.alpha
-        u_b = (T_real - T_ref) * u_ab * self.RealValues_avg
-        print('u_b: ',u_b)
+        u_b = (T_real - T_ref) * u_ab * self.Real_avg
+        #print('u_b: ',u_b)
         k_real = 2.0
         self.U_real = k_real * (u_cal.pow(2) + u_p.pow(2) + u_b.pow(2)).pow(1/2)
         self.U_sim = k_sim * u_psim
-        self.E_DM = ((self.SimValues_avg) - (self.RealValues_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
+        self.E_DM = ((self.Sim_avg) - (self.Real_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
         #print(self.E_DM)
 
-        # self.Criterion_real = self.U_real / self.RealRefUncertainty
-        # self.Criterion_sim = self.U_sim / self.U_real
         self.Criterion_real = u_cal / u_p
         self.Criterion_sim = u_psim / u_p
         # self.Result = np.where((abs(self.E_DM) < 1) & (self.Criterion_real < 1) & (self.Criterion_sim < 1), True, False)
         self.Result = np.where((abs(self.E_DM) < 1) & (self.Criterion_real + self.Criterion_sim < 2), True, False)
 
-        self.df["RealValues_avg"] = RealValues.mean(axis=1)
-        self.df["RealValues_U"] = self.U_real
-        self.df["SimValues_avg"] = SimValues.mean(axis=1)
-        self.df["SimValues_U"] = self.U_sim
-        self.df["E_DM-value"] = self.E_DM
+        self.df["Real_avg"] = self.Real_avg
+        self.df["u_cal"] = u_cal
+        self.df["u_p"] = u_p
+        self.df["u_b"] = u_b
+        self.df["Real_U"] = self.U_real
+        self.df["Sim_avg"] = self.Sim_avg
+        self.df["Sim_U"] = self.U_sim
+        self.df["E_DM"] = self.E_DM
         self.df["Criterion_real"] = self.Criterion_real
         self.df["Criterion_sim"] = self.Criterion_sim
-        self.df["Zusatz_krit_summe"] = self.Criterion_real + self.Criterion_sim
-        # self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Criterion_real"] < 1) & (self.df["Criterion_sim"] < 1), True, False)
-        self.df["Test_Result"] = np.where((abs(self.df["E_DM-value"])< 1) & (self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), True, False)
+        self.df["Criterion_sum"] = self.Criterion_real + self.Criterion_sim
+        # self.df["Test Result"] = np.where((abs(self.df["E_DM"])< 1) & (self.df["Criterion_real"] < 1) & (self.df["Criterion_sim"] < 1), True, False)
+        self.df["Test Result"] = np.where((abs(self.df["E_DM"])< 1) & (self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), True, False)
         self.df.index.name = 'Measurand'
         # self.df.reset_index()
         print(self.df)
@@ -269,9 +268,9 @@ class testTwin():
         # Add horizontal lines at 0
         plt.axhline(y=0, color='lightgray')
 
-        # plt.plot(self.df['RealValues_avg'], marker='o')
-        plt.errorbar(self.df.index, self.df['RealValues_avg'], yerr=self.df['RealValues_U'], fmt='o')
-        plt.errorbar([x+.15 for x in range(len(self.df.index))], self.df['SimValues_avg'], yerr=self.df['SimValues_U'], fmt='o')
+        # plt.plot(self.df['Real_avg'], marker='o')
+        plt.errorbar(self.df.index, self.df['Real_avg'], yerr=self.df['Real_U'], fmt='o')
+        plt.errorbar([x+.15 for x in range(len(self.df.index))], self.df['Sim_avg'], yerr=self.df['Sim_U'], fmt='o')
 
         # Label the x-axis with names from self.measurands
         xtick_labels = [s[:7] for s in self.measurands]
@@ -292,7 +291,7 @@ class testTwin():
     def plotResults(self):
 
         # assign categories and colormap
-        cat = np.where(self.df['Zusatz_krit_summe'] < 2.0, 0, 1)
+        cat = np.where(self.df['Criterion_sum'] < 2.0, 0, 1)
         col_map = np.array(['C0', 'C3'])
         # print(col_map[cat])
 
@@ -302,7 +301,7 @@ class testTwin():
         plt.axhline(y=-1, color='lightgray')
         plt.axhline(y=1, color='lightgray')
 
-        plt.scatter(self.df.index, self.df['E_DM-value'], c=col_map[cat])
+        plt.scatter(self.df.index, self.df["E_DM"], c=col_map[cat])
 
         # Label the x-axis with names from self.measurands
         xtick_labels = [s[:7] for s in self.measurands]
@@ -334,8 +333,8 @@ class testTwin():
         # Add horizontal lines at 0
         ax1.axhline(y=0, color='lightgray')
         # Add the plot
-        ax1.errorbar([s[:7] for s in self.df.index], self.df['RealValues_avg']*1e3, yerr=self.df['RealValues_U']*1e3, fmt='o', label='Real')
-        ax1.errorbar([x+.15 for x in range(len(self.df.index))], self.df['SimValues_avg']*1e3, yerr=self.df['SimValues_U']*1e3, fmt='o', label='Sim')
+        ax1.errorbar([s[:7] for s in self.df.index], self.df['Real_avg']*1e3, yerr=self.df['Real_U']*1e3, fmt='o', label='Real')
+        ax1.errorbar([x+.15 for x in range(len(self.df.index))], self.df['Sim_avg']*1e3, yerr=self.df['Sim_U']*1e3, fmt='o', label='Sim')
         # ax1.set_ylim(-10,10)
         # Add labels and title
         ax1.set_axisbelow(False)
@@ -351,8 +350,8 @@ class testTwin():
         ax2.axhline(y=-1, color='lightgray', zorder=0)
         ax2.axhline(y=1, color='lightgray', zorder=0)
         # Add the plot
-        passed = np.where((self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), self.df["E_DM-value"], None)
-        missed = np.where((self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), None, self.df["E_DM-value"])
+        passed = np.where((self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), self.df["E_DM"], None)
+        missed = np.where((self.df["Criterion_real"] + self.df["Criterion_sim"] < 2), None, self.df["E_DM"])
         ax2.scatter(range(len(passed)), passed, label='passed exta criteria')
         ax2.scatter(range(len(missed)), missed, c='C3', label='missed exta criteria')
         ax2.set_ylim(-3,3)
@@ -385,8 +384,8 @@ class testTwin():
         from reportlab.lib.pagesizes import A4
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import mm
-        from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, Paragraph, NextPageTemplate, PageBreak, Spacer, Image, Table, TableStyle
-        from reportlab.platypus import SimpleDocTemplate, Paragraph
+        from reportlab.platypus import Paragraph, PageBreak, Spacer, Image, Preformatted
+        from ..report import Report, NumberedCanvas
 
         now = datetime.now()
 
@@ -399,11 +398,12 @@ class testTwin():
         title_style = ParagraphStyle('Title', parent=styles['Heading1'], alignment=1, spaceBefore=10, spaceAfter=10)
         subtitle_style = ParagraphStyle('Subtitle', parent=styles['Heading2'], alignment=1, spaceBefore=6, spaceAfter=6)
         body_style = ParagraphStyle('Body', parent=styles['Normal'], fontSize=12, spaceBefore=0, spaceAfter=3)
+        body_center_style = ParagraphStyle('Body', parent=styles['Normal'], alignment=1, fontSize=12, spaceBefore=0, spaceAfter=3)
         #print(body_style.parent.listAttrs())
 
         # Define the content for the document
         title = Paragraph('Digital Twin Test Report', title_style)
-        subtitle = Paragraph('CTSimU2', subtitle_style)
+        subtitle = Paragraph(self.name, subtitle_style)
 
         # creating a pdf object
         pdf = Report(documentTitle,
@@ -420,21 +420,32 @@ class testTwin():
         pdf.setFooter(f'{self.name}.pdf', left2 = f'generated by CTSimU Toolbox {get_version()}')
 
         # Prepare the data for the table
-        df = self.df.get(['E_DM-value', 'Criterion_real', 'Criterion_sim', 'Test_Result']).reset_index()
-        df['E_DM-value'] = df['E_DM-value'].apply(lambda x: round(x, 6))
-        df['Criterion_real'] = df['Criterion_real'].apply(lambda x: round(x, 6))
-        df['Criterion_sim'] = df['Criterion_sim'].apply(lambda x: round(x, 6))
+        df = self.df.get(['Real_avg', 'Real_U', 'Sim_avg', 'Sim_U', "E_DM", 'Criterion_real', 'Criterion_sim', 'Test Result']).reset_index()
+        df["Real_avg"] = df['Real_avg'].apply(lambda x: round(x, 4))
+        df["Real_U"] = df['Real_U'].apply(lambda x: round(x, 5))
+        df["Sim_avg"] = df['Sim_avg'].apply(lambda x: round(x, 4))
+        df["Sim_U"] = df['Sim_U'].apply(lambda x: round(x, 5))
+        df["E_DM"] = df["E_DM"].apply(lambda x: round(x, 2))
+        df['Criterion_real'] = df['Criterion_real'].apply(lambda x: round(x, 2))
+        df['Criterion_sim'] = df['Criterion_sim'].apply(lambda x: round(x, 2))
 
         # Add the content to the PDF document
-        elements = [title, subtitle, 
-                    Paragraph(f"Date: {now:%Y-%m-%d %H:%M}", body_style), 
-                    Paragraph(f"CTSimU Toolbox Version: {get_version()}", body_style), 
+        elements = [title, Paragraph("on", body_center_style), subtitle, 
+                    Paragraph(f"generated at {now:%Y-%m-%d %H:%M}", body_center_style),
+                    Spacer(1, 24, True),
+                    # Paragraph(f"CTSimU Toolbox Version: {get_version()}", body_style), 
                     Paragraph(f'Metadata file: {self.current_metadata_file}', body_style), 
-                    Paragraph(f'Name: {self.name}', body_style), 
+                    Paragraph(f'Name: {self.name}', body_style, bulletText='*'), 
+                    Paragraph(f"Description: {get_value(self.metadata, ['general','description'],'')}", body_style, bulletText='*'), 
+                    # Paragraph(f"* Contact: {self.metadata['general']['contact']}", body_style), 
                     Image(f"{self.output_path}/{self.name}.png", 450, 270),
                     # PageBreak(), 
                     # Paragraph('This is some content for the PDF document Page 2. ', body_style),
-                    pdf.df2table(df)]
+                    pdf.df2table(df),
+                    Spacer(1, 24, True),
+                    Paragraph('Full imput metadata:', body_style), 
+                    Preformatted(json.dumps(self.metadata, indent=2), styles['Code'])
+                    ]
         pdf.build(elements, canvasmaker=NumberedCanvas)
 
 

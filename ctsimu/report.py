@@ -113,19 +113,20 @@ class Report(BaseDocTemplate):
 
     def df2table(self, df):
         data = [df.columns.values.tolist()] + df.values.tolist()
-        return Table(data,
+        return Table(data, 45,
+            repeatRows=1,
             style=[
                 ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
                 ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, 0), 9),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+                ('FONTSIZE', (0, 0), (-1, 0), 7),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 4),
                 ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
                 ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
                 ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
                 ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-                ('FONTSIZE', (0, 1), (-1, -1), 10),
+                ('FONTSIZE', (0, 1), (-1, -1), 9),
                 ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
                 ('GRID', (0, 0), (-1, -1), 1, colors.black)],
             # hAlign = 'LEFT',
