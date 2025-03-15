@@ -10,81 +10,75 @@ The metafile for the CTSimU Twin Test has the following structure:
 ```json
 {
     "file": {
-        "file_type": "CTSimU Twin Test",                    # required
-        "file_format_version": {"major": 0, "minor": 3}     # required
+        "file_type": "CTSimU Twin Test",                   # do not change
+        "file_format_version": {"major": 0, "minor": 4}    # do not change
     },
 
-    "general": {
-        "name": "SampleData",                               # required
-        "description": "DigitalTwinTest on sample data.",
-        "contact": "Jane Doe",
-        "date_created": "2025-02-04",
-        "date_changed": "2025-02-20",
+    "measurement": {
+        "name": "SampleData",                              # required, output file name
+        "description": "DigitalTwinTest on sample data.",  # in report
+        "contact": "Jane Doe",                             # in report
 
-        "sample_material": "Al",
-        "material_alpha": 0.0000234,                        # required
+        "sample_material": "Al",                           # not used
+        "material_alpha": 0.0000234,                       # required, thermal expansion coefficient
 
         "measurands": ["dia01", "dia02", "dia03", "dia04", "dia05"],
-                                                            # required
-        "output_path": "./results",
-        "csv_sep": ";",
-        "csv_decimal": ","
+                                                           # required, column names
+        "output_path": "./results",                        # required
+        "csv_sep": ";",                                    # required, column separator
+        "csv_decimal": ","                                 # required, decimal mark
     },
 
     "values-real": {
-        "name": "CT XYZ",
-        "nr_of_runs":"",
-        "date_measure": "",
-        "temperature": "21.3258",                           # required
-        "files": "",
-        "csv_path": "Daten/Messung175kV/",
-        "csv_sep": ";",
-        "csv_decimal": ",",
-        "header_row": 103,
-        "name_column": "Name",
-        "value_column": "Ist [mm/°]",
-        "scaling_factor": "1"
+        "name": "CT XYZ",                                  # in report
+        "nr_of_runs":"",                                   # not used
+        "files": "",                                       # not used
+        "csv_path": "Data/Measurements/",                  # required
+        "csv_sep": ";",                                    # required, column separator
+        "csv_decimal": ",",                                # required, decimal mark
+        "header_row": 103,                                 # required
+        "name_column": "Name",                             # required
+        "value_column": "Ist [mm/°]",                      # required
+        "k_value": 2,                                      # required
+        "temperature": 21.3,                               # required
+        "scaling_factor": 1.0                              # required
     },
 
     "values-sim":{
-        "name": "simulation XYZ",
-        "nr_of_runs":"",
-        "date": "",
-        "temperature": "20",
-        "files": "",
-        "csv_path": "Daten/Simulation175kV/",
-        "csv_sep": ";",
-        "csv_decimal": ",",
-        "header_row": 103,
-        "name_column": "Name",
-        "value_column": "Ist [mm/°]",
-        "scaling_factor": "1"
+        "name": "simulation XYZ",                          # in report
+        "nr_of_runs":"",                                   # not used
+        "files": "",                                       # not used
+        "csv_path": "Data/Simulations/",                   # required
+        "csv_sep": ";",                                    # required, column separator
+        "csv_decimal": ",",                                # required, decimal mark
+        "header_row": 103,                                 # required
+        "name_column": "Name",                             # required
+        "value_column": "Ist [mm/°]",                      # required
+        "scaling_factor": 1                                # required
     },
 
     "reference-real":{
-        "name": "Calibration XYZ",
-        "date_calib": "",
-        "temperature_calib": "20",
-        "csv_path": "Daten/Kalibrierwerte.csv",
-        "csv_sep": ";",
-        "csv_decimal": ",",
-        "header_row": 0,
-        "name_column": "",
-        "value_column": "Kalibrierwert (mm)",
-        "uncertainty_column": "Kalibrierunsicherheit"
+        "name": "Calibration XYZ",                         # in report
+        "date_calib": "",                                  # not used
+        "temperature_calib": 20,                           # required
+        "csv_path": "Daten/Calibration.csv",               # required
+        "csv_sep": ";",                                    # required, column separator
+        "csv_decimal": ",",                                # required, decimal mark
+        "name_column": "",                                 # required
+        "value_column": "Kalibrierwert (mm)",              # required
+        "uncertainty_column": "Kalibrierunsicherheit"      # required
     },
 
     "reference-sim":{
-        "name": "Nominal STL",
-        "date_calib": "",
-        "temperature_calib": "20",
-        "csv_path": "Daten/Kalibrierwerte.csv",
-        "csv_sep": ";",
-        "csv_decimal": ",",
-        "header_row": 0,
-        "name_column": "",
-        "value_column": "Nominal STL",
-        "uncertainty_column": ""
+      "name": "Calibration XYZ",                           # in report
+      "date_calib": "",                                    # not used
+      "temperature_calib": 20,                             # required
+      "csv_path": "Daten/Calibration.csv",                 # required
+      "csv_sep": ";",                                      # required, column separator
+      "csv_decimal": ",",                                  # required, decimal mark
+      "name_column": "",                                   # required
+      "value_column": "Nominal STL",                       # required
+      "uncertainty_column": ""                             # required
     }
 }
 ```

@@ -18,7 +18,7 @@ table_ids = ['values-real', 'values-sim', 'reference-real', 'reference-sim']
 
 ctsimu_twin_test_supported_version = {
     "major": 0,
-    "minor": 3
+    "minor": 4
 }
 
 
@@ -93,10 +93,12 @@ class testTwin():
         self.metadata_is_set = True
 
         #general Information for the test
-        self.name = get_value(json_dict, ["general", "name"], '')
-        self.measurands = self.metadata['general']['measurands']
-        self.output_path = self.metadata['general']['output_path']
-        self.alpha = self.metadata['general']['material_alpha']
+        self.name = get_value(json_dict, ["measurement", "name"], '')
+        self.measurands = self.metadata['measurement']['measurands']
+        self.output_path = self.metadata['measurement']['output_path']
+        self.sep = self.metadata['measurement']['csv_sep']
+        self.decimal = self.metadata['measurement']['csv_decimal']
+        self.alpha = self.metadata['measurement']['material_alpha']
 
 
     def prepare_data(self):
@@ -146,7 +148,7 @@ class testTwin():
         name_col = self.metadata[ct_type]['name_column']
         value_col = self.metadata[ct_type]['value_column']
         temperature = self.metadata[ct_type]['temperature']
-        self.scaling_factor = self.metadata[ct_type]["scaling_factor"]
+        scaling_factor = self.metadata[ct_type]["scaling_factor"]
 
         # Choose calibration
         if ct_type == "values-sim":
@@ -170,9 +172,12 @@ class testTwin():
 
                     df_filtered[value_col] = df_filtered[value_col].apply(convert_str_to_float)
                     #print(df_filtered)
+                    if not scaling_factor == 1:
+                        print(f'  scaling: {scaling_factor}')
+                        df_filtered[value_col] = df_filtered[value_col] * scaling_factor
                     if not temperature == ref_temperature:
-                        print(temperature, ref_temperature, self.alpha)
-                        df_filtered[value_col] = df_filtered[value_col].apply(self.TempKorr, args=(float(temperature), float(ref_temperature), float(self.alpha)))
+                        print(f'  temp. compensation: {temperature}, {ref_temperature}, {self.alpha}')
+                        df_filtered[value_col] = df_filtered[value_col].apply(self.TemperatureCorrection, args=(float(temperature), float(ref_temperature), float(self.alpha)))
                     # print(df_filtered)
                     combined_df_test = pd.concat([combined_df_test, df_filtered[value_col]], axis=1)
 
@@ -187,17 +192,22 @@ class testTwin():
             combined_df_test.index = self.measurands
             combined_df_test.columns = file_names
 
+            if ct_type == "values-sim":
+                self.files_sim = file_names
+            else:
+                self.files_real = file_names
+
             combined_df_subtracted = combined_df_test.apply(lambda x: self.Deviation(x, ref_values), axis=1)
 
             print(combined_df_subtracted)
 
             os.makedirs(self.output_path, exist_ok=True)
-            combined_df_test.to_csv(f"{self.output_path}/{self.name}_{ct_type}.csv", sep=sep, decimal=decimal, index=True)
+            combined_df_test.to_csv(f"{self.output_path}/{self.name}_{ct_type}.csv", sep=self.sep, decimal=self.decimal, index=True)
 
         return combined_df_subtracted
 
 
-    def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
+    def TemperatureCorrection(self, Mvalue, Tmeas, Tcal, alpha):
         return Mvalue*(1-(alpha*(Tmeas-Tcal)))
 
 
@@ -219,13 +229,13 @@ class testTwin():
         self.Sim_avg = SimValues.mean(axis=1)
 
         u_psim = SimValues.std(axis=1)
-        k_sim = 2.0
+        k_sim = get_value(self.metadata, ["values-sim", "k_value"], 2.0)
         u_cal = self.RealRefUncertainty
         u_p = RealValues.std(axis=1)
         u_ab = 0.2 * self.alpha
         u_b = (T_real - T_ref) * u_ab * self.Real_avg
         #print('u_b: ',u_b)
-        k_real = 2.0
+        k_real = get_value(self.metadata, ["values-real", "k_value"], 2.0)
         self.U_real = k_real * (u_cal.pow(2) + u_p.pow(2) + u_b.pow(2)).pow(1/2)
         self.U_sim = k_sim * u_psim
         self.E_DM = ((self.Sim_avg) - (self.Real_avg)) * (self.U_sim.pow(2) + self.U_real.pow(2)).pow(-0.5)
@@ -254,9 +264,7 @@ class testTwin():
         print(self.df)
 
         # Save results.
-        sep = self.metadata['general']['csv_sep']
-        decimal = self.metadata['general']['csv_decimal']
-        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=sep, decimal=decimal, index=True, index_label='Measurand')
+        self.df.to_csv(f"{self.output_path}/{self.name}.csv", sep=self.sep, decimal=self.decimal, index=True, index_label='Measurand')
 
 
     def plotDeviations(self):
@@ -285,7 +293,7 @@ class testTwin():
 
         # Show the plot
         #plt.show()
-        plt.savefig(f"{self.output_path}/{self.name}_2.png")
+        plt.savefig(f"{self.output_path}/{self.name}_deviations.png")
 
 
     def plotResults(self):
@@ -310,14 +318,14 @@ class testTwin():
 
         # Add labels and title
         # plt.xlabel('Measurand')
-        plt.ylabel('E_DM value')
+        plt.ylabel('$E_{DM}$ value')
         # plt.title('CTSimU2 Test Result')
 
         # plt.savefig(self.img_buf, format='png')
 
         # Show the plot
         #plt.show()
-        plt.savefig(f"{self.output_path}/{self.name}_3.png")
+        plt.savefig(f"{self.output_path}/{self.name}_E_DM.png")
 
 
     def plotResult(self):
@@ -403,7 +411,7 @@ class testTwin():
 
         # Define the content for the document
         title = Paragraph('Digital Twin Test Report', title_style)
-        subtitle = Paragraph(self.name, subtitle_style)
+        #subtitle = Paragraph(self.name, subtitle_style)
 
         # creating a pdf object
         pdf = Report(documentTitle,
@@ -430,21 +438,44 @@ class testTwin():
         df['Criterion_sim'] = df['Criterion_sim'].apply(lambda x: round(x, 2))
 
         # Add the content to the PDF document
-        elements = [title, Paragraph("on", body_center_style), subtitle, 
+        elements = [title, 
+                    # Paragraph("on", body_center_style), subtitle, 
                     Paragraph(f"generated at {now:%Y-%m-%d %H:%M}", body_center_style),
                     Spacer(1, 24, True),
                     # Paragraph(f"CTSimU Toolbox Version: {get_version()}", body_style), 
                     Paragraph(f'Metadata file: {self.current_metadata_file}', body_style), 
                     Paragraph(f'Name: {self.name}', body_style, bulletText='*'), 
-                    Paragraph(f"Description: {get_value(self.metadata, ['general','description'],'')}", body_style, bulletText='*'), 
-                    # Paragraph(f"* Contact: {self.metadata['general']['contact']}", body_style), 
+                    Paragraph(f"Description: {get_value(self.metadata, ['measurement','description'],'')}", body_style, bulletText='*'), 
+                    Paragraph(f"Contact: {self.metadata['measurement']['contact']}", body_style, bulletText='*'), 
+                    Paragraph(f"Experimental CTs: {self.metadata['values-real']['name']}", body_style, bulletText='*'), 
+                    Paragraph(f"File path: {self.metadata['values-real']['csv_path']}", body_style, bulletText='    -'), 
+                    Paragraph(f"Number of scans: {len(self.files_real)}", body_style, bulletText='    -'), 
+                    Paragraph(f"Temperature: {self.metadata['values-real']['temperature']}", body_style, bulletText='    -'), 
+                    Paragraph(f"Scaling: {self.metadata['values-real']['scaling_factor']}", body_style, bulletText='    -'), 
+                    Paragraph(f"Reference: {self.metadata['reference-real']['name']}", body_style, bulletText='    -'), 
+                    Paragraph(f"Simulated CTs: {self.metadata['values-sim']['name']}", body_style, bulletText='*'), 
+                    Paragraph(f"File path: {self.metadata['values-sim']['csv_path']}", body_style, bulletText='    -'), 
+                    Paragraph(f"Number of scans: {len(self.files_sim)}", body_style, bulletText='    -'), 
+                    #Paragraph(f"Temperature: {self.metadata['values-sim']['temperature']}", body_style, bulletText='    -'), 
+                    #Paragraph(f"Scaling: {self.metadata['values-sim']['scaling_factor']}", body_style, bulletText='    -'), 
+                    Paragraph(f"Reference: {self.metadata['reference-sim']['name']}", body_style, bulletText='    -'), 
                     Image(f"{self.output_path}/{self.name}.png", 450, 270),
                     # PageBreak(), 
                     # Paragraph('This is some content for the PDF document Page 2. ', body_style),
                     pdf.df2table(df),
                     Spacer(1, 24, True),
-                    Paragraph('Full imput metadata:', body_style), 
-                    Preformatted(json.dumps(self.metadata, indent=2), styles['Code'])
+                    Paragraph("Full imput metadata", subtitle_style),
+                    Paragraph(f'{self.current_metadata_file}:', body_style), 
+                    Preformatted(json.dumps(self.metadata, indent=2), styles['Code']),
+                    Spacer(1, 24, True),
+                    Paragraph("List of output files", subtitle_style),
+                    Paragraph(f'{self.name}.csv', body_style), 
+                    Paragraph(f'{self.name}.pdf (this document)', body_style), 
+                    Paragraph(f'{self.name}.png', body_style), 
+                    Paragraph(f'{self.name}_deviations.png', body_style), 
+                    Paragraph(f'{self.name}_E_DM.png', body_style), 
+                    Paragraph(f'{self.name}_values-real.csv', body_style), 
+                    Paragraph(f'{self.name}_values-sim.csv', body_style), 
                     ]
         pdf.build(elements, canvasmaker=NumberedCanvas)
 

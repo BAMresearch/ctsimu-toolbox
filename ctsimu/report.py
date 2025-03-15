@@ -113,7 +113,7 @@ class Report(BaseDocTemplate):
 
     def df2table(self, df):
         data = [df.columns.values.tolist()] + df.values.tolist()
-        return Table(data, 45,
+        return Table(data, 50,
             repeatRows=1,
             style=[
                 ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
