@@ -73,7 +73,8 @@ class Report(BaseDocTemplate):
         canvas.line(self.header_x1, yLine, self.header_x1 + self.bodyWidth, yLine)
         yText = yLine + 2 * mm
         canvas.drawString(self.leftMargin, yText, self.headerLeft)
-        canvas.drawCentredString(self.bodyXCenter, yText, self.headerCenter)
+        if canvas._pageNumber > 1:
+            canvas.drawCentredString(self.bodyXCenter, yText, self.headerCenter)
         canvas.drawRightString(self.leftMargin + self.bodyWidth, yText, self.headerRight)
         canvas.restoreState()
 
@@ -89,6 +90,7 @@ class Report(BaseDocTemplate):
         canvas.drawRightString(self.footer_x1 + self.bodyWidth, yText, self.footerRight)
         if canvas._pageNumber == 1:
             canvas.drawString(self.footer_x1, yText - self.header_fheight, self.footerLeft2)
+            canvas.drawString(self.footer_x1, yText - 2 * self.header_fheight, self.footerLeft3)
         canvas.restoreState()
         # Use the right-string position for the page number in NumberedCanvas
         try:
@@ -105,15 +107,16 @@ class Report(BaseDocTemplate):
         self.headerCenter = center
         self.headerRight = right
 
-    def setFooter(self, left = '', center = '', right = '', left2 = ''):
+    def setFooter(self, left = '', center = '', right = '', left2 = '', left3 = ''):
         self.footerLeft = left
         self.footerLeft2 = left2
+        self.footerLeft3 = left3
         self.footerCenter = center
         self.footerRight = right
 
     def df2table(self, df):
         data = [df.columns.values.tolist()] + df.values.tolist()
-        return Table(data, 50,
+        return Table(data, [70, 48],
             repeatRows=1,
             style=[
                 ('BACKGROUND', (0, 0), (-1, 0), colors.grey),

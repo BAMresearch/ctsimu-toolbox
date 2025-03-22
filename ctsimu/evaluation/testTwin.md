@@ -15,11 +15,10 @@ The metafile for the CTSimU Twin Test has the following structure:
     },
 
     "measurement": {
-        "name": "SampleData",                              # required, output file name
-        "description": "DigitalTwinTest on sample data.",  # in report
+        "description": "DigitalTwinTest on sample data using Lochplatte.",  # in report
         "contact": "Jane Doe",                             # in report
 
-        "sample_material": "Al",                           # not used
+        "sample_material": "Al",                           # not used, for information
         "material_alpha": 0.0000234,                       # required, thermal expansion coefficient
 
         "measurands": ["dia01", "dia02", "dia03", "dia04", "dia05"],
@@ -30,9 +29,9 @@ The metafile for the CTSimU Twin Test has the following structure:
     },
 
     "values-real": {
-        "name": "CT XYZ",                                  # in report
+        "description": "CT XYZ",                           # in report
         "nr_of_runs":"",                                   # not used
-        "files": "",                                       # not used
+        "files": "",                                       # not used, instead take all CSVs at 'csv_path'
         "csv_path": "Data/Measurements/",                  # required
         "csv_sep": ";",                                    # required, column separator
         "csv_decimal": ",",                                # required, decimal mark
@@ -45,21 +44,21 @@ The metafile for the CTSimU Twin Test has the following structure:
     },
 
     "values-sim":{
-        "name": "simulation XYZ",                          # in report
+        "description": "simulation XYZ",                   # in report
         "nr_of_runs":"",                                   # not used
-        "files": "",                                       # not used
+        "files": "",                                       # not used, instead take all CSVs at 'csv_path'
         "csv_path": "Data/Simulations/",                   # required
         "csv_sep": ";",                                    # required, column separator
         "csv_decimal": ",",                                # required, decimal mark
         "header_row": 103,                                 # required
         "name_column": "Name",                             # required
         "value_column": "Ist [mm/°]",                      # required
+        "temperature": 20,                                 # required
         "scaling_factor": 1                                # required
     },
 
     "reference-real":{
-        "name": "Calibration XYZ",                         # in report
-        "date_calib": "",                                  # not used
+        "description": "Calibration XYZ",                  # in report
         "temperature_calib": 20,                           # required
         "csv_path": "Daten/Calibration.csv",               # required
         "csv_sep": ";",                                    # required, column separator
@@ -70,8 +69,7 @@ The metafile for the CTSimU Twin Test has the following structure:
     },
 
     "reference-sim":{
-      "name": "Calibration XYZ",                           # in report
-      "date_calib": "",                                    # not used
+      "description": "Calibration XYZ",                    # in report
       "temperature_calib": 20,                             # required
       "csv_path": "Daten/Calibration.csv",                 # required
       "csv_sep": ";",                                      # required, column separator
@@ -82,3 +80,5 @@ The metafile for the CTSimU Twin Test has the following structure:
     }
 }
 ```
+
+> The "measurands" are defined as a list of identifiers. An entry can end with a placeholder '*', which activates all identifiers that begin with the character string before the placeholder. If there is an entry with a placeholder in the list, entries without a placeholder are ignored.
