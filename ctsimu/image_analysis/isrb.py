@@ -243,7 +243,7 @@ class Interpolation(object):
         self.coords = (start, stop, def_kwargs['linewidth'])
         
         # saving variables
-        # matrix indeces differ from cartesian coordinates
+        # matrix indices differ from cartesian coordinates
         measure = profile_line(self.im, start[::-1], stop[::-1], **def_kwargs)
         self.measure = measure
         self.ind = np.arange(0, self.measure.size)
