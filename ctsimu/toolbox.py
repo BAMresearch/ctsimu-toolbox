@@ -25,7 +25,6 @@ from .evaluation.test2D_WE_1 import Test2D_WE_1
 from .evaluation.test2D_WE_2 import Test2D_WE_2
 from .evaluation.test2D_HS_1 import Test2D_HS_1
 from .evaluation.testTwin import testTwin
-from .responses.measurands import Measurands
 
 class Toolbox:
     """ Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. """

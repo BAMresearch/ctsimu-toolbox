@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.image_analysis.isrb API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -67,9 +56,43 @@ tr:hover {background-color: #eee;}
 <dl>
 <dt id="ctsimu.image_analysis.isrb.Interpolation"><code class="flex name class">
 <span>class <span class="ident">Interpolation</span></span>
-<span>(</span><span>im,<br>pixelsize,<br>SOD=1000,<br>SDD=1000,<br>wire_length=15,<br>wire_spacing=[0.8, 0.63, 0.5, 0.4, 0.32, 0.25, 0.2, 0.16, 0.13, 0.1, 0.08, 0.063, 0.05])</span>
+<span>(</span><span>im, pixelsize, SOD=1000, SDD=1000, wire_length=15, wire_spacing=[0.8, 0.63, 0.5, 0.4, 0.32, 0.25, 0.2, 0.16, 0.13, 0.1, 0.08, 0.063, 0.05])</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Manage Interpolation
+The interpolation process is separated into 4 parts:
+<strong>init</strong>()
+- open image
+profile()
+- measure profile in image
+calc_dips()
+- calculate dips
+interpolate() - calculate isrb from dips</p>
+<p>Each part (except _init__) can be re-executed to estimate suitable
+variables. The Interpolation object saves parameters additional to
+the parameters needed for further calculations. They simplify
+finding fitting parameters for the calculation.</p>
+<p>Create the Interpolation instance with the image representing
+array and other necessary parameters.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>im</code></strong> :&ensp;<code>array-like, shape (n, m)</code></dt>
+<dd>The array representing the gray/intensity scale image
+(background is assumed to have high intensity, bright
+gray scales).</dd>
+<dt><strong><code>pixelsize</code></strong> :&ensp;<code>scalar</code></dt>
+<dd>The pixelsize of the image in milimeters. Only square
+pixels are possible.</dd>
+<dt><strong><code>SOD</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Source Object Distance of the scan setup in milimeters.</dd>
+<dt><strong><code>SDD</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Source Detector Distance of the scan setup in milimeters.</dd>
+<dt><strong><code>wire_length</code></strong> :&ensp;<code>scalar</code></dt>
+<dd>Length of the wires in mm</dd>
+<dt><strong><code>wire_spacing</code></strong> :&ensp;<code>array-like, shape (n, )</code></dt>
+<dd>Spacing that the wire pairs hold, acending (matches the
+wire diameter)</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -293,7 +316,7 @@ tr:hover {background-color: #eee;}
         self.coords = (start, stop, def_kwargs[&#39;linewidth&#39;])
         
         # saving variables
-        # matrix indeces differ from cartesian coordinates
+        # matrix indices differ from cartesian coordinates
         measure = profile_line(self.im, start[::-1], stop[::-1], **def_kwargs)
         self.measure = measure
         self.ind = np.arange(0, self.measure.size)
@@ -535,172 +558,12 @@ tr:hover {background-color: #eee;}
         self.inter = (x, Interpolation.quadratic(x, *popt))
         return</code></pre>
 </details>
-<div class="desc"><p>Manage Interpolation
-The interpolation process is separated into 4 parts:
-<strong>init</strong>()
-- open image
-profile()
-- measure profile in image
-calc_dips()
-- calculate dips
-interpolate() - calculate isrb from dips</p>
-<p>Each part (except _init__) can be re-executed to estimate suitable
-variables. The Interpolation object saves parameters additional to
-the parameters needed for further calculations. They simplify
-finding fitting parameters for the calculation.</p>
-<p>Create the Interpolation instance with the image representing
-array and other necessary parameters.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>im</code></strong> :&ensp;<code>array-like, shape (n, m)</code></dt>
-<dd>The array representing the gray/intensity scale image
-(background is assumed to have high intensity, bright
-gray scales).</dd>
-<dt><strong><code>pixelsize</code></strong> :&ensp;<code>scalar</code></dt>
-<dd>The pixelsize of the image in milimeters. Only square
-pixels are possible.</dd>
-<dt><strong><code>SOD</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Source Object Distance of the scan setup in milimeters.</dd>
-<dt><strong><code>SDD</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Source Detector Distance of the scan setup in milimeters.</dd>
-<dt><strong><code>wire_length</code></strong> :&ensp;<code>scalar</code></dt>
-<dd>Length of the wires in mm</dd>
-<dt><strong><code>wire_spacing</code></strong> :&ensp;<code>array-like, shape (n, )</code></dt>
-<dd>Spacing that the wire pairs hold, acending (matches the
-wire diameter)</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.image_analysis.isrb.Interpolation.calc_dips"><code class="name flex">
-<span>def <span class="ident">calc_dips</span></span>(<span>self,<br>bg_func=&lt;function Interpolation.quadratic&gt;,<br>prominence=10,<br>height=None,<br>width=None,<br>rel_height=0.9)</span>
+<span>def <span class="ident">calc_dips</span></span>(<span>self, bg_func=&lt;function Interpolation.quadratic&gt;, prominence=10, height=None, width=None, rel_height=0.9)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def calc_dips(self, bg_func = quadratic, prominence=10, height=None, width=None, rel_height=0.9):
-    &#39;&#39;&#39;Calculate the dips in the profile.
-    Find downwards orientated peaks (lower peaks, minimum peaks).
-    Calculate the widths from the prominence data.
-    Order peaks into pairs.
-    Estimate background values.
-    Calculate dips from pairs.
-    
-    Parameters
-    ----------
-    bg_func : callable, optional
-        f(x, *args) -&gt; y
-        Scalar function that approximates the background values of the 
-        measurement. &#39;args&#39; will be calculated by regression.
-    prominence : float, optional
-        Peak prominence of the lower peaks to find. The absolute difference
-        between the peak and its contour line.
-        Reference in &#39;scipy.signal.peak_prominence()&#39;.
-    height : float, optional
-        Peak height of the lower peaks to find (peaks lying above this value 
-        will be excluded).
-        Reference in &#39;scipy.signal.find_peaks()&#39;.
-    width : float, optional
-        Peak width of the lower peaks to find.
-        Reference in &#39;scipy.signal.peak_width()&#39;.
-    rel_height : float, optional
-        Relative height to measure the width of the peaks at.
-        Reference in &#39;scipy.signal.peak_widths()&#39;.
-    
-    Returns
-    -------
-    None
-        Write found dips to self.dips : ndarray, shape (m, )
-        Write found minima to self.min : array-like, shape (2, n)
-        Write found background values to self.bg : array-like, shape (2, o)&#39;&#39;&#39;
-    
-    
-    if self.measure is None:
-        raise OrderError(&#34;no profile was measured&#34;)
-            
-    if height is not None: 
-        # self.measure is negated and so is the height
-        height = -height
-    
-    
-    # finding minimum peaks
-    
-    peaks, prop = find_peaks(-self.measure, prominence=prominence, height=height, width=width)
-    prominence_data = (prop[&#39;prominences&#39;], prop[&#39;left_bases&#39;], prop[&#39;right_bases&#39;])
-    
-    if peaks.size == 0:
-        # raised when no peaks are found
-        raise ResultError(&#39;No lower peaks were found&#39;)
-    
-    ### fitting background
-    # cutting out peaks
-    widths, _, _, _= peak_widths(-self.measure, peaks, rel_height=rel_height, prominence_data=prominence_data)
-    
-    mask_bg = np.ones(self.ind.shape, dtype=bool)
-    intervals = ()
-    for i in range(len(widths)):
-        # limits should not exceed the array limits 0...len
-        lim1 = int(np.rint(peaks[i]-widths[i]))
-        if lim1 &lt; 0:
-            lim1 = 0
-        elif lim1 &gt;= self.measure.size:
-            lim1 = self.measure.size-1
-        
-        lim2 = int(np.rint(peaks[i]+widths[i]))
-        if lim2 &lt; 0:
-            lim2 = 0
-        elif lim2 &gt;= self.measure.size:
-            lim2 = self.measure.size-1
-        
-        mask_bg[lim1 : lim2+1] = False
-    
-    # fitting
-    popt_bg, _ = curve_fit(bg_func, self.ind[mask_bg], self.measure[mask_bg])
-    bg_val = bg_func(self.ind, *popt_bg)
-    
-    
-    # ordering minima into pairs.
-    dist = peaks[1:] - peaks[:-1]  # pairwise distances: #1-#0, #2-#1, #3-#2, etc.
-    dist_max = 1.05*dist[0]
-    
-    dips = []
-    max_peaks = []
-    for i in range(len(dist)):
-        
-        # end of array
-        #if i == len(dist)-1:
-        #    dips.append(0)
-            
-        # a pair
-        if dist[i] &lt;= dist_max: #weakest point of algorithm!!!
-            lim1, lim2 = peaks[i], peaks[i+1]
-            
-            # the minima
-            A = abs(bg_val[lim1] - self.measure[lim1])
-            B = abs(bg_val[lim2] - self.measure[lim2])
-            
-            # the intermediate maximum
-            C_pos = np.argmax(self.measure[lim1: lim2+1]) + lim1
-            max_peaks.append(C_pos)
-            C = abs(bg_val[C_pos] - self.measure[C_pos])
-            
-            dips.append(100 * (A + B - 2*C) / (A + B))
-            
-        # segmentations of Non-Pairs are not needed
-
-    while len(dips) &lt; len(self.wire_spacing):
-        dips.append(0)
-    
-    # saving variables
-    self.dips = np.array(dips)
-    
-    self.peaks = (peaks, self.measure[peaks])
-    self.max_peaks = (max_peaks, self.measure[max_peaks])
-    self.despike = (self.ind[mask_bg], self.measure[mask_bg])
-    self.bg = (self.ind, bg_val)
-    return</code></pre>
-</details>
 <div class="desc"><p>Calculate the dips in the profile.
 Find downwards orientated peaks (lower peaks, minimum peaks).
 Calculate the widths from the prominence data.
@@ -740,121 +603,6 @@ Write found background values to self.bg : array-like, shape (2, o)</dd>
 <span>def <span class="ident">interpolate</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def interpolate(self):
-    &#39;&#39;&#39;Choose important dips, perform quadradic interpolation and
-    choose the correct solution for the 20% dip.
-    
-    Returns
-    -------
-    None
-        Write result to self.dip20 : scalar
-        Write found dips of interest to self.dipsoi : array-like, shape (2, n)
-        Write interpolation fit to self.inter : array-like, shape (2, m)&#39;&#39;&#39;
-    
-    if self.dips is None:
-        raise OrderError(&#34;&#39;segmentation()&#39; has to be executed at least once&#34;)
-    
-    if self.dips.size == 0:
-        raise ResultError(&#39;no dips were found&#39;)
-    
-    if all(self.dips &lt; 20):
-        raise ResultError(&#34;no dip &gt; 20 was found, interpolation not possible&#34;)
-    elif all(self.dips &gt; 20):
-        warn(&#39;no dip &lt; 20 was found, a dip of 0 is used instead&#39;)
-
-    # clean up:
-    use_dips = copy.deepcopy(self.dips)
-    use_wire_spacing = copy.deepcopy(self.wire_spacing)
-    print(&#34;  {n} Dips found.&#34;.format(n=len(self.dips)))
-    success = False
-    while not success:
-        success = True
-        i = 1
-        while i &lt; len(use_dips):
-            print(&#34;  Dip {i}: {d}&#34;.format(i=i, d=use_dips[i]))
-            
-            # The following, more shallow dip must not be deeper by more than 5% of previous dip.
-            # Otherwise, there seems to be an order problem, i.e. the dips should become more shallow
-            # with each iteration. 
-            if (use_dips[i] - use_dips[i-1]) &gt; 5:  
-                # This dip seems to be invalid. Drop it.
-                print(&#34;  Dropping {idx}.&#34;.format(idx=(i-1)))
-                use_dips = np.delete(use_dips, i-1)
-                use_wire_spacing = np.delete(use_wire_spacing, i-1)
-                i = i - 1
-                success = False
-
-            i = i + 1
-
-
-    # finding the 20% crossing element and choosing the important neighboring values
-    index = np.arange(0, (len(use_dips)))
-    for i in index:
-        lower = i-2   # including
-        upper = i+2   # including
-
-        while lower &lt; 0:
-            lower += 1
-        while upper &gt;= len(use_dips):
-            upper -= 1
-
-        # Do not include nearest or next-nearest neighbor dips
-        # with less than 1.5% modulation depth,
-        # as this will give unpleasant fits:
-        if (upper-i) &gt;= 2:
-            if use_dips[upper] &lt; 1.5:  # %
-                upper -= 1
-
-        if (upper-i) &gt;= 1:
-            if use_dips[upper] &lt; 1.5:  # %
-                upper -= 1
-
-        pos = index[lower:(upper+1)]
-
-        if i &lt; len(use_dips)-1:
-            if use_dips[i+1] &lt; 20:
-                self.criticalIndex = i
-                break
-        else:
-            self.criticalIndex = i
-            break
-    
-    dists = use_wire_spacing[pos] #* self.scale
-    dips = use_dips[pos]
-    popt, _ = curve_fit(Interpolation.quadratic, dists, dips)
-    self.a = popt[0]
-    self.b = popt[1]
-    self.c = popt[2]
-    
-    dips20 = Interpolation.inverted_quadratic(20, *popt)
-    #for i in dips20:
-    #    if i&gt;= min(dists) and i&lt;=max(dists):
-    #        self.dip20 = i
-
-    # Depending on the curvature of the interpolation function,
-    # we choose either the left or the right zero-crossing of the quadratic function
-    # as the iSRb:
-    if self.a &gt;= 0:
-        self.dip20 = max(dips20)
-    else:
-        self.dip20 = min(dips20)
-    
-    if isinstance(self.dip20, type(None)):
-        warn(&#34;could not estimate a single 20%-dip. The found values are {0:.4f} and {1:.4f}&#34;.format(*dips20))
-    
-    self.dipsoi = (dists, dips)
-    lowerBound = min(dists)
-    lowerBound = min(lowerBound, self.dip20)
-    upperBound = max(dists)
-    upperBound = max(upperBound, self.dip20)
-    x = np.linspace(lowerBound, upperBound, 100)
-    self.inter = (x, Interpolation.quadratic(x, *popt))
-    return</code></pre>
-</details>
 <div class="desc"><p>Choose important dips, perform quadradic interpolation and
 choose the correct solution for the 20% dip.</p>
 <h2 id="returns">Returns</h2>
@@ -869,21 +617,6 @@ Write interpolation fit to self.inter : array-like, shape (2, m)</dd>
 <span>def <span class="ident">inverted_quadratic</span></span>(<span>y, a, b, c)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inverted_quadratic(y, a, b, c):
-    &#39;&#39;&#39;solve quadratic function ax^2+bx+c=y
-    
-    Returns
-    -------
-    tuple
-        Both possible solutions for x&#39;&#39;&#39;
-    
-    return (-b/(2*a) + np.sqrt((b/a)**2 /4 - (c-y)/a),
-            -b/(2*a) - np.sqrt((b/a)**2 /4 - (c-y)/a))</code></pre>
-</details>
 <div class="desc"><p>solve quadratic function ax^2+bx+c=y</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -895,104 +628,6 @@ Write interpolation fit to self.inter : array-like, shape (2, m)</dd>
 <span>def <span class="ident">profile</span></span>(<span>self, start, stop, polar_coord=False, optimize=False, rel_width=0.6)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def profile(self, start, stop, polar_coord = False, optimize = False, rel_width = 0.6):
-    &#39;&#39;&#39;Measure intensity along a profile line (area) in the loaded image.
-    
-    Parameters
-    ----------
-    start : array-like, shape (2, )
-        Pixel coordinate of the profile line start.
-    stop : array-like, shape (2, )
-        Coordinate of the profile line stop. Look at polar_coord for more info.
-    polar_coord : bool, optional
-        True: &#39;stop&#39; is treated as polar coordinate (rho, phi), relative to &#39;start&#39;.
-              Angle in degree, counter-clockwise.
-        False: &#39;stop&#39; is treated as cartesian coordinate (x, y)
-    optimize : bool, optional
-        If True, optimize the angle (phi) of &#39;stop&#39; (regardless of coordinate type).
-        Optimize by minimizig the variance of vertical variance of the region of 
-        interest with the Powell&#39;s Method.
-    rel_width : scalar, optional
-        Relative portion of the wire length used for measuring. values ranging
-        from 0.3 to 0.6 are recommended.
-    
-    Returns
-    -------
-    None
-        Write the intensity profile along the scan line to
-        self.measure : ndarray, shape (n, )
-        on execution
-    
-    General Settings
-    ----------------
-     - linewidth = width * wire_length
-     - bi-quadratic filtering for off-pixel coordinates
-     - nearest filter for coordinates outside of the image
-     - arithmetic mean for aggregation of pixels perpendicular to the line
-    
-    Notes
-    -----
-    The possibility of non-square pixels:
-    The transformation between pixel-coordinates and cartesian 
-    distance-coordinates is not a conform map, if the pixels are not squares. 
-    Therefore the measured pixels perpendicular to the profile line in the pixel 
-    coordinates would not be perpendicular in distance coordinates.
-    
-    The measurement is based on skimage.measure.profile_line(). For
-    further informations, check out
-    https://scikit-image.org/docs/stable/api/skimage.measure.html#skimage.measure.profile_line&#39;&#39;&#39;
-    
-    try:
-        rel_width = float(rel_width)
-    except (TypeError, ValueError):
-        raise TypeError(&#34;&#39;width&#39; must be float type.&#34;)
-    if rel_width &lt; 0.3 or rel_width &gt; 0.6:
-        warn(&#34;Expected 0.3 &lt;= &#39;width&#39; &lt;= 0.6 but width = {0:.2f}&#34;.format(rel_width))
-    
-    def_kwargs = {&#39;linewidth&#39; : int(np.rint(self.scale * self.wire_len/self.pxsize * rel_width)),
-                  &#39;order&#39; : 2,
-                  &#39;mode&#39; : &#39;nearest&#39;}
-    
-    if optimize:
-        print(&#39;optimizing&#39;)
-        t = time()
-        if polar_coord:
-            rho, phi = stop[0], -np.deg2rad(stop[1])
-        else:
-            rho = np.linalg.norm(stop-start)
-            # geometric scalar product
-            phi = np.arccos((stop[0]-start[0])/rho)
-        
-        # minimization
-        sol = minimize(self.bivariance, phi, method=&#39;Powell&#39;, args=(rho, start, def_kwargs.copy()))
-        phi = sol[&#39;x&#39;]
-        print(&#39;optimizing done in {:.6f}ms \n&#39;.format((time()-t)*1000))
-        print(&#39;phi = {:.6f}, bivar = {:.6f}, rho = {:.6f} \n&#39;.format(-np.rad2deg(phi), sol[&#39;fun&#39;], rho))
-        
-        if polar_coord:
-            stop = start + rho*np.array((np.cos(phi), np.sin(phi)))
-            stop = np.asarray(np.rint(stop), dtype=int)
-    
-    else:
-        if polar_coord:
-            rho, phi = stop[0], -np.deg2rad(stop[1])
-            stop = start + rho*np.array((np.cos(phi), np.sin(phi)))
-            stop = np.asarray(np.rint(stop), dtype=int)
-        else:
-            pass
-    self.coords = (start, stop, def_kwargs[&#39;linewidth&#39;])
-    
-    # saving variables
-    # matrix indeces differ from cartesian coordinates
-    measure = profile_line(self.im, start[::-1], stop[::-1], **def_kwargs)
-    self.measure = measure
-    self.ind = np.arange(0, self.measure.size)
-    return</code></pre>
-</details>
 <div class="desc"><p>Measure intensity along a profile line (area) in the loaded image.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1040,15 +675,6 @@ further informations, check out
 <span>def <span class="ident">quadratic</span></span>(<span>x, a, b, c)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def quadratic(x, a, b, c):
-    &#39;&#39;&#39;quadratic function&#39;&#39;&#39;
-    
-    return a*x**2 + b*x + c</code></pre>
-</details>
 <div class="desc"><p>quadratic function</p></div>
 </dd>
 </dl>
@@ -1058,6 +684,8 @@ further informations, check out
 <span>(</span><span>message)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Raise on inappropiate execution order. Correct order is:
+<strong>init</strong>(), profile(), calc_dips(), interpolate()</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1069,8 +697,6 @@ further informations, check out
         super().__init__(message)
         return</code></pre>
 </details>
-<div class="desc"><p>Raise on inappropiate execution order. Correct order is:
-<strong>init</strong>(), profile(), calc_dips(), interpolate()</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>builtins.Exception</li>
@@ -1082,6 +708,7 @@ further informations, check out
 <span>(</span><span>message)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Raise on bad calculation results, if unable to continue</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1092,7 +719,6 @@ further informations, check out
         super().__init__(message)
         return</code></pre>
 </details>
-<div class="desc"><p>Raise on bad calculation results, if unable to continue</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>builtins.Exception</li>
@@ -1141,7 +767,7 @@ further informations, check out
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

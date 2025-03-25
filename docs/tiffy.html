@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.tiffy API documentation</title>
 <meta name="description" content="TIFF image reader and writer.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -68,83 +57,30 @@ tr:hover {background-color: #eee;}
 <span>def <span class="ident">TIFFtypeStructCharacter</span></span>(<span>tp)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def TIFFtypeStructCharacter(tp):
-    if tp &gt; 0 and tp &lt;= len(TIFF_BYTES_PER_TYPE):
-        return TIFF_STRUCT_CHAR_FOR_TYPE[tp-1]
-
-    raise Exception(&#34;Unknown TIFF data type: {}&#34;.format(tp))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bytesPerTIFFtype"><code class="name flex">
 <span>def <span class="ident">bytesPerTIFFtype</span></span>(<span>tp)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def bytesPerTIFFtype(tp):
-    if tp &gt; 0 and tp &lt;= len(TIFF_BYTES_PER_TYPE):
-        return TIFF_BYTES_PER_TYPE[tp-1]
-
-    raise Exception(&#34;Unknown TIFF data type: {}&#34;.format(tp))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.getByteOrder"><code class="name flex">
 <span>def <span class="ident">getByteOrder</span></span>(<span>numpyArray)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getByteOrder(numpyArray):
-    byteOrder = numpyArray.dtype.byteorder
-    if byteOrder == &#34;=&#34;:  # native byte order
-        if sys.byteorder == &#34;big&#34;:
-            byteOrder = &#34;&gt;&#34;
-        else:
-            byteOrder = &#34;&lt;&#34;
-
-    return byteOrder</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tagName"><code class="name flex">
 <span>def <span class="ident">tagName</span></span>(<span>intTag)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def tagName(intTag):
-    strTag = &#34;{}&#34;.format(intTag)
-    if strTag in TAGNAMES:
-        return TAGNAMES[strTag]
-    else:
-        return &#34;Unknown&#34;</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffyLog"><code class="name flex">
 <span>def <span class="ident">tiffyLog</span></span>(<span>level, message)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def tiffyLog(level, message):
-    if level &lt; tiffy_currentLogLevel:
-        print(message)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -156,6 +92,7 @@ tr:hover {background-color: #eee;}
 <span>class <span class="ident">bits</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -322,251 +259,78 @@ tr:hover {background-color: #eee;}
         else:  # clear bit
             self.data[byteIdx] = self.data[byteIdx] &amp; ~mask       </code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.bits.byteAndBit"><code class="name flex">
 <span>def <span class="ident">byteAndBit</span></span>(<span>self, pos)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def byteAndBit(self, pos):
-    &#34;&#34;&#34; From a given bit position, returns the byte index and the bit index within this byte. &#34;&#34;&#34;
-    byteIdx = int(math.floor(pos/8))
-    inByte = pos%8
-
-    return byteIdx, inByte</code></pre>
-</details>
 <div class="desc"><p>From a given bit position, returns the byte index and the bit index within this byte.</p></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.getBit"><code class="name flex">
 <span>def <span class="ident">getBit</span></span>(<span>self, pos)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getBit(self, pos):
-    byteIdx, inByte = self.byteAndBit(pos)
-
-    if(byteIdx &gt;= len(self.data)):
-        return 0
-
-    return ((self.data[byteIdx] &gt;&gt; inByte) &amp; 1)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.getBitInByte"><code class="name flex">
 <span>def <span class="ident">getBitInByte</span></span>(<span>self, byteIdx, bitPos)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getBitInByte(self, byteIdx, bitPos):
-    return ((self.data[byteIdx] &gt;&gt; bitPos) &amp; 1)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.getInt"><code class="name flex">
 <span>def <span class="ident">getInt</span></span>(<span>self, startBit, stopBit)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getInt(self, startBit, stopBit):
-    s = 0
-    if startBit &lt; stopBit:
-        for i in range(stopBit-1, startBit-1, -1):
-            s = s &lt;&lt; 1
-            s += self.getBit(i)
-
-    return int(s)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.getIntMSBtoLSB"><code class="name flex">
 <span>def <span class="ident">getIntMSBtoLSB</span></span>(<span>self, startBit, stopBit)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getIntMSBtoLSB(self, startBit, stopBit):
-    s = 0
-    for i in range(startBit, stopBit):  # MSB to LSB
-        s = s &lt;&lt; 1
-        s += self.getBit(i)
-
-    return s</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.getIntMSBtoLSB_faster"><code class="name flex">
 <span>def <span class="ident">getIntMSBtoLSB_faster</span></span>(<span>self, startByte, rightZeros, mask0, mask1, mask2)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getIntMSBtoLSB_faster(self, startByte, rightZeros, mask0, mask1, mask2):
-    s = ((self.data[startByte]&amp;mask0)&lt;&lt;16) + ((self.data[startByte+1]&amp;mask1)&lt;&lt;8) + (self.data[startByte+2]&amp;mask2)
-
-    s = s &gt;&gt; rightZeros
-    #newByte = 0
-    #for b in range(9):
-    #    newByte = newByte &lt;&lt; 1
-    #    newByte += ((s &gt;&gt; b) &amp; 1)
-
-    #return newByte
-
-    return s</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.getIntMSBtoLSB_inBytes"><code class="name flex">
 <span>def <span class="ident">getIntMSBtoLSB_inBytes</span></span>(<span>self, startByte, startBit, nBits)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getIntMSBtoLSB_inBytes(self, startByte, startBit, nBits):
-    s = 0
-
-    # Maximum of three masks required (for 9..12 bits)
-    mask1 = mask &lt;&lt; startBit
-    mask2 = 255 &lt;&lt; (nBits-7)
-    mask3 = 255
-
-    &#34;&#34;&#34;
-    i = 0
-    #print(&#34;StartByte: {}, StartBit: {}, nBits: {}&#34;.format(startByte, startBit, nBits))
-    while i&lt;nBits:  # MSB to LSB
-        s = s &lt;&lt; 1  # Shift left by 1
-        s += ((self.data[startByte] &gt;&gt; (7-startBit)) &amp; 1)
-
-        startBit += 1
-        if startBit &gt; 7:
-            startBit = 0
-            startByte += 1
-
-        i += 1
-    &#34;&#34;&#34;
-
-    startBit += nBits
-    if startBit &gt; 7:
-        startBit = 0
-        startByte += 1
-
-    return s, startByte+1, startBit+nBits</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.reverseBitsInBytes"><code class="name flex">
 <span>def <span class="ident">reverseBitsInBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reverseBitsInBytes(self):
-    for i in range(len(self.data)):
-        newByte = 0
-        for b in range(8):
-            newByte = newByte &lt;&lt; 1
-            newByte += ((self.data[i] &gt;&gt; b) &amp; 1)
-            
-        self.data[i] = newByte</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.set"><code class="name flex">
 <span>def <span class="ident">set</span></span>(<span>self, n)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, n):
-    &#34;&#34;&#34; Takes a number n and stores it in self.data in bitwise manner. &#34;&#34;&#34;
-    self.data = bytearray()
-
-    pos = 0
-    while pos&gt;0:
-        self.setBit(pos, n&amp;1)
-        n = n &gt;&gt; 1
-        pos += 1</code></pre>
-</details>
 <div class="desc"><p>Takes a number n and stores it in self.data in bitwise manner.</p></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.setBit"><code class="name flex">
 <span>def <span class="ident">setBit</span></span>(<span>self, pos, value=1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setBit(self, pos, value=1):
-    byteIdx, inByte = self.byteAndBit(pos)
-
-    while(byteIdx &gt; len(self.data)):
-        self.data += bytes(1)
-
-    mask = 1 &lt;&lt; inByte
-    if value == 1:   # set bit
-        self.data[byteIdx] = self.data[byteIdx] | mask
-    else:  # clear bit
-        self.data[byteIdx] = self.data[byteIdx] &amp; ~mask</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.setBitInByte"><code class="name flex">
 <span>def <span class="ident">setBitInByte</span></span>(<span>self, byteIdx, bitPos, value=1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setBitInByte(self, byteIdx, bitPos, value=1):
-    while(byteIdx &gt; len(self.data)):
-        self.data += bytes(1)
-
-    mask = 1 &lt;&lt; bitPos
-    if value == 1:   # set bit
-        self.data[byteIdx] = self.data[byteIdx] | mask
-    else:  # clear bit
-        self.data[byteIdx] = self.data[byteIdx] &amp; ~mask       </code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.bits.setBytes"><code class="name flex">
 <span>def <span class="ident">setBytes</span></span>(<span>self, b)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setBytes(self, b):
-    &#34;&#34;&#34; Takes a bytes object b and stores it in self.data. &#34;&#34;&#34;
-    self.data = bytearray()
-    self.data += b</code></pre>
-</details>
 <div class="desc"><p>Takes a bytes object b and stores it in self.data.</p></div>
 </dd>
 </dl>
@@ -575,6 +339,7 @@ tr:hover {background-color: #eee;}
 <span>class <span class="ident">ifd</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -654,134 +419,42 @@ tr:hover {background-color: #eee;}
         for entry in self.fields:
             entry.writeExtraValues(f, byteOrder)</code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.ifd.addEntry"><code class="name flex">
 <span>def <span class="ident">addEntry</span></span>(<span>self, entry)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addEntry(self, entry):
-    self.fields.append(entry)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifd.prepareDataOffsets"><code class="name flex">
 <span>def <span class="ident">prepareDataOffsets</span></span>(<span>self, offset)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepareDataOffsets(self, offset):
-    self.ifdPos = offset
-
-    offset += 2  # number of entries (2 bytes)
-    extraDataOffset = offset + 12*len(self.fields) + 4  # offset for each entry (12 bytes) + pointer to next IFD (4 bytes)
-
-    for field in self.fields:
-        offset, extraDataOffset = field.prepareDataOffsets(offset, extraDataOffset)
-
-    return offset</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifd.printOffset"><code class="name flex">
 <span>def <span class="ident">printOffset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printOffset(self):
-    tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;+ IFD                   {offset} -&gt; {nextIFD}&#34;.format(offset=self.ifdPos, nextIFD=self.nextIfdPos))
-
-    for entry in self.fields:
-        entry.printOffset()
-
-    for entry in self.fields:
-        entry.printExtraDataOffset()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifd.read"><code class="name flex">
 <span>def <span class="ident">read</span></span>(<span>self, ifdPos, f, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def read(self, ifdPos, f, byteOrder):
-    self.ifdPos = ifdPos
-
-    tiffyLog(TIFFY_LOGLEVEL_INFO, &#34; -- new IFD.&#34;)
-
-    f.seek(ifdPos)
-    buff = f.read(2)
-    offset = ifdPos + 2
-    (self.fieldCount,) = struct.unpack(&#34;{endian}H&#34;.format(endian=byteOrder), buff)
-    
-    for i in range(self.fieldCount):
-        entry = ifdEntry()
-        entry.read(offset, f, byteOrder)
-        self.fields.append(entry)
-        offset += 12
-
-    f.seek(offset)
-    buff = f.read(4)
-    (self.nextIfdPos,) = struct.unpack(&#34;{endian}L&#34;.format(endian=byteOrder), buff)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifd.sizeInBytes"><code class="name flex">
 <span>def <span class="ident">sizeInBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sizeInBytes(self):
-    size = 2 + 4  # Number of entries (2 bytes) + offset to next IFD (4 bytes)
-    for field in self.fields:
-        size += field.sizeInBytes()
-
-    return size</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifd.write"><code class="name flex">
 <span>def <span class="ident">write</span></span>(<span>self, f, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write(self, f, byteOrder):
-    buff = struct.pack(&#34;{endian}H&#34;.format(endian=byteOrder), len(self.fields))
-    f.write(buff)
-
-    tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Written IFD. Now at position {}&#34;.format(f.tell()))
-
-    # IFD entries:
-    for entry in self.fields:
-        entry.write(f, byteOrder)
-
-    buff = struct.pack(&#34;{endian}L&#34;.format(endian=byteOrder), self.nextIfdPos)
-    f.write(buff)
-
-    # extra data
-    for entry in self.fields:
-        entry.writeExtraValues(f, byteOrder)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -790,6 +463,7 @@ tr:hover {background-color: #eee;}
 <span>class <span class="ident">ifdEntry</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -945,298 +619,96 @@ tr:hover {background-color: #eee;}
             buff = struct.pack(&#34;{endian}{count}{structchar}&#34;.format(endian=byteOrder, count=self.count, structchar=structChar), *self.values)
             f.write(buff)</code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.ifdEntry.getValue"><code class="name flex">
 <span>def <span class="ident">getValue</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getValue(self):
-    if len(self.values) &gt; 0:
-        return self.values[0]
-    else:
-        raise Exception(&#34;TIFF field with tag {tag} does not come with any value.&#34;.format(tag=self.tag))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.nValueBytes"><code class="name flex">
 <span>def <span class="ident">nValueBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def nValueBytes(self):
-    return self.count * bytesPerTIFFtype(self.type)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.prepareDataOffsets"><code class="name flex">
 <span>def <span class="ident">prepareDataOffsets</span></span>(<span>self, offset, extraDataOffset)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepareDataOffsets(self, offset, extraDataOffset):
-    self.ifdEntryPos = offset
-    self.extraValuesOffset = extraDataOffset
-    return (offset+12), (extraDataOffset + self.sizeOfExtraValues())</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.printExtraDataOffset"><code class="name flex">
 <span>def <span class="ident">printExtraDataOffset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printExtraDataOffset(self):
-    if self.nValueBytes() &gt; 4:
-        tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;    IFD entry, tag {t}  {offset}  Extra Data&#34;.format(t=self.tag, offset=self.extraValuesOffset))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.printOffset"><code class="name flex">
 <span>def <span class="ident">printOffset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printOffset(self):
-    tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;    IFD entry, tag {t}  {offset}&#34;.format(t=self.tag, offset=self.ifdEntryPos))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.read"><code class="name flex">
 <span>def <span class="ident">read</span></span>(<span>self, offset, f, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def read(self, offset, f, byteOrder):
-    f.seek(offset)
-    buff = f.read(8)
-    (self.tag, self.type, self.count) = struct.unpack(&#34;{endian}HHL&#34;.format(endian=byteOrder), buff)
-
-    # Calculate amount of bytes necessary for value(s):
-    self.nValueBytes = self.nValueBytes()
-
-    # Read value(s):
-    f.seek(offset+8)
-    buff = f.read(4)
-
-    if self.nValueBytes &gt; 4:  # The field&#39;s actual value bytes must be read from the provided pointer.
-        (valueOffset,) = struct.unpack(&#34;{endian}L&#34;.format(endian=byteOrder), buff)
-        f.seek(valueOffset)
-        buff = f.read(self.nValueBytes)
-  
-    # Prepare a struct pattern:
-    structPattern = &#34;&#34;
-    structCharacter = TIFFtypeStructCharacter(self.type)
-    for i in range(self.count):
-        structPattern += structCharacter
-
-    # Fill rest of pattern with pad bytes:
-    if self.nValueBytes &lt; 4:
-        for j in range(4 - self.nValueBytes):
-            structPattern += &#34;x&#34;
-
-    tup = struct.unpack(&#34;{endian}{pattern}&#34;.format(endian=byteOrder, pattern=structPattern), buff)
-
-    if self.type == TIFF_RATIONAL or self.type == TIFF_SRATIONAL:
-        for numerator, denominator in zip(tup, tup[1:]):
-            val = 0
-            if denominator != 0:
-                val = numerator / denominator
-
-            self.values.append(val)
-    else:
-        for val in tup:
-            self.values.append(val)
-
-    if len(self.values) &lt; 5:
-        tiffyLog(TIFFY_LOGLEVEL_INFO, &#34; -- Tag {tag} ({tagname}): {n} value(s) {val}&#34;.format(tag=self.tag, tagname=tagName(self.tag), n=len(self.values), val=self.values))
-    else:
-        tiffyLog(TIFFY_LOGLEVEL_INFO, &#34; -- Tag {tag} ({tagname}): {n} value(s)&#34;.format(tag=self.tag, tagname=tagName(self.tag), n=len(self.values)))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.set"><code class="name flex">
 <span>def <span class="ident">set</span></span>(<span>self, tag, typ, values)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, tag, typ, values):
-    self.setTagID(tag)
-    self.setType(typ)
-    self.setValues(values)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.setTagID"><code class="name flex">
 <span>def <span class="ident">setTagID</span></span>(<span>self, tagid)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setTagID(self, tagid):
-    self.tag = tagid</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.setType"><code class="name flex">
 <span>def <span class="ident">setType</span></span>(<span>self, typ)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setType(self, typ):
-    self.type = typ</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.setValue"><code class="name flex">
 <span>def <span class="ident">setValue</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setValue(self, value):
-    if self.type in TIFF_INTTYPES:
-        value = int(value)
-
-    self.values = [value, ]
-    self.count = 1</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.setValues"><code class="name flex">
 <span>def <span class="ident">setValues</span></span>(<span>self, values)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setValues(self, values):
-    self.values = [0] * len(values)
- 
-    for i in range(len(self.values)):
-        if self.type in TIFF_INTTYPES:
-            self.values[i] = int(values[i])
-        else:
-            self.values[i] = values[i]
-
-    self.count = len(values)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.sizeInBytes"><code class="name flex">
 <span>def <span class="ident">sizeInBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sizeInBytes(self):
-    size = 12
-    size += self.sizeOfExtraValues()
-
-    return size</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.sizeOfExtraValues"><code class="name flex">
 <span>def <span class="ident">sizeOfExtraValues</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sizeOfExtraValues(self):
-    size = 0
-
-    # If the values don&#39;t fit in the IFD entry, they are stored somewhere else:
-    if (bytesPerTIFFtype(self.type)*len(self.values)) &gt; 4:
-        size += bytesPerTIFFtype(self.type)*len(self.values)
-
-    return size</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.write"><code class="name flex">
 <span>def <span class="ident">write</span></span>(<span>self, f, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write(self, f, byteOrder):
-    tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;IDF Entry at pos {}&#34;.format(f.tell()))
-    buff = struct.pack(&#34;{endian}HHL&#34;.format(endian=byteOrder), self.tag, self.type, self.count)
-    f.write(buff)
-
-    if self.nValueBytes() &gt; 4:  # point to value storage offset
-        tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Packing for tag {tag} (type {typ}, count {cnt}): Pointing to {offset}&#34;.format(tag=self.tag, typ=self.type, cnt=self.count, endian=byteOrder, offset=self.extraValuesOffset))
-        buff = struct.pack(&#34;{endian}L&#34;.format(endian=byteOrder), self.extraValuesOffset)
-        f.write(buff)
-    else:
-        structChar = TIFFtypeStructCharacter(self.type)
-
-        padding = 4 - self.nValueBytes()
-        if padding &gt; 0:
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar}{padding}x {vals}&#34;.format(tag=self.tag, typ=self.type, cnt=self.count, pos=f.tell(), endian=byteOrder, count=self.count, structchar=structChar, padding=padding, vals=self.values))
-            buff = struct.pack(&#34;{endian}{count}{structchar}{padding}x&#34;.format(endian=byteOrder, count=self.count, structchar=structChar, padding=padding), *self.values)
-            f.write(buff)
-        else:
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar} {vals}&#34;.format(tag=self.tag, typ=self.type, cnt=self.count, pos=f.tell(), endian=byteOrder, count=self.count, structchar=structChar, vals=self.values))
-            buff = struct.pack(&#34;{endian}{count}{structchar}&#34;.format(endian=byteOrder, count=self.count, structchar=structChar), *self.values)
-            f.write(buff)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.ifdEntry.writeExtraValues"><code class="name flex">
 <span>def <span class="ident">writeExtraValues</span></span>(<span>self, f, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def writeExtraValues(self, f, byteOrder):
-    structChar = TIFFtypeStructCharacter(self.type)
-    if self.nValueBytes() &gt; 4:
-        tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Packing for tag {tag} (type {typ}, count {cnt}) at pos {pos}: {endian}{count}{structchar} {vals}&#34;.format(tag=self.tag, typ=self.type, cnt=self.count, pos=f.tell(), endian=byteOrder, count=self.count, structchar=structChar, vals=self.values))
-
-        buff = struct.pack(&#34;{endian}{count}{structchar}&#34;.format(endian=byteOrder, count=self.count, structchar=structChar), *self.values)
-        f.write(buff)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -1245,6 +717,7 @@ tr:hover {background-color: #eee;}
 <span>class <span class="ident">lzwData</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1351,114 +824,30 @@ tr:hover {background-color: #eee;}
 
             code = self.getNextCode()</code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.lzwData.decompress"><code class="name flex">
 <span>def <span class="ident">decompress</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def decompress(self):
-    self.uncompressed = bytearray()
-
-    self.currentBitPos = 0
-    oldCode = -1
-    code = self.getNextCode()
-
-    self.stringTable.init()  # If compressed data doesn&#39;t start with ClearCode
-
-    while not self.stringTable.isEndOfInformation(code):
-        if(self.stringTable.isClearCode(code)):
-            self.resetStringtable()                
-
-            code = self.getNextCode()
-            if(self.stringTable.isEndOfInformation(code)):
-                break
-
-            self.uncompressed += self.stringTable.stringFromCode(code, self.codeWidth)
-            oldCode = code
-        else:
-            if self.stringTable.contains(code):
-                s = self.stringTable.stringFromCode(code, self.codeWidth)
-                self.uncompressed += s
-                self.stringTable.add(self.stringTable.stringFromCode(oldCode, self.codeWidth) + bytes([s[0]]))
-            else:
-                s = self.stringTable.stringFromCode(oldCode, self.codeWidth)
-                outString = s + bytes([s[0]])
-                self.uncompressed += outString
-                self.stringTable.add(outString)
-
-            oldCode = code
-
-            self.codeWidth = self.stringTable.currentCodeBitWidth()
-
-        code = self.getNextCode()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwData.getNextCode"><code class="name flex">
 <span>def <span class="ident">getNextCode</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getNextCode(self):
-    #s1 = self.currentBitPos
-    #s2 = s1 + self.codeWidth
-
-    #code = self.compressed.getIntMSBtoLSB(startBit=s1, stopBit=s2)
-    #code, self.currentByteIdx, self.currentBitPosInByte = self.compressed.getIntMSBtoLSB_inBytes(startByte=self.currentByteIdx, startBit=self.currentBitPosInByte, nBits=self.codeWidth)
-
-    startByte = self.currentByteIdx
-    mask0=self.masks[self.codeWidth,self.currentBitPosInByte,0]
-    mask1=self.masks[self.codeWidth,self.currentBitPosInByte,1]
-    mask2=self.masks[self.codeWidth,self.currentBitPosInByte,2]
-
-    code = self.compressed.getIntMSBtoLSB_faster(startByte=startByte, rightZeros=self.leftAlignOffsets[self.codeWidth,self.currentBitPosInByte], mask0=mask0, mask1=mask1, mask2=mask2)
-
-    tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Requesting {}({}). Skip: {} CodeWidth: {} Offset: {}  Masks: {:08b}.{:08b}.{:08b} -&gt; {}&#34;.format(startByte, self.currentBitPosInByte, self.byteSkips[self.codeWidth,self.currentBitPosInByte], self.codeWidth, self.currentBitPosInByte, mask0, mask1, mask2, code))
-
-    self.currentByteIdx += self.byteSkips[self.codeWidth,self.currentBitPosInByte]
-    self.currentBitPosInByte += self.codeWidth
-    self.currentBitPosInByte = self.currentBitPosInByte % 8
-
-    return code</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwData.resetStringtable"><code class="name flex">
 <span>def <span class="ident">resetStringtable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def resetStringtable(self):
-    self.stringTable.init()
-    self.codeWidth = 9</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwData.setCompressed"><code class="name flex">
 <span>def <span class="ident">setCompressed</span></span>(<span>self, compressed)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setCompressed(self, compressed):
-    self.compressed = bits()
-    self.compressed.setBytes(compressed)
-    self.compressed.data += bytes(3)   # for integer conversion</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -1467,6 +856,7 @@ tr:hover {background-color: #eee;}
 <span>class <span class="ident">lzwStringTable</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1549,74 +939,24 @@ tr:hover {background-color: #eee;}
             raise Exception(&#34;LZW: Requested code #{} not in current string table. Current string table size: {}. Current bit width: {}&#34;.format(code, len(self.byteStrings), codeWidth))
         &#34;&#34;&#34;</code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.lzwStringTable.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, b)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add(self, b):
-    self.byteStrings.append(b)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwStringTable.contains"><code class="name flex">
 <span>def <span class="ident">contains</span></span>(<span>self, code)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def contains(self, code):
-    if code &lt; len(self.byteStrings):
-        return True
-
-    return False</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwStringTable.currentCodeBitWidth"><code class="name flex">
 <span>def <span class="ident">currentCodeBitWidth</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def currentCodeBitWidth(self):
-    &#34;&#34;&#34;
-    l = len(self.byteStrings) + 1
-    bitWidth = 0
-    while l != 0:
-        l = l &gt;&gt; 1
-        bitWidth += 1
-
-    return bitWidth
-    &#34;&#34;&#34;
-
-    if len(self.byteStrings) &lt; 255:
-        return 8
-    elif len(self.byteStrings) &lt; 511:
-        return 9
-    elif len(self.byteStrings) &lt; 1023:
-        return 10
-    elif len(self.byteStrings) &lt; 2047:
-        return 11
-    elif len(self.byteStrings) &lt; 4095:
-        return 12
-    elif len(self.byteStrings) &lt; 8191:
-        return 13
-    elif len(self.byteStrings) &lt; 16383:
-        return 14
-    else:
-        raise Exception(&#34;LZW: Dictionary is too big.&#34;)</code></pre>
-</details>
 <div class="desc"><p>l = len(self.byteStrings) + 1
 bitWidth = 0
 while l != 0:
@@ -1628,76 +968,24 @@ bitWidth += 1</p>
 <span>def <span class="ident">init</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def init(self):
-    self.byteStrings = []
-
-    # Create all bytes:
-    for i in range(256):
-        self.byteStrings.append(bytearray(struct.pack(&#34;B&#34;, i)))
-
-    self.byteStrings.append(bytearray())  # ClearCode: 256
-    self.byteStrings.append(bytearray())  # EndOfInformation code: 257</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwStringTable.isClearCode"><code class="name flex">
 <span>def <span class="ident">isClearCode</span></span>(<span>self, code)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isClearCode(self, code):
-    if code == 256:
-        return True
-
-    return False</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwStringTable.isEndOfInformation"><code class="name flex">
 <span>def <span class="ident">isEndOfInformation</span></span>(<span>self, code)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isEndOfInformation(self, code):
-    if code == 257:
-        return True
-
-    return False</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.lzwStringTable.stringFromCode"><code class="name flex">
 <span>def <span class="ident">stringFromCode</span></span>(<span>self, code, codeWidth)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def stringFromCode(self, code, codeWidth):
-    #if code &lt; 0:
-    #    return bytearray()
-
-    return self.byteStrings[code]
-
-    &#34;&#34;&#34;
-    if code &lt; len(self.byteStrings):
-        #print(&#34;String from code {}: {}&#34;.format(code, self.byteStrings[code]))
-        return self.byteStrings[code]
-    else:
-        raise Exception(&#34;LZW: Requested code #{} not in current string table. Current string table size: {}. Current bit width: {}&#34;.format(code, len(self.byteStrings), codeWidth))
-    &#34;&#34;&#34;</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -1706,6 +994,7 @@ bitWidth += 1</p>
 <span>class <span class="ident">tiff</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1871,282 +1160,78 @@ bitWidth += 1</p>
            
             f.close()</code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.tiff.addImgData"><code class="name flex">
 <span>def <span class="ident">addImgData</span></span>(<span>self, imageData, resX=0, resY=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addImgData(self, imageData, resX=0, resY=0):
-    if len(numpy.shape(imageData)) == 2:
-        # We have to add another dimension for the channel...
-        imageData = numpy.expand_dims(a=imageData, axis=0)
-
-    if len(numpy.shape(imageData)) == 3:
-        img = tiffSubfile()
-        img.set(imageData, resX, resY)
-        self.subfiles.append(img)
-
-        # IFDs must be setup twice to ensure correct data offset pointers.
-        for sub in self.subfiles:
-            sub.setupIFD()
-        self.prepareDataOffsets()
-        for sub in self.subfiles:
-            sub.setupIFD()
-    else:
-        raise Exception(&#34;TIFF: adding image data failed. Image data must be a numpy array of shape (height, width) or (channels, height, width).&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.getHeight"><code class="name flex">
 <span>def <span class="ident">getHeight</span></span>(<span>self, subfile=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getHeight(self, subfile=0):
-    if subfile &lt; len(self.subfiles):
-        return self.subfiles[subfile].getHeight()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.getNrSubfiles"><code class="name flex">
 <span>def <span class="ident">getNrSubfiles</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getNrSubfiles(self):
-    &#34;&#34;&#34; Return number of subfiles. &#34;&#34;&#34;
-    return len(self.subfiles)</code></pre>
-</details>
 <div class="desc"><p>Return number of subfiles.</p></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.getWidth"><code class="name flex">
 <span>def <span class="ident">getWidth</span></span>(<span>self, subfile=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getWidth(self, subfile=0):
-    if subfile &lt; len(self.subfiles):
-        return self.subfiles[subfile].getWidth()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.imageData"><code class="name flex">
 <span>def <span class="ident">imageData</span></span>(<span>self, subfile=0, channel=None, obeyOrientation=True)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def imageData(self, subfile=0, channel=None, obeyOrientation=True):
-    if subfile &lt; len(self.subfiles):
-        data = self.subfiles[subfile].imageData()
-        if channel is None:
-            return data
-        else:
-            return data[0]
-    else:
-        raise Exception(&#34;Subfile id not available: {}&#34;.format(subfile))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.prepareDataOffsets"><code class="name flex">
 <span>def <span class="ident">prepareDataOffsets</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepareDataOffsets(self):
-    offset = 8  # TIFF header
-    for sub in self.subfiles:
-        offset = sub.prepareDataOffsets(offset)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.printOffset"><code class="name flex">
 <span>def <span class="ident">printOffset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printOffset(self):
-    self.prepareDataOffsets()
-    tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;TIFF HEADER             0&#34;)
-    for sub in self.subfiles:
-        sub.printOffset()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.read"><code class="name flex">
 <span>def <span class="ident">read</span></span>(<span>self, filename=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def read(self, filename=None):
-    self.filename = filename
-
-    if self.filename is not None:
-        if os.path.isfile(self.filename):
-            filesize = os.path.getsize(self.filename)
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Size of {filename}: {size} Bytes.&#34;.format(filename=self.filename, size=filesize))
-
-            if filesize &gt; 2:
-                with open(self.filename, &#34;rb&#34;) as f:
-                    buff = f.read(2)
-                    (tiffformat,) = struct.unpack(&#34;&lt;H&#34;, buff)  # Just read as little endian. It&#39;s symmetric, it doesn&#39;t matter.
-
-                    self.byteOrder = &#34;&lt;&#34;   # little endian
-                    if tiffformat == 0x4949:
-                        tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;II format. Little endian.&#34;)
-                        self.byteOrder = &#34;&lt;&#34;
-                    elif tiffformat == 0x4d4d:
-                        tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;MM format. Big endian.&#34;)
-                        self.byteOrder = &#34;&gt;&#34;
-                    else:
-                        f.close()
-                        raise Exception(&#34;Invalid byte order for first two bytes in TIFF header. Must be 0x4949 (II) or 0x4d4d (MM).&#34;)
-
-                    buff = f.read(2)
-                    (magicByte,) = struct.unpack(&#34;{endian}H&#34;.format(endian=self.byteOrder), buff)
-                    if magicByte == 42:
-                        tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Magic Byte: {}&#34;.format(magicByte))
-                    else:
-                        raise Exception(&#34;TIFF magic byte is not 42: {}&#34;.format(self.filename))
-
-
-                    # Get location of first image file directory (IFD):
-                    buff = f.read(4)
-                    (ifdPos,) = struct.unpack(&#34;{endian}L&#34;.format(endian=self.byteOrder), buff)
-
-                    ifd0 = ifd()
-                    ifd0.read(ifdPos, f, self.byteOrder)
-
-                    self.subfiles = []
-                    subfile0 = tiffSubfile()
-                    subfile0.readMetaInformation(self.filename, self.byteOrder, ifd0)
-                    self.subfiles.append(subfile0)
-
-                    nextIfdPos = ifd0.nextIfdPos
-                    while nextIfdPos != 0:
-                        ifdn = ifd()
-                        ifdn.read(nextIfdPos, f, self.byteOrder)
-                        subfilen = tiffSubfile()
-                        subfilen.readMetaInformation(self.filename, self.byteOrder, ifdn)
-                        self.subfiles.append(subfilen)
-                        nextIfdPos = ifdn.nextIfdPos
-
-                    f.close()
-            else:
-                raise Exception(&#34;TIFF file does not contain any data: {}&#34;.format(self.filename))
-        else:
-            raise Exception(&#34;File not found: {}&#34;.format(self.filename))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.reset"><code class="name flex">
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reset(self):
-    self.__init__()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.save"><code class="name flex">
 <span>def <span class="ident">save</span></span>(<span>self, filename, endian='little')</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def save(self, filename, endian=&#34;little&#34;):
-    byteOrder = &#34;&lt;&#34; # little endian is default
-    if endian == &#34;big&#34;:
-        byteOrder = &#34;&gt;&#34;
-
-    with open(filename, &#39;wb&#39;) as f:
-        # Write the TIFF header.
-
-        # Endian:
-        if byteOrder == &#34;&gt;&#34;:
-            buff = struct.pack(&#34;{endian}H&#34;.format(endian=byteOrder), 0x4d4d)
-        else:
-            buff = struct.pack(&#34;{endian}H&#34;.format(endian=byteOrder), 0x4949)
-        f.write(buff)
-
-        # Magic number:
-        buff = struct.pack(&#34;{endian}H&#34;.format(endian=byteOrder), 42)
-        f.write(buff)
-
-        # The IFD0 always follows the header in our case:
-        buff = struct.pack(&#34;{endian}L&#34;.format(endian=byteOrder), 8)
-        f.write(buff)
-
-        for sub in self.subfiles:
-            sub.write(f, byteOrder)
-       
-        f.close()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.set"><code class="name flex">
 <span>def <span class="ident">set</span></span>(<span>self, imageData, resX=0, resY=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, imageData, resX=0, resY=0):
-    self.reset()
-    self.addImgData(imageData, resX, resY)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiff.sizeInBytes"><code class="name flex">
 <span>def <span class="ident">sizeInBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sizeInBytes(self):
-    size = 8  # TIFF header
-
-    # Add size for each sub file:
-    for sub in self.subfiles:
-        size += sub.sizeInBytes()
-
-    return size</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -2155,6 +1240,7 @@ bitWidth += 1</p>
 <span>class <span class="ident">tiffSubfile</span></span>
 </code></dt>
 <dd>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2691,828 +1777,198 @@ bitWidth += 1</p>
                         f.write(buff)
             &#34;&#34;&#34;</code></pre>
 </details>
-<div class="desc"></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.tiffy.tiffSubfile.addIFDentry"><code class="name flex">
 <span>def <span class="ident">addIFDentry</span></span>(<span>self, tag, typ, values)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addIFDentry(self, tag, typ, values):
-    entry = ifdEntry()
-    entry.set(tag, typ, values)
-    self.ifd.addEntry(entry)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.addIFDentry_shortOrLong"><code class="name flex">
 <span>def <span class="ident">addIFDentry_shortOrLong</span></span>(<span>self, tag, values)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addIFDentry_shortOrLong(self, tag, values):
-    # find the right integer type for the provided values:
-    m = max(values)
-    typ = TIFF_LONG
-    if m &lt; (2**16):
-        typ = TIFF_SHORT
-
-    self.addIFDentry(tag, typ, values)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.bitsPerPixel"><code class="name flex">
 <span>def <span class="ident">bitsPerPixel</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def bitsPerPixel(self):
-    bits = 0
-    for b in self.bitsPerSample:
-        bits += b
-
-    return bits</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.dataSizeInBytes"><code class="name flex">
 <span>def <span class="ident">dataSizeInBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dataSizeInBytes(self):
-    &#34;&#34;&#34; Size of pixel data (in bytes) &#34;&#34;&#34;
-    size = 0
-    for bitsPerSample in self.bitsPerSample:
-        s = int(bitsPerSample * self.nPixels())
-        size += s
-
-    return size/8</code></pre>
-</details>
 <div class="desc"><p>Size of pixel data (in bytes)</p></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.flip"><code class="name flex">
 <span>def <span class="ident">flip</span></span>(<span>self, horizontal=False, vertical=False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def flip(self, horizontal=False, vertical=False):
-    if horizontal:
-        self.flipHorizontal()
-    if vertical:
-        self.flipVertical()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.flipHorizontal"><code class="name flex">
 <span>def <span class="ident">flipHorizontal</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def flipHorizontal(self):
-    if self.isSet():
-        for i in range(self.nChannels()):
-            self.px[i] = numpy.fliplr(self.px[i])</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.flipVertical"><code class="name flex">
 <span>def <span class="ident">flipVertical</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def flipVertical(self):
-    if self.isSet():
-        for i in range(self.nChannels()):
-            self.px[i] = numpy.flipud(self.px[i])</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.getHeight"><code class="name flex">
 <span>def <span class="ident">getHeight</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getHeight(self):
-    return self.rows</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.getHorizontalFlip"><code class="name flex">
 <span>def <span class="ident">getHorizontalFlip</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getHorizontalFlip(self):
-    return self.flipHorz</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.getVerticalFlip"><code class="name flex">
 <span>def <span class="ident">getVerticalFlip</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getVerticalFlip(self):
-    return self.flipVert</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.getWidth"><code class="name flex">
 <span>def <span class="ident">getWidth</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getWidth(self):
-    return self.cols</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.imageData"><code class="name flex">
 <span>def <span class="ident">imageData</span></span>(<span>self, obeyOrientation=True)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def imageData(self, obeyOrientation=True):
-    # Read data into byte buffer:
-    if len(self.stripOffsets) &gt; 0:
-        if len(self.stripOffsets) == len(self.stripByteCounts):
-            if os.path.isfile(self.filename):
-                with open(self.filename, &#34;rb&#34;) as f:
-                    # Initialize nChannels x nPixels array for each channel:
-
-                    # Check if bits per sample is the same for each channel:
-                    if self.bitsPerSample.count(self.bitsPerSample[0]) == len(self.bitsPerSample) and self.sampleFormat.count(self.sampleFormat[0]) == len(self.sampleFormat):
-                        sampleFormat  = self.sampleFormat[0]
-                        bitsPerSample = self.bitsPerSample[0]
-
-                        dt = self.numpyDatatype(sampleFormat, bitsPerSample)
-
-                        if self.isPlanar():
-                            self.px = numpy.zeros((self.nChannels(), self.nPixels()), dtype=dt)
-                        else:
-                            # Make array the shape of a chunky tiff configuration and reshape later...
-                            self.px = numpy.zeros((self.nPixels(), self.nChannels()), dtype=dt)
-
-                        nStrips = len(self.stripOffsets)
-
-                        if self.compression == TIFF_NO_COMPRESSION or self.compression == TIFF_LZW_COMPRESSION:
-                            pixel = 0
-                            bitsPerPixel = self.bitsPerPixel()
-
-                            c = 0  # channel id. Only necessary for PLANAR configuration.
-                            nStripsPerChannel = int(nStrips / self.samplesPerPixel)
-
-                            for i in range(nStrips):
-                                if self.samplesPerPixel &gt; 1:
-                                    if self.planarConfig == TIFF_PLANAR:
-                                        # Import next channel once all strips for one component channel have been imported.
-                                        if (i % nStripsPerChannel) == 0:
-                                            c += 1
-
-                                offset = self.stripOffsets[i]
-                                byteCount = self.stripByteCounts[i]  # byte count after compression
-
-                                #print(&#34;Strip #{}/{}, Byte Offset: {}, Byte Count: {}&#34;.format(i, nStrips, offset, byteCount))
-
-                                f.seek(offset)
-                                buff = f.read(byteCount)
-                                if self.compression == TIFF_LZW_COMPRESSION:
-                                    compressed = lzwData()
-                                    compressed.setCompressed(buff)
-
-                                    #print(&#34;Decompressing LZW for strip {i}/{n}...&#34;.format(i=i, n=nStrips))
-                                    compressed.decompress()
-                                    buff = bytes(compressed.uncompressed)
-
-                                byteCount = len(buff)
-                                bitCount = 8*byteCount
-                                if not self.isPlanar(): # Standard is chunky, also for only 1 sample/pixel.
-                                    pixelsInStrip = int(bitCount / bitsPerPixel)
-                                else:
-                                    pixelsInStrip = int(bitCount / self.bitsPerSample[c])
-
-                                self.importFromUncompressedBuffer(
-                                    pixelOffset = pixel,
-                                    nPixels = pixelsInStrip,
-                                    datatype = dt,
-                                    channel = c,
-                                    buff = buff)
-
-                                pixel += pixelsInStrip
-
-                            tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;{} strips imported.&#34;.format(nStrips))
-                        else:
-                            raise Exception(&#34;TIFF: Compression scheme {} not supported.&#34;.format(self.compression))
-
-                        f.close()
-
-                        if not(self.isPlanar()):
-                            # Chunky mode. Swap axes from (pixels, channels) to (channels, pixels):
-                            self.px = numpy.swapaxes(self.px, 0, 1)
-
-                        # Reshape components into 2D arrays:
-                        if len(self.px) &gt; 0:
-                            self.px = numpy.reshape(self.px, (self.nChannels(), self.rows, self.cols))
-
-                        # Convert horizontal differences to absolute values:
-                        tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;Applying horizontal differencing...&#34;)
-                        if self.predictor == TIFF_HORIZONTAL_DIFFERENCING:
-                            for col in range(1, self.cols):
-                                self.px[...,col] = self.px[...,col-1] + self.px[...,col]
-
-                        tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;Orientation is: {}&#34;.format(self.orientation))
-                        if obeyOrientation:
-                            # Rotate back to orientation 1 ((0,0) is upper left)
-                            if self.orientation == 2:     # (col0, row0) is (top, right)
-                                self.flip(horizontal=True, vertical=False)
-                            elif self.orientation == 3:   # (col0, row0) is (bottom, right)
-                                self.flip(horizontal=True, vertical=True)
-                            elif self.orientation == 4:   # (col0, row0) is bottom left
-                                self.flip(horizontal=False, vertical=True)
-                            elif self.orientation == 5:   # (col0, row0) is (left, top)
-                                self.rotate(&#34;90&#34;)
-                                self.flip(horizontal=False, vertical=True)
-                            elif self.orientation == 6:   # (col0, row0) is (right, top)
-                                self.rotate(&#34;270&#34;)
-                            elif self.orientation == 7:   # (col0, row0) is (right, bottom)
-                                self.rotate(&#34;90&#34;)
-                                self.flip(horizontal=True, vertical=False)
-                            elif self.orientation == 8:   # (col0, row0) is (left, bottom)
-                                self.rotate(&#34;90&#34;)
-
-                            self.orientation = 1
-
-                        return self.px
-                    else:
-                        f.close()
-                        raise Exception(&#34;Unsupported TIFF format: all channels must have the same type and size. Sample format: {}, Bits per sample: {}&#34;.format(self.sampleFormat, self.bitsPerSample))                       
-
-            raise Exception(&#34;File not available: {}&#34;.format(self.filename))
-        else:
-            raise Exception(&#34;Number of strip offsets ({nOffsets}) does not match number of strip byte counts ({nByteCounts}).&#34;.format(nOffsets=len(self.stripOffsets), nByteCounts=len(self.stripByteCounts)))
-    else:
-        raise Exception(&#34;No data strips found for requested subfile in {filename}.&#34;.format(filename=self.filename))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.importFromUncompressedBuffer"><code class="name flex">
 <span>def <span class="ident">importFromUncompressedBuffer</span></span>(<span>self, pixelOffset, nPixels, datatype, channel, buff)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def importFromUncompressedBuffer(self, pixelOffset, nPixels, datatype, channel, buff):
-    if self.isPlanar():  # Buffer contains data just for one channel.
-        self.px[channel][int(pixelOffset):int(pixelOffset+nPixels)] = numpy.frombuffer(buff, dtype=datatype)
-    else: # CHUNKY configuration. channel is irrelevant here (and wrong.)
-        bitsPerPixel = self.bitsPerPixel()
-        bytesPerPixel = int(bitsPerPixel / 8)
-
-        bytesPerSample = [x/8 for x in self.bitsPerSample]
-
-        buff1d = numpy.frombuffer(buff, dtype=datatype)
-        self.px[int(pixelOffset):int(pixelOffset+nPixels)] = numpy.reshape(buff1d, (nPixels, self.nChannels()))
-
-        &#34;&#34;&#34;
-        for pixel in range(nPixels):
-            channelOffset = 0
-
-            
-
-            for c in range(self.samplesPerPixel):
-                # Current index in bytes
-                idxStart = int((pixel + pixelOffset)*bytesPerPixel + channelOffset/8)
-                idxStop  = int(idxStart + bytesPerSample[c])
-
-                #print(&#34;Start: {}, Stop: {}&#34;.format(idxStart, idxStop))
-
-                self.px[c][pixel] = numpy.frombuffer(buff[idxStart:idxStop], dtype=dt)
-
-                channelOffset += self.bitsPerSample[c]
-        &#34;&#34;&#34;</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.isPlanar"><code class="name flex">
 <span>def <span class="ident">isPlanar</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isPlanar(self):
-    return (self.samplesPerPixel == 1 or self.planarConfig == TIFF_PLANAR)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.isSet"><code class="name flex">
 <span>def <span class="ident">isSet</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isSet(self):
-    &#34;&#34;&#34; Check if image has a valid width and height. &#34;&#34;&#34;
-    if(self.getHeight() &gt; 0):
-        if(self.getWidth() &gt; 0):
-            return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if image has a valid width and height.</p></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.nChannels"><code class="name flex">
 <span>def <span class="ident">nChannels</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def nChannels(self):
-    return self.samplesPerPixel</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.nPixels"><code class="name flex">
 <span>def <span class="ident">nPixels</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def nPixels(self):
-    return self.rows*self.cols</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.numpyDatatype"><code class="name flex">
 <span>def <span class="ident">numpyDatatype</span></span>(<span>self, sampleFormat, bitsPerSample)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def numpyDatatype(self, sampleFormat, bitsPerSample):
-    formatString = self.byteOrder
-    if sampleFormat == TIFF_SAMPLEFORMAT_UINT:  # unsigned
-        if bitsPerSample == 8:
-            formatString = &#34;u1&#34;   # unsigned char (1 byte)
-        elif bitsPerSample == 16:
-            formatString += &#34;u2&#34;   # unsigned short (2 bytes)
-        elif bitsPerSample == 32:
-            formatString += &#34;u4&#34;   # unsigned long (4 bytes)
-        elif bitsPerSample == 64:
-            formatString += &#34;u8&#34;   # unsigned long long (8 bytes)
-    elif sampleFormat == TIFF_SAMPLEFORMAT_INT:  # signed
-        if bitsPerSample == 8:
-            formatString = &#34;i1&#34;   # signed char (1 byte)
-        elif bitsPerSample == 16:
-            formatString += &#34;i2&#34;   # signed short (2 bytes)
-        elif bitsPerSample == 32:
-            formatString += &#34;i4&#34;   # signed long (4 bytes)
-        elif bitsPerSample == 64:
-            formatString += &#34;i8&#34;   # signed long long (8 bytes)
-    elif sampleFormat == TIFF_SAMPLEFORMAT_IEEEFP:
-        if bitsPerSample == 16:
-            formatString += &#34;f2&#34;   # float 16 bit
-        elif bitsPerSample == 32:
-            formatString += &#34;f4&#34;   # float 32 bit
-        elif bitsPerSample == 64:
-            formatString += &#34;f8&#34;   # double 64 bit
-
-    if len(formatString) &gt;= 1:
-        return numpy.dtype(formatString)
-
-    raise Exception(&#34;Unsupported data type: {bps} bits per sample for TIFF sample format {sf}.&#34;.format(bps=bitsPerSample, sf=sampleFormat))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.prepareDataOffsets"><code class="name flex">
 <span>def <span class="ident">prepareDataOffsets</span></span>(<span>self, offset)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepareDataOffsets(self, offset):
-    if self.ifd is not None:
-        self.ifd.prepareDataOffsets(offset)
-
-        offset += self.ifd.sizeInBytes()
-        self.imageDataOffset = offset  # image data starts here
-
-        self.stripOffsets    = (self.imageDataOffset, )
-        self.stripByteCounts = self.dataSizeInBytes()
-
-        offset += self.dataSizeInBytes()
-        return offset
-    else:
-        return 0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.printOffset"><code class="name flex">
 <span>def <span class="ident">printOffset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printOffset(self):
-    if self.ifd is not None:
-        self.ifd.printOffset()
-
-    tiffyLog(TIFFY_LOGLEVEL_INFO, &#34;  Image Data            {offset}&#34;.format(offset=self.imageDataOffset))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.readMetaInformation"><code class="name flex">
 <span>def <span class="ident">readMetaInformation</span></span>(<span>self, filename, byteOrder, imgFileDirectory)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def readMetaInformation(self, filename, byteOrder, imgFileDirectory):
-    self.filename = filename
-    self.byteOrder = byteOrder
-    self.ifd = imgFileDirectory
-
-    # Interpret IFD fields based on their TIFF tags:
-    for field in self.ifd.fields:
-        if field.tag == 256:  # Number of columns
-            self.cols = field.getValue()
-        elif field.tag == 257:  # Number of rows
-            self.rows = field.getValue()
-        elif field.tag == 258:  # Bits per sample
-            self.bitsPerSample = field.values
-        elif field.tag == 259:  # Compression
-            self.compression = field.getValue()
-            if self.compression == 0:
-                self.compression = TIFF_NO_COMPRESSION
-        elif field.tag == 262:    # Photometric interpretation
-            self.photometricInterpretation = field.getValue()
-        elif field.tag == 273:  # Strip offsets
-            self.stripOffsets = field.values
-        elif field.tag == 274:  # Orientation
-            self.orientation = field.getValue()
-        elif field.tag == 277:  # Samples per pixel
-            self.samplesPerPixel = field.getValue()
-        elif field.tag == 278:  # Rows per strip
-            self.rowsPerStrip = field.getValue()
-        elif field.tag == 279:  # Strip byte counts
-            self.stripByteCounts = field.values
-        elif field.tag == 282:  # x resolution
-            self.resX = field.getValue()
-        elif field.tag == 283:  # y resolution
-            self.resY = field.getValue()
-        elif field.tag == 284:  # Planar configuration (order of pixel components)
-            self.planarConfig = field.getValue()
-        elif field.tag == 296:  # Resolution unit
-            self.resolutionUnit = field.getValue()
-        elif field.tag == 317:  # Predictor
-            self.predictor = field.getValue()
-        elif field.tag == 320:  # Color map
-            pass # implement later...
-        elif field.tag == 339:  # Sample format
-            self.sampleFormat = field.values            </code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.reset"><code class="name flex">
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reset(self):
-    self.__init__()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.rot180"><code class="name flex">
 <span>def <span class="ident">rot180</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rot180(self):
-    if self.isSet():
-        self.px = numpy.rot90(self.px, k=2, axes=(1,2))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.rot270"><code class="name flex">
 <span>def <span class="ident">rot270</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rot270(self):
-    if self.isSet():
-        self.px = numpy.rot90(self.px, k=-1, axes=(1,2))
-        self.cols, self.rows = self.rows, self.cols</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.rot90"><code class="name flex">
 <span>def <span class="ident">rot90</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rot90(self):
-    if self.isSet():
-        self.px = numpy.rot90(self.px, k=1, axes=(1,2))
-        self.cols, self.rows = self.rows, self.cols</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.rotate"><code class="name flex">
 <span>def <span class="ident">rotate</span></span>(<span>self, rotation)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotate(self, rotation):
-    if rotation == &#34;90&#34;:
-        self.rot90()
-    elif rotation == &#34;180&#34;:
-        self.rot180()
-    elif rotation == &#34;270&#34;:
-        self.rot270()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.set"><code class="name flex">
 <span>def <span class="ident">set</span></span>(<span>self, imageData, resX=0, resY=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, imageData, resX=0, resY=0):
-    if len(imageData) &gt; 0:
-        self.reset()
-        self.px = imageData
-
-        shp = numpy.shape(self.px)  # Shape must be 3-component tuple: (nChannels, height, width)
-        if len(shp) == 3:
-            self.samplesPerPixel = shp[0]
-            self.rows = shp[1]
-            self.cols = shp[2]
-
-            self.rowsPerStrip = self.rows
-            # self.stripByteCounts and self.stripOffsets will be set later by self.prepareDataOffsets()
-
-            # Byte order
-            self.byteOrder = getByteOrder(self.px)
-
-            # Sample format
-            if numpy.issubdtype(self.px.dtype, numpy.signedinteger):
-                self.sampleFormat = [TIFF_SAMPLEFORMAT_INT] * self.nChannels()
-            elif numpy.issubdtype(self.px.dtype, numpy.unsignedinteger):
-                self.sampleFormat = [TIFF_SAMPLEFORMAT_UINT] * self.nChannels()
-            elif numpy.issubdtype(self.px.dtype, numpy.floating):
-                self.sampleFormat = [TIFF_SAMPLEFORMAT_IEEEFP] * self.nChannels()
-            else:
-                raise Exception(&#34;Unsupported dtype ({}) of provided image data. Must be an integer or floating point type.&#34;.format(numpy.dtype(self.px)))
-
-            self.bitsPerSample  = [self.px.dtype.itemsize*8] * self.samplesPerPixel
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Setting bits per sample: {}&#34;.format(self.bitsPerSample))
-            tiffyLog(TIFFY_LOGLEVEL_DEBUG, &#34;Setting sample format:   {}&#34;.format(self.sampleFormat))
-
-            self.resolutionUnit = TIFF_RES_NONE
-            self.resX = resX
-            self.resY = resY
-
-            self.compression    = TIFF_NO_COMPRESSION
-
-            
-            self.photometricInterpretation = TIFF_BLACK_IS_ZERO
-            if self.nChannels() == 3:
-                self.photometricInterpretation = TIFF_RGB
-
-            #if self.samplesPerPixel &gt; 1:
-            #    self.planarConfig   = TIFF_PLANAR
-            #else:
-            #    self.planarConfig   = TIFF_CHUNKY
-            self.planarConfig   = TIFF_CHUNKY
-
-        else:
-            raise Exception(&#34;Error setting image data. Please provide a numpy array of shape (nChannels, nRows, nColumns).&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.setFlip"><code class="name flex">
 <span>def <span class="ident">setFlip</span></span>(<span>self, horz=False, vert=False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFlip(self, horz=False, vert=False):
-    self.flipHorz = horz
-    self.flipVert = vert</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.setupIFD"><code class="name flex">
 <span>def <span class="ident">setupIFD</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setupIFD(self):
-    self.ifd = None
-    self.ifd = ifd()
-
-    self.addIFDentry_shortOrLong(256, (self.cols, ))                        # n columns
-    self.addIFDentry_shortOrLong(257, (self.rows, ))                        # n rows
-    self.addIFDentry(258, TIFF_SHORT, self.bitsPerSample)                   # bits per sample, already an array
-    self.addIFDentry(259, TIFF_SHORT, (TIFF_NO_COMPRESSION, ))               # compression
-    self.addIFDentry(262, TIFF_SHORT, (self.photometricInterpretation, ))   # photometric interpretation
-    self.addIFDentry(266, TIFF_SHORT, (TIFF_MSB2LSB, ))                      # fill order 
-    self.addIFDentry_shortOrLong(273, (self.imageDataOffset, ))             # offset location of strip
-    self.addIFDentry(274, TIFF_SHORT, (self.orientation, ))                 # orientation
-    self.addIFDentry(277, TIFF_SHORT, (self.samplesPerPixel, ))             # samples per pixel
-    self.addIFDentry_shortOrLong(278, (self.rowsPerStrip, ))                # rows per strip
-    self.addIFDentry_shortOrLong(279, (self.dataSizeInBytes(), ))            # strip byte counts
-    # insert resolution entries here later...
-    self.addIFDentry(284, TIFF_SHORT, (self.planarConfig, ))                # planar configuration
-   
-    #self.addIFDentry(296, TIFF_SHORT, (self.resolutionUnit, ))             # resolution unit
-    
-    if self.predictor != TIFF_NO_PREDICTOR:
-        self.addIFDentry(317, TIFF_SHORT, (self.predictor, ))                   # predictor
-    # color map
-    
-    self.addIFDentry(339, TIFF_SHORT, self.sampleFormat)                    # sample format, already an array</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.sizeInBytes"><code class="name flex">
 <span>def <span class="ident">sizeInBytes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sizeInBytes(self):
-    size = 0
-    if self.ifd is not None:
-        size += self.ifd.sizeInBytes()
-
-    size += self.dataSizeInBytes()
-
-    return size</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.structDataTypeString"><code class="name flex">
 <span>def <span class="ident">structDataTypeString</span></span>(<span>self, sampleFormat, bitsPerSample)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def structDataTypeString(self, sampleFormat, bitsPerSample):
-    formatString = self.byteOrder
-    if sampleFormat == TIFF_SAMPLEFORMAT_UINT:  # unsigned
-        if bitsPerSample == 8:
-            formatString = &#34;B&#34;   # unsigned char (1 byte)
-        elif bitsPerSample == 16:
-            formatString += &#34;H&#34;   # unsigned short (2 bytes)
-        elif bitsPerSample == 32:
-            formatString += &#34;L&#34;   # unsigned long (4 bytes)
-        elif bitsPerSample == 64:
-            formatString += &#34;Q&#34;   # unsigned long long (8 bytes)
-    elif sampleFormat == TIFF_SAMPLEFORMAT_INT:  # signed
-        if bitsPerSample == 8:
-            formatString = &#34;b&#34;   # signed char (1 byte)
-        elif bitsPerSample == 16:
-            formatString += &#34;h&#34;   # signed short (2 bytes)
-        elif bitsPerSample == 32:
-            formatString += &#34;l&#34;   # signed long (4 bytes)
-        elif bitsPerSample == 64:
-            formatString += &#34;q&#34;   # signed long long (8 bytes)
-    elif sampleFormat == TIFF_SAMPLEFORMAT_IEEEFP:
-        if bitsPerSample == 16:
-            formatString += &#34;e&#34;   # float 16 bit
-        elif bitsPerSample == 32:
-            formatString += &#34;f&#34;   # float 32 bit
-        elif bitsPerSample == 64:
-            formatString += &#34;d&#34;   # double 64 bit
-
-    if len(formatString) &gt;= 1:
-        return formatString
-
-    raise Exception(&#34;Unsupported data type: {bps} bits per sample for TIFF sample format {sf}.&#34;.format(bps=bitsPerSample, sf=sampleFormat))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.tiffy.tiffSubfile.write"><code class="name flex">
 <span>def <span class="ident">write</span></span>(<span>self, f, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write(self, f, byteOrder):
-    &#34;&#34;&#34; Expects an open, writable file pointer f. &#34;&#34;&#34;
-    self.ifd.write(f, byteOrder)
-
-    dataByteOrder = getByteOrder(self.px)
-    if dataByteOrder != byteOrder:
-        self.px.byteswap(inplace=True)
-
-    # Write image data:
-    if self.samplesPerPixel == 1:
-        f.write(self.px)
-    else:
-        chunkyBytes = numpy.swapaxes(self.px, 0, 2)  # channel &lt;-&gt; cols  --&gt; (cols, rows, channel)
-        chunkyBytes = numpy.swapaxes(chunkyBytes, 0, 1)  # cols &lt;-&gt; rows  --&gt; (rows, cols, channel)
-        chunkyBytes.tofile(f, &#34;&#34;)
-
-        &#34;&#34;&#34;
-        dataString = []
-        for c in range(self.nChannels()):
-            dataString.append(self.structDataTypeString(self.sampleFormat[c], self.bitsPerSample[c]))
-
-        for y in range(self.rows):
-            for x in range(self.cols):
-                # Chunky style.
-                for c in range(self.nChannels()):
-                    buff = struct.pack(&#34;{endian}{ds}&#34;.format(endian=byteOrder, ds=dataString[c]), self.px[c][y][x])
-                    f.write(buff)
-        &#34;&#34;&#34;</code></pre>
-</details>
 <div class="desc"><p>Expects an open, writable file pointer f.</p></div>
 </dd>
 </dl>
@@ -3675,7 +2131,7 @@ bitWidth += 1</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

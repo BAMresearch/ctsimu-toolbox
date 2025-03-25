@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.scenario.group API documentation</title>
 <meta name="description" content="Groups are collections of parameters.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -71,6 +60,8 @@ tr:hover {background-color: #eee;}
 <span>(</span><span>name: str = '')</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Array of objects that are all of the same kind, such as
+the CTSimU materials list.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -159,8 +150,6 @@ tr:hover {background-color: #eee;}
         for element in self._elements:
             element.set_frame(frame, n_frames, reconstruction)</code></pre>
 </details>
-<div class="desc"><p>Array of objects that are all of the same kind, such as
-the CTSimU materials list.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="ctsimu.scenario.group.Group" href="#ctsimu.scenario.group.Group">Group</a></li>
@@ -171,62 +160,18 @@ the CTSimU materials list.</p></div>
 <span>def <span class="ident">add_element</span></span>(<span>self, json_obj: dict)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_element(self, json_obj:dict):
-    # Create new group:
-    new_group = Group()
-    new_group._properties = copy.deepcopy(self._properties)
-    new_group._subgroups  = copy.deepcopy(self._subgroups)
-    new_group.set_from_json(json_obj)
-
-    self._elements.append(new_group)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Array.n_elements"><code class="name flex">
 <span>def <span class="ident">n_elements</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def n_elements(self):
-    return len(self._elements)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Array.set_frame"><code class="name flex">
 <span>def <span class="ident">set_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False):
-    &#34;&#34;&#34;
-    Set up the group for the given `frame` number.
-
-    Parameters
-    ----------
-    frame : float
-        Current frame number.
-
-    n_frames : int
-        Total number of frames in scan.
-
-    reconstruction : bool
-        If `True`, set frame as seen by reconstruction software.
-        Default: `False`.
-    &#34;&#34;&#34;
-
-    for element in self._elements:
-        element.set_frame(frame, n_frames, reconstruction)</code></pre>
-</details>
 <div class="desc"><p>Set up the group for the given <code>frame</code> number.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -266,6 +211,16 @@ Default: <code>False</code>.</dd>
 <span>(</span><span>name: str = '')</span>
 </code></dt>
 <dd>
+<div class="desc"><p>A collection of parameters.</p>
+<p>A group is used to manage a collection of parameters (i.e., the group's
+properties) and set the frame number for all of those parameters at once.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>properties</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A dictionary of part-specific properties.
+The dictionary elements are usually
+<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> objects.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -781,16 +736,6 @@ Default: <code>False</code>.</dd>
         for subgroup in self._subgroups:
             subgroup.set_frame(frame, n_frames, reconstruction)</code></pre>
 </details>
-<div class="desc"><p>A collection of parameters.</p>
-<p>A group is used to manage a collection of parameters (i.e., the group's
-properties) and set the frame number for all of those parameters at once.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>properties</code></strong> :&ensp;<code>dict</code></dt>
-<dd>A dictionary of part-specific properties.
-The dictionary elements are usually
-<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> objects.</dd>
-</dl></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="ctsimu.scenario.acquisition.Acquisition" href="acquisition.html#ctsimu.scenario.acquisition.Acquisition">Acquisition</a></li>
@@ -806,23 +751,6 @@ The dictionary elements are usually
 <span>def <span class="ident">acknowledge_change</span></span>(<span>self, key: str, new_change_state: bool = False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def acknowledge_change(self, key:str, new_change_state:bool=False):
-    &#34;&#34;&#34;Acknowledge a change of a property value due to a drift.
-    After the acknowledgment, the method `changed`
-    will return the `new_change_state` value (standard: `False`).
-
-    Parameters
-    ----------
-    new_change_state : bool, optional
-        The new state to be returned by the method `changed`.
-        Standard value: `False`.
-    &#34;&#34;&#34;
-    self.parameter(key).acknowledge_change(new_change_state=new_change_state)</code></pre>
-</details>
 <div class="desc"><p>Acknowledge a change of a property value due to a drift.
 After the acknowledgment, the method <code>changed</code>
 will return the <code>new_change_state</code> value (standard: <code>False</code>).</p>
@@ -837,44 +765,12 @@ Standard value: <code>False</code>.</dd>
 <span>def <span class="ident">add_alternative_name</span></span>(<span>self, alternative_name: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_alternative_name(self, alternative_name:str):
-    if isinstance(alternative_name, str):
-        self._alternative_names.append(alternative_name)
-    else:
-        raise TypeError(&#34;add_alternative_name: given alternative is not a string.&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.changed"><code class="name flex">
 <span>def <span class="ident">changed</span></span>(<span>self, key: str) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def changed(self, key:str) -&gt; bool:
-    &#34;&#34;&#34;Has the property changed its value since the last acknowledgment?
-    The method `acknowledge_change` should be used to acknowledge
-    a change of the value.
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the requested property.
-
-    Returns
-    -------
-    changed : bool
-        `True` if the requested property has changed since the
-        last acknowledgment, `False` if not.
-    &#34;&#34;&#34;
-    return self.parameter(key).changed()</code></pre>
-</details>
 <div class="desc"><p>Has the property changed its value since the last acknowledgment?
 The method <code>acknowledge_change</code> should be used to acknowledge
 a change of the value.</p>
@@ -894,59 +790,12 @@ last acknowledgment, <code>False</code> if not.</dd>
 <span>def <span class="ident">check</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def check(self):
-    # Virtual function for consistency checks.
-    # Needs specific implementations in children.
-    return True</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>self, key: str) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get(self, key:str) -&gt; float | str | bool:
-    &#34;&#34;&#34;The current value for a given property `key`.
-
-    Parameters
-    ----------
-    key : str or list
-        If key is a string: identifier for the local requested property.
-        If key is a list of strings: key sequence to identify an
-        item in a subgroup.
-
-    Returns
-    -------
-    current_value : float or str or bool
-        Current value of the requested property.
-    &#34;&#34;&#34;
-    if isinstance(key, str):
-        return self.parameter(key).current_value
-    elif isinstance(key, list):
-        if len(key) == 1:
-            # Only one item in the list: return parameter value.
-            return self.parameter(key[0]).current_value
-        elif len(key) == 0:
-            raise Exception(&#34;Get: empty list does not identify a valid key.&#34;)
-        else:
-            next_in_line = key[0]
-            # Identify the subgroup that is meant by the next keyword in line:
-            for s in self._subgroups:
-                if s._name == next_in_line:
-                    # Get the key element from the subgroup, remove
-                    # this &#39;next_in_line&#39; from the front of the list:
-                    return s.get(key[1:])
-
-    raise Exception(&#34;Get: please give a valid key string or list of strings&#34;)</code></pre>
-</details>
 <div class="desc"><p>The current value for a given property <code>key</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -965,39 +814,12 @@ item in a subgroup.</dd>
 <span>def <span class="ident">get_name</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_name(self):
-    return self._name</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.json_dict"><code class="name flex">
 <span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def json_dict(self) -&gt; dict:
-    &#34;&#34;&#34;Create a CTSimU JSON dictionary for this group and its subgroups.
-
-    Returns
-    -------
-    json_dict : dict
-    &#34;&#34;&#34;
-    jd = dict()
-    for key in self._properties:
-        jd[key] = self.parameter(key).json_dict()
-
-    for subgroup in self._subgroups:
-        jd[subgroup.get_name()] = subgroup.json_dict()
-
-    return jd</code></pre>
-</details>
 <div class="desc"><p>Create a CTSimU JSON dictionary for this group and its subgroups.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1009,58 +831,12 @@ item in a subgroup.</dd>
 <span>def <span class="ident">new_subgroup</span></span>(<span>self, subgroup_name: str, array=False) ‑> <a title="ctsimu.scenario.group.Group" href="#ctsimu.scenario.group.Group">Group</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def new_subgroup(self, subgroup_name:str, array=False) -&gt; &#39;Group&#39;:
-    if isinstance(subgroup_name, str):
-        if subgroup_name == &#34;&#34;:
-            raise Exception(&#34;new_subgroup: empty subgroup_name. Please give a name for the subgroup.&#34;)
-
-        if subgroup_name.startswith(&#34;_&#34;):
-            raise Exception(&#34;new_subgroup: subgroup_name cannot start with an underscore: _.&#34;)
-
-        if not array:
-            subgroup = Group(name=subgroup_name, _root=self._root)
-        else:
-            subgroup = Array(name=subgroup_name, _root=self._root)
-
-        self._subgroups.append(subgroup)
-        self.__setattr__(subgroup_name, subgroup)
-
-        return subgroup
-    else:
-        raise TypeError(&#34;new_subgroup: given subgroup_name is not a string.&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.parameter"><code class="name flex">
 <span>def <span class="ident">parameter</span></span>(<span>self, key: str) ‑> <a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def parameter(self, key:str) -&gt; &#39;Parameter&#39;:
-    &#34;&#34;&#34;The parameter object behind a given property `key`.
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the requested property.
-
-    Returns
-    -------
-    p : ctsimu.scenario.parameter.Parameter
-        Parameter for the requested property.
-    &#34;&#34;&#34;
-    if key in self._properties:
-        return self._properties[key]
-    else:
-        raise Exception(f&#34;Part &#39;{self._name}&#39; does not have a property called &#39;{key}&#39;.&#34;)</code></pre>
-</details>
 <div class="desc"><p>The parameter object behind a given property <code>key</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1077,78 +853,12 @@ item in a subgroup.</dd>
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reset(self):
-    &#34;&#34;&#34;Reset all parameters in this group to their standard values.&#34;&#34;&#34;
-    for key in self._properties:
-        self._properties[key].reset()
-
-    for subgroup in self._subgroups:
-        subgroup.reset()</code></pre>
-</details>
 <div class="desc"><p>Reset all parameters in this group to their standard values.</p></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.set"><code class="name flex">
-<span>def <span class="ident">set</span></span>(<span>self,<br>key: str,<br>value,<br>native_unit: str = 'undefined',<br>simple: bool = False,<br>valid_values: list = None)</span>
+<span>def <span class="ident">set</span></span>(<span>self, key: str, value, native_unit: str = 'undefined', simple: bool = False, valid_values: list = None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, key:str, value, native_unit:str=&#34;undefined&#34;, simple:bool=False, valid_values:list=None):
-    &#34;&#34;&#34;Set a property value in the group&#39;s properties dictionary.
-    This function sets the respective parameter&#39;s standard value.
-    If the parameter already exists in the internal properties dictionary,
-    the parameter is reset (i.e., all its drifts are deleted) before the new
-    standard value is set.
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the property to be set.
-
-    value : float or str or bool
-        New standard value for the property.
-
-    native_unit : str, optional
-        The native unit of the property.
-        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
-
-    simple : bool
-        Set to `True` if the parameter is represented
-        as a single value in the JSON file instead of a
-        parameter object.
-
-    valid_values : list
-        A list of acceptable standard values for the parameter.
-    &#34;&#34;&#34;
-
-    # Check if the property already exists:
-    if key in self._properties:
-        # Already exists in dict.
-        # Reset parameter and set its standard value:
-        self._properties[key].reset()
-        if native_unit != &#34;undefined&#34;:
-            self._properties[key].set_native_unit(native_unit)
-
-        self._properties[key].set_standard_value(value=value)
-    else:
-        # Property does not yet exist.
-        if native_unit == &#34;undefined&#34;:
-            # If no native unit is specified, set it to `None`.
-            native_unit = None
-
-        # Create new parameter:
-        new_parameter = Parameter(native_unit=native_unit, standard_value=value, simple=simple, valid_values=valid_values, _root=self._root)
-        self._properties[key] = new_parameter
-
-        # Make the new parameter an attribute of self:
-        self.__setattr__(key, new_parameter)</code></pre>
-</details>
 <div class="desc"><p>Set a property value in the group's properties dictionary.
 This function sets the respective parameter's standard value.
 If the parameter already exists in the internal properties dictionary,
@@ -1175,38 +885,6 @@ parameter object.</dd>
 <span>def <span class="ident">set_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False):
-    &#34;&#34;&#34;
-    Set up the group for the given `frame` number, obeying all drifts.
-
-    Parameters
-    ----------
-    frame : float
-        Current frame number.
-
-    n_frames : int
-        Total number of frames in scan.
-
-    reconstruction : bool
-        If `True`, set frame as seen by reconstruction software.
-        Default: `False`.
-    &#34;&#34;&#34;
-
-    # Set the frame for all elements of the properties dictionary:
-    for key in self._properties:
-        self._properties[key].set_frame(
-            frame=frame,
-            n_frames=n_frames,
-            reconstruction=reconstruction
-        )
-
-    for subgroup in self._subgroups:
-        subgroup.set_frame(frame, n_frames, reconstruction)</code></pre>
-</details>
 <div class="desc"><p>Set up the group for the given <code>frame</code> number, obeying all drifts.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1223,53 +901,6 @@ Default: <code>False</code>.</dd>
 <span>def <span class="ident">set_from_json</span></span>(<span>self, json_obj: dict)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_from_json(self, json_obj:dict):
-    &#34;&#34;&#34;Set all properties of this group from the
-    properties in the given `json_obj`. The group&#39;s
-    property keys must match the keys in the `json_obj`.
-
-    Very simple implementation that only works for
-    trivial, linear (i.e., non-nested) parameter groups.
-    Usually, this function is meant to be replaced by
-    the child which inherits from the `Group` class.
-
-    Parameters
-    ----------
-    json_obj : dict
-        A group of properties from a CTSimU JSON scenario
-        that matches this group&#39;s properties.
-    &#34;&#34;&#34;
-
-    if json_obj is None:
-        self.reset()
-        return
-
-    for key in self._properties:
-        try:
-            self.set_parameter_from_key(key, json_obj, [key], fail_value=self.parameter(key).fail_value)
-        except Exception as e:
-            raise Exception(f&#34;Error setting key &#39;{key}&#39; of &#39;{self._name}&#39;: {e}&#34;)
-
-    for subgroup in self._subgroups:
-        json_subobj = None
-
-        # Check if subgroup&#39;s name is in json_obj,
-        # extract if found:
-        if subgroup.get_name() in json_obj:
-            json_subobj = json_extract(json_obj, [subgroup.get_name()])
-        else:
-            # If subgroup is not found, try alternative names:
-            for alternative_name in subgroup._alternative_names:
-                if alternative_name in json_obj:
-                    json_subobj = json_extract(json_obj, [alternative_name])
-                    break
-
-        subgroup.set_from_json(json_subobj)</code></pre>
-</details>
 <div class="desc"><p>Set all properties of this group from the
 properties in the given <code>json_obj</code>. The group's
 property keys must match the keys in the <code>json_obj</code>.</p>
@@ -1288,38 +919,12 @@ that matches this group's properties.</dd>
 <span>def <span class="ident">set_name</span></span>(<span>self, name: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_name(self, name:str):
-    self._name = name</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.set_parameter"><code class="name flex">
 <span>def <span class="ident">set_parameter</span></span>(<span>self, key: str, parameter: Parameter)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parameter(self, key:str, parameter:&#39;Parameter&#39;):
-    &#34;&#34;&#34;Set the internal property that is identified by the
-    given property `key` to the given `parameter`.
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the property to be set.
-
-    parameter : ctsimu.scenario.parameter.Parameter
-        Parameter object for the given property `key`.
-    &#34;&#34;&#34;
-
-    self._properties[key] = parameter</code></pre>
-</details>
 <div class="desc"><p>Set the internal property that is identified by the
 given property <code>key</code> to the given <code>parameter</code>.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1331,76 +936,9 @@ given property <code>key</code> to the given <code>parameter</code>.</p>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.set_parameter_from_key"><code class="name flex">
-<span>def <span class="ident">set_parameter_from_key</span></span>(<span>self,<br>key: str,<br>dictionary: dict,<br>key_sequence: list,<br>fail_value='undefined',<br>native_unit: str = None) ‑> bool</span>
+<span>def <span class="ident">set_parameter_from_key</span></span>(<span>self, key: str, dictionary: dict, key_sequence: list, fail_value='undefined', native_unit: str = None) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parameter_from_key(self, key:str, dictionary:dict, key_sequence:list, fail_value=&#34;undefined&#34;, native_unit:str=None) -&gt; bool:
-    &#34;&#34;&#34;Set up a parameter object for the given
-    property `key` from the `key_sequence` in the given `dictionary`.
-    The object located at the key sequence must at least
-    have a `value` property.
-
-    If no value can be found at the given `key_sequence`,
-    the `fail_value` is used instead.
-
-    A `native_unit` can be provided in case the `property` does
-    not yet exist in the internal properties dictionary.
-    In this case, a new `ctsimu.scenario.parameter.Parameter`
-    is created for the property and given the `native_unit`.
-
-    If the parameter already exists in the internal properties dictionary,
-    it is reset (i.e., all drifts are deleted).
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the property to be set.
-
-    dictionary : dict
-        CTSimU JSON structure for value, unit, drifts and uncertainty.
-
-    key_sequence : list
-        List of strings that identify the key sequence where the
-        parameter is found in the given JSON structure.
-
-    fail_value : float or str or bool, optional
-        Value to be used if no value can be found in the given `dictionary`
-        at the given `key_sequences`.
-
-    native_unit : str
-        Native unit for the new parameter. Only necessary if the parameter
-        for the given `key` does not yet exist.
-        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
-
-    Returns
-    -------
-    success : bool
-        `True` if a valid value has been found to set up the parameter
-        from the dictionary. `False` if no valid value has been
-        found and possibly the `fail_value` had to be used instead.
-    &#34;&#34;&#34;
-
-    # Check if the property already exists:
-    if key not in self._properties:
-        # If not, create a new parameter object
-        # and insert it into the properties dictionary:
-        new_param = Parameter(native_unit=native_unit, standard_value=fail_value, _root=self._root)
-        self._properties[key] = new_param
-
-    # Try to set up the parameter:
-    if not self._properties[key].set_parameter_from_key(dictionary, key_sequence):
-        # Use fail value if this failed:
-        if fail_value != &#34;undefined&#34;:
-            self.set(key, fail_value)
-
-        return False
-
-    return True</code></pre>
-</details>
 <div class="desc"><p>Set up a parameter object for the given
 property <code>key</code> from the <code>key_sequence</code> in the given <code>dictionary</code>.
 The object located at the key sequence must at least
@@ -1439,75 +977,9 @@ found and possibly the <code>fail_value</code> had to be used instead.</dd>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.set_parameter_from_possible_keys"><code class="name flex">
-<span>def <span class="ident">set_parameter_from_possible_keys</span></span>(<span>self,<br>key: str,<br>dictionary: dict,<br>key_sequences: list,<br>native_unit: str = None,<br>fail_value='undefined') ‑> bool</span>
+<span>def <span class="ident">set_parameter_from_possible_keys</span></span>(<span>self, key: str, dictionary: dict, key_sequences: list, native_unit: str = None, fail_value='undefined') ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parameter_from_possible_keys(self, key:str, dictionary:dict, key_sequences:list, native_unit:str=None, fail_value=&#34;undefined&#34;) -&gt; bool:
-    &#34;&#34;&#34;Set up a parameter object for the given
-    property `key` from the first matching key sequence in
-    the `key_sequences` list. The object located at a
-    key sequence must at least have a `value` property.
-
-    If no value can be found at the given `key_sequences`,
-    or no key sequence matches, the `fail_value` is used instead.
-
-    A `native_unit` can be provided in case the `property` does
-    not yet exist in the internal properties dictionary.
-    In this case, a new `ctsimu.scenario.parameter.Parameter`
-    is created for the property and given the `native_unit`.
-
-    If the parameter already exists in the internal properties
-    dictionary, it is reset (i.e., all drifts are deleted).
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the property to be set.
-
-    dictionary : dict
-        CTSimU JSON structure for value, unit, drifts and uncertainty.
-
-    key_sequences : list
-        List of lists of strings that identify the key sequences
-        where the parameter may be found in the given JSON structure.
-
-    native_unit : str
-        Native unit for the new parameter. Only necessary if the parameter
-        for the given `key` does not yet exist.
-        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
-
-    fail_value : float or str or bool, optional
-        Value to be used if no value can be found in the given `dictionary`
-        at the given `key_sequences`.
-
-    Returns
-    -------
-    success : bool
-        `True` if a valid value has been found to set up the parameter
-        from the dictionary. `False` if no valid value has been
-        found and possibly the `fail_value` had to be used instead.
-    &#34;&#34;&#34;
-
-    # Check if the property already exists:
-    if key not in self._properties:
-        # If not, create a new parameter object
-        # and insert it into the properties dictionary:
-        new_param = Parameter(native_unit=native_unit, standard_value=fail_value, _root=self._root)
-        self._properties[key] = new_param
-
-    if not self._properties[key].set_parameter_from_possible_keys(dictionary, key_sequences):
-        # Use fail value if this failed:
-        if fail_value != &#34;undefined&#34;:
-            self.set(key, fail_value)
-
-        return False
-
-    return True</code></pre>
-</details>
 <div class="desc"><p>Set up a parameter object for the given
 property <code>key</code> from the first matching key sequence in
 the <code>key_sequences</code> list. The object located at a
@@ -1546,81 +1018,9 @@ found and possibly the <code>fail_value</code> had to be used instead.</dd>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.group.Group.set_parameter_value"><code class="name flex">
-<span>def <span class="ident">set_parameter_value</span></span>(<span>self,<br>key: str,<br>dictionary: dict,<br>key_sequence: list,<br>native_unit: str = None,<br>fail_value=None) ‑> bool</span>
+<span>def <span class="ident">set_parameter_value</span></span>(<span>self, key: str, dictionary: dict, key_sequence: list, native_unit: str = None, fail_value=None) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parameter_value(self, key:str, dictionary:dict, key_sequence:list, native_unit:str=None, fail_value=None) -&gt; bool:
-    &#34;&#34;&#34;Set the value for the parameter that is identified
-    by the property `key` in the internal properties dictionary.
-    The new value is taken from the given JSON `dictionary`
-    and located by the given `key_sequence`.
-
-    If no value can be found at the given `key_sequence`,
-    the `fail_value` is used instead.
-
-    A `native_unit` can be provided in case the `property` does
-    not yet exist in the internal properties dictionary.
-    In this case, a new `ctsimu.scenario.parameter.Parameter`
-    is created for the property and given the `native_unit`.
-
-    If the parameter already exists in the internal properties dictionary,
-    it is reset (i.e., all drifts are deleted).
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the property to be set.
-
-    dictionary : dict
-        CTSimU JSON structure for value, unit, drifts and uncertainty.
-
-    key_sequence : list
-        List of strings that identify the key sequence where the
-        value is found in the given JSON structure.
-
-    native_unit : str
-        Native unit for the new parameter. Only necessary if the parameter
-        for the given `key` does not yet exist.
-        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
-
-    fail_value : float or str or bool, optional
-        Value to be used if no value can be found in the given `dictionary`
-        at the given `key_sequences`.
-
-    Returns
-    -------
-    success : bool
-        `True` if a valid value has been found to set up the parameter
-        from the dictionary. `False` if no valid value has been
-        found and possibly the `fail_value` had to be used instead.
-    &#34;&#34;&#34;
-
-    # Check if the property already exists:
-    if key not in self._properties:
-        # If not, create a new parameter object
-        # and insert it into the properties dictionary:
-        new_param = Parameter(native_unit=native_unit, standard_value=None, _root=self._root)
-        self._properties[key] = new_param
-
-    # Extract the value and set it as standard value:
-    value = get_value(dictionary, key_sequence, fail_value=&#34;undefined&#34;)
-    if value != &#34;undefined&#34;:
-        # Getting the value succeeded.
-        self.set(key, value)
-        return True
-    else:
-        # Getting the value failed or it is
-        # not defined in the JSON file. Use
-        # the fail_value instead and return `False`.
-        self.set(key, fail_value)
-        return False
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Set the value for the parameter that is identified
 by the property <code>key</code> in the internal properties dictionary.
 The new value is taken from the given JSON <code>dictionary</code>
@@ -1662,26 +1062,6 @@ found and possibly the <code>fail_value</code> had to be used instead.</dd>
 <span>def <span class="ident">standard_value</span></span>(<span>self, key: str) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def standard_value(self, key:str) -&gt; float | str | bool:
-    &#34;&#34;&#34;The standard value for a given property `key`
-    (i.e., the value unaffected by drifts).
-
-    Parameters
-    ----------
-    key : str
-        Identifier for the requested property.
-
-    Returns
-    -------
-    standard_value : float or str or bool
-        Standard value of the requested property.
-    &#34;&#34;&#34;
-    return self.parameter(key).standard_value</code></pre>
-</details>
 <div class="desc"><p>The standard value for a given property <code>key</code>
 (i.e., the value unaffected by drifts).</p>
 <h2 id="parameters">Parameters</h2>
@@ -1755,7 +1135,7 @@ found and possibly the <code>fail_value</code> had to be used instead.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

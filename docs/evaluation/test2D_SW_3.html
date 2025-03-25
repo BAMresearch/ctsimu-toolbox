@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.evaluation.test2D_SW_3 API documentation</title>
 <meta name="description" content="Test 2D-SW-3: Boolean models, contiguous surfaces …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -236,6 +225,7 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 <span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>CTSimU test 2D-SW-3: Boolean Models.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -260,7 +250,7 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
         self.nPixels = 100 + 2*self.shrink
 
         self.steps = [
-            ImageROI(self.leftOffset, 818, self.leftOffset+self.nPixels, 910),
+            ImageROI(self.leftOffset, 818, self.leftOffset+self.nPixels, 909), # y==909 not treated.
             ImageROI(self.leftOffset, 727, self.leftOffset+self.nPixels, 818),
             ImageROI(self.leftOffset, 636, self.leftOffset+self.nPixels, 727),
             ImageROI(self.leftOffset, 545, self.leftOffset+self.nPixels, 636),
@@ -346,6 +336,9 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 
         derivative.saveTIFF(filename=&#34;{dir}/{name}_{subname}_derivative_cleaned.tif&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType=&#34;float32&#34;)
 
+        # Prepare image of treated-pixel mask:
+        treated = copy.deepcopy(derivative)
+        treated.px[:,:] = 0
 
         # Calculate expected grey values:
         gvAl = [gvAir*att for att in self.attenuationsAl]
@@ -361,8 +354,8 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
             y1 = roi.y1
 
             for y in range(y1-1, y0-1, -1):
-                # -- LEFT BOUNDARY
                 &#34;&#34;&#34;
+                # -- LEFT BOUNDARY
                 # Calculate GV drop for the left boundary at x=89,90:
                 sum_across_left_boundary = numpy.sum(derivative.px[y,89:91])
 
@@ -417,8 +410,6 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
                 derivative.px[y,80:100] = 0
                 derivative.px[y,870:920] = 0
 
-
-
                 # Width of air gap in the upper third of the wedge, for upper and lower y-line boundary:
                 w_gap_upper = (-11*5/(3*1000))*(y - (4*1000)/11)
                 w_gap_lower = (-11*5/(3*1000))*((y+1) - (4*1000)/11)
@@ -434,28 +425,32 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 
                 # -- CENTRAL BOUNDARIES
                 if w_gap_lower &gt; 0:  # air gap, steps 7, 8, 9
-                    # Right x locations of the gap boundary (left is always at 500).
+                    # Right x locations of the gap boundary (left is always at 499).
                     # In the variable names, left and right refer to the leftmost
                     # and rightmost pixel to consider for the sloped edge.
-                    x_gap_right0 = 500 + int(math.trunc(w_gap_lower)) - 1
-                    x_gap_right1 = 500 + int(math.trunc(w_gap_upper))
+                    x_gap_right0 = 499 - 0 + int(math.trunc(w_gap_lower))
+                    x_gap_right1 = 499 + 1 + int(math.trunc(w_gap_upper))
+                    x_gap_left0 = 499 - 1
+                    x_gap_left1 = 499 + 0
 
                     # If the gap is far enough to separate Al, air and Al/Ti:
                     if w_gap_lower &gt; 1:
                         # Check if there is a GV rise to air at x=498,499
-                        sum_across_boundary_to_air = numpy.sum(derivative.px[y,498:500])
+                        sum_across_boundary_to_air = numpy.sum(derivative.px[y,x_gap_left0:x_gap_left1+1])
+                        treated.px[y,x_gap_left0:x_gap_left1+1] += 10
                         if self.is_near(diff_air_al, sum_across_boundary_to_air):
                             # Set both of them to zero so that they are not counted as an anomaly:
-                            derivative.px[y,498:500] = 0
-                        elif (y in self.forbidden_lines) and (not any(diff &lt; 0 for diff in derivative.px[y,498:500])):
-                            derivative.px[y,498:500] = 0
+                            derivative.px[y,x_gap_left0:x_gap_left1+1] = 0
+                        elif (y in self.forbidden_lines) and (not any(diff &lt; 0 for diff in derivative.px[y,x_gap_left0:x_gap_left1+1])):
+                            derivative.px[y,x_gap_left0:x_gap_left1+1] = 0
                         else:
                             # Set one of the pixels to the expectation value, the others to zero. -&gt; introduces anomaly
-                            derivative.px[y,498:500] = 0
-                            derivative.px[y,499] = diff_air_al
+                            derivative.px[y,x_gap_left0:x_gap_left1+1] = 0
+                            derivative.px[y,x_gap_left1] = abs(sum_across_boundary_to_air-diff_air_al)/abs(diff_air_al) #diff_air_al
 
                         # Check if there is a GV drop to the material at the right of the gap (Al/Ti):
                         sum_across_boundary_to_right_material = numpy.sum(derivative.px[y,x_gap_right0:x_gap_right1+1])
+                        treated.px[y,x_gap_right0:x_gap_right1+1] += 11
                         if self.is_near(-diff_air_right, sum_across_boundary_to_right_material):
                             # Set right gap boundary pixels to zero so that they are not counted as an anomaly:
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
@@ -464,16 +459,18 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
                         else:
                             # Set one of the pixels to the expectation value, the others to zero. -&gt; introduces anomaly
                             derivative.px[y,x_gap_right0:x_gap_right1+1] = 0
-                            derivative.px[y,x_gap_right0] = -diff_air_right
+                            derivative.px[y,x_gap_right0] = abs(sum_across_boundary_to_right_material-(-diff_air_right))/abs(diff_air_right) #-diff_air_right
                     else:  # if the gap is too narrow to separate left and right materials from the air gap
                         # Only the total sum over the gap has to match the material GV difference:
                         sum_across_complete_gap = numpy.sum(derivative.px[y,498:x_gap_right1+1])
+                        treated.px[y,498:x_gap_right1+1] += 12
                         if self.is_near(diff_right_al, sum_across_complete_gap) or (y in self.forbidden_lines):
                             derivative.px[y,498:x_gap_right1+1] = 0
                         else:
                             # Set one of the pixels to the expectation value, the others to zero. -&gt; introduces anomaly
                             derivative.px[y,498:x_gap_right1+1] = 0
-                            derivative.px[y,499] = diff_right_al
+                            if diff_right_al != 0:
+                                derivative.px[y,499] = abs(sum_across_complete_gap-diff_right_al)/abs(diff_right_al) #diff_right_al
                 elif subtestName == &#34;Al_Ti&#34;:
                     # We can skip Al_Al because the expected boundary difference is zero.
 
@@ -486,6 +483,7 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 
                     # Check if sum over central boundary matches expected grey value drop from left to right material:
                     sum_across_boundary = numpy.sum(derivative.px[y,x_boundary_left:x_boundary_right+1])
+                    treated.px[y,x_boundary_left:x_boundary_right+1] += 13
                     if self.is_near(diff_right_al, sum_across_boundary):
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
                     elif (y in self.forbidden_lines) and (not any(diff &gt; 0 for diff in derivative.px[y,x_boundary_left:x_boundary_right+1])):
@@ -493,26 +491,39 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
                     else:
                         # Set one of the pixels to the expectation value, the others to zero. -&gt; introduces anomaly
                         derivative.px[y,x_boundary_left:x_boundary_right+1] = 0
-                        derivative.px[y,x_boundary_right] = diff_right_al
+                        derivative.px[y,x_boundary_right] = abs(sum_across_boundary-diff_right_al)/abs(diff_right_al) #diff_right_al
 
-
+        # We only consider anomalies of explicitly treated pixels.
+        derivative.px[treated.px == 0] = 0
 
         derivative.saveTIFF(filename=&#34;{dir}/{name}_{subname}_anomalies.tif&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType=&#34;float32&#34;)
+        treated.saveTIFF(filename=&#34;{dir}/{name}_{subname}_tested.tif&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subtestName), dataType=&#34;float32&#34;)
 
         absDevSum = numpy.sum(numpy.absolute(derivative.px))
+        absDevSqrSum = numpy.sum(numpy.square(derivative.px))
         anomalies = numpy.where(numpy.absolute(derivative.px) &gt; 0)
         anomalyCount = len(anomalies[0])
-        anomalyMean = &#34;-&#34;
+        anomalyMean = 0
+        anomalyRMSE = 0
         if anomalyCount &gt; 0:
             anomalyMean = absDevSum / anomalyCount
+            anomalyRMSE = math.sqrt(absDevSqrSum / anomalyCount)
 
+        checked = numpy.where(treated.px &gt; 0)
+        checkedCount = len(checked[0])
+
+        print(&#34;Number of treated pixels: {}&#34;.format(checkedCount))
         print(&#34;Number of detected grey value anomalies: {}&#34;.format(anomalyCount))
         print(&#34;Mean grey value difference of all anomalies: {}&#34;.format(anomalyMean))
+        print(&#34;RMSE of all anomalies: {}&#34;.format(anomalyRMSE))
 
         summaryText  = &#34;# Evaluation of Test {name}, {subname}:\n&#34;.format(name=self.name, subname=subtestName)
         summaryText += &#34;# \n&#34;
+        summaryText += &#34;# Number of treated pixels: {} \n&#34;.format(checkedCount)
+        summaryText += &#34;# \n&#34;
         summaryText += &#34;# Number of detected grey value anomalies: {} \n&#34;.format(anomalyCount)
-        summaryText += &#34;# Mean anomaly grey value: {} \n&#34;.format(anomalyMean)
+        summaryText += &#34;# Mean grey value difference of all anomalies: {} \n&#34;.format(anomalyMean)
+        summaryText += &#34;# RMSE of all anomalies: {} \n&#34;.format(anomalyRMSE)
 
         if anomalyCount &gt; 0:
             summaryText += &#34;# \n&#34;
@@ -540,7 +551,6 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
     def plotResults(self):
         pass</code></pre>
 </details>
-<div class="desc"><p>CTSimU test 2D-SW-3: Boolean Models.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
@@ -552,56 +562,18 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 <span>def <span class="ident">is_near</span></span>(<span>self, expected, other)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def is_near(self, expected, other):
-    if expected != 0:  # relative deviation no more than 5%
-        return ((abs(other-expected)/abs(expected)) &lt; 0.05)   # 5% maximum deviation from expectation value
-    else:
-        return (abs(other) &lt; self.gv_deviation_limit)   # If the expected difference is 0, the maximum abs. GV deviation should be within the expected limit.</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_SW_3.Test2D_SW_3.prepare"><code class="name flex">
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepare(self):
-    &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
-    self.prepared = True</code></pre>
-</details>
 <div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_SW_3.Test2D_SW_3.prepareRun"><code class="name flex">
 <span>def <span class="ident">prepareRun</span></span>(<span>self, i)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepareRun(self, i):
-    if i &lt; len(self.subtests):
-        if self.subtests[i] == &#34;Al_Al&#34;:
-            pass
-        elif self.subtests[i] == &#34;Al_Ti&#34;:
-            pass
-        else:
-            raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}&#34;.format(key=self.subtests[i], test=self.testName))
-
-        self.results.append(Test2D_SW_3_results())
-    else:
-        if len(self.subtests) == 0:
-            raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts the following keywords: &#39;Al_Al&#39; and &#39;Al_Ti&#39;.&#34;.format(testname=self.testName))
-        else:
-            raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -623,6 +595,7 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 <span>class <span class="ident">Test2D_SW_3_results</span></span>
 </code></dt>
 <dd>
+<div class="desc"><p>Results for one sub test.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -634,7 +607,6 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
         # Horizontal Profile Data:
         self.profiles = []  # Horizontal grey value profile for each line</code></pre>
 </details>
-<div class="desc"><p>Results for one sub test.</p></div>
 </dd>
 </dl>
 </section>
@@ -675,7 +647,7 @@ The sum of gray value changes for all pixels in <span><span class="MathJax_Previ
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

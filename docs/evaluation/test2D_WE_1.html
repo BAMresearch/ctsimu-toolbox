@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.evaluation.test2D_WE_1 API documentation</title>
 <meta name="description" content="Test 2D-WE-1: Focus spot size …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -127,6 +116,7 @@ or by applying a Fourier transform to the ideal LSF. Apart from numerical artifa
 <span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>CTSimU test 2D-WE-1: focal spot size.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -661,7 +651,6 @@ or by applying a Fourier transform to the ideal LSF. Apart from numerical artifa
         except Exception as e:
             log(f&#34;Warning: Error plotting results for test {self.name}, {subtestName} using matplotlib: {e}&#34;)</code></pre>
 </details>
-<div class="desc"><p>CTSimU test 2D-WE-1: focal spot size.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
@@ -673,334 +662,24 @@ or by applying a Fourier transform to the ideal LSF. Apart from numerical artifa
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepare(self):
-    &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
-    if not isinstance(self.pipe, Pipeline):
-        self.prepared = False
-        raise Exception(&#34;Step must be part of a processing pipeline before it can prepare. Current pipeline: {}&#34;.format(self.pipe))
-
-    if len(self.subtests) &gt; 0:
-        if not self.prepared:
-            # It doesn&#39;t matter which of the sub-scenarios we take here.
-            # They all have the same geometry.
-            self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
-
-            if(self.jsonScenarioFile is not None):
-                self.scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
-
-                self.geometry = self.scenario.current_geometry()
-                self.geometry.update()
-
-                print(&#34;Computing an analytical image for an ideal point source...&#34;)
-                self.analyticalIntensityProfileImage, self.analyticalEdgeImage = self.geometry.create_detector_flat_field_sphere(self.clippingRectangle)
-                self.analyticalEdgeImageFF = copy.deepcopy(self.analyticalEdgeImage)
-                self.analyticalEdgeImageFF.applyFlatfield(ref=self.analyticalIntensityProfileImage, rescaleFactor=60000.0)
-
-                # Raise analytical images to maximum grey value of 60000 before saving them.
-                # This rescaling does not affect the previous FF correction.
-                self.analyticalIntensityProfileImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
-                self.analyticalEdgeImage.renormalize(newMin=0.0, newMax=60000.0, currentMin=0.0, currentMax=1.0)
-
-
-                # Write analytical images:
-                if self.rawOutput:
-                    self.analyticalIntensityProfileImage.saveRAW(&#34;{dir}/{name}_ideal_flat.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
-                    self.analyticalEdgeImage.saveRAW(&#34;{dir}/{name}_ideal_edge.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
-                    self.analyticalEdgeImageFF.saveRAW(&#34;{dir}/{name}_ideal_edge_corrected.raw&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;, addInfo=True)
-                else: # TIFF
-                    self.analyticalIntensityProfileImage.save(&#34;{dir}/{name}_ideal_flat.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
-                    self.analyticalEdgeImage.save(&#34;{dir}/{name}_ideal_edge.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
-                    self.analyticalEdgeImageFF.save(&#34;{dir}/{name}_ideal_edge_corrected.tif&#34;.format(dir=self.resultFileDirectory, name=self.name), dataType=&#34;float32&#34;)
-
-
-                print(&#34;Calculating the fundamental LSF and MTF from the ideal edge image...&#34;)
-                # Calculate the edge spread function (using a line profile across the edge):
-                self.results_idealPointSource.lineProfileGV, self.results_idealPointSource.lineProfilePos, stepsize = self.analyticalEdgeImageFF.lineProfile(x0=self.p0.x(), y0=self.p0.y(), x1=self.p1.x(), y1=self.p1.y(), width=self.profileWidth, resolution=self.profileRes)
-
-                # Nyquist frequency determines center of MTF frequency range:
-                self.results_idealPointSource.fnyq = 1.0 / (2.0*stepsize)
-                nSamples = len(self.results_idealPointSource.lineProfileGV)
-                #self.results_idealPointSource.MTFpos = numpy.linspace(start=0, stop=2*self.results_idealPointSource.fnyq, num=nSamples, endpoint=False, dtype=numpy.float64)
-
-                # Make the profile positions symmetric:
-                self.results_idealPointSource.lineProfilePos -= self.profileLength / 2
-
-                # Calculate the line spread function and MTF.
-                self.results_idealPointSource.lineProfileSmoothed, self.results_idealPointSource.LSF, self.results_idealPointSource.LSF_windowed, self.results_idealPointSource.MTF, self.results_idealPointSource.MTFpos = MTF(positions=self.results_idealPointSource.lineProfilePos, ESF=self.results_idealPointSource.lineProfileGV)
-
-                self.results_idealPointSource.lineProfileDelta = self.results_idealPointSource.lineProfileSmoothed - self.results_idealPointSource.lineProfileGV
-
-                self.writeResultFile(subname=&#34;fundamental_spotPoint&#34;, results=self.results_idealPointSource)
-
-                self.prepared = True
-            else:
-                raise Exception(&#34;Test 2D-WE-1: Please provide a JSON scenario description.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.prepareRun"><code class="name flex">
 <span>def <span class="ident">prepareRun</span></span>(<span>self, i)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepareRun(self, i):
-    if i &lt; len(self.subtests):
-        self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
-        if self.subtests[i] == &#34;spot1&#34;:
-            self.jsonScenarioFile = &#34;2D-WE-1_Spot1_2021-10-13v02r04dp.json&#34;
-        elif self.subtests[i] == &#34;spot2&#34;:
-            self.jsonScenarioFile = &#34;2D-WE-1_Spot2_2021-10-13v02r04dp.json&#34;
-        else:
-            raise Exception(&#34;{key} is not a valid subtest identifier for test scenario {test}&#34;.format(key=self.subtests[i], test=self.testName))
-
-        results = Test2D_WE_1_results()
-
-        # Get the Gaussian spot size and the pixel size from the JSON file:
-        if self.jsonScenarioFile is not None:
-            scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
-
-            results.nominalGaussianSigmaMM = scenario.source.spot.sigma.u.get()
-            results.pixelSize = scenario.detector.pixel_pitch.u.get()
-
-            results.nominalGaussianSigmaPX = results.nominalGaussianSigmaMM / results.pixelSize
-
-        if self.subtests[i] == &#34;spotPoint&#34;:
-            results.nominalGaussianSigmaMM = 0
-            results.nominalGaussianSigmaPX = 0
-        else:
-            # Create an ideal Gaussian LSF:
-            nBins = len(self.results_idealPointSource.lineProfilePos)
-            sigma = results.nominalGaussianSigmaPX
-            results.ideal_LSF_Gaussian = numpy.zeros_like(a=self.results_idealPointSource.lineProfilePos, dtype=numpy.dtype(&#39;float64&#39;))
-            for j in range(nBins):
-                s = self.results_idealPointSource.lineProfilePos[j]
-                sLeft  = s - self.profileRes
-                sRight = s + self.profileRes
-                results.ideal_LSF_Gaussian[j] = math.erf(sRight/(math.sqrt(2.0)*sigma)) - math.erf(sLeft/(math.sqrt(2.0)*sigma)) #gaussian((s+sNext)/2.0, 0, sigma, 1)
-
-            # Normalize ideal LSF maximum to 1:
-            idealLSFmax = numpy.amax(results.ideal_LSF_Gaussian)
-            if idealLSFmax != 0:
-                results.ideal_LSF_Gaussian /= idealLSFmax
-
-            # Calculate convolution of ideal LSF of sharp image and Gaussian LSF:
-            results.ideal_LSF_Convolution = numpy.convolve(a=self.results_idealPointSource.LSF, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
-            convMax = numpy.amax(results.ideal_LSF_Convolution)
-            if convMax != 0:
-                results.ideal_LSF_Convolution /= convMax
-
-            # Calculate ideal ESF as convolution of Gaussian with the ideal sampledESF:
-            results.ideal_ESF_Convolution = numpy.convolve(a=self.results_idealPointSource.lineProfileGV, v=results.ideal_LSF_Gaussian, mode=&#39;same&#39;)
-            convMax = numpy.amax(results.ideal_ESF_Convolution)
-            if convMax != 0:
-                results.ideal_ESF_Convolution /= convMax
-
-            # Fit a Gaussian to central half of the data:
-            fitParametersInitial = (0, sigma, 1)
-            fitPositions = self.results_idealPointSource.lineProfilePos[int(nBins//4):int(3*nBins//4)]
-            #fitData = results.ideal_LSF_Gaussian #[int(nBins//4):int(3*nBins//4)]
-            #popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
-
-            #print(&#34;- Ideal Gaussian Fit Mu:    {}&#34;.format(popt[0]))
-            #print(&#34;- Ideal Gaussian Fit Sigma: {}&#34;.format(popt[1]))
-            #print(&#34;- Ideal Gaussian Fit A:     {}&#34;.format(popt[2]))
-
-            fitData = results.ideal_LSF_Convolution[int(nBins//4):int(3*nBins//4)]
-            popt, pcov = optimize.curve_fit(f=gaussian, xdata=fitPositions, ydata=fitData, p0=fitParametersInitial)
-
-            perr = numpy.sqrt(numpy.diag(pcov))
-
-            results.idealGaussianSigmaPX      = popt[1]
-            results.idealGaussianSigmaPXerror = perr[1]
-            results.idealGaussianMuPX         = popt[0]
-            results.idealGaussianMuPXerror    = perr[0]
-            results.idealGaussianAmpPX        = popt[2]
-            results.idealGaussianAmpPXerror   = perr[2]
-
-            results.idealGaussianSigmaMM      = results.pixelSize * results.idealGaussianSigmaPX
-            results.idealGaussianSigmaMMerror = results.pixelSize * results.idealGaussianSigmaPXerror
-            results.idealGaussianMuMM         = results.pixelSize * results.idealGaussianMuPX
-            results.idealGaussianMuMMerror    = results.pixelSize * results.idealGaussianMuPXerror
-            results.idealGaussianAmpMM        = results.pixelSize * results.idealGaussianAmpPX
-            results.idealGaussianAmpMMerror   = results.pixelSize * results.idealGaussianAmpPXerror
-
-            print(&#34;- Analytical LSF Fit Mu:    {} +- {}&#34;.format(popt[0], perr[0]))
-            print(&#34;- Analytical LSF Fit Sigma: {} +- {}&#34;.format(popt[1], perr[1]))
-            print(&#34;- Analytical LSF Fit A:     {} +- {}&#34;.format(popt[2], perr[2]))
-
-
-            # Calculate MTF for Gaussian LSF and Convolution LSF:
-            smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_Gaussian, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Gaussian)
-
-            smoothedESF, retLSF, retLSFsmoothed, results.ideal_MTF_ConvolutionFFT, pos = MTF(positions=self.results_idealPointSource.lineProfilePos, LSF=results.ideal_LSF_Convolution)
-
-            results.ideal_MTF_Multiplication = self.results_idealPointSource.MTF * results.ideal_MTF_Gaussian
-            if results.ideal_MTF_Multiplication[0] != 0:
-                results.ideal_MTF_Multiplication /= results.ideal_MTF_Multiplication[0]
-
-
-        print(&#34;Gaussian Spot Size: {} mm = {} px&#34;.format(results.nominalGaussianSigmaMM, results.nominalGaussianSigmaPX))
-
-        self.results.append(results)
-    else:
-        if len(self.subtests) == 0:
-            raise Exception(&#34;Please provide keywords that identify which metadata file belongs to which subtest. Test {testname} accepts the following keywords: &#39;spot1&#39; and &#39;spot2&#39;.&#34;.format(testname=self.testName))
-        else:
-            raise Exception(&#34;Number of provided image metadata files exceeds number of test runs ({expected}).&#34;.format(expected=len(self.subtests)))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeResultFile"><code class="name flex">
 <span>def <span class="ident">writeResultFile</span></span>(<span>self, subname, results)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def writeResultFile(self, subname, results):
-    pos = results.lineProfilePos
-
-    # ESF
-    ESF         = results.lineProfileGV
-    ESFsmoothed = results.lineProfileSmoothed
-    ESFideal    = results.ideal_ESF_Convolution
-
-    # LSF
-    LSF         = results.LSF
-    LSFwindowed = results.LSF_windowed
-    LSFideal    = results.ideal_LSF_Convolution
-
-    # MTF
-    MTFpos      = results.MTFpos
-    MTF         = results.MTF
-    MTFideal    = results.ideal_MTF_ConvolutionFFT
-
-    profileText  = &#34;# Profile data: edge spread function (ESF), smoothed ESF, line spread function (LSF) and windowed LSF (von-Hann window)\n&#34;
-    profileText += &#34;# s [px]\tESF\tESF_smoothed&#34;
-    if not(ESFideal is None):
-        profileText += &#34;\tESF_ideal&#34;
-
-    profileText += &#34;\tLSF\tLSF_windowed&#34;
-
-    if not(LSFideal is None):
-        profileText += &#34;\tLSF_ideal&#34;
-
-    profileText += &#34;\n&#34;
-
-    mtfText  = &#34;# Modulation Transfer Function (MTF)\n&#34;
-    mtfText += &#34;# f [cycles/px]\tMTF_measured&#34;
-    if not(MTFideal is None):
-        mtfText += &#34;\tMTF_ideal&#34;
-
-    mtfText += &#34;\n&#34;
-
-    for j in range(len(pos)):
-        profileText += &#34;{pos:.2f}\t{ESF}\t{ESFsmoothed}&#34;.format(pos=pos[j], ESF=ESF[j], ESFsmoothed=ESFsmoothed[j])
-
-        if not(ESFideal is None):
-            profileText += &#34;\t{ESFideal}&#34;.format(ESFideal=ESFideal[j])
-
-        profileText += &#34;\t{LSF}\t{LSFwindowed}&#34;.format(LSF=LSF[j], LSFwindowed=LSFwindowed[j])
-
-        if not(LSFideal is None):
-            profileText += &#34;\t{LSFideal}&#34;.format(LSFideal=LSFideal[j])
-
-        profileText += &#34;\n&#34;
-
-
-        mtfText += &#34;{f:.3f}\t{mtf}&#34;.format(f=MTFpos[j], mtf=MTF[j])
-
-        if not(MTFideal is None):
-            mtfText += &#34;\t{MTFideal}&#34;.format(MTFideal=MTFideal[j])
-
-
-        mtfText += &#34;\n&#34;
-
-    profileFileName = &#34;{dir}/{name}_{subname}_ESF_LSF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
-    with open(profileFileName, &#39;w&#39;) as profileFile:
-        profileFile.write(profileText)
-        profileFile.close()
-
-    mtfFileName = &#34;{dir}/{name}_{subname}_MTF.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
-    with open(mtfFileName, &#39;w&#39;) as mtfFile:
-        mtfFile.write(mtfText)
-        mtfFile.close()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1.writeSummaryFile"><code class="name flex">
 <span>def <span class="ident">writeSummaryFile</span></span>(<span>self, subname, results)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def writeSummaryFile(self, subname, results):
-    summaryText  = &#34;Evaluation results for {testname} {subtest}\n&#34;.format(testname=self.testName, subtest=subname)
-    summaryText += &#34;=================================================\n\n&#34;
-
-    summaryText += &#34;Fit results for gauss(x) = A * exp(-(x-mu)²/(2*sigma²))\n&#34;
-    summaryText += &#34;Errors: 1 standard deviation\n&#34;
-    summaryText += &#34;-------------------------------------------------------\n&#34;
-    summaryText += &#34;measured:   sigma [px] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaPX, results.measuredGaussianSigmaPXerror)
-    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianSigmaMM, results.measuredGaussianSigmaMMerror)
-    summaryText += &#34;measured:   mu    [px] = {} +- {}\n&#34;.format(results.measuredGaussianMuPX,    results.measuredGaussianMuPXerror)
-    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.measuredGaussianMuMM,    results.measuredGaussianMuMMerror)
-    summaryText += &#34;measured:   A     [px] = {} +- {}\n&#34;.format(results.measuredGaussianAmpPX,   results.measuredGaussianAmpPXerror)
-    summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.measuredGaussianAmpMM, results.measuredGaussianAmpMMerror)
-
-    summaryText += &#34;analytical: sigma [px] = {} +- {}\n&#34;.format(results.idealGaussianSigmaPX, results.idealGaussianSigmaPXerror)
-    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianSigmaMM, results.idealGaussianSigmaMMerror)
-    summaryText += &#34;analytical: mu    [px] = {} +- {}\n&#34;.format(results.idealGaussianMuPX,    results.idealGaussianMuPXerror)
-    summaryText += &#34;                  [mm] = {} +- {}\n&#34;.format(results.idealGaussianMuMM,    results.idealGaussianMuMMerror)
-    summaryText += &#34;analytical: A     [px] = {} +- {}\n&#34;.format(results.idealGaussianAmpPX,   results.idealGaussianAmpPXerror)
-    summaryText += &#34;                  [mm] = {} +- {}\n\n&#34;.format(results.idealGaussianAmpMM, results.idealGaussianAmpMMerror)
-
-    summaryText += &#34;sigma: abs. deviation (measured-analytical) [px]       = {:.5f}\n&#34;.format(results.sigma_absDev())
-    summaryText += &#34;sigma: abs. deviation (measured-analytical) [mm]       = {:.5f}\n&#34;.format(results.sigma_absDev() * results.pixelSize)
-    summaryText += &#34;sigma: rel. deviation (measured-analytical)/analytical = {:.5f}\n\n&#34;.format(results.sigma_relDev())
-
-
-    #summaryText += &#34;MTF 10% frequency\n&#34;
-    #summaryText += &#34;-------------------------------------------------------\n&#34;
-    #summaryText += &#34;MTF10 measured: [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_measured)
-    #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_measured / results.pixelSize)
-
-    #summaryText += &#34;MTF10 ideal:    [cycles/px] = {:.3f}\n&#34;.format(results.MTF10freq_ideal)
-    #summaryText += &#34;                [cycles/mm] = {:.3f}\n\n&#34;.format(results.MTF10freq_ideal / results.pixelSize)
-
-    #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/px] = {:.5f}\n&#34;.format(results.MTF10freq_absDev())
-    #summaryText += &#34;MTF10: abs. deviation (measured-ideal) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF10freq_absDev() / results.pixelSize)
-    #summaryText += &#34;MTF10: rel. deviation (measured-ideal)/ideal       = {:.5f}\n&#34;.format(results.MTF10freq_relDev())
-
-
-    summaryText += &#34;\nMTF 20% frequency\n&#34;
-    summaryText += &#34;-------------------------------------------------------\n&#34;
-    summaryText += &#34;MTF20 measured:   [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_measured)
-    summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_measured / results.pixelSize)
-
-    summaryText += &#34;MTF20 analytical: [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_ideal)
-    summaryText += &#34;                  [cycles/mm] = {:.5f}\n\n&#34;.format(results.MTF20freq_ideal / results.pixelSize)
-
-    summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/px] = {:.5f}\n&#34;.format(results.MTF20freq_absDev())
-    summaryText += &#34;MTF20: abs. deviation (measured-analytical) [cycles/mm] = {:.5f}\n&#34;.format(results.MTF20freq_absDev() / results.pixelSize)
-    summaryText += &#34;MTF20: rel. deviation (measured-analytical)/analytical  = {:.5f}\n&#34;.format(results.MTF20freq_relDev())
-
-
-    summaryFileName = &#34;{dir}/{name}_{subname}_summary.txt&#34;.format(dir=self.resultFileDirectory, name=self.name, subname=subname)
-    with open(summaryFileName, &#39;w&#39;) as summaryFile:
-        summaryFile.write(summaryText)
-        summaryFile.close()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -1022,6 +701,7 @@ or by applying a Fourier transform to the ideal LSF. Apart from numerical artifa
 <span>class <span class="ident">Test2D_WE_1_results</span></span>
 </code></dt>
 <dd>
+<div class="desc"><p>Results for one sub test.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1120,74 +800,30 @@ or by applying a Fourier transform to the ideal LSF. Apart from numerical artifa
 
         return 0</code></pre>
 </details>
-<div class="desc"><p>Results for one sub test.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_absDev"><code class="name flex">
 <span>def <span class="ident">MTF20freq_absDev</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def MTF20freq_absDev(self):
-    return (self.MTF20freq_measured - self.MTF20freq_ideal)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.MTF20freq_relDev"><code class="name flex">
 <span>def <span class="ident">MTF20freq_relDev</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def MTF20freq_relDev(self):
-    if self.MTF20freq_ideal != 0:
-        return (self.MTF20freq_measured - self.MTF20freq_ideal) / self.MTF20freq_ideal
-
-    return 0
-
-#def MTF10freq_absDev(self):
-#    return (self.MTF10freq_measured - self.MTF10freq_ideal)
-
-#def MTF10freq_relDev(self):
-#    if self.MTF10freq_ideal != 0:
-#        return (self.MTF10freq_measured - self.MTF10freq_ideal) / self.MTF10freq_ideal
-
-    return 0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_absDev"><code class="name flex">
 <span>def <span class="ident">sigma_absDev</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sigma_absDev(self):
-    return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_WE_1.Test2D_WE_1_results.sigma_relDev"><code class="name flex">
 <span>def <span class="ident">sigma_relDev</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sigma_relDev(self):
-    if self.idealGaussianSigmaPX != 0:
-        return (self.measuredGaussianSigmaPX - self.idealGaussianSigmaPX) / self.idealGaussianSigmaPX
-
-    return 0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -1238,7 +874,7 @@ or by applying a Fourier transform to the ideal LSF. Apart from numerical artifa
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

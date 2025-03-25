@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.primitives API documentation</title>
 <meta name="description" content="Structures for linear algebra and geometry: vectors, matrices, lines and polygons.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -65,60 +54,9 @@ tr:hover {background-color: #eee;}
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="ctsimu.primitives.rotation_matrix"><code class="name flex">
-<span>def <span class="ident">rotation_matrix</span></span>(<span>axis: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>,<br>angle: float) ‑> <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a></span>
+<span>def <span class="ident">rotation_matrix</span></span>(<span>axis: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>, angle: float) ‑> <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotation_matrix(axis:&#39;Vector&#39;, angle:float) -&gt; &#39;Matrix&#39;:
-    &#34;&#34;&#34;A matrix that performs a 3D vector rotation around the
-    given `axis` vector by the given `angle` (in rad).
-
-    Note that this is only a rotation matrix; translations
-    are not taken into account. This means that the pivot point
-    will always be the origin of the object that you rotate, i.e.,
-    the rotation axis vector is attached to the object&#39;s origin.
-
-    Parameters
-    ----------
-    axis : Vector
-        Rotation axis. Must not be a unit vector.
-
-    angle : float
-        Rotation angle.
-
-    Returns
-    -------
-    R : Matrix
-        Rotation matrix.
-    &#34;&#34;&#34;
-    R = Matrix(3, 3)
-    cs = math.cos(angle)
-    sn = math.sin(angle)
-
-    nx = axis.unit_vector().x()
-    ny = axis.unit_vector().y()
-    nz = axis.unit_vector().z()
-
-    # Row 1:
-    R.value[0][0] = nx*nx*(1.0-cs) + cs
-    R.value[0][1] = nx*ny*(1.0-cs) - nz*sn
-    R.value[0][2] = nx*nz*(1.0-cs) + ny*sn
-
-    # Row 2:
-    R.value[1][0] = ny*nx*(1.0-cs) + nz*sn
-    R.value[1][1] = ny*ny*(1.0-cs) + cs
-    R.value[1][2] = ny*nz*(1.0-cs) - nx*sn
-
-    # Row 3:
-    R.value[2][0] = nz*nx*(1.0-cs) - ny*sn
-    R.value[2][1] = nz*ny*(1.0-cs) + nx*sn
-    R.value[2][2] = nz*nz*(1.0-cs) + cs
-
-    return R</code></pre>
-</details>
 <div class="desc"><p>A matrix that performs a 3D vector rotation around the
 given <code>axis</code> vector by the given <code>angle</code> (in rad).</p>
 <p>Note that this is only a rotation matrix; translations
@@ -148,6 +86,23 @@ the rotation axis vector is attached to the object's origin.</p>
 <span>(</span><span>m: float = None, n: float = None)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>A mathematical line in 2D space, with a slope and an offset.</p>
+<p><code>y = m*x + n</code></p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>m</code></strong> :&ensp;<code>float</code></dt>
+<dd>Slope</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Vertical offset (i.e., intersection with y axis)</dd>
+</dl>
+<p>Initialize with specified slope and offset (both optional).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>m</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Slope</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Vertical offset (i.e., intersection with y axis)</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -266,74 +221,12 @@ the rotation axis vector is attached to the object's origin.</p>
             ys = m0*xs + n0
             return Vector(x=xs, y=ys)</code></pre>
 </details>
-<div class="desc"><p>A mathematical line in 2D space, with a slope and an offset.</p>
-<p><code>y = m*x + n</code></p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>m</code></strong> :&ensp;<code>float</code></dt>
-<dd>Slope</dd>
-<dt><strong><code>n</code></strong> :&ensp;<code>float</code></dt>
-<dd>Vertical offset (i.e., intersection with y axis)</dd>
-</dl>
-<p>Initialize with specified slope and offset (both optional).</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>m</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Slope</dd>
-<dt><strong><code>n</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Vertical offset (i.e., intersection with y axis)</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.primitives.Line2D.intersection"><code class="name flex">
-<span>def <span class="ident">intersection</span></span>(<span>self,<br>v: <a title="ctsimu.primitives.Line2D" href="#ctsimu.primitives.Line2D">Line2D</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">intersection</span></span>(<span>self, v: <a title="ctsimu.primitives.Line2D" href="#ctsimu.primitives.Line2D">Line2D</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def intersection(self, v:&#39;Line2D&#39;) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34;Intersection point with another line.
-
-    Parameters
-    ----------
-    v : Line2D
-        Another line that intersects this line.
-
-    Returns
-    -------
-    intersection : Vector
-        2D vector that contains the coordinates of the intersection point.
-
-    Raises
-    ------
-    Exception : &#34;Lines are parallel.&#34;
-        If the lines don&#39;t intersect.
-    &#34;&#34;&#34;
-    m0 = self.m
-    n0 = self.n
-
-    m1 = v.m
-    n1 = v.n
-
-    if m0 == m1:
-        # Lines are parallel
-        raise Exception(&#34;Lines are parallel.&#34;)
-
-    if m0 != math.inf and m1 != math.inf:
-        xs = (n1-n0)/(m0-m1)
-        ys = m0*xs + n0
-        return Vector(x=xs, y=ys)
-    elif m0 == math.inf and m1 != math.inf:
-        xs = n0
-        ys = m1*xs + n1
-        return Vector(x=xs, y=ys)
-    elif m0 != math.inf and m1 == math.inf:
-        xs = n1
-        ys = m0*xs + n0
-        return Vector(x=xs, y=ys)</code></pre>
-</details>
 <div class="desc"><p>Intersection point with another line.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -355,24 +248,6 @@ the rotation axis vector is attached to the object's origin.</p>
 <span>def <span class="ident">set</span></span>(<span>self, m: float, n: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, m:float, n:float):
-    &#34;&#34;&#34;Set line parameters.
-
-    Parameters
-    ----------
-    m : float
-        Slope
-
-    n : float
-        Vertical offset (i.e., intersection with y axis)
-    &#34;&#34;&#34;
-    self.m = m
-    self.n = n</code></pre>
-</details>
 <div class="desc"><p>Set line parameters.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -383,40 +258,9 @@ the rotation axis vector is attached to the object's origin.</p>
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Line2D.set_from_points"><code class="name flex">
-<span>def <span class="ident">set_from_points</span></span>(<span>self,<br>p0: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>,<br>p1: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>)</span>
+<span>def <span class="ident">set_from_points</span></span>(<span>self, p0: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>, p1: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_from_points(self, p0:&#39;Vector&#39;, p1:&#39;Vector&#39;):
-    &#34;&#34;&#34;Set line slope `m` and offset `n` from two given points `p0` and `p1`.
-    Both points are assumed to be on the line.
-
-    Parameters
-    ----------
-    p0 : Vector
-        First point, given by 2D vector. For higher-dimensional vectors, only the first two coordinates are considered.
-
-    p1 : Vector
-        Second point, given by 2D vector. For higher-dimensional vectors, only the first two coordinates are considered.
-    &#34;&#34;&#34;
-
-    # points are defined by 2D vectors
-    x0 = p0.x()
-    y0 = p0.y()
-    x1 = p1.x()
-    y1 = p1.y()
-
-    if x0 != x1:
-        self.m = (y1-y0) / (x1-x0)
-        self.n = y0 - self.m*x0
-    else:
-        # Vertical line
-        self.m = math.inf
-        self.n = x0  # Store x intersection in n if line is vertical</code></pre>
-</details>
 <div class="desc"><p>Set line slope <code>m</code> and offset <code>n</code> from two given points <code>p0</code> and <code>p1</code>.
 Both points are assumed to be on the line.</p>
 <h2 id="parameters">Parameters</h2>
@@ -434,6 +278,33 @@ Both points are assumed to be on the line.</p>
 <span>(</span><span>cols: int = None, rows: int = None, values: list = None, numpy_data=None)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Simple matrix class.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>cols</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of matrix columns.</dd>
+<dt><strong><code>rows</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of matrix rows.</dd>
+<dt><strong><code>n_entries</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of matrix elements. (Computed internally whenever matrix size is set or changed.)</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>NumPy array that contains the matrix values.</dd>
+</dl>
+<p>Initialize matrix by given size or numpy data array.</p>
+<p>If <code>cols</code> and <code>rows</code> are not <code>None</code>, a matrix of the given size
+will be created with all elements being zero. Otherwise,
+the matrix will be set up from the <code>numpy_data</code> array if provided.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>cols</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of matrix columns.</dd>
+<dt><strong><code>rows</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of matrix rows.</dd>
+<dt><strong><code>values</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>List of lists to initialize matrix.</dd>
+<dt><strong><code>numpy_data</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
+<dd>2-dimensional NumPy array. The number of columns and rows is determined from the array.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -787,63 +658,12 @@ Both points are assumed to be on the line.</p>
         &#34;&#34;&#34;
         self.value = numpy.multiply(self.value, factor)</code></pre>
 </details>
-<div class="desc"><p>Simple matrix class.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>cols</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of matrix columns.</dd>
-<dt><strong><code>rows</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of matrix rows.</dd>
-<dt><strong><code>n_entries</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of matrix elements. (Computed internally whenever matrix size is set or changed.)</dd>
-<dt><strong><code>value</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
-<dd>NumPy array that contains the matrix values.</dd>
-</dl>
-<p>Initialize matrix by given size or numpy data array.</p>
-<p>If <code>cols</code> and <code>rows</code> are not <code>None</code>, a matrix of the given size
-will be created with all elements being zero. Otherwise,
-the matrix will be set up from the <code>numpy_data</code> array if provided.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>cols</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Number of matrix columns.</dd>
-<dt><strong><code>rows</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Number of matrix rows.</dd>
-<dt><strong><code>values</code></strong> :&ensp;<code>list</code>, optional</dt>
-<dd>List of lists to initialize matrix.</dd>
-<dt><strong><code>numpy_data</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
-<dd>2-dimensional NumPy array. The number of columns and rows is determined from the array.</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.primitives.Matrix.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add(self, x):
-    &#34;&#34;&#34;Add a scalar to all matrix elements, or add another compatible matrix of the same size.
-
-    Parameters
-    ----------
-    x : Matrix or float
-        Matrix to be added to this matrix, or scalar to be added to all matrix elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Matrix):
-        # &#39;x&#39; is another matrix:
-        if self.same_size(x):
-            self.value = numpy.add(self.value, x.value)
-        else:
-            raise Exception(&#34;Incompatible matrix sizes. Can only add matrices of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.add(self.value, x)
-    else:
-        raise Exception(f&#34;Matrix addition failed: M+A is only supported when A is of type &#39;Matrix&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Add a scalar to all matrix elements, or add another compatible matrix of the same size.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -852,23 +672,9 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Matrix.copy"><code class="name flex">
-<span>def <span class="ident">copy</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a>)</span>
+<span>def <span class="ident">copy</span></span>(<span>self, x: <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a>)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def copy(self, x:&#39;Matrix&#39;):
-    &#34;&#34;&#34;Make this matrix a copy of the given matrix `x`.
-
-    Parameters
-    ----------
-    x : Matrix
-        The matrix whose contents shall be copied.
-    &#34;&#34;&#34;
-    self.set_numpy_data_array(numpy_data=numpy.copy(x.value))</code></pre>
-</details>
 <div class="desc"><p>Make this matrix a copy of the given matrix <code>x</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -880,31 +686,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">divide</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def divide(self, x):
-    &#34;&#34;&#34;Divide all matrix elements by a scalar, or perform element-wise division with a matrix of the same size.
-
-    Parameters
-    ----------
-    x : Matrix or float
-        Matrix of same size for element-wise division with this matrix, or scalar to divide all matrix elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Matrix):
-        # &#39;x&#39; is another matrix... element-wise division:
-        if self.same_size(x):
-            self.value = numpy.divide(self.value, x.value)
-            self.n_entries = self.value.size
-        else:
-            raise Exception(&#34;Incompatible matrix sizes. Can only run an element-wise division for matrices of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.divide(self.value, x)
-    else:
-        raise Exception(f&#34;Matrix division failed: M/A is only supported when A is of type &#39;Matrix&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Divide all matrix elements by a scalar, or perform element-wise division with a matrix of the same size.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -916,30 +697,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">floor_divide</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def floor_divide(self, x):
-    &#34;&#34;&#34;Floor-divide all matrix elements by a scalar, or perform element-wise division with a matrix of the same size.
-
-    Parameters
-    ----------
-    x : Matrix or float
-        Matrix of same size for element-wise floor-division with this matrix, or scalar to floor-divide all matrix elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Matrix):
-        # &#39;x&#39; is another matrix... element-wise division:
-        if self.same_size(x):
-            self.value = numpy.floor_divide(self.value, x.value)
-        else:
-            raise Exception(&#34;Incompatible matrix sizes. Can only run an element-wise floor-division for matrices of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.floor_divide(self.value, x)
-    else:
-        raise Exception(f&#34;Matrix floor-division failed: M//A is only supported when A is of type &#39;Matrix&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Floor-divide all matrix elements by a scalar, or perform element-wise division with a matrix of the same size.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -951,32 +708,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">get</span></span>(<span>self, col: int, row: int) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get(self, col:int, row:int) -&gt; float:
-    &#34;&#34;&#34;Get a matrix element&#39;s value.
-
-    Parameters
-    ----------
-    col : int
-        Element&#39;s column position.
-
-    row : int
-        Element&#39;s row position.
-
-    Returns
-    -------
-    value : float
-        Value of the requested matrix element.
-    &#34;&#34;&#34;
-    if len(self.value) &gt; row:
-        if len(self.value[row]) &gt; col:
-            return self.value[row][col]
-
-    raise Exception(f&#34;Matrix.get(col={col}, row={row}): requested index does not exist.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Get a matrix element's value.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -995,21 +726,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">get_copy</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_copy(self) -&gt; &#39;Matrix&#39;:
-    &#34;&#34;&#34;Get a copy of this matrix object.
-
-    Returns
-    -------
-    copy : Matrix
-        Copy of this matrix object.
-    &#34;&#34;&#34;
-    new_values = numpy.copy(self.value)
-    return Matrix(numpy_data=new_values)</code></pre>
-</details>
 <div class="desc"><p>Get a copy of this matrix object.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1021,47 +737,12 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">make_identity</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def make_identity(self):
-    &#34;&#34;&#34;Make this an identity matrix.&#34;&#34;&#34;
-    self.value = numpy.zeros((self.rows, self.cols), dtype=numpy.float64)
-    for i in range(min(self.cols, self.rows)):
-        self.value[i][i] = float(1)</code></pre>
-</details>
 <div class="desc"><p>Make this an identity matrix.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Matrix.multiply"><code class="name flex">
 <span>def <span class="ident">multiply</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def multiply(self, x):
-    &#34;&#34;&#34;Multiply a scalar to all matrix elements, or perform matrix multiplication with a compatible matrix.
-
-    Parameters
-    ----------
-    x : Matrix or float
-        Compatible matrix to be multiplied with this matrix, or scalar to be multiplied to all matrix elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Matrix) or isinstance(x, Vector):
-        # &#39;x&#39; is another matrix or a vector:
-        self.value = numpy.matmul(self.value, x.value)
-        self.n_entries = self.value.size
-
-        self.update_rows_cols()
-
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.multiply(self.value, x)
-    else:
-        raise Exception(f&#34;Matrix multiplication failed: M*A is only supported when A is of type &#39;Matrix&#39; or &#39;Vector&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Multiply a scalar to all matrix elements, or perform matrix multiplication with a compatible matrix.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1073,26 +754,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">reset</span></span>(<span>self, cols: int, rows: int)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reset(self, cols:int, rows:int):
-    &#34;&#34;&#34;Set matrix size to given number of columns and rows, and set all matrix elements to zero.
-
-    Parameters
-    ----------
-    cols : int
-        Number of matrix columns.
-
-    rows : int
-        Number of matrix rows.
-    &#34;&#34;&#34;
-    self.cols = cols
-    self.rows = rows
-    self.n_entries = cols*rows
-    self.value = numpy.zeros((rows, cols), dtype=numpy.float64)</code></pre>
-</details>
 <div class="desc"><p>Set matrix size to given number of columns and rows, and set all matrix elements to zero.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1103,30 +764,9 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Matrix.same_size"><code class="name flex">
-<span>def <span class="ident">same_size</span></span>(<span>self,<br>M: <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a>) ‑> bool</span>
+<span>def <span class="ident">same_size</span></span>(<span>self, M: <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a>) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def same_size(self, M:&#39;Matrix&#39;) -&gt; bool:
-    &#34;&#34;&#34;Check if this matrix has the same size as the given matrix `M`.
-
-    Parameters
-    ----------
-    M : Matrix
-
-    Returns
-    -------
-    same_size : bool
-        `True` if `M` has the same number of rows and columns as this matrix, otherwise `False`.
-    &#34;&#34;&#34;
-    if (self.cols == M.cols) and (self.rows == M.rows):
-        return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if this matrix has the same size as the given matrix <code>M</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1143,20 +783,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">scale</span></span>(<span>self, factor: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scale(self, factor:float):
-    &#34;&#34;&#34;Scale matrix by a scalar factor.
-
-    Parameters
-    ----------
-    factor : float
-        Factor that scales all matrix elements.
-    &#34;&#34;&#34;
-    self.value = numpy.multiply(self.value, factor)</code></pre>
-</details>
 <div class="desc"><p>Scale matrix by a scalar factor.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1168,26 +794,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">set</span></span>(<span>self, col: int, row: int, value: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, col:int, row:int, value:float):
-    &#34;&#34;&#34;Set a matrix element&#39;s value.
-
-    Parameters
-    ----------
-    col : int
-        The element&#39;s column position.
-
-    row : int
-        The element&#39;s row position.
-
-    value : float
-        The new value of the matrix element.
-    &#34;&#34;&#34;
-    self.value[row][col] = value</code></pre>
-</details>
 <div class="desc"><p>Set a matrix element's value.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1203,31 +809,6 @@ the matrix will be set up from the <code>numpy_data</code> array if provided.</p
 <span>def <span class="ident">set_numpy_data_array</span></span>(<span>self, numpy_data: numpy.ndarray)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_numpy_data_array(self, numpy_data:&#39;numpy.ndarray&#39;):
-    &#34;&#34;&#34;Set up the matrix from a given NumPy array.
-
-    Gets the number of columns and rows from the array and
-    uses the array for its values.
-
-    Warning: the array content is not copied, only referenced.
-    If you change the array afterwards, the matrix content will
-    change as well. Use `numpy.copy()` if you want to pass
-    a copy of your array.
-
-    Parameters
-    ----------
-    numpy_data : numpy.ndarray
-        NumPy array of the new matrix values.
-    &#34;&#34;&#34;
-    self.rows = len(numpy_data)
-    self.cols = len(numpy_data[0])
-    self.n_entries = self.cols * self.rows
-    self.value = numpy_data.astype(float)</code></pre>
-</details>
 <div class="desc"><p>Set up the matrix from a given NumPy array.</p>
 <p>Gets the number of columns and rows from the array and
 uses the array for its values.</p>
@@ -1245,20 +826,6 @@ a copy of your array.</p>
 <span>def <span class="ident">size</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def size(self) -&gt; int:
-    &#34;&#34;&#34;Get the number of matrix elements.
-
-    Returns
-    -------
-    n_entries : int
-        Number of matrix elements.
-    &#34;&#34;&#34;
-    return self.n_entries</code></pre>
-</details>
 <div class="desc"><p>Get the number of matrix elements.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1270,30 +837,6 @@ a copy of your array.</p>
 <span>def <span class="ident">subtract</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def subtract(self, x):
-    &#34;&#34;&#34;Subtract a scalar from all matrix elements, or subtract another compatible matrix.
-
-    Parameters
-    ----------
-    x : Matrix or float
-        Matrix to be subtracted from this matrix, or scalar to be subtracted from all matrix elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Matrix):
-        # &#39;x&#39; is another matrix:
-        if self.same_size(x):
-            self.value = numpy.subtract(self.value, x.value)
-        else:
-            raise Exception(&#34;Incompatible matrix sizes. Can only subtract matrices of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.subtract(self.value, x)
-    else:
-        raise Exception(f&#34;Matrix subtraction failed: M-A is only supported when A is of type &#39;Matrix&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Subtract a scalar from all matrix elements, or subtract another compatible matrix.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1305,22 +848,6 @@ a copy of your array.</p>
 <span>def <span class="ident">update_rows_cols</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def update_rows_cols(self):
-    &#34;&#34;&#34;Update the numbers of rows and columns based on the current shape of `self.value`.&#34;&#34;&#34;
-
-    # Update number of rows and columns
-    sh = self.value.shape
-    self.rows = sh[0]
-    if len(sh) &gt; 1:
-        self.cols = sh[1]
-    else:
-        # Created a vector
-        self.cols = 1</code></pre>
-</details>
 <div class="desc"><p>Update the numbers of rows and columns based on the current shape of <code>self.value</code>.</p></div>
 </dd>
 </dl>
@@ -1330,6 +857,22 @@ a copy of your array.</p>
 <span>(</span><span>*points: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>A general 2D polygon with N points in space.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>points</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of points that make up the polygon, each point represented by a <code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code>.</dd>
+<dt><strong><code>vertex_order_CCW</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if the vertex order is counter-clockwise (standard) or <code>False</code> if clockwise.</dd>
+</dl>
+<p>Initialize with a series of points.
+They should be defined in counter-clockwise direction. They are objects of class <code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code>.</p>
+<p>If the points are specified in clockwise direction, the parameter <code>vertex_order_CCW</code> should be set to <code>False</code> manually.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*points</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code></dt>
+<dd>An arbitrary number of points given.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1616,46 +1159,12 @@ a copy of your array.</p>
         result = Polygon(*outputVertices)
         return result</code></pre>
 </details>
-<div class="desc"><p>A general 2D polygon with N points in space.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>points</code></strong> :&ensp;<code>list</code></dt>
-<dd>List of points that make up the polygon, each point represented by a <code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code>.</dd>
-<dt><strong><code>vertex_order_CCW</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> if the vertex order is counter-clockwise (standard) or <code>False</code> if clockwise.</dd>
-</dl>
-<p>Initialize with a series of points.
-They should be defined in counter-clockwise direction. They are objects of class <code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code>.</p>
-<p>If the points are specified in clockwise direction, the parameter <code>vertex_order_CCW</code> should be set to <code>False</code> manually.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>*points</code></strong> :&ensp;<code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code></dt>
-<dd>An arbitrary number of points given.</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.primitives.Polygon.area"><code class="name flex">
 <span>def <span class="ident">area</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def area(self) -&gt; float:
-    &#34;&#34;&#34;Get the area enclosed by the polygon.
-
-    Returns
-    -------
-    area : float
-        Area enclosed by the polygon.
-    &#34;&#34;&#34;
-
-    if self._area is None:
-        self._calculate_area()
-
-    return self._area</code></pre>
-</details>
 <div class="desc"><p>Get the area enclosed by the polygon.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1664,90 +1173,9 @@ They should be defined in counter-clockwise direction. They are objects of class
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Polygon.clip"><code class="name flex">
-<span>def <span class="ident">clip</span></span>(<span>self,<br>clipping_polygon: <a title="ctsimu.primitives.Polygon" href="#ctsimu.primitives.Polygon">Polygon</a>) ‑> <a title="ctsimu.primitives.Polygon" href="#ctsimu.primitives.Polygon">Polygon</a></span>
+<span>def <span class="ident">clip</span></span>(<span>self, clipping_polygon: <a title="ctsimu.primitives.Polygon" href="#ctsimu.primitives.Polygon">Polygon</a>) ‑> <a title="ctsimu.primitives.Polygon" href="#ctsimu.primitives.Polygon">Polygon</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def clip(self, clipping_polygon:&#39;Polygon&#39;) -&gt; &#39;Polygon&#39;:
-    &#34;&#34;&#34; Clips the polygon using the given clipping polygon.
-
-    Implementation of the Sutherland-Hodgman clipping algorithm.
-
-    The given `clipping_polygon` must be convex.
-
-    Parameters
-    ----------
-    clipping_polygon : Polygon
-        Clipping polygon. The result will be a polygon that only exists within the boundaries of this clipping polygon.
-
-    Returns
-    -------
-    clipped : Polygon
-        Clipped polygon.
-    &#34;&#34;&#34;
-
-    # Make a list of edges (lines) of the clipping polygon:
-    outputVertices = self.points # copy.deepcopy(self.points)
-
-    nPoints = len(clipping_polygon.points)
-    for i in range(nPoints):
-        edgePoint0 = clipping_polygon.points[i]
-        edgePoint1 = clipping_polygon.points[int((i+1)%nPoints)]
-
-        edgeLine = Line2D()
-        edgeLine.set_from_points(p0=edgePoint0, p1=edgePoint1)
-
-        inputVertices = outputVertices
-        outputVertices = []
-
-        #print(&#34;## Clip line: {}&#34;.format(edgeLine))
-
-        for i in range(len(inputVertices)):
-            currentPoint  = inputVertices[i]
-            previousPoint = inputVertices[(i+len(inputVertices)-1)%len(inputVertices)]
-
-            #print(&#34;  Current Point:  {}&#34;.format(currentPoint))
-            #print(&#34;  Previous Point: {}&#34;.format(previousPoint))
-
-            currentLine = Line2D()
-            currentLine.set_from_points(p0=currentPoint, p1=previousPoint)
-
-            #print(&#34;  -&gt; current Line: {}&#34;.format(currentLine))
-
-            if self._inside_edge(edgePoint0, edgePoint1, currentPoint):
-                #print(&#34;  Current point is inside clipping polygon.&#34;)
-                if not self._inside_edge(edgePoint0, edgePoint1, previousPoint):
-                    try:
-                        intersectionPoint = currentLine.intersection(edgeLine)
-                        #print(&#34;  Added intersection to output list.&#34;)
-                        #print(&#34;  -&gt; intersection: {}&#34;.format(intersectionPoint))
-                        outputVertices.append(intersectionPoint)
-                    except:  # Parallel lines -&gt; no intersection
-                        pass
-
-                #print(&#34;  Added currentPoint to output list.&#34;)
-                outputVertices.append(currentPoint)
-            elif self._inside_edge(edgePoint0, edgePoint1, previousPoint):
-                #print(&#34;  Current point is not inside clipping polygon, but previous point is.&#34;)
-                try:
-                    intersectionPoint = currentLine.intersection(edgeLine)
-                    #print(&#34;  Only added intersection point to output list.&#34;)
-                    #print(&#34;  -&gt; intersection: {}&#34;.format(intersectionPoint))
-                    outputVertices.append(intersectionPoint)
-                except:
-                    pass
-            #else:
-                #print(&#34;Neither current nor previous point is inside clipping polygon.&#34;)
-
-
-            #print(&#34;\n&#34;)
-
-    result = Polygon(*outputVertices)
-    return result</code></pre>
-</details>
 <div class="desc"><p>Clips the polygon using the given clipping polygon.</p>
 <p>Implementation of the Sutherland-Hodgman clipping algorithm.</p>
 <p>The given <code>clipping_polygon</code> must be convex.</p>
@@ -1766,46 +1194,6 @@ They should be defined in counter-clockwise direction. They are objects of class
 <span>def <span class="ident">get_bounding_box</span></span>(<span>self) ‑> tuple[int, int, int, int]</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_bounding_box(self) -&gt; tuple[int, int, int, int]:
-    &#34;&#34;&#34;Get the polygon&#39;s bounding box values.
-
-    Returns
-    -------
-    leftmost : float
-        Leftmost coordinate.
-
-    upmost : float
-        Upmost coordinate.
-
-    rightmost : float
-        Rightmost coordinate.
-
-    downmost : float
-        Downmost coordinate.
-    &#34;&#34;&#34;
-
-    leftmost  = self.points[0].x()
-    rightmost = -1
-    upmost    = self.points[0].y()
-    downmost  = -1
-
-    for p in self.points:
-        if p.x() &lt; leftmost:
-            leftmost = math.floor(p.x())
-        if p.x() &gt; rightmost:
-            rightmost = math.ceil(p.x())
-
-        if p.y() &lt; upmost:
-            upmost = math.floor(p.y())
-        if p.y() &gt; downmost:
-            downmost = math.ceil(p.y())
-
-    return int(leftmost), int(upmost), int(rightmost), int(downmost)</code></pre>
-</details>
 <div class="desc"><p>Get the polygon's bounding box values.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1820,58 +1208,9 @@ They should be defined in counter-clockwise direction. They are objects of class
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Polygon.is_inside_2D"><code class="name flex">
-<span>def <span class="ident">is_inside_2D</span></span>(<span>self,<br>point: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> bool</span>
+<span>def <span class="ident">is_inside_2D</span></span>(<span>self, point: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def is_inside_2D(self, point:&#39;Vector&#39;) -&gt; bool:
-    &#34;&#34;&#34; Check if the given point is inside the polygon or on an edge.
-    Only the xy plane is considered (2D projection).
-
-    Parameters
-    ----------
-    point : Vector
-        Point coordinates to check if they are inside the polygon.
-
-    Returns
-    -------
-    inside : bool
-        `True` if inside, `False` otherwise.
-    &#34;&#34;&#34;
-    x = point.x()
-    y = point.y()
-
-    if len(self.points) &gt;= 3:
-        p1 = self.points[0]
-        x1 = p1.x()
-        y1 = p1.y()
-
-        # Set up sub-triangles and check if point is in any of those:
-        for i in range(1, len(self.points)-1):
-            p2 = self.points[i]
-            p3 = self.points[i+1]
-            x2 = p2.x()
-            y2 = p2.y()
-            x3 = p3.x()
-            y3 = p3.y()
-
-            # Calculate the barycentric coordinates of the point with respect to the triangle:
-            D = (y2-y3)*(x1-x3) + (x3-x2)*(y1-y3)
-
-            lambda1 = ((y2-y3)*(x-x3) + (x3-x2)*(y-y3)) / D
-            lambda2 = ((y3-y1)*(x-x3) + (x1-x3)*(y-y3)) / D
-            lambda3 = 1 - lambda1 - lambda2
-
-            #print(&#34;Is {} inside triangle?   D: {}, l1: {}, l2: {}, l3: {}&#34;.format(point, D, lambda1, lambda2, lambda3))
-
-            if (lambda1&gt;=0 and lambda2&gt;=0 and lambda3&gt;=0):
-                return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if the given point is inside the polygon or on an edge.
 Only the xy plane is considered (2D projection).</p>
 <h2 id="parameters">Parameters</h2>
@@ -1889,24 +1228,6 @@ Only the xy plane is considered (2D projection).</p>
 <span>def <span class="ident">make_3D</span></span>(<span>self, z_component: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def make_3D(self, z_component:float):
-    &#34;&#34;&#34;Convert all points in xy-plane from 2D vectors to 3D vectors,
-    using the provided z_component.
-
-    Parameters
-    ----------
-    z_component : float
-        The new z component for each point&#39;s 3D vector.
-    &#34;&#34;&#34;
-
-    for i, p in enumerate(self.points):
-        newPoint = Vector(x=p.x(), y=p.y(), z=z_component, n=3)
-        self.points[i] = newPoint</code></pre>
-</details>
 <div class="desc"><p>Convert all points in xy-plane from 2D vectors to 3D vectors,
 using the provided z_component.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1916,30 +1237,9 @@ using the provided z_component.</p>
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Polygon.set"><code class="name flex">
-<span>def <span class="ident">set</span></span>(<span>self,<br>*points: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>)</span>
+<span>def <span class="ident">set</span></span>(<span>self, *points: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, *points:&#39;Vector&#39;):
-    &#34;&#34;&#34; Set polygon from an arbitrary number of points.
-    The points should be defined in counter-clockwise direction. They are objects of class `Vector`.
-
-    If the points are specified in clockwise direction, the parameter `vertex_order_CCW` should be set to `False` manually.
-
-    Parameters
-    ----------
-    *points : Vector
-        An arbitrary number of points.
-    &#34;&#34;&#34;
-
-    self.points = []
-    self.points.extend(points)
-
-    self._area = None</code></pre>
-</details>
 <div class="desc"><p>Set polygon from an arbitrary number of points.
 The points should be defined in counter-clockwise direction. They are objects of class <code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code>.</p>
 <p>If the points are specified in clockwise direction, the parameter <code>vertex_order_CCW</code> should be set to <code>False</code> manually.</p>
@@ -1953,9 +1253,37 @@ The points should be defined in counter-clockwise direction. They are objects of
 </dd>
 <dt id="ctsimu.primitives.Vector"><code class="flex name class">
 <span>class <span class="ident">Vector</span></span>
-<span>(</span><span>x: float = None,<br>y: float = None,<br>z: float = None,<br>w: float = None,<br>n: int = None,<br>numpy_data=None)</span>
+<span>(</span><span>x: float = None, y: float = None, z: float = None, w: float = None, n: int = None, numpy_data=None)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>A vector in space, arbitrary number of dimensions.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>n_entries</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of vector elements.</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>NumPy array that contains the vector elements.</dd>
+</dl>
+<p>Initialize vector by providing elements <code>x</code>, (<code>y</code>, <code>z</code>, <code>w</code>) and possibly the number of elements <code>n</code>, or a NumPy data array.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Value for first vector element.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Value for second vector element.</dd>
+<dt><strong><code>z</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Value for third vector element.</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Value for fourth vector element.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of vector elements. Must be provided if no NumPy data array
+is given and if the number of vector elements cannot be automatically
+determined from the given parameters <code>x</code>, <code>y</code>, <code>z</code> and <code>w</code>
+(those which are set to <code>None</code> are not considered in the
+determination of the dimension).</dd>
+<dt><strong><code>numpy_data</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
+<dd>One-dimensional NumPy data array. Must be provided if number of vector elements <code>n</code> is not given.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2759,63 +2087,12 @@ The points should be defined in counter-clockwise direction. They are objects of
         &#34;&#34;&#34;
         return p1 - p0</code></pre>
 </details>
-<div class="desc"><p>A vector in space, arbitrary number of dimensions.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>n_entries</code></strong> :&ensp;<code>int</code></dt>
-<dd>Number of vector elements.</dd>
-<dt><strong><code>value</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
-<dd>NumPy array that contains the vector elements.</dd>
-</dl>
-<p>Initialize vector by providing elements <code>x</code>, (<code>y</code>, <code>z</code>, <code>w</code>) and possibly the number of elements <code>n</code>, or a NumPy data array.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>x</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Value for first vector element.</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Value for second vector element.</dd>
-<dt><strong><code>z</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Value for third vector element.</dd>
-<dt><strong><code>w</code></strong> :&ensp;<code>float</code>, optional</dt>
-<dd>Value for fourth vector element.</dd>
-<dt><strong><code>n</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Number of vector elements. Must be provided if no NumPy data array
-is given and if the number of vector elements cannot be automatically
-determined from the given parameters <code>x</code>, <code>y</code>, <code>z</code> and <code>w</code>
-(those which are set to <code>None</code> are not considered in the
-determination of the dimension).</dd>
-<dt><strong><code>numpy_data</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
-<dd>One-dimensional NumPy data array. Must be provided if number of vector elements <code>n</code> is not given.</dd>
-</dl></div>
 <h3>Static methods</h3>
 <dl>
 <dt id="ctsimu.primitives.Vector.connection"><code class="name flex">
-<span>def <span class="ident">connection</span></span>(<span>p0: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>,<br>p1: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">connection</span></span>(<span>p0: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>, p1: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Connection vector between two points (represented by vectors).
-
-    Parameters
-    ----------
-    p0 : Vector
-        Origin point of the connection.
-
-    p1 : Vector
-        Target point of the connection.
-
-    Returns
-    -------
-    connecting_vector : Vector
-        Vector pointing from the origin `p0` to the target point `p1`.
-    &#34;&#34;&#34;
-    return p1 - p0</code></pre>
-</details>
 <div class="desc"><p>Connection vector between two points (represented by vectors).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -2837,94 +2114,30 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">absmax</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def absmax(self) -&gt; float:
-    &#34;&#34;&#34;Maximum value of absolute of all vector components.&#34;&#34;&#34;
-    return numpy.absolute(self.value).max()</code></pre>
-</details>
 <div class="desc"><p>Maximum value of absolute of all vector components.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.absmax_nonzero"><code class="name flex">
 <span>def <span class="ident">absmax_nonzero</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def absmax_nonzero(self) -&gt; float:
-    &#34;&#34;&#34;Maximum non-zero value of absolute of all vector components.&#34;&#34;&#34;
-    nonzeros = self.value[numpy.nonzero(self.value)]
-    if len(nonzeros) &gt; 0:
-        return numpy.absolute(nonzeros).max()
-    else:
-        return None</code></pre>
-</details>
 <div class="desc"><p>Maximum non-zero value of absolute of all vector components.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.absmin"><code class="name flex">
 <span>def <span class="ident">absmin</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def absmin(self) -&gt; float:
-    &#34;&#34;&#34;Minimum value of absolute of all vector components.&#34;&#34;&#34;
-    return numpy.absolute(self.value).min()</code></pre>
-</details>
 <div class="desc"><p>Minimum value of absolute of all vector components.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.absmin_nonzero"><code class="name flex">
 <span>def <span class="ident">absmin_nonzero</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def absmin_nonzero(self) -&gt; float:
-    &#34;&#34;&#34;Minimum non-zero value of absolute of all vector components.&#34;&#34;&#34;
-    nonzeros = self.value[numpy.nonzero(self.value)]
-    if len(nonzeros) &gt; 0:
-        return numpy.absolute(nonzeros).min()
-    else:
-        return None</code></pre>
-</details>
 <div class="desc"><p>Minimum non-zero value of absolute of all vector components.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add(self, x):
-    &#34;&#34;&#34;Add a scalar to all vector elements, or add another compatible vector.
-
-    Parameters
-    ----------
-    x : Vector or float
-        Vector of same size to be added (element-wise) or scalar to be added to all vector elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Vector):
-        # &#39;x&#39; is another vector:
-        if self.same_size(x):
-            self.value = numpy.add(self.value, x.value)
-        else:
-            raise Exception(f&#34;Incompatible vector sizes. Can only add vectors of same size. Vectors: {self} ({self.n_entries}) and {x} ({x.n_entries})&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.add(self.value, x)
-    else:
-        raise Exception(f&#34;Vector addition failed: M+A is only supported when A is of type &#39;Vector&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Add a scalar to all vector elements, or add another compatible vector.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -2933,47 +2146,9 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.angle"><code class="name flex">
-<span>def <span class="ident">angle</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
+<span>def <span class="ident">angle</span></span>(<span>self, x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def angle(self, x:&#39;Vector&#39;) -&gt; float:
-    &#34;&#34;&#34;Calculate angle between this vector and the given vector `x`.
-
-    Parameters
-    ----------
-    x : Vector
-        Second vector for angle calculation.
-
-    Returns
-    -------
-    angle : float
-        Angle (in radians) between this vector and given vector `x`.
-    &#34;&#34;&#34;
-    dotProd = self.dot(x)
-    l1 = self.length()
-    l2 = x.length()
-    lp = l1 * l2
-
-    if lp &gt; 0:
-        cs = dotProd / lp
-        alpha = 0
-
-        # Avoid out-of-domain due to rounding errors:
-        if cs &gt;= 1.0:
-            alpha = 0
-        elif cs &lt;= -1.0:
-            alpha = math.pi
-        else:
-            alpha = math.acos(cs)
-
-        return alpha
-    else:
-        return 0</code></pre>
-</details>
 <div class="desc"><p>Calculate angle between this vector and the given vector <code>x</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -2987,29 +2162,9 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.cross"><code class="name flex">
-<span>def <span class="ident">cross</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">cross</span></span>(<span>self, x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cross(self, x:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Calculate 3D vector cross product.
-
-    Parameters
-    ----------
-    x : Vector
-        The second vector to calculate the cross product. Must contain three elements.
-
-    Returns
-    -------
-    crossp : Vector
-        3D cross product of this vector with the second vector `x`.
-    &#34;&#34;&#34;
-    cp = numpy.cross(self.value, x.value)
-    return Vector(numpy_data=cp)</code></pre>
-</details>
 <div class="desc"><p>Calculate 3D vector cross product.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3023,28 +2178,9 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.cross_z"><code class="name flex">
-<span>def <span class="ident">cross_z</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
+<span>def <span class="ident">cross_z</span></span>(<span>self, x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cross_z(self, x:&#39;Vector&#39;) -&gt; float:
-    &#34;&#34;&#34; Calculate the z component of the 3D cross product.
-
-    Parameters
-    ----------
-    x : Vector
-        The second vector to calculate the cross product. Must contain three elements.
-
-    Returns
-    -------
-    crossz : float
-        z component of 3D cross product of this vector with the second vector `x`.
-    &#34;&#34;&#34;
-    return self.x()*x.y() - self.y()*x.x()</code></pre>
-</details>
 <div class="desc"><p>Calculate the z component of the 3D cross product.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3061,42 +2197,12 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">crystal_direction</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def crystal_direction(self) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34;Create a vector using Miller indices.&#34;&#34;&#34;
-    miller = self.get_copy()
-    miller.make_crystal_vector()
-
-    return miller</code></pre>
-</details>
 <div class="desc"><p>Create a vector using Miller indices.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.distance"><code class="name flex">
-<span>def <span class="ident">distance</span></span>(<span>self,<br>p: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
+<span>def <span class="ident">distance</span></span>(<span>self, p: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def distance(self, p:&#39;Vector&#39;) -&gt; float:
-    &#34;&#34;&#34; Distance between target points of this and another vector.
-
-    Parameters
-    ----------
-    p : Vector
-        Second vector.
-
-    Returns
-    -------
-    distance : float
-        Distance between the target point of this vector and the target point of the second vector `p`.
-    &#34;&#34;&#34;
-    return (self-p).length()</code></pre>
-</details>
 <div class="desc"><p>Distance between target points of this and another vector.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3113,30 +2219,6 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">divide</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def divide(self, x):
-    &#34;&#34;&#34;Divide all vector elements by a scalar, or perform element-wise division with a vector of the same size.
-
-    Parameters
-    ----------
-    x : Vector or float
-        Vector of same size to divide this vector (element-wise) or scalar to divide all vector elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Vector):
-        # &#39;x&#39; is another vector... element-wise division:
-        if self.same_size(x):
-            self.value = numpy.divide(self.value, x.value)
-        else:
-            raise Exception(&#34;Incompatible vector sizes. Can only run an element-wise division for vectors of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.divide(self.value, x)
-    else:
-        raise Exception(f&#34;Vector division failed: M/A is only supported when A is of type &#39;Vector&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Divide all vector elements by a scalar, or perform element-wise division with a vector of the same size.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3145,28 +2227,9 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.dot"><code class="name flex">
-<span>def <span class="ident">dot</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
+<span>def <span class="ident">dot</span></span>(<span>self, x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dot(self, x:&#39;Vector&#39;) -&gt; float:
-    &#34;&#34;&#34; Calculate vector dot product.
-
-    Parameters
-    ----------
-    x : Vector
-        Another vector to calculate the dot product with this vector.
-
-    Returns
-    -------
-    dotp : float
-        Dot product of this vector with the vector `x`.
-    &#34;&#34;&#34;
-    return numpy.dot(self.value, x.value)</code></pre>
-</details>
 <div class="desc"><p>Calculate vector dot product.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3183,30 +2246,6 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">floor_divide</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def floor_divide(self, x):
-    &#34;&#34;&#34;Divide all vector elements by a scalar, or perform element-wise division with a vector of the same size.
-
-    Parameters
-    ----------
-    x : Vector or float
-        Vector of same size to floor-divide this vector (element-wise) or scalar to floor-divide all vector elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Vector):
-        # &#39;x&#39; is another vector... element-wise division:
-        if self.same_size(x):
-            self.value = numpy.floor_divide(self.value, x.value)
-        else:
-            raise Exception(&#34;Incompatible vector sizes. Can only run an element-wise division for vectors of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.floor_divide(self.value, x)
-    else:
-        raise Exception(f&#34;Vector division failed: M/A is only supported when A is of type &#39;Vector&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Divide all vector elements by a scalar, or perform element-wise division with a vector of the same size.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3218,25 +2257,6 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">get</span></span>(<span>self, i: int) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get(self, i:int) -&gt; float:
-    &#34;&#34;&#34;Get value at vector index `i`. Indices start at `0`.
-
-    Parameters
-    ----------
-    i : int
-        Element index of value.
-
-    Returns
-    -------
-    value : float
-        Element value at index position `i`.
-    &#34;&#34;&#34;
-    return self.value[i]</code></pre>
-</details>
 <div class="desc"><p>Get value at vector index <code>i</code>. Indices start at <code>0</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3253,21 +2273,6 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">get_copy</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_copy(self) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34;Get a copy of this `Vector` object.
-
-    Returns
-    -------
-    v : Vector
-        Copy of this vector object.
-    &#34;&#34;&#34;
-    new_values = numpy.copy(self.value)
-    return Vector(numpy_data=new_values)</code></pre>
-</details>
 <div class="desc"><p>Get a copy of this <code><a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></code> object.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3279,22 +2284,6 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">inverse</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def inverse(self) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Get the inverse of this vector: -v.
-
-    Returns
-    -------
-    inv : Vector
-        Inverse of this vector, i.e. vector of same length pointing in the opposite direction.
-    &#34;&#34;&#34;
-    result = self.get_copy()
-    result.invert()
-    return result</code></pre>
-</details>
 <div class="desc"><p>Get the inverse of this vector: -v.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3306,38 +2295,12 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">invert</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def invert(self):
-    &#34;&#34;&#34; Invert this vector: v to -v. &#34;&#34;&#34;
-    self.value = -self.value
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Invert this vector: v to -v.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.length"><code class="name flex">
 <span>def <span class="ident">length</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def length(self) -&gt; float:
-    &#34;&#34;&#34;Get the length of the vector.
-
-    Returns
-    -------
-    length : float
-        Length of the vector.
-    &#34;&#34;&#34;
-    if self._length is None:
-        self._length = numpy.linalg.norm(self.value)
-
-    return self._length</code></pre>
-</details>
 <div class="desc"><p>Get the length of the vector.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3349,18 +2312,6 @@ def connection(p0:&#39;Vector&#39;, p1:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
 <span>def <span class="ident">make_crystal_vector</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def make_crystal_vector(self):
-    &#34;&#34;&#34;Scale this vector into a crystal direction vector,
-    using Miller indices.&#34;&#34;&#34;
-    absmin_number = self.absmin_nonzero()
-    if absmin_number is not None:
-        if absmin_number &gt; 0:
-            self.scale(1.0 / absmin_number)</code></pre>
-</details>
 <div class="desc"><p>Scale this vector into a crystal direction vector,
 using Miller indices.</p></div>
 </dd>
@@ -3368,75 +2319,24 @@ using Miller indices.</p></div>
 <span>def <span class="ident">make_unit_vector</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def make_unit_vector(self):
-    &#34;&#34;&#34; Normalize vector length to 1. &#34;&#34;&#34;
-    vector_length = self.length()
-    if vector_length != 0:
-        if vector_length != 1.0:
-            self.value /= vector_length
-            self.update()
-    else:
-        raise Exception(&#34;Unit vector: a zero length vector cannot be converted into a unit vector.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Normalize vector length to 1.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.max"><code class="name flex">
 <span>def <span class="ident">max</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def max(self) -&gt; float:
-    &#34;&#34;&#34;Maximum value of all vector components.&#34;&#34;&#34;
-    return self.value.min()</code></pre>
-</details>
 <div class="desc"><p>Maximum value of all vector components.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.min"><code class="name flex">
 <span>def <span class="ident">min</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def min(self) -&gt; float:
-    &#34;&#34;&#34;Minimum value of all vector components.&#34;&#34;&#34;
-    return self.value.min()</code></pre>
-</details>
 <div class="desc"><p>Minimum value of all vector components.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.multiply"><code class="name flex">
 <span>def <span class="ident">multiply</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def multiply(self, x):
-    &#34;&#34;&#34;Multiply a scalar to all vector elements, or perform vector multiplication with a compatible vector.
-
-    Parameters
-    ----------
-    x : Vector or float
-        Vector of same size to be multiplied (element-wise) or scalar to be multiplied to all vector elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Vector):
-        # &#39;x&#39; is another vector:
-        self.value = numpy.matmul(self.value, x.value)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.multiply(self.value, x)
-    else:
-        raise Exception(f&#34;Vector multiplication failed: M*A is only supported when A is of type &#39;Vector&#39; or &#39;Vector&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Multiply a scalar to all vector elements, or perform vector multiplication with a compatible vector.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3448,21 +2348,6 @@ using Miller indices.</p></div>
 <span>def <span class="ident">reset</span></span>(<span>self, n: int)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reset(self, n:int):
-    &#34;&#34;&#34;Set vector to given size and initialize all values to zero.
-
-    Parameters
-    ----------
-    n : int
-        Number of vector elements.
-    &#34;&#34;&#34;
-    self.n_entries = n
-    self.value = numpy.zeros(n, dtype=numpy.float64)</code></pre>
-</details>
 <div class="desc"><p>Set vector to given size and initialize all values to zero.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3471,43 +2356,9 @@ using Miller indices.</p></div>
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.rotate"><code class="name flex">
-<span>def <span class="ident">rotate</span></span>(<span>self,<br>axis: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>,<br>angle: float)</span>
+<span>def <span class="ident">rotate</span></span>(<span>self, axis: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>, angle: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotate(self, axis:&#39;Vector&#39;, angle:float):
-    &#34;&#34;&#34; Rotate vector around given axis by given angle (in rad).
-
-    Parameters
-    ----------
-    axis : Vector
-        Rotation axis.
-
-    angle : float
-        Rotation angle (in rad).
-    &#34;&#34;&#34;
-
-    # Implementing a general rotation matrix.
-    cs = math.cos(angle)
-    sn = math.sin(angle)
-
-    vx = self.x()
-    vy = self.y()
-    vz = self.z()
-
-    nx = axis.unit_vector().x()
-    ny = axis.unit_vector().y()
-    nz = axis.unit_vector().z()
-
-    rx = vx*(nx*nx*(1.0-cs) + cs)    + vy*(nx*ny*(1.0-cs) - nz*sn) + vz*(nx*nz*(1.0-cs) + ny*sn)
-    ry = vx*(ny*nx*(1.0-cs) + nz*sn) + vy*(ny*ny*(1.0-cs) + cs)    + vz*(ny*nz*(1.0-cs) - nx*sn)
-    rz = vx*(nz*nx*(1.0-cs) - ny*sn) + vy*(nz*ny*(1.0-cs) + nx*sn) + vz*(nz*nz*(1.0-cs) + cs)
-
-    self.set(x=rx, y=ry, z=rz)</code></pre>
-</details>
 <div class="desc"><p>Rotate vector around given axis by given angle (in rad).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3521,24 +2372,6 @@ using Miller indices.</p></div>
 <span>def <span class="ident">rotate_2D_xy</span></span>(<span>self, angle: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotate_2D_xy(self, angle:float):
-    &#34;&#34;&#34; Rotate vector in xy plane.
-
-    Parameters
-    ----------
-    angle : float
-        Rotation angle (in rad).
-    &#34;&#34;&#34;
-    cs = math.cos(angle)
-    sn = math.sin(angle)
-
-    self.set_x(self.x()*cs - self.y()*sn)
-    self.set_y(self.x()*sn + self.y()*cs)</code></pre>
-</details>
 <div class="desc"><p>Rotate vector in xy plane.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3547,27 +2380,9 @@ using Miller indices.</p></div>
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.same_size"><code class="name flex">
-<span>def <span class="ident">same_size</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> bool</span>
+<span>def <span class="ident">same_size</span></span>(<span>self, x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def same_size(self, x:&#39;Vector&#39;) -&gt; bool:
-    &#34;&#34;&#34;Check if this vector has the same size (i.e., number of vector elements, not length!) as the given vector `x`.
-
-    Returns
-    -------
-    same_dim : bool
-        `True` if number of vector elements matches, `False` otherwise.
-    &#34;&#34;&#34;
-
-    if self.n_entries == x.n_entries:
-        return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if this vector has the same size (i.e., number of vector elements, not length!) as the given vector <code>x</code>.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3579,21 +2394,6 @@ using Miller indices.</p></div>
 <span>def <span class="ident">scale</span></span>(<span>self, factor: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scale(self, factor:float):
-    &#34;&#34;&#34;Scale vector by a scalar factor.
-
-    Parameters
-    ----------
-    factor : float
-        Factor that scales all vector elements.
-    &#34;&#34;&#34;
-    self.value = numpy.multiply(self.value, factor)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Scale vector by a scalar factor.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3605,27 +2405,6 @@ using Miller indices.</p></div>
 <span>def <span class="ident">scaled</span></span>(<span>self, factor: float) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scaled(self, factor:float) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Get a copy of this vector, scaled by the given `factor`.
-
-    Parameters
-    ----------
-    factor : float
-        Factor that scales all vector elements.
-
-    Returns
-    -------
-    result : Vector
-        Scaled copy of this vector.
-    &#34;&#34;&#34;
-    result = self.get_copy()
-    result.scale(factor)
-    return result</code></pre>
-</details>
 <div class="desc"><p>Get a copy of this vector, scaled by the given <code>factor</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3642,43 +2421,6 @@ using Miller indices.</p></div>
 <span>def <span class="ident">set</span></span>(<span>self, x: float = 0, y: float = 0, z: float = 0, w: float = None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, x:float=0, y:float=0, z:float=0, w:float=None):
-    &#34;&#34;&#34; Set all vector components.
-
-    Non-existing vector components (such as `w` for a 3D vector) should be set to `None`.
-
-    Parameters
-    ----------
-    x : float
-        Value for the first vector element.
-
-    y : float, optional
-        Value for the second vector element.
-
-    z : float, optional
-        Value for the third vector element.
-
-    w : float, optional
-        Value for the fourth vector element.
-    &#34;&#34;&#34;
-    if self.n_entries &gt; 0 and x is not None:
-        self.value[0] = float(x)
-
-    if self.n_entries &gt; 1 and y is not None:
-        self.value[1] = float(y)
-
-    if self.n_entries &gt; 2 and z is not None:
-        self.value[2] = float(z)
-
-    if self.n_entries &gt; 3 and w is not None:
-        self.value[3] = float(w)
-
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set all vector components.</p>
 <p>Non-existing vector components (such as <code>w</code> for a 3D vector) should be set to <code>None</code>.</p>
 <h2 id="parameters">Parameters</h2>
@@ -3697,23 +2439,6 @@ using Miller indices.</p></div>
 <span>def <span class="ident">set_numpy_data_array</span></span>(<span>self, numpy_data)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_numpy_data_array(self, numpy_data):
-    &#34;&#34;&#34;Provide a one-dimensional NumPy array for the vector data.
-    The new vector size will be the same as the size of the NumPy array.
-
-    Parameters
-    ----------
-    numpy_data : numpy.ndarray
-        NumPy array for the new vector values.
-    &#34;&#34;&#34;
-    self.n_entries = len(numpy_data)
-    self.value = numpy_data.astype(float)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Provide a one-dimensional NumPy array for the vector data.
 The new vector size will be the same as the size of the NumPy array.</p>
 <h2 id="parameters">Parameters</h2>
@@ -3726,24 +2451,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">set_value_for_index</span></span>(<span>self, i: int, value: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_value_for_index(self, i:int, value:float):
-    &#34;&#34;&#34;Set value for element at vector index `i`.
-
-    Parameters
-    ----------
-    i : int
-        Index of the vector element.
-
-    value : float
-        New value for the vector element.
-    &#34;&#34;&#34;
-    self.value[i] = float(value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set value for element at vector index <code>i</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3757,21 +2464,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">set_w</span></span>(<span>self, value: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_w(self, value:float):
-    &#34;&#34;&#34;Set vector&#39;s w value (i.e., value of fourth vector element).
-
-    Parameters
-    ----------
-    value : float
-        Value for the fourth vector element.
-    &#34;&#34;&#34;
-    self.value[3] = float(value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set vector's w value (i.e., value of fourth vector element).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3783,21 +2475,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">set_x</span></span>(<span>self, value: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_x(self, value:float):
-    &#34;&#34;&#34;Set vector&#39;s x value (i.e., value of first vector element).
-
-    Parameters
-    ----------
-    value : float
-        Value for the first vector element.
-    &#34;&#34;&#34;
-    self.value[0] = float(value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set vector's x value (i.e., value of first vector element).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3809,25 +2486,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">set_x_y</span></span>(<span>self, x: float = 0, y: float = 0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_x_y(self, x:float=0, y:float=0):
-    &#34;&#34;&#34;Set x and y component (relevant for 2D computations).
-
-    Parameters
-    ----------
-    x : float
-        Value for the first vector element.
-
-    y : float
-        Value for the second vector element.
-    &#34;&#34;&#34;
-    self.value[0] = float(x)
-    self.value[1] = float(y)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set x and y component (relevant for 2D computations).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3841,21 +2499,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">set_y</span></span>(<span>self, value: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_y(self, value:float):
-    &#34;&#34;&#34;Set vector&#39;s y value (i.e., value of second vector element).
-
-    Parameters
-    ----------
-    value : float
-        Value for the second vector element.
-    &#34;&#34;&#34;
-    self.value[1] = float(value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set vector's y value (i.e., value of second vector element).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3867,21 +2510,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">set_z</span></span>(<span>self, value: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_z(self, value:float):
-    &#34;&#34;&#34;Set vector&#39;s z value (i.e., value of third vector element).
-
-    Parameters
-    ----------
-    value : float
-        Value for the third vector element.
-    &#34;&#34;&#34;
-    self.value[2] = float(value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set vector's z value (i.e., value of third vector element).</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -3893,20 +2521,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">size</span></span>(<span>self) ‑> int</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def size(self) -&gt; int:
-    &#34;&#34;&#34;Get the number of vector elements.
-
-    Returns
-    -------
-    n_entries : int
-        Number of vector elements.
-    &#34;&#34;&#34;
-    return self.n_entries</code></pre>
-</details>
 <div class="desc"><p>Get the number of vector elements.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3918,52 +2532,18 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">sqrt</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sqrt(self):
-    &#34;&#34;&#34; Set all elements of this vector to their square roots. &#34;&#34;&#34;
-    self.value = numpy.sqrt(self.value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Set all elements of this vector to their square roots.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.square"><code class="name flex">
 <span>def <span class="ident">square</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def square(self):
-    &#34;&#34;&#34; Square all elements of this vector. &#34;&#34;&#34;
-    self.value = numpy.square(self.value)
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Square all elements of this vector.</p></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.squared"><code class="name flex">
 <span>def <span class="ident">squared</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def squared(self) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Get a squared copy of this vector.
-
-    Returns
-    -------
-    result : Vector
-        Squared copy of this vector.
-    &#34;&#34;&#34;
-    result = self.get_copy()
-    result.square()
-    return result</code></pre>
-</details>
 <div class="desc"><p>Get a squared copy of this vector.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3975,30 +2555,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">subtract</span></span>(<span>self, x)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def subtract(self, x):
-    &#34;&#34;&#34;Subtract a scalar from all vector elements, or subtract another compatible vector.
-
-    Parameters
-    ----------
-    x : Vector or float
-        Vector of same size to be subtracted (element-wise) or scalar to be subtracted from all vector elements.
-    &#34;&#34;&#34;
-    if isinstance(x, Vector):
-        # &#39;x&#39; is another vector:
-        if self.same_size(x):
-            self.value = numpy.subtract(self.value, x.value)
-        else:
-            raise Exception(&#34;Incompatible vector sizes. Can only subtract vectors of same size.&#34;)
-    elif isinstance(x, numbers.Number):
-        # &#39;x&#39; is a scalar:
-        self.value = numpy.subtract(self.value, x)
-    else:
-        raise Exception(f&#34;Vector subtraction failed: M-A is only supported when A is of type &#39;Vector&#39; or a scalar. The given type is not supported: {type(x)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Subtract a scalar from all vector elements, or subtract another compatible vector.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -4010,20 +2566,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">sum</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sum(self) -&gt; float:
-    &#34;&#34;&#34; Get the sum of all vector elements.
-
-    Returns
-    -------
-    sum : float
-        Sum of all vector elements.
-    &#34;&#34;&#34;
-    return numpy.sum(self.value)</code></pre>
-</details>
 <div class="desc"><p>Get the sum of all vector elements.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4032,28 +2574,9 @@ The new vector size will be the same as the size of the NumPy array.</p>
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.to"><code class="name flex">
-<span>def <span class="ident">to</span></span>(<span>self,<br>x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">to</span></span>(<span>self, x: <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a>) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def to(self, x:&#39;Vector&#39;) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Get a vector that points from this location to the given location `x`.
-
-    Parameters
-    ----------
-    x : Vector
-        Second location vector.
-
-    Returns
-    -------
-    pointer : Vector
-        Vector that points from this vector&#39;s target point to the target point of the given vector `x`.
-    &#34;&#34;&#34;
-    return self.connection(self, x)</code></pre>
-</details>
 <div class="desc"><p>Get a vector that points from this location to the given location <code>x</code>.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -4067,26 +2590,9 @@ The new vector size will be the same as the size of the NumPy array.</p>
 </dl></div>
 </dd>
 <dt id="ctsimu.primitives.Vector.transform"><code class="name flex">
-<span>def <span class="ident">transform</span></span>(<span>self,<br>M: <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a>)</span>
+<span>def <span class="ident">transform</span></span>(<span>self, M: <a title="ctsimu.primitives.Matrix" href="#ctsimu.primitives.Matrix">Matrix</a>)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def transform(self, M:&#39;Matrix&#39;):
-    &#34;&#34;&#34;Apply the transformation given by matrix `M` to this vector.
-
-    Parameters
-    ----------
-    M : Matrix
-        Transformation matrix.
-    &#34;&#34;&#34;
-    result = M*self
-    self.n_entries = result.n_entries
-    self.value     = result.value
-    self.update()</code></pre>
-</details>
 <div class="desc"><p>Apply the transformation given by matrix <code>M</code> to this vector.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -4098,32 +2604,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">unit_vector</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def unit_vector(self) -&gt; &#39;Vector&#39;:
-    &#34;&#34;&#34; Get a unit vector that points in the same direction as this vector.
-
-    Returns
-    -------
-    unit_vector : Vector
-        Unit vector for this vector.
-
-    Note
-    ----
-    If this vector changes, the returned unit vector object will be invalidated. To store the unit vector permanently, get a copy of the unit vector (using `get_copy()`) so it won&#39;t change:
-
-    ```python
-    unitv = v.unit_vector().get_copy()
-    ```
-    &#34;&#34;&#34;
-    if self._unit_vector is None:
-        self._unit_vector = self.get_copy()
-        self._unit_vector.make_unit_vector()
-
-    return self._unit_vector</code></pre>
-</details>
 <div class="desc"><p>Get a unit vector that points in the same direction as this vector.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4139,20 +2619,6 @@ The new vector size will be the same as the size of the NumPy array.</p>
 <span>def <span class="ident">update</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def update(self):
-    &#34;&#34;&#34;Called when vector is changed.
-
-    Invalidates private member variables for length and unit vector,
-    so they will be re-calculated the next time their public getter
-    functions are called.
-    &#34;&#34;&#34;
-    self._unit_vector = None
-    self._length = None</code></pre>
-</details>
 <div class="desc"><p>Called when vector is changed.</p>
 <p>Invalidates private member variables for length and unit vector,
 so they will be re-calculated the next time their public getter
@@ -4162,21 +2628,6 @@ functions are called.</p></div>
 <span>def <span class="ident">w</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def w(self) -&gt; float:
-    &#34;&#34;&#34;Get fourth vector element.
-
-    Returns
-    -------
-    w : float
-
-        Fourth vector element.
-    &#34;&#34;&#34;
-    return self.value[3]</code></pre>
-</details>
 <div class="desc"><p>Get fourth vector element.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4188,20 +2639,6 @@ functions are called.</p></div>
 <span>def <span class="ident">x</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def x(self) -&gt; float:
-    &#34;&#34;&#34;Get first vector element.
-
-    Returns
-    -------
-    x : float
-        First vector element.
-    &#34;&#34;&#34;
-    return self.value[0]</code></pre>
-</details>
 <div class="desc"><p>Get first vector element.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4213,20 +2650,6 @@ functions are called.</p></div>
 <span>def <span class="ident">y</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def y(self) -&gt; float:
-    &#34;&#34;&#34;Get second vector element.
-
-    Returns
-    -------
-    y : float
-        Second vector element.
-    &#34;&#34;&#34;
-    return self.value[1]</code></pre>
-</details>
 <div class="desc"><p>Get second vector element.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4238,21 +2661,6 @@ functions are called.</p></div>
 <span>def <span class="ident">z</span></span>(<span>self) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def z(self) -&gt; float:
-    &#34;&#34;&#34;Get third vector element.
-
-    Returns
-    -------
-    z : float
-
-        Third vector element.
-    &#34;&#34;&#34;
-    return self.value[2]</code></pre>
-</details>
 <div class="desc"><p>Get third vector element.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -4390,7 +2798,7 @@ functions are called.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.evaluation.test2D_HS_1 API documentation</title>
 <meta name="description" content="Test 2D-HS-1: Object and detector placement …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -77,6 +66,7 @@ Toolbox(&quot;2D-HS-1&quot;, &quot;2D-HS-1_metadata.json&quot;)
 <span>(</span><span>resultFileDirectory='.', name=None, rawOutput=False)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>CTSimU test 2D-HS-1: object positioning.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -388,7 +378,6 @@ Toolbox(&quot;2D-HS-1&quot;, &quot;2D-HS-1_metadata.json&quot;)
     def plotResults(self):
         return</code></pre>
 </details>
-<div class="desc"><p>CTSimU test 2D-HS-1: object positioning.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
@@ -400,63 +389,12 @@ Toolbox(&quot;2D-HS-1&quot;, &quot;2D-HS-1_metadata.json&quot;)
 <span>def <span class="ident">prepare</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prepare(self):
-    &#34;&#34;&#34; Preparations before the test will be run with the images from the pipeline. &#34;&#34;&#34;
-    self.jsonScenarioFile = &#34;2D-HS-1_2021-03-24v02r00dp.json&#34;
-
-    if self.jsonScenarioFile is not None:
-        scenario = Scenario(json_dict=json_from_pkg(pkg_scenario(self.jsonScenarioFile)))
-
-        self.pixelSizeX = scenario.detector.pixel_pitch.u.get()
-        self.pixelSizeY = scenario.detector.pixel_pitch.v.get()
-        self.detectorWidthPx  = scenario.detector.columns.get()
-        self.detectorHeightPx = scenario.detector.rows.get()
-
-        self.detectorWidthMM  = self.detectorWidthPx  * self.pixelSizeX
-        self.detectorHeightMM = self.detectorHeightPx * self.pixelSizeY
-
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=-160, zWorld=-140), R=133)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld= 205), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld= 205), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld= 205), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=   0), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=   0), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=   0), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld= 205, zWorld=-205), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=   0, zWorld=-205), R=66)
-        self.nominalCircles.addCircle(self.worldToDetector(yWorld=-205, zWorld=-205), R=66)
-
-        self.nominalCircles.sortCircles()
-
-        self.prepared = True</code></pre>
-</details>
 <div class="desc"><p>Preparations before the test will be run with the images from the pipeline.</p></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.Test2D_HS_1.worldToDetector"><code class="name flex">
 <span>def <span class="ident">worldToDetector</span></span>(<span>self, yWorld, zWorld)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def worldToDetector(self, yWorld, zWorld):
-    # mirror x and y:
-    x = -yWorld
-    y = -zWorld
-
-    x += self.detectorWidthMM/2
-    y += self.detectorHeightMM/2
-
-    x /= self.pixelSizeX
-    y /= self.pixelSizeY
-
-    return (x, y)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -478,6 +416,7 @@ Toolbox(&quot;2D-HS-1&quot;, &quot;2D-HS-1_metadata.json&quot;)
 <span>class <span class="ident">ballCollector</span></span>
 </code></dt>
 <dd>
+<div class="desc"><p>We will add the circles to the ball collector. It decides which circle is which.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -668,278 +607,66 @@ Toolbox(&quot;2D-HS-1&quot;, &quot;2D-HS-1_metadata.json&quot;)
 
         return text</code></pre>
 </details>
-<div class="desc"><p>We will add the circles to the ball collector. It decides which circle is which.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.addCircle"><code class="name flex">
 <span>def <span class="ident">addCircle</span></span>(<span>self, coords, R)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addCircle(self, coords, R):  # tuple: coords = (cx, cy)
-    if self.maxCircleRadius &lt; R:  # Remember the biggest circle
-        self.maxCircleRadius = R
-        self.greatCircleIndex = len(self.circlesUnordered)
-
-    circle2Dpos = Vector(coords[0], coords[1], 0)
-    self.circlesUnordered.append(circle2Dpos)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.distance"><code class="name flex">
 <span>def <span class="ident">distance</span></span>(<span>self, a, b)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def distance(self, a, b):
-    if (a is not None) and (b is not None):
-        if (a &gt;= 0) and (a &lt; self.nCircles()):
-            if (b &gt;= 0) and (b &lt; self.nCircles()):
-                if self.circlesInOrder[a] is not None:
-                    if self.circlesInOrder[b] is not None:
-                        return self.circlesInOrder[a].distance(self.circlesInOrder[b])
-                    else:
-                        raise Exception(&#34;Error: Circle {} not found. Cannot continue with test.&#34;.format(b))
-                else:
-                    raise Exception(&#34;Error: Circle {} not found. Cannot continue with test.&#34;.format(a))
-
-    raise Exception(&#34;Requested Distance: Index for circle a ({a}) or b ({b}) out of bounds.&#34;.format(a=a, b=b))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.getCircle"><code class="name flex">
 <span>def <span class="ident">getCircle</span></span>(<span>self, i)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getCircle(self, i):
-    if i &gt;= 0 and i &lt; self.nCircles():
-        return self.circlesInOrder[i]
-    else:
-        raise Exception(&#34;Circle with index {i} does not exist.&#34;.format(i=i))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.nCircles"><code class="name flex">
 <span>def <span class="ident">nCircles</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def nCircles(self):
-    return len(self.circlesInOrder)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.nCirclesFound"><code class="name flex">
 <span>def <span class="ident">nCirclesFound</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def nCirclesFound(self):
-    n = 0
-    for c in self.circlesInOrder:
-        if c is not None:
-            n = n+1
-
-    return n</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.printResults"><code class="name flex">
 <span>def <span class="ident">printResults</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printResults(self):
-    text = &#34;&#34;
-    for i in range(self.nCircles()):
-        text += &#34;Hole {:02d}: &#34;.format(i)
-        if self.circlesInOrder[i] is None:
-            text += &#34;Not found!&#34;
-        else:
-            text += &#34;   cx = {:.3f} px,\tcy = {:.3f} px&#34;.format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
-
-        text += &#34;\n&#34;
-
-    return text</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.printResults_tabular"><code class="name flex">
 <span>def <span class="ident">printResults_tabular</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def printResults_tabular(self):
-    text = &#34;Hole\tcenter_x [px]\tcenter_y [px]\n&#34;
-    for i in range(self.nCircles()):
-        text += &#34;{:02d}\t&#34;.format(i)
-        if self.circlesInOrder[i] is None:
-            text += &#34;Not found!&#34;
-        else:
-            text += &#34;{:.3f}\t{:.3f}&#34;.format(self.circlesInOrder[i].x(), self.circlesInOrder[i].y())
-
-        text += &#34;\n&#34;
-
-    return text</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.rotate"><code class="name flex">
 <span>def <span class="ident">rotate</span></span>(<span>self, angle, aroundHole)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotate(self, angle, aroundHole):
-    axis = Vector(0, 0, -1)
-    for i in range(len(self.circlesInOrder)):
-        if i != aroundHole:
-            connection = Vector.connection(self.circlesInOrder[aroundHole], self.circlesInOrder[i])
-            connection.rotate(axis, angle)
-            connection.add(self.circlesInOrder[aroundHole])
-            self.circlesInOrder[i] = connection</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.scale"><code class="name flex">
 <span>def <span class="ident">scale</span></span>(<span>self, factor, aroundHole)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scale(self, factor, aroundHole):
-    for i in range(len(self.circlesInOrder)):
-        if i != aroundHole:
-            connection = Vector.connection(self.circlesInOrder[aroundHole], self.circlesInOrder[i])
-            connection.scale(factor)
-            connection.add(self.circlesInOrder[aroundHole])
-            self.circlesInOrder[i] = connection</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.evaluation.test2D_HS_1.ballCollector.sortCircles"><code class="name flex">
 <span>def <span class="ident">sortCircles</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sortCircles(self):
-    if len(self.circlesUnordered) == self.n_circles_expected:
-        # Find all connection vectors from the great hole to the other holes:
-        greatCircle = self.circlesUnordered.pop(self.greatCircleIndex)
-        self.circlesInOrder[0] = greatCircle
-
-        # circlesUnordered now only contains the 9 small circles, and must remain so (not to mess up indices).
-
-        ## Create list of connection vectors:
-        connectionVectors = []
-        for i in range(len(self.circlesUnordered)):
-            connectionVectors.append(Vector.connection(greatCircle, self.circlesUnordered[i]))
-
-        ## Find vector pair with smallest and biggest angle:
-        small = None
-        hole9idx = None
-
-        smallestAngle = math.pi
-        smallestDistance = connectionVectors[0].length()
-
-        for i in range(len(connectionVectors)):
-            # Hole 9 is the hole with the smallest distance to the great hole:
-            if smallestDistance &gt; connectionVectors[i].length():
-                hole9idx = i
-                smallestDistance = connectionVectors[i].length()
-
-            # Find angles between connection vectors of each circle pair:
-            for j in range(i+1, len(connectionVectors)):
-                angle = connectionVectors[i].angle(connectionVectors[j])
-                if smallestAngle &gt; abs(angle):
-                    smallestAngle = abs(angle)
-                    small = (i, j)
-
-
-        # Hole 1 is the hole from the connection vector pair with the smallest angle
-        # that is also the farthest away from the great circle.
-        # Hole 5 is the one that is closer to the great circle.
-        connection0to1 = None
-
-        if self.circlesUnordered[small[0]].distance(greatCircle) &gt; self.circlesUnordered[small[1]].distance(greatCircle):
-            self.circlesInOrder[1] = self.circlesUnordered[small[0]]
-            self.circlesInOrder[5] = self.circlesUnordered[small[1]]
-        else:
-            self.circlesInOrder[5] = self.circlesUnordered[small[0]]
-            self.circlesInOrder[1] = self.circlesUnordered[small[1]]
-
-        # Hole 9 is one of the circles with the smallest distance to the big hole:
-        self.circlesInOrder[9] = self.circlesUnordered[hole9idx]
-
-        # Diagonal from hole 9 to hole 1:
-        diagonal91 = Vector.connection(self.circlesInOrder[9], self.circlesInOrder[1])
-
-        remainingCirclesAndDiagonalAngles = []
-        for i in range(len(connectionVectors)):
-            if not ((i in small) or (i == hole9idx)):
-                angle = diagonal91.angle(connectionVectors[i])
-                remainingCirclesAndDiagonalAngles.append((i, angle))
-
-        # Sort list by angles:
-        remainingCirclesAndDiagonalAngles = sorted(remainingCirclesAndDiagonalAngles, key=lambda x: x[1])
-        i = 0
-        for circle in remainingCirclesAndDiagonalAngles:
-            # The sign of the cross product&#39;s z component tells us
-            # which side of the diagonal the circle lies on:
-            idx = circle[0]
-            angle = circle[1]
-
-            cross = diagonal91.cross(connectionVectors[idx])
-
-            if i &lt; 2: # First vector pair with smallest angle towards diagonal
-                if cross.z() &gt; 0:  # To the &#34;right&#34;
-                    self.circlesInOrder[2] = self.circlesUnordered[idx]
-                else:  # To the &#34;left&#34;
-                    self.circlesInOrder[4] = self.circlesUnordered[idx]
-            elif i &lt; 4: # Second vector pair with medium-sized angle towards diagonal
-                if cross.z() &gt; 0:  # To the &#34;right&#34;
-                    self.circlesInOrder[3] = self.circlesUnordered[idx]
-                else:  # To the &#34;left&#34;
-                    self.circlesInOrder[7] = self.circlesUnordered[idx]
-            elif i &lt; 6: # Second vector pair with medium-sized angle towards diagonal
-                if cross.z() &gt; 0:  # To the &#34;right&#34;
-                    self.circlesInOrder[6] = self.circlesUnordered[idx]
-                else:  # To the &#34;left&#34;
-                    self.circlesInOrder[8] = self.circlesUnordered[idx]
-
-            i += 1
-    else:
-        raise Exception(&#34;A total of {} holes is needed. Found: {} holes.&#34;.format(self.n_circles_expected, len(self.circlesUnordered)))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -994,7 +721,7 @@ Toolbox(&quot;2D-HS-1&quot;, &quot;2D-HS-1_metadata.json&quot;)
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

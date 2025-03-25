@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.scenario.parameter API documentation</title>
 <meta name="description" content="Parameter value, includes unit conversion and handling of parameter drifts.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -68,9 +57,57 @@ tr:hover {background-color: #eee;}
 <dl>
 <dt id="ctsimu.scenario.parameter.Parameter"><code class="flex name class">
 <span>class <span class="ident">Parameter</span></span>
-<span>(</span><span>standard_value=0,<br>native_unit: str = None,<br>simple: bool = False,<br>valid_values: list = None)</span>
+<span>(</span><span>standard_value=0, native_unit: str = None, simple: bool = False, valid_values: list = None)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Parameter value, includes unit conversion and
+handling of parameter drifts.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>standard_value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
+<dd>The parameter's standard value, i.e. its value without any drifts.</dd>
+<dt><strong><code>current_value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
+<dd>The parameter's current value for the given frame number,
+as set in <code><a title="ctsimu.scenario.parameter.Parameter.set_frame" href="#ctsimu.scenario.parameter.Parameter.set_frame">Parameter.set_frame()</a></code>.</dd>
+<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code></dt>
+<dd>The parameter's native unit.
+Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
+<dt><strong><code>preferred_unit</code></strong> :&ensp;<code>str</code></dt>
+<dd>The unit by which the value is represented in a JSON scenario file.</dd>
+<dt><strong><code>drifts</code></strong> :&ensp;<code>list</code></dt>
+<dd>A list of subsequent parameter drifts, all of them
+are objects of class <code><a title="ctsimu.scenario.drift.Drift" href="drift.html#ctsimu.scenario.drift.Drift">Drift</a></code>.</dd>
+<dt><strong><code>value_has_changed</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if the parameter's value has changed since the last value
+has been acknowledged. A parameter value can be acknowledged by
+calling the method <code><a title="ctsimu.scenario.parameter.Parameter.acknowledge_change" href="#ctsimu.scenario.parameter.Parameter.acknowledge_change">Parameter.acknowledge_change()</a></code>.</dd>
+<dt><strong><code>simple</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if the parameter is represented
+as a single value in the JSON file instead of a
+parameter object.</dd>
+</dl>
+<p>A new parameter object must be assigned a valid native unit
+to enable the JSON parser to convert the drift values from the
+JSON file, if necessary.</p>
+<p>Optionally, a standard value can be passed to the constructor.
+The standard value is the "actual" value defined for this
+parameter in the JSON file. If a JSON object is used to set up
+this parameter, the standard value provided in the constructor
+is overwritten by the value given in the JSON file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>standard_value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
+<dd>The parameter's standard value, i.e. its value without any drifts.</dd>
+<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code></dt>
+<dd>The parameter's native unit.
+Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
+<dt><strong><code>simple</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Set to <code>True</code> if the parameter is represented
+as a single value in the JSON file instead of a
+parameter object.</dd>
+<dt><strong><code>valid_values</code></strong> :&ensp;<code>list</code></dt>
+<dd>A list of acceptable standard values for the parameter.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -734,77 +771,12 @@ tr:hover {background-color: #eee;}
 
         return value_has_changed</code></pre>
 </details>
-<div class="desc"><p>Parameter value, includes unit conversion and
-handling of parameter drifts.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>standard_value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
-<dd>The parameter's standard value, i.e. its value without any drifts.</dd>
-<dt><strong><code>current_value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
-<dd>The parameter's current value for the given frame number,
-as set in <code><a title="ctsimu.scenario.parameter.Parameter.set_frame" href="#ctsimu.scenario.parameter.Parameter.set_frame">Parameter.set_frame()</a></code>.</dd>
-<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code></dt>
-<dd>The parameter's native unit.
-Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
-<dt><strong><code>preferred_unit</code></strong> :&ensp;<code>str</code></dt>
-<dd>The unit by which the value is represented in a JSON scenario file.</dd>
-<dt><strong><code>drifts</code></strong> :&ensp;<code>list</code></dt>
-<dd>A list of subsequent parameter drifts, all of them
-are objects of class <code><a title="ctsimu.scenario.drift.Drift" href="drift.html#ctsimu.scenario.drift.Drift">Drift</a></code>.</dd>
-<dt><strong><code>value_has_changed</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> if the parameter's value has changed since the last value
-has been acknowledged. A parameter value can be acknowledged by
-calling the method <code><a title="ctsimu.scenario.parameter.Parameter.acknowledge_change" href="#ctsimu.scenario.parameter.Parameter.acknowledge_change">Parameter.acknowledge_change()</a></code>.</dd>
-<dt><strong><code>simple</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> if the parameter is represented
-as a single value in the JSON file instead of a
-parameter object.</dd>
-</dl>
-<p>A new parameter object must be assigned a valid native unit
-to enable the JSON parser to convert the drift values from the
-JSON file, if necessary.</p>
-<p>Optionally, a standard value can be passed to the constructor.
-The standard value is the "actual" value defined for this
-parameter in the JSON file. If a JSON object is used to set up
-this parameter, the standard value provided in the constructor
-is overwritten by the value given in the JSON file.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>standard_value</code></strong> :&ensp;<code>float</code> or <code>str</code> or <code>bool</code></dt>
-<dd>The parameter's standard value, i.e. its value without any drifts.</dd>
-<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code></dt>
-<dd>The parameter's native unit.
-Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
-<dt><strong><code>simple</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Set to <code>True</code> if the parameter is represented
-as a single value in the JSON file instead of a
-parameter object.</dd>
-<dt><strong><code>valid_values</code></strong> :&ensp;<code>list</code></dt>
-<dd>A list of acceptable standard values for the parameter.</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.scenario.parameter.Parameter.acknowledge_change"><code class="name flex">
 <span>def <span class="ident">acknowledge_change</span></span>(<span>self, new_change_state: bool = False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def acknowledge_change(self, new_change_state:bool=False):
-    &#34;&#34;&#34;Acknowledge a change of the parameter due to a drift.
-    After the acknowledgment, the method `changed`
-    will return the `new_change_state` value (standard: `False`).
-
-    Parameters
-    ----------
-    new_change_state : bool, optional
-        The new state to be returned by the method `changed`.
-        Standard value: `False`.
-    &#34;&#34;&#34;
-    self.value_has_changed = new_change_state</code></pre>
-</details>
 <div class="desc"><p>Acknowledge a change of the parameter due to a drift.
 After the acknowledgment, the method <code>changed</code>
 will return the <code>new_change_state</code> value (standard: <code>False</code>).</p>
@@ -819,23 +791,6 @@ Standard value: <code>False</code>.</dd>
 <span>def <span class="ident">add_drift</span></span>(<span>self, drift: Drift)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_drift(self, drift:&#39;Drift&#39;):
-    &#34;&#34;&#34;Add a drift object to this parameter.
-
-    Parameters
-    ----------
-    drift : ctsimu.scenario.drift.Drift
-    &#34;&#34;&#34;
-    if isinstance(drift, Drift):
-        drift._root = self._root
-        self.drifts.append(drift)
-    else:
-        raise Exception(&#34;add_drift: given &#39;drift&#39; object is not of class &#39;Drift&#39;.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Add a drift object to this parameter.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -847,24 +802,6 @@ Standard value: <code>False</code>.</dd>
 <span>def <span class="ident">add_drift_json</span></span>(<span>self, drift_dict: dict)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add_drift_json(self, drift_dict:dict):
-    &#34;&#34;&#34;Generate a `ctsimu.scenario.drift.Drift` object from a JSON structure
-    that defines a drift and add it to the parameter&#39;s internal list of
-    drifts to handle.
-
-    Parameters
-    ----------
-    drift_dict : dict
-        Dictionary for a CTSimU drift structure.
-    &#34;&#34;&#34;
-    d = Drift(native_unit=self.native_unit, preferred_unit=self.preferred_unit, _root=self._root)
-    d.set_from_json(drift_dict)
-    self.add_drift(d)</code></pre>
-</details>
 <div class="desc"><p>Generate a <code><a title="ctsimu.scenario.drift.Drift" href="drift.html#ctsimu.scenario.drift.Drift">Drift</a></code> object from a JSON structure
 that defines a drift and add it to the parameter's internal list of
 drifts to handle.</p>
@@ -878,22 +815,6 @@ drifts to handle.</p>
 <span>def <span class="ident">changed</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def changed(self) -&gt; bool:
-    &#34;&#34;&#34;Has the parameter changed since the last acknowledged change?
-    (See function `acknowledge_change`).
-
-    Returns
-    -------
-    value_has_changed : bool
-        `True` if the value has changed since last acknowledgment,
-        otherwise `False`.
-    &#34;&#34;&#34;
-    return value_has_changed</code></pre>
-</details>
 <div class="desc"><p>Has the parameter changed since the last acknowledged change?
 (See function <code>acknowledge_change</code>).</p>
 <h2 id="returns">Returns</h2>
@@ -907,20 +828,6 @@ otherwise <code>False</code>.</dd>
 <span>def <span class="ident">get</span></span>(<span>self) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get(self) -&gt; float | str | bool:
-    &#34;&#34;&#34;Get parameter&#39;s current value.
-
-    Returns
-    -------
-    current_value : float or str or bool
-        The parameter&#39;s current value.
-    &#34;&#34;&#34;
-    return self.current_value</code></pre>
-</details>
 <div class="desc"><p>Get parameter's current value.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -932,20 +839,6 @@ otherwise <code>False</code>.</dd>
 <span>def <span class="ident">get_current_value</span></span>(<span>self) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_current_value(self) -&gt; float | str | bool:
-    &#34;&#34;&#34;Get parameter&#39;s current value.
-
-    Returns
-    -------
-    current_value : float or str or bool
-        The parameter&#39;s current value.
-    &#34;&#34;&#34;
-    return self.current_value</code></pre>
-</details>
 <div class="desc"><p>Get parameter's current value.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -957,20 +850,6 @@ otherwise <code>False</code>.</dd>
 <span>def <span class="ident">get_standard_value</span></span>(<span>self) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_standard_value(self) -&gt; float | str | bool:
-    &#34;&#34;&#34;Get parameter&#39;s standard value.
-
-    Returns
-    -------
-    standard_value : float or str or bool
-        The parameter&#39;s standard value.
-    &#34;&#34;&#34;
-    return self.standard_value</code></pre>
-</details>
 <div class="desc"><p>Get parameter's standard value.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -982,56 +861,6 @@ otherwise <code>False</code>.</dd>
 <span>def <span class="ident">get_total_drift_for_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_total_drift_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; float | str | bool:
-    &#34;&#34;&#34;Calculate the total drift value from all drift components,
-    for the given `frame` out of a total of `n_frames`,
-    depending on whether all drifts are applied or only
-    drifts known to the reconstruction software.
-
-    Parameters
-    ----------
-    frame : float
-        Current frame number.
-
-    n_frames : int
-        Total number of frames in CT scan.
-
-    reconstruction : bool
-        Obey only those drifts that are labeled as known to the
-        reconstruction software?
-
-    Returns
-    -------
-    total_drift_value : float or str or bool
-        The parameter&#39;s total (accumulated) drift value
-        for the given `frame` number.
-    &#34;&#34;&#34;
-    total_drift = 0
-
-    for d in self.drifts:
-        if reconstruction is True:
-            if d.known_to_reconstruction is False:
-                # Skip this drift if it is unknown to the reconstruction,
-                # but we only want to obey drifts that are actually known
-                # to the reconstruction...
-                continue
-
-        if (self.native_unit == &#34;string&#34;) or (self.native_unit == &#34;bool&#34;):
-            # A string-type parameter can only be one string,
-            # nothing is added, and the drifts array should only
-            # contain one element. Otherwise, the last drift is the
-            # one that has precedence. Same for bool.
-            total_drift = d.get_value_for_frame(frame=frame, n_frames=n_frames)
-        else:
-            # Add up all drift values for requested frame:
-            total_drift += d.get_value_for_frame(frame=frame, n_frames=n_frames)
-
-    return total_drift</code></pre>
-</details>
 <div class="desc"><p>Calculate the total drift value from all drift components,
 for the given <code>frame</code> out of a total of <code>n_frames</code>,
 depending on whether all drifts are applied or only
@@ -1057,20 +886,6 @@ for the given <code>frame</code> number.</dd>
 <span>def <span class="ident">has_drifts</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def has_drifts(self) -&gt; bool:
-    &#34;&#34;&#34;Does the parameter specify any drift?
-
-    Returns
-    -------
-    has_drifts : bool
-        `True` if the parameter specifies any drift, otherwise `False`.
-    &#34;&#34;&#34;
-    return (len(self.drifts) &gt; 0)</code></pre>
-</details>
 <div class="desc"><p>Does the parameter specify any drift?</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1082,22 +897,6 @@ for the given <code>frame</code> number.</dd>
 <span>def <span class="ident">is_zero</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def is_zero(self) -&gt; bool:
-    &#34;&#34;&#34;Check if this parameter is and always will be zero.
-
-    Returns
-    -------
-    is_zero : bool
-    &#34;&#34;&#34;
-    if (self.get_standard_value() == 0) and (self.has_drifts() is False):
-        return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if this parameter is and always will be zero.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1109,63 +908,6 @@ for the given <code>frame</code> number.</dd>
 <span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def json_dict(self) -&gt; dict:
-    &#34;&#34;&#34;Create a CTSimU JSON dictionary for this parameter.
-
-    Returns
-    -------
-    json_dict : dict
-    &#34;&#34;&#34;
-    if self.simple is True:
-        # Parameter is represented by a single value.
-        return self.standard_value
-    else:
-        jd = dict()
-        jd[&#34;value&#34;] = self.standard_value
-
-        # Add unit if necessary
-        unit_factor = 1
-        if self.native_unit not in native_units_to_omit_in_json_file:
-            unit = self.native_unit
-            if self.preferred_unit is not None:
-                unit = self.preferred_unit
-
-                # Convert value to preferred unit:
-                jd[&#34;value&#34;] = convert_to_preferred_unit(
-                    preferred_unit=self.preferred_unit,
-                    native_unit=self.native_unit,
-                    value=jd[&#34;value&#34;])
-
-            jd[&#34;unit&#34;] = unit
-
-        # Uncertainty
-        if self.uncertainty is not None:
-            jd[&#34;uncertainty&#34;] = dict()
-            jd[&#34;uncertainty&#34;][&#34;value&#34;] = self.uncertainty
-            if self.native_unit not in native_units_to_omit_in_json_file:
-                uncertainty_unit = self.native_unit
-                if self.preferred_uncertainty_unit is not None:
-                    uncertainty_unit = self.preferred_uncertainty_unit
-
-                    # Convert uncertainty to preferred unit:
-                    jd[&#34;uncertainty&#34;][&#34;value&#34;] = convert_to_preferred_unit(
-                        preferred_unit=self.preferred_uncertainty_unit,
-                        native_unit=self.native_unit,
-                        value=jd[&#34;uncertainty&#34;][&#34;value&#34;])
-
-                jd[&#34;uncertainty&#34;][&#34;unit&#34;] = uncertainty_unit
-
-        if len(self.drifts) &gt; 0:
-            jd[&#34;drifts&#34;] = list()
-            for drift in self.drifts:
-                jd[&#34;drifts&#34;].append(drift.json_dict())
-
-        return jd</code></pre>
-</details>
 <div class="desc"><p>Create a CTSimU JSON dictionary for this parameter.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1177,50 +919,6 @@ for the given <code>frame</code> number.</dd>
 <span>def <span class="ident">maximum_value</span></span>(<span>self, n_frames: int, reconstruction: bool = False) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def maximum_value(self, n_frames:int, reconstruction:bool=False) -&gt; float:
-    &#34;&#34;&#34;Get the parameter&#39;s maximum value during the evolution of `n_frames`, given drifts.
-
-    Parameters
-    ----------
-    n_frames : int
-        Number of frames in the CT scan.
-
-    reconstruction : bool
-        Obey only those drifts that are labeled as known to
-        the reconstruction software?
-
-    Returns
-    -------
-    maximum_value : float
-        Maximum value of this parameter, considering the parameter
-        drifts throughout the CT scan.
-    &#34;&#34;&#34;
-    if self.has_drifts():
-        if (self.native_unit != &#34;string&#34;) and (self.native_unit != &#34;bool&#34;) and (self.standard_value is not None):
-            total_drift_max = self.get_total_drift_for_frame(
-                0,
-                n_frames,
-                reconstruction
-            )
-
-            for f in range(n_frames):
-                total_drift_for_frame = self.get_total_drift_for_frame(
-                    f,
-                    n_frames,
-                    reconstruction
-                )
-
-                if total_drift_for_frame &gt; total_drift_max:
-                    total_drift_max = total_drift_for_frame
-
-            return self.standard_value + total_drift_max
-
-    return standard_value</code></pre>
-</details>
 <div class="desc"><p>Get the parameter's maximum value during the evolution of <code>n_frames</code>, given drifts.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1241,50 +939,6 @@ drifts throughout the CT scan.</dd>
 <span>def <span class="ident">minimum_value</span></span>(<span>self, n_frames: int, reconstruction: bool = False) ‑> float</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def minimum_value(self, n_frames:int, reconstruction:bool=False) -&gt; float:
-    &#34;&#34;&#34;Get the parameter&#39;s minimum value during the evolution of `n_frames`, given drifts.
-
-    Parameters
-    ----------
-    n_frames : int
-        Number of frames in the CT scan.
-
-    reconstruction : bool
-        Obey only those drifts that are labeled as known to
-        the reconstruction software?
-
-    Returns
-    -------
-    minimum_value : float
-        Minimum value of this parameter, considering the parameter
-        drifts throughout the CT scan.
-    &#34;&#34;&#34;
-    if self.has_drifts():
-        if (self.native_unit != &#34;string&#34;) and (self.native_unit != &#34;bool&#34;) and (self.standard_value is not None):
-            total_drift_min = self.get_total_drift_for_frame(
-                0,
-                n_frames,
-                reconstruction
-            )
-
-            for f in range(n_frames):
-                total_drift_for_frame = self.get_total_drift_for_frame(
-                    f,
-                    n_frames,
-                    reconstruction
-                )
-
-                if total_drift_for_frame &lt; total_drift_min:
-                    total_drift_min = total_drift_for_frame
-
-            return self.standard_value + total_drift_min
-
-    return standard_value</code></pre>
-</details>
 <div class="desc"><p>Get the parameter's minimum value during the evolution of <code>n_frames</code>, given drifts.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1305,18 +959,6 @@ drifts throughout the CT scan.</dd>
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def reset(self):
-    &#34;&#34;&#34;Delete all drifts and set the parameter&#39;s current value
-    to the standard value.
-    &#34;&#34;&#34;
-    self.drifts = []
-    self.current_value = self.standard_value
-    self.value_has_changed = True</code></pre>
-</details>
 <div class="desc"><p>Delete all drifts and set the parameter's current value
 to the standard value.</p></div>
 </dd>
@@ -1324,21 +966,6 @@ to the standard value.</p></div>
 <span>def <span class="ident">set</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, value):
-    &#34;&#34;&#34;Set the parameter&#39;s standard value.
-    Automatically sets the current value to the standard value.
-
-    Parameters
-    ----------
-    value : float or str or bool
-        New standard value for the parameter.
-    &#34;&#34;&#34;
-    self.set_standard_value(value)</code></pre>
-</details>
 <div class="desc"><p>Set the parameter's standard value.
 Automatically sets the current value to the standard value.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1351,52 +978,6 @@ Automatically sets the current value to the standard value.</p>
 <span>def <span class="ident">set_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; bool:
-    &#34;&#34;&#34;Prepares the `current_value` for the given `frame` number
-    (assuming a total of `n_frames`). This takes into account all drifts
-    (or only the ones known to reconstruction).
-
-    Parameters
-    ----------
-    frame : float
-        Current frame number.
-
-    n_frames : int
-        Total number of frames in scan.
-
-    reconstruction : bool
-        `True`: obey only those drifts that are labeled as known to the
-        reconstruction software.
-        `False`: obey all drifts.
-
-    Returns
-    -------
-    value_has_changed : bool
-        If the value has changed from the previous value (e.g. due to drifts).
-    &#34;&#34;&#34;
-    new_value = self.standard_value
-    total_drift = self.get_total_drift_for_frame(frame, n_frames, reconstruction)
-
-    if self.native_unit == &#34;string&#34;:
-        if isinstance(total_drift, str):
-            # Only assign new value if `total_drift` is actually a string:
-            new_value = total_drift
-    else:
-        if self.standard_value is not None:
-            new_value = self.standard_value + total_drift
-
-    # Check if the value has changed when compared to the previous value:
-    value_has_changed = False
-    if self.current_value != new_value:
-        value_has_changed = True
-        self.current_value = new_value
-
-    return value_has_changed</code></pre>
-</details>
 <div class="desc"><p>Prepares the <code>current_value</code> for the given <code>frame</code> number
 (assuming a total of <code>n_frames</code>). This takes into account all drifts
 (or only the ones known to reconstruction).</p>
@@ -1421,33 +1002,6 @@ reconstruction software.
 <span>def <span class="ident">set_frame_and_get_value</span></span>(<span>self, frame: float, n_frames: int = 1, reconstruction: bool = False) ‑> float | str | bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_frame_and_get_value(self, frame:float, n_frames:int=1, reconstruction:bool=False) -&gt; float | str | bool:
-    &#34;&#34;&#34;Set the new frame number, return the new current value.
-
-    Parameters
-    ----------
-    frame : float
-        Current frame number.
-
-    n_frames : int
-        Total number of frames in scan.
-
-    reconstruction : bool
-        Obey only those drifts that are labeled as known to the
-        reconstruction software?
-
-    Returns
-    -------
-    current_value : float or str or bool
-        The parameter&#39;s current value for the given `frame` number.
-    &#34;&#34;&#34;
-    self.set_frame(frame, n_frames, reconstruction)
-    return self.current_value</code></pre>
-</details>
 <div class="desc"><p>Set the new frame number, return the new current value.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1469,103 +1023,6 @@ reconstruction software?</dd>
 <span>def <span class="ident">set_from_json</span></span>(<span>self, json_parameter_object: dict) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_from_json(self, json_parameter_object:dict) -&gt; bool:
-    &#34;&#34;&#34;Set up this parameter from a CTSimU parameter structure.
-    The proper `native_unit` must be set up correctly before
-    running this function.
-
-    Parameters
-    ----------
-    json_parameter_object : dict
-        A CTSimU parameter structure.
-
-    Returns
-    -------
-    success : bool
-        `True` on success, `False` if an error occurred.
-    &#34;&#34;&#34;
-    self.reset()
-    success = False
-
-    if isinstance(json_parameter_object, numbers.Number):
-        # Parameter is given as a single number, not as a
-        # parameter structure (with value, unit, drift, uncertainty)
-        if self.native_unit != &#34;string&#34;:
-            self.set_standard_value(json_parameter_object)
-            success = True
-    elif isinstance(json_parameter_object, str):
-        # Parameter is given as a single string, not as a
-        # parameter structure (with value, unit, drift, uncertainty)
-        if self.native_unit == &#34;string&#34;:
-            self.set_standard_value(json_parameter_object)
-            success = True
-    elif isinstance(json_parameter_object, bool):
-        # Parameter is given as a boolean.
-        if self.native_unit == &#34;bool&#34;:
-            self.set_standard_value(json_convert_to_native_unit(self.native_unit, json_parameter_object))
-            success = True
-    elif isinstance(json_parameter_object, dict):
-        # Hopefully a valid parameter structure...
-
-        # Value, automatically converted to parameter&#39;s native unit:
-        if json_exists_and_not_null(json_parameter_object, [&#34;value&#34;]):
-            if not object_value_is_null(json_parameter_object):
-                self.set_standard_value(json_convert_to_native_unit(self.native_unit, json_parameter_object))
-                success = True
-
-        self.current_value = self.standard_value
-
-        # Unit
-        self.preferred_unit = get_value(json_parameter_object, [&#34;unit&#34;], self.native_unit)
-
-        # Uncertainty:
-        if json_exists_and_not_null(json_parameter_object, [&#34;uncertainty&#34;]):
-            unc = json_extract(json_parameter_object, [&#34;uncertainty&#34;])
-            if isinstance(unc, dict):
-                # Since file format 1.0, uncertainties are value/unit dicts:
-                self.uncertainty = json_convert_to_native_unit(
-                    native_unit=self.native_unit,
-                    value_and_unit=unc,
-                    fallback_json_unit=self.preferred_unit
-                )
-                self.preferred_uncertainty_unit = get_value(json_parameter_object, [&#34;uncertainty&#34;, &#34;unit&#34;], self.preferred_unit)
-            elif isinstance(unc, numbers.Number):
-                # Before file format 1.0, &#34;uncertainty&#34; and &#34;uncertainty_unit&#34; where
-                # separate properties of a parameter:
-                self.preferred_uncertainty_unit = get_value(json_parameter_object, [&#34;uncertainty_unit&#34;], self.preferred_unit)
-
-                self.uncertainty = convert_to_native_unit(
-                    given_unit=self.preferred_uncertainty_unit,
-                    native_unit=self.native_unit,
-                    value=unc
-                )
-            else:
-                self.uncertainty = None
-        else:
-            self.uncertainty = None
-
-        if self.uncertainty == 0:
-            self.uncertainty = None
-
-        # Drifts:
-        if json_exists_and_not_null(json_parameter_object, [&#34;drifts&#34;]):
-            drifts = json_extract(json_parameter_object, [&#34;drifts&#34;])
-
-            if isinstance(drifts, list):
-                # An array of drift structures.
-                for d in drifts:
-                    self.add_drift_json(d)
-            elif isinstance(drifts, dict):
-                # A single drift structure (apparently).
-                # This is not standard behavior, but let&#39;s support it.
-                self.add_drift_json(drifts)
-
-    return success</code></pre>
-</details>
 <div class="desc"><p>Set up this parameter from a CTSimU parameter structure.
 The proper <code>native_unit</code> must be set up correctly before
 running this function.</p>
@@ -1584,22 +1041,6 @@ running this function.</p>
 <span>def <span class="ident">set_native_unit</span></span>(<span>self, native_unit: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_native_unit(self, native_unit:str):
-    &#34;&#34;&#34;Set the parameter&#39;s native unit.
-
-    Parameters
-    ----------
-    native_unit : str
-        New native unit for the parameter.
-        Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
-    &#34;&#34;&#34;
-    if is_valid_native_unit(native_unit):
-        self.native_unit = native_unit</code></pre>
-</details>
 <div class="desc"><p>Set the parameter's native unit.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
@@ -1612,35 +1053,6 @@ Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code
 <span>def <span class="ident">set_parameter_from_key</span></span>(<span>self, json_object: dict, key_sequence: list) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parameter_from_key(self, json_object:dict, key_sequence:list) -&gt; bool:
-    &#34;&#34;&#34;Tries to find a valid parameter object at the given
-    `key_sequence` in the given `json_object`. Sets the parameter
-    if possible and returns `True` on success, `False` otherwise.
-
-    Parameters
-    ----------
-    json_object : dict
-        Piece of a CTSimU JSON structure.
-
-    key_sequence : list
-        List of strings that identify the key sequence where the
-        parameter is found in the given JSON structure.
-
-    Returns
-    -------
-    success : bool
-        `True` on success, `False` if an error occurred.
-    &#34;&#34;&#34;
-    if json_exists_and_not_null(json_object, key_sequence):
-        if self.set_from_json(json_extract(json_object, key_sequence)):
-            return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Tries to find a valid parameter object at the given
 <code>key_sequence</code> in the given <code>json_object</code>. Sets the parameter
 if possible and returns <code>True</code> on success, <code>False</code> otherwise.</p>
@@ -1662,37 +1074,6 @@ parameter is found in the given JSON structure.</dd>
 <span>def <span class="ident">set_parameter_from_possible_keys</span></span>(<span>self, json_object: dict, key_sequences: list) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parameter_from_possible_keys(self, json_object:dict, key_sequences:list) -&gt; bool:
-    &#34;&#34;&#34;Searches the JSON object for each key sequence in the given list
-    of `key_sequences`. The first sequence that can be found is taken to
-    set up the parameter.
-
-    Parameters
-    ----------
-    json_object : dict
-        Piece of a CTSimU JSON structure.
-
-    key_sequences : list
-        A list of possible key sequences, i.e., a list of lists of strings.
-
-    Returns
-    -------
-    success : bool
-        `True` on success (i.e., at least one of the key sequences
-        identified a valid parameter in the given JSON structure),
-        `False` if an error occurred.
-    &#34;&#34;&#34;
-    for keyseq in key_sequences:
-        if self.set_parameter_from_key(json_object, keyseq):
-            # Returned successfully, so we are done here.
-            return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Searches the JSON object for each key sequence in the given list
 of <code>key_sequences</code>. The first sequence that can be found is taken to
 set up the parameter.</p>
@@ -1715,25 +1096,6 @@ identified a valid parameter in the given JSON structure),
 <span>def <span class="ident">set_simple</span></span>(<span>self, simple: bool)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_simple(self, simple:bool):
-    &#34;&#34;&#34;Set this parameter to &#34;simple&#34; mode (or not).
-    In simple mode, the parameter is represented in the JSON
-    file as a single value instead of a parameter object (with value,
-    unit, uncertainty and drifts).
-
-    Parameters
-    ----------
-    simple : bool
-        Set to `True` if the parameter is represented
-        as a single value in the JSON file instead of a
-        parameter object.
-    &#34;&#34;&#34;
-    self.simple = simple</code></pre>
-</details>
 <div class="desc"><p>Set this parameter to "simple" mode (or not).
 In simple mode, the parameter is represented in the JSON
 file as a single value instead of a parameter object (with value,
@@ -1750,41 +1112,6 @@ parameter object.</dd>
 <span>def <span class="ident">set_standard_value</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_standard_value(self, value):
-    &#34;&#34;&#34;Set the parameter&#39;s standard value.
-    Automatically sets the current value to the standard value.
-
-    Parameters
-    ----------
-    value : float or str or bool
-        New standard value for the parameter.
-    &#34;&#34;&#34;
-    if self.valid_values is None:
-        self.standard_value = value
-        self.current_value = value
-    elif isinstance(self.valid_values, list):
-        if value in self.valid_values:
-            # self.valid_values list contains the value
-            self.standard_value = value
-            self.current_value = value
-        else:
-            warnings.warn(f&#34;Parameter: given value &#39;{value}&#39; not in list of valid values. Must be one of: {self.valid_values}. Using fail value instead: {self.fail_value}&#34;, UserWarning)
-            self.standard_value = self.fail_value
-            self.current_value = self.fail_value
-    else:
-        if value == self.valid_values:
-            # self.valid_values seems to be a single value
-            self.standard_value = value
-            self.current_value = value
-        else:
-            warnings.warn(f&#34;Parameter: given value &#39;{value}&#39; not in list of valid values. Must be: {self.valid_values}. Using fail value instead: {self.fail_value}&#34;, UserWarning)
-            self.standard_value = self.fail_value
-            self.current_value = self.fail_value</code></pre>
-</details>
 <div class="desc"><p>Set the parameter's standard value.
 Automatically sets the current value to the standard value.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1849,7 +1176,7 @@ Automatically sets the current value to the standard value.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

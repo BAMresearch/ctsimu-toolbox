@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.image API documentation</title>
 <meta name="description" content="Single image handling and processing …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,17 +18,6 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -109,39 +98,12 @@ myImage.save("example_converted.raw",
 <span>def <span class="ident">createImageStack</span></span>(<span>stack)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def createImageStack(stack):
-    &#34;&#34;&#34; Return an ImageStack object, if string is given. &#34;&#34;&#34;
-    if isinstance(stack, ImageStack):
-        return stack
-    elif isinstance(stack, str):
-        return ImageStack(stack)
-    elif stack is None:
-        return None
-    else:
-        raise Exception(&#34;Not a valid image file stack definition: {}&#34;.format(stack))</code></pre>
-</details>
 <div class="desc"><p>Return an ImageStack object, if string is given.</p></div>
 </dd>
 <dt id="ctsimu.image.isTIFF"><code class="name flex">
 <span>def <span class="ident">isTIFF</span></span>(<span>filename: str) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isTIFF(filename: str) -&gt; bool:
-    &#34;&#34;&#34;Check if file name signifies a TIFF image.&#34;&#34;&#34;
-    if filename is not None:
-        if(filename.casefold().endswith(&#39;.tif&#39;) or filename.casefold().endswith(&#39;.tiff&#39;)):
-            return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if file name signifies a TIFF image.</p></div>
 </dd>
 </dl>
@@ -154,6 +116,7 @@ myImage.save("example_converted.raw",
 <span>(</span><span>inputFile=None, outputFile=None)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Stores pixel data, provides image processing routines.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1731,31 +1694,12 @@ myImage.save("example_converted.raw",
 
         return fittedI0, fittedMu, fittedR, fittedX0</code></pre>
 </details>
-<div class="desc"><p>Stores pixel data, provides image processing routines.</p></div>
 <h3>Static methods</h3>
 <dl>
 <dt id="ctsimu.image.Image.getPixelWeight"><code class="name flex">
 <span>def <span class="ident">getPixelWeight</span></span>(<span>x, y, clipPolygon)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def getPixelWeight(x, y, clipPolygon):
-    # Calculate pixel weight from the area of the clipped pixel:
-    upperLeft  = Vector(x,   y)
-    upperRight = Vector(x+1, y)
-    lowerLeft  = Vector(x,   y+1)
-    lowerRight = Vector(x+1, y+1)
-    pixelPolygon = Polygon(upperLeft, upperRight, lowerRight, lowerLeft)  # Clockwise order because pixel CS is y-flipped.
-
-    clippedPixel = pixelPolygon.clip(clipPolygon)
-    weight = clippedPixel.area()
-
-    return weight</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -1765,205 +1709,54 @@ def getPixelWeight(x, y, clipPolygon):
 <span>def <span class="ident">accumulate</span></span>(<span>self, addImg, compensateShift=False, roiX0=None, roiY0=None, roiX1=None, roiY1=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def accumulate(self, addImg, compensateShift=False, roiX0=None, roiY0=None, roiX1=None, roiY1=None):
-    if (compensateShift == True) and (self.n_accumulations &gt; 0):
-        shift = (0, 0)
-
-        if (roiX0 is None) or (roiY0 is None) or (roiX1 is None) or (roiY1 is None):
-            shift = self.calcRelativeShift(addImg)
-        else:
-            # Crop image to drift ROI,
-            croppedRef = copy.deepcopy(self)
-            croppedRef.crop(x0=roiX0, y0=roiY0, x1=roiX1, y1=roiY1)
-
-            croppedImg = copy.deepcopy(addImg)
-            croppedImg.crop(x0=roiX0, y0=roiY0, x1=roiX1, y1=roiY1)
-
-            shift = croppedImg.calcRelativeShift(croppedRef)
-
-        log(&#34;Shift: {}&#34;.format(shift))
-        shiftedPixMap = addImg.getShiftedPixmap(shift[1], shift[0])
-        addImg.setPixelMap(shiftedPixMap)
-
-    if self.n_accumulations == 0:
-        self.setPixelMap(addImg.getPixelMap())
-    else:
-        if (self.dimensionsMatch(addImg)):
-            self.px += addImg.getPixelMap()
-        else:
-            raise Exception(&#34;Current pixel dimensions ({currentX}x{currentY}) don&#39;t match dimensions of new file ({newX}x{newY}): {filename}&#34;.format(currentX=self.getWidth(), currentY=self.getHeight(), newX=addImg.getWidth(), newY=addImg.getHeight(), filename=addImg.inputFile.getFilename()))
-
-    self.n_accumulations += 1</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.add"><code class="name flex">
 <span>def <span class="ident">add</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add(self, value):
-    self.px += value</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.addImage"><code class="name flex">
 <span>def <span class="ident">addImage</span></span>(<span>self, other)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addImage(self, other):
-    &#34;&#34;&#34; Add pixel values from another image to this image. &#34;&#34;&#34;
-    if self.dimensionsMatch(other):
-        self.px = self.px + other.getPixelMap()</code></pre>
-</details>
 <div class="desc"><p>Add pixel values from another image to this image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.applyDark"><code class="name flex">
 <span>def <span class="ident">applyDark</span></span>(<span>self, dark)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def applyDark(self, dark):
-    &#34;&#34;&#34; Apply dark image correction (offset). &#34;&#34;&#34;
-    if self.dimensionsMatch(dark):
-        self.px = self.px - dark.getPixelMap()
-    else:
-        raise Exception(&#34;The dimensions of the image do not match the dimensions of the dark image for offset correction.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Apply dark image correction (offset).</p></div>
 </dd>
 <dt id="ctsimu.image.Image.applyFlatfield"><code class="name flex">
 <span>def <span class="ident">applyFlatfield</span></span>(<span>self, ref, rescaleFactor=1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def applyFlatfield(self, ref, rescaleFactor=1):
-    &#34;&#34;&#34; Apply flat field correction (free beam white image / gain correction). &#34;&#34;&#34;
-    if self.dimensionsMatch(ref):
-        if(not ref.containsPixelValue(0)):  # avoid division by zero
-            self.px = (self.px / ref.getPixelMap()) * float(rescaleFactor)
-        else: # avoid division by zero
-            self.px = (self.px / numpy.clip(ref.getPixelMap(), 0.1, None)) * float(rescaleFactor)
-    else:
-        raise Exception(&#34;The dimensions of the image do not match the dimensions of the flat image for flat field correction.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Apply flat field correction (free beam white image / gain correction).</p></div>
 </dd>
 <dt id="ctsimu.image.Image.applyMedian"><code class="name flex">
 <span>def <span class="ident">applyMedian</span></span>(<span>self, kernelSize=1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def applyMedian(self, kernelSize=1):
-    if kernelSize &gt; 1:
-        self.px = ndimage.median_filter(self.px, int(kernelSize))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.applyThreshold"><code class="name flex">
 <span>def <span class="ident">applyThreshold</span></span>(<span>self, threshold, lower=0, upper=65535)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def applyThreshold(self, threshold, lower=0, upper=65535):
-    self.px = numpy.where(self.px &gt; threshold, upper, lower).astype(self.getInternalDataType())</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.averageAccumulations"><code class="name flex">
 <span>def <span class="ident">averageAccumulations</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def averageAccumulations(self):
-    if self.n_accumulations &gt; 1:
-        self.px = self.px / self.n_accumulations
-        log(&#34;Accumulated and averaged {} images.&#34;.format(self.n_accumulations))
-        self.n_accumulations = 1</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.bin"><code class="name flex">
 <span>def <span class="ident">bin</span></span>(<span>self, binSizeX, binSizeY, operation='mean')</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def bin(self, binSizeX, binSizeY, operation=&#34;mean&#34;):
-    &#34;&#34;&#34; Decrease image size by merging pixels using specified operation.
-        Valid operations: mean, max, min, sum. &#34;&#34;&#34;
-
-    if binSizeX is None:
-        binSizeX = 1
-
-    if binSizeY is None:
-        binSizeY = 1
-
-    if (binSizeX &gt; 1) or (binSizeY &gt; 1):
-        # Picture dimensions must be integer multiple of binning factor. If not, crop:
-        overhangX = math.fmod(int(self.getWidth()), binSizeX)
-        overhangY = math.fmod(int(self.getHeight()), binSizeY)
-        if (overhangX &gt; 0) or (overhangY &gt; 0):
-            #log(&#34;Cropping before binning because of nonzero overhang: (&#34; + str(overhangX) + &#34;, &#34; + str(overhangY) + &#34;)&#34;)
-            self.crop(0, 0, self.getWidth()-int(overhangX), self.getHeight()-int(overhangY))
-
-        newWidth  = self.width // binSizeX
-        newHeight = self.height // binSizeY
-
-        # Shift pixel values that need to be binned together into additional axes:
-        binshape = (newHeight, binSizeY, newWidth, binSizeX)
-        self.px = self.px.reshape(binshape)
-
-        # Perform binning operation along binning axes (axis #3 and #1).
-        # These axes will be collapsed to contain only the result
-        # of the binning operation.
-        if operation == &#34;mean&#34;:
-            self.px = self.px.mean(axis=(3, 1))
-        elif operation == &#34;sum&#34;:
-            self.px = self.px.sum(axis=(3, 1))
-        elif operation == &#34;max&#34;:
-            self.px = self.px.max(axis=(3, 1))
-        elif operation == &#34;min&#34;:
-            self.px = self.px.min(axis=(3, 1))
-        elif operation is None:
-            raise Exception(&#34;No binning operation specified.&#34;)
-        else:
-            raise Exception(&#34;Invalid binning operation: {}.&#34;.format(operation))
-
-        self.setWidth(newWidth)
-        self.setHeight(newHeight)
-
-        # Resolution assumes isotropic pixels...
-        self.resolution *= binSizeX</code></pre>
-</details>
 <div class="desc"><p>Decrease image size by merging pixels using specified operation.
 Valid operations: mean, max, min, sum.</p></div>
 </dd>
@@ -1971,1003 +1764,264 @@ Valid operations: mean, max, min, sum.</p></div>
 <span>def <span class="ident">calcRelativeShift</span></span>(<span>self, referenceImage)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def calcRelativeShift(self, referenceImage):
-    if self.dimensionsMatch(referenceImage):
-        # Convolution of this pixmap with the vertically and horizontally mirrored reference pixmap
-        img1 = self.px - int(numpy.mean(self.px))
-        img2 = referenceImage.getPixelMap() - numpy.mean(referenceImage.getPixelMap())
-
-        convolution = signal.fftconvolve(img1, img2[::-1,::-1], mode=&#39;same&#39;)
-
-        maximum = numpy.unravel_index(numpy.argmax(convolution), convolution.shape)
-
-        return (maximum[1] - self.getWidth()/2, maximum[0] - self.getHeight()/2)
-    else:
-        raise Exception(&#34;Dimensions of image ({}, {}) and reference image ({}, {}) must match for convolution.&#34;.format(self.getWidth(), self.getHeight(), referenceImage.getWidth(), referenceImage.getHeight()))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.centerOfMass"><code class="name flex">
 <span>def <span class="ident">centerOfMass</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def centerOfMass(self):
-    return ndimage.center_of_mass(self.px)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.cleanPatches"><code class="name flex">
-<span>def <span class="ident">cleanPatches</span></span>(<span>self,<br>min_patch_area=None,<br>max_patch_area=None,<br>remove_border_patches=False,<br>aspect_ratio_tolerance=None)</span>
+<span>def <span class="ident">cleanPatches</span></span>(<span>self, min_patch_area=None, max_patch_area=None, remove_border_patches=False, aspect_ratio_tolerance=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cleanPatches(self, min_patch_area=None, max_patch_area=None, remove_border_patches=False, aspect_ratio_tolerance=None):
-    iterationStructure = ndimage.generate_binary_structure(rank=2, connectivity=2)  # apply to rank=2D array, only nearest neihbours (connectivity=1) or next nearest neighbours as well (connectivity=2)
-
-    labelField, nPatches = ndimage.label(self.px, iterationStructure)
-    nCleaned   = 0
-    nRemaining = 0
-    patchGeometry = []
-
-    if nPatches == 0:
-        log(&#34;Found no structures&#34;)
-    else:
-        self.erase()
-
-        areaMin = 0
-        if(min_patch_area is not None):
-            areaMin = min_patch_area
-
-        areaMax = self.getWidth() * self.getHeight()
-        if(max_patch_area is not None):
-            areaMax = max_patch_area
-
-        areaMin = areaMin / (self.getResolution()**2)
-        areaMax = areaMax / (self.getResolution()**2)
-
-        for i in range(1, nPatches+1):
-            patchCoordinates = numpy.nonzero(labelField==i)
-
-            # Check patch size:
-            nPatchPixels = len(patchCoordinates[0])
-            if nPatchPixels &lt; areaMin or nPatchPixels &gt; areaMax:  # Black out areas that are too small or too big for a circle
-                nCleaned += 1
-                continue
-
-            coordinatesX = patchCoordinates[1]
-            coordinatesY = patchCoordinates[0]
-
-            left  = numpy.amin(coordinatesX)
-            right = numpy.amax(coordinatesX)
-            top   = numpy.amin(coordinatesY)
-            bottom= numpy.amax(coordinatesY)
-
-            if remove_border_patches:
-                if((left==0) or (top==0) or (right==self.getWidth()-1) or (bottom==self.getHeight()-1)):
-                    nCleaned += 1
-                    continue
-
-            # An ideal circle should have an aspect ratio of 1:
-            if aspect_ratio_tolerance is not None:
-                aspectRatio = 0
-                if(top != bottom):
-                    aspectRatio = abs(right-left) / abs(bottom-top)
-
-                if abs(1-aspectRatio) &gt; aspect_ratio_tolerance:  # This is not a circle
-                    nCleaned += 1
-                    log(&#34;Aspect ratio {ar:.3f} doesn&#39;t meet aspect ratio tolerance |1-AR|={tolerance:.3f}&#34;.format(ar=aspectRatio, tolerance=aspect_ratio_tolerance))
-                    continue
-
-            # Add patch center as its coordinate:
-            patchGeometry.append(((right+left)/2.0, (bottom+top)/2.0, right-left, bottom-top))
-
-            self.px[patchCoordinates] = 1
-            nRemaining += 1
-
-    return nPatches, nCleaned, nRemaining, patchGeometry</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.clip"><code class="name flex">
 <span>def <span class="ident">clip</span></span>(<span>self, lower, upper)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def clip(self, lower, upper):
-    &#34;&#34;&#34; Clip grey values to given boundary interval. &#34;&#34;&#34;
-    self.px = numpy.clip(self.px, lower, upper)</code></pre>
-</details>
 <div class="desc"><p>Clip grey values to given boundary interval.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.contains"><code class="name flex">
 <span>def <span class="ident">contains</span></span>(<span>self, x, y)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def contains(self, x, y):
-    &#34;&#34;&#34; Check if (x, y) is within image dimensions. &#34;&#34;&#34;
-    if x &gt;= 0:
-        if y &gt;= 0:
-            if x &lt; self.getWidth():
-                if y &lt; self.getHeight():
-                    return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if (x, y) is within image dimensions.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.containsPixelValue"><code class="name flex">
 <span>def <span class="ident">containsPixelValue</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def containsPixelValue(self, value):
-    &#34;&#34;&#34; Check if image contains a certain grey value. &#34;&#34;&#34;
-    return numpy.any(self.px == value)</code></pre>
-</details>
 <div class="desc"><p>Check if image contains a certain grey value.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.crop"><code class="name flex">
 <span>def <span class="ident">crop</span></span>(<span>self, x0, y0, x1, y1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def crop(self, x0, y0, x1, y1):
-    &#34;&#34;&#34; Crop to given box (x0, y0)--(x1, y1). &#34;&#34;&#34;
-    if x0 &gt; x1:
-        x0,x1 = x1,x0
-
-    if y0 &gt; y1:
-        y0,y1 = y1,y0
-
-    if y1 &gt; self.getHeight()  or  x1 &gt; self.getWidth():
-        raise Exception(&#34;Trying to crop beyond image boundaries.&#34;)
-
-    self.boundingBoxX0 += x0
-    self.boundingBoxY0 += y0
-
-    self.px = self.px[int(y0):int(y1),int(x0):int(x1)]   # Array has shape [y][x]
-    self.width  = int(x1 - x0)
-    self.height = int(y1 - y0)</code></pre>
-</details>
 <div class="desc"><p>Crop to given box (x0, y0)&ndash;(x1, y1).</p></div>
 </dd>
 <dt id="ctsimu.image.Image.cropBorder"><code class="name flex">
 <span>def <span class="ident">cropBorder</span></span>(<span>self, top=0, bottom=0, left=0, right=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cropBorder(self, top=0, bottom=0, left=0, right=0):
-    &#34;&#34;&#34; Crop away given border around image. &#34;&#34;&#34;
-    x0 = int(left)
-    y0 = int(top)
-    x1 = self.getWidth() - int(right)
-    y1 = self.getHeight() - int(bottom)
-
-    self.crop(x0, y0, x1, y1)</code></pre>
-</details>
 <div class="desc"><p>Crop away given border around image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.cropROIaroundPoint"><code class="name flex">
 <span>def <span class="ident">cropROIaroundPoint</span></span>(<span>self, centerX, centerY, roiWidth, roiHeight)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def cropROIaroundPoint(self, centerX, centerY, roiWidth, roiHeight):
-    &#34;&#34;&#34; Crop a region of interest, centered around given point. &#34;&#34;&#34;
-
-    if roiWidth &lt; 0:
-        roiWidth = abs(roiWidth)
-    if roiHeight &lt; 0:
-        roiHeight = abs(roiHeight)
-    if roiWidth == 0 or roiHeight == 0:
-        raise Exception(&#34;The region of interest should not be a square of size 0.&#34;)
-
-    x0 = int(math.floor(centerX - roiWidth/2))
-    x1 = int(math.ceil(centerX + roiWidth/2))
-    y0 = int(math.floor(centerY - roiHeight/2))
-    y1 = int(math.ceil(centerY + roiHeight/2))
-
-    if x1&lt;0 or y1&lt;0:
-        raise Exception(&#34;Right or lower boundary for ROI (x1 or y1) cannot be below zero.&#34;)
-
-    if roiWidth&gt;self.getWidth() or roiHeight&gt;self.getHeight():
-        raise Exception(&#34;Size of the ROI is bigger than the image size. ROI: &#34; + str(roiWidth) + &#34; x &#34; + str(roiHeight) + &#34;. Image: &#34; + str(self.getWidth()) + &#34; x &#34; + str(self.getHeight()))
-    if x0 &lt; 0:
-        x1 += abs(x0)
-        x0 = 0
-
-    if y0 &lt; 0:
-        y1 += abs(y0)
-        y0 = 0
-
-    if x1 &gt;= self.getWidth():
-        x1 = self.getWidth()
-        x0 = x1 - roiWidth
-
-    if y1 &gt;= self.getHeight():
-        y1 = self.getHeight()
-        y0 = y1 - roiHeight
-
-    # These should match roiWidth and roiHeight...
-    roiDimX = x1 - x0
-    roiDimY = y1 - y0
-
-    self.crop(x0, y0, x1, y1)
-    return x0, x1, y0, y1</code></pre>
-</details>
 <div class="desc"><p>Crop a region of interest, centered around given point.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.dimensionsMatch"><code class="name flex">
 <span>def <span class="ident">dimensionsMatch</span></span>(<span>self, img)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dimensionsMatch(self, img):
-    &#34;&#34;&#34; Check if image dimensions match with another image. &#34;&#34;&#34;
-    if self.isSet() and img.isSet():
-        if(self.getHeight() == img.getHeight()):
-            if(self.getWidth() == img.getWidth()):
-                return True
-
-    raise Exception(&#34;Pixel dimensions do not match: {}x{} vs. {}x{}&#34;.format(self.getWidth(), self.getHeight(), img.getWidth(), img.getHeight()))
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if image dimensions match with another image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.divide"><code class="name flex">
 <span>def <span class="ident">divide</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def divide(self, value):
-    &#34;&#34;&#34; Divide all pixels values by given scalar value. &#34;&#34;&#34;
-    self.px = self.px / float(value)</code></pre>
-</details>
 <div class="desc"><p>Divide all pixels values by given scalar value.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.divideImage"><code class="name flex">
 <span>def <span class="ident">divideImage</span></span>(<span>self, other)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def divideImage(self, other):
-    &#34;&#34;&#34; Multiply pixel values by another image. &#34;&#34;&#34;
-    if self.dimensionsMatch(other):
-        self.px = self.px / other.getPixelMap()</code></pre>
-</details>
 <div class="desc"><p>Multiply pixel values by another image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.edges_canny"><code class="name flex">
 <span>def <span class="ident">edges_canny</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def edges_canny(self):
-    # The &#39;feature&#39; package from scikit-image,
-    # only needed for Canny edge detection, when used instead of Sobel.
-    from skimage.feature import canny   # Canny edge detection
-
-    # Canny edge detection. Needs &#39;scikit-image&#39; package.  from skimage import feature
-    return canny(self.px)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.edges_sobel"><code class="name flex">
 <span>def <span class="ident">edges_sobel</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def edges_sobel(self):
-    # Sobel edge detection:
-    edgesX = ndimage.sobel(self.px, axis=0, mode=&#39;nearest&#39;)
-    edgesY = ndimage.sobel(self.px, axis=1, mode=&#39;nearest&#39;)
-    return numpy.sqrt(edgesX**2 + edgesY**2)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.erase"><code class="name flex">
 <span>def <span class="ident">erase</span></span>(<span>self, value=0, dataType=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def erase(self, value=0, dataType=None):
-    &#34;&#34;&#34; Set all pixels to &#39;value&#39;. &#34;&#34;&#34;
-    w = self.getWidth()
-    h = self.getHeight()
-
-    if dataType is None:
-        dataType = self.getInternalDataType()
-
-    self.px = 0
-    self.px = numpy.full((h, w), fill_value=value, dtype=dataType)</code></pre>
-</details>
 <div class="desc"><p>Set all pixels to 'value'.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.filter_edges"><code class="name flex">
 <span>def <span class="ident">filter_edges</span></span>(<span>self, mode='sobel')</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def filter_edges(self, mode=&#39;sobel&#39;):
-    if(mode == &#39;sobel&#39;):
-        self.px = self.edges_sobel()
-    elif(mode == &#39;canny&#39;):
-        self.px = self.edges_canny()
-    else:
-        raise Exception(&#34;Valid edge detection modes: &#39;sobel&#39;&#34;)
-
-    # Rescale:
-    self.px = self.px.astype(self.getInternalDataType())
-    #self.thresholding(0)    # black=0, white=65535</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.fitCircle"><code class="name flex">
 <span>def <span class="ident">fitCircle</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def fitCircle(self):
-    # Linear least squares method by:
-    # I. D. Coope,
-    # Circle Fitting by Linear and Nonlinear Least Squares,
-    # Journal of Optimization Theory and Applications, 1993, Volume 76, Issue 2, pp 381-388
-    # https://doi.org/10.1007/BF00939613
-
-    coordinates = numpy.nonzero(self.px)
-    circlePixelsX = coordinates[1]
-    circlePixelsY = coordinates[0]
-    circlePixels1 = numpy.ones_like(circlePixelsX)
-    nPoints = len(circlePixelsX)
-
-    # Create the matrix B for the system of linear equations:
-    matrixB = numpy.array((circlePixelsX, circlePixelsY, circlePixels1))
-    matrixB = matrixB.transpose()
-
-    # linear equation to optimize:
-    # matrix B * result = vector d
-    d = []
-    for i in range(nPoints):
-        d.append(circlePixelsX[i]**2 + circlePixelsY[i]**2)
-
-    vectorD = numpy.array(d)
-
-    results, residuals, rank, s = numpy.linalg.lstsq(matrixB, vectorD, rcond=None)
-
-    centerX = (results[0] / 2.0)
-    centerY = (results[1] / 2.0)
-    radius  = math.sqrt(results[2] + centerX**2 + centerY**2)
-
-    # Calculate deviation statistics:
-    differenceSum = 0
-    minDifference = 99999
-    maxDifference = 0
-    for i in range(nPoints):
-        diff = abs(radius  -  math.sqrt((centerX - circlePixelsX[i])**2 + (centerY - circlePixelsY[i])**2))
-        differenceSum += diff
-
-        if minDifference &gt; diff:
-            minDifference = diff
-
-        if maxDifference &lt; diff:
-            maxDifference = diff
-
-    meanDifference = differenceSum / nPoints
-
-    return centerX, centerY, radius, meanDifference, minDifference, maxDifference</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.fitIntensityProfile"><code class="name flex">
 <span>def <span class="ident">fitIntensityProfile</span></span>(<span>self, axis='x', initI0=None, initMu=0.003, initR=250, initX0=None, avgLines=5)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def fitIntensityProfile(self, axis=&#34;x&#34;, initI0=None, initMu=0.003, initR=250, initX0=None, avgLines=5):
-    yData = 0
-    xdata = 0
-    if initI0 is None:
-        initI0 = self.max()   # Hoping that a median has been applied before.
-
-    if axis == &#34;x&#34;:
-        if initX0 is None:
-            initX0 = self.getWidth() / 2
-
-        startLine = int((self.getHeight() / 2) - math.floor(avgLines/2))
-        stopLine  = int((self.getHeight() / 2) + math.floor(avgLines/2))
-
-        # Accumulate intensity profile along &#39;avgLines&#39; lines around the center line:
-        yData = numpy.zeros(self.getWidth(), dtype=self.getInternalDataType())
-        for l in range(startLine, stopLine+1):
-            yData += self.px[l,:]
-
-        xData = numpy.linspace(0, self.getWidth()-1, self.getWidth())
-
-    elif axis == &#34;y&#34;:
-        if initX0 is None:
-            initX0 = self.getHeight() / 2
-
-        startLine = int((self.getWidth() / 2) - math.floor(avgLines/2))
-        stopLine  = int((self.getWidth() / 2) + math.floor(avgLines/2))
-
-        # Accumulate intensity profile along &#39;avgLines&#39; lines around the center line:
-        yData = numpy.zeros(self.getHeight(), dtype=self.getInternalDataType())
-        for l in range(startLine, stopLine+1):
-            yData += self.px[:,l]
-
-        xData = numpy.linspace(0, self.getHeight()-1, self.getHeight())
-
-    else:
-        raise Exception(&#34;projectionImage::fitIntensityProfile() needs profile direction to be &#39;x&#39; or &#39;y&#39;.&#34;)
-
-    yData = yData / int(avgLines)   # average intensity profile
-    firstGuess = (initI0, initMu, initR, initX0)
-
-    try:
-        optimalParameters, covariances = optimize.curve_fit(self.intensityFunction2D, xData, yData, p0=firstGuess)
-    except Exception:
-        optimalParameters = (None, None, None, None)
-
-
-    fittedI0 = optimalParameters[0]
-    fittedMu = optimalParameters[1]
-    fittedR  = optimalParameters[2]
-    fittedX0 = optimalParameters[3]
-
-    return fittedI0, fittedMu, fittedR, fittedX0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.flip"><code class="name flex">
 <span>def <span class="ident">flip</span></span>(<span>self, horizontal=False, vertical=False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def flip(self, horizontal=False, vertical=False):
-    if horizontal:
-        self.flipHorizontal()
-    if vertical:
-        self.flipVertical()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.flipHorizontal"><code class="name flex">
 <span>def <span class="ident">flipHorizontal</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def flipHorizontal(self):
-    self.flipHorz = not self.flipHorz
-    if self.isSet():
-        self.px = numpy.require(numpy.fliplr(self.px), requirements=[&#39;C_CONTIGUOUS&#39;])</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.flipVertical"><code class="name flex">
 <span>def <span class="ident">flipVertical</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def flipVertical(self):
-    self.flipVert = not self.flipVert
-    if self.isSet():
-        self.px = numpy.require(numpy.flipud(self.px), requirements=[&#39;C_CONTIGUOUS&#39;])</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getBoundingBoxX0"><code class="name flex">
 <span>def <span class="ident">getBoundingBoxX0</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getBoundingBoxX0(self):
-    return self.boundingBoxX0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getBoundingBoxY0"><code class="name flex">
 <span>def <span class="ident">getBoundingBoxY0</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getBoundingBoxY0(self):
-    return self.boundingBoxY0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getDataTypeClippingBoundaries"><code class="name flex">
 <span>def <span class="ident">getDataTypeClippingBoundaries</span></span>(<span>self, dataType)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getDataTypeClippingBoundaries(self, dataType):
-    # Get clipping boundaries if grey values have to be
-    # clipped to the interval supported by the int image type:
-    clipMin = 0
-    clipMax = 1
-    if numpy.issubdtype(dataType, numpy.integer):
-        intInfo   = numpy.iinfo(dataType)
-        clipMin   = intInfo.min
-        clipMax   = intInfo.max
-    elif numpy.issubdtype(dataType, numpy.floating):
-        floatInfo = numpy.finfo(dataType)
-        clipMin   = floatInfo.min
-        clipMax   = floatInfo.max
-
-    return clipMin, clipMax</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getFileByteOrder"><code class="name flex">
 <span>def <span class="ident">getFileByteOrder</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFileByteOrder(self):
-    return self.fileByteOrder</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getHeight"><code class="name flex">
 <span>def <span class="ident">getHeight</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getHeight(self):
-    return self.height</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getHorizontalFlip"><code class="name flex">
 <span>def <span class="ident">getHorizontalFlip</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getHorizontalFlip(self):
-    return self.flipHorz</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getIndex"><code class="name flex">
 <span>def <span class="ident">getIndex</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getIndex(self):
-    return self.index</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getInternalDataType"><code class="name flex">
 <span>def <span class="ident">getInternalDataType</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getInternalDataType(self):
-    &#34;&#34;&#34; Data type used internally for all image data. &#34;&#34;&#34;
-    return numpy.dtype(&#39;float64&#39;)</code></pre>
-</details>
 <div class="desc"><p>Data type used internally for all image data.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.getNPixels"><code class="name flex">
 <span>def <span class="ident">getNPixels</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getNPixels(self):
-    &#34;&#34;&#34; Calculate number of pixels in image. &#34;&#34;&#34;
-    return (self.getWidth() * self.getHeight())</code></pre>
-</details>
 <div class="desc"><p>Calculate number of pixels in image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.getPixel"><code class="name flex">
 <span>def <span class="ident">getPixel</span></span>(<span>self, x, y)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getPixel(self, x, y):
-    return self.px[y][x]</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getPixelMap"><code class="name flex">
 <span>def <span class="ident">getPixelMap</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getPixelMap(self):
-    return self.px</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getResolution"><code class="name flex">
 <span>def <span class="ident">getResolution</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getResolution(self):
-    return self.resolution</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getRotation"><code class="name flex">
 <span>def <span class="ident">getRotation</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getRotation(self):
-    return self.rotation</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getShiftedPixmap"><code class="name flex">
 <span>def <span class="ident">getShiftedPixmap</span></span>(<span>self, xShift, yShift)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getShiftedPixmap(self, xShift, yShift):
-    return ndimage.interpolation.shift(self.px, (int(xShift), int(yShift)), mode=&#39;nearest&#39;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getVerticalFlip"><code class="name flex">
 <span>def <span class="ident">getVerticalFlip</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getVerticalFlip(self):
-    return self.flipVert</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.getWidth"><code class="name flex">
 <span>def <span class="ident">getWidth</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getWidth(self):
-    return self.width</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.horizontalProfile"><code class="name flex">
 <span>def <span class="ident">horizontalProfile</span></span>(<span>self, yPos)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def horizontalProfile(self, yPos):
-    if yPos &lt; self.getHeight():
-        return self.px[yPos]
-    else:
-        raise Exception(&#34;Requested position for horizontal profile is out of bounds: y={} in an image that has {} rows.&#34;.format(yPos, self.getHeight()))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.horizontalROIProfile"><code class="name flex">
 <span>def <span class="ident">horizontalROIProfile</span></span>(<span>self, ROI)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def horizontalROIProfile(self, ROI):
-    # Take full image if no ROI is given
-    if ROI is None:
-        ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
-
-    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
-
-    profile = slc.mean(axis=0)
-    return profile</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.intensityFunction2D"><code class="name flex">
 <span>def <span class="ident">intensityFunction2D</span></span>(<span>self, x, I0, mu, R, x0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def intensityFunction2D(self, x, I0, mu, R, x0):   # Lambert-Beer-Law for ball intensity, to fit.
-    radicand = numpy.power(R,2) - numpy.power((x-x0),2)
-
-    # Avoid root of negative numbers
-    radicand[radicand &lt; 0] = 0
-
-    # Huge radicands lead to exp()-&gt;0, therefore avoid huge exponentiation:
-    radicand[radicand &gt; (1400*1400)] = (1400*1400)
-
-    result = I0*numpy.exp(-2.0*mu*numpy.sqrt(radicand))
-
-    return result</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.intensityFunction3D"><code class="name flex">
 <span>def <span class="ident">intensityFunction3D</span></span>(<span>self, coord, I0, mu, R, x0, y0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def intensityFunction3D(self, coord, I0, mu, R, x0, y0):   # Lambert-Beer-Law for ball intensity, to fit.
-    if len(coord) == 2:
-        (x, y) = coord
-
-        radicand = numpy.power(R,2) - numpy.power((x-x0),2) - numpy.power((y-y0),2)
-
-        # Avoid root of negative numbers
-        radicand[radicand &lt; 0] = 0
-
-        # Huge radicands lead to exp()-&gt;0, therefore avoid huge exponentiation:
-        radicand[radicand &gt; (1400*1400)] = (1400*1400)
-
-        result = I0 * numpy.exp(-2.0*mu*numpy.sqrt(radicand))
-
-        return result
-    else:
-        raise Exception(&#34;3D Intensity fit function expects a tuple (x,y) for coordinates.&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.invert"><code class="name flex">
 <span>def <span class="ident">invert</span></span>(<span>self, min=0, maximum=65535)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def invert(self, min=0, maximum=65535):
-    self.px = maximum - self.px</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.isSet"><code class="name flex">
 <span>def <span class="ident">isSet</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isSet(self):
-    &#34;&#34;&#34; Check if image has a valid width and height. &#34;&#34;&#34;
-    if(self.getHeight() &gt; 0):
-        if(self.getWidth() &gt; 0):
-            return True
-
-    return False</code></pre>
-</details>
 <div class="desc"><p>Check if image has a valid width and height.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.lineProfile"><code class="name flex">
 <span>def <span class="ident">lineProfile</span></span>(<span>self, x0, y0, x1, y1, width=1, resolution=1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def lineProfile(self, x0, y0, x1, y1, width=1, resolution=1):
-    &#34;&#34;&#34; Find line profile by adding weighted contributions of pixel grey values
-        into bins of size (width x resolution).
-
-        We always work in the &#39;shape coordinate system&#39; with its origin
-        at (0, 0) in the upper left corner.
-        Center of pixel (0, 0) has shape CS coordinates (0.5, 0.5).
-
-        x0, y0, x1 and y1 are shape coordinates.
-
-        Returned &#39;sPositions&#39; array contains bin center positions.
-        &#34;&#34;&#34;
-
-    # Vector pointing in direction of the requested line:
-    s = Vector(x1-x0, y1-y0, 0)
-
-    # Calculate vector t, perpendicular to s: t = s x z
-    z = Vector(0, 0, 1)
-    t = s.cross(z)
-    t.make_unit_vector()
-
-    # Convert to 2D vectors:
-    s = Vector(s.x(), s.y())
-    t = Vector(t.x(), t.y())
-
-    tUnit = copy.deepcopy(t)
-
-    t.scale(0.5*width)  # t points from line origin half way in direction of width
-
-    # Define a rectangle along the line and its width.
-    origin = Vector(x0, y0)
-
-    nSamples = math.ceil( s.length() / resolution ) #+ 1 # +1 for endpoint
-    ceilLength = nSamples * resolution
-
-    # Create a histogram:
-    sPositions, sStepSize = numpy.linspace(start=0, stop=ceilLength, num=nSamples, endpoint=False, retstep=True)
-    sProfile = numpy.zeros_like(a=sPositions, dtype=numpy.dtype(&#39;float64&#39;))   # Grey value profile
-
-    # Create a unit vector in s direction:
-    sUnit = copy.deepcopy(s)
-    sUnit.make_unit_vector()
-
-    # Half a unit vector:
-    binUnitHalf = copy.deepcopy(sUnit)
-    binUnitHalf.scale(0.5*resolution)
-
-    # Make s the length of a bin step (i.e. resolution unit)
-    s.make_unit_vector()
-    s.scale(resolution)
-
-    rectPos = Vector(0, 0)
-
-    # A pixel center can be this far from the binPos (bin center)
-    # in s and t direction to still be accepted:
-    sBoundary = (resolution/2) + pixelHalfDiagonal
-    tBoundary = (width/2) + pixelHalfDiagonal
-
-    # Vectorize the pixel weight function:
-    weightFunction = numpy.vectorize(self.getPixelWeight, otypes=[numpy.float64])
-
-    i = 0
-    for b in range(nSamples):
-        print(&#34;\rCalculating line profile... {:.1f}%&#34;.format(100.0*i/nSamples), end=&#34;&#34;)
-        i += 1
-        # Bin position on s axis:
-        sPos = resolution*b
-
-        # Construct a vector to the left point of the bin on the s axis:
-        rectPos.set_x(sUnit.x())
-        rectPos.set_y(sUnit.y())
-        rectPos.scale(sPos)
-        rectPos.add(origin)
-
-        binPos = rectPos + binUnitHalf
-
-        # Construct a rectangle that contains the area of this bin:
-        A = rectPos - t
-        B = rectPos + s - t
-        C = rectPos + s + t
-        D = rectPos + t
-
-        binRect = Polygon(D, C, B, A)  # Clockwise order because pixel CS is y-flipped.
-
-        # Get all pixels and their relative areas in this bin:
-        #pixelsInBin = self.pixelsInShape(shape=binRect, seedPoint=rectPos, mode=&#39;partial&#39;, calculateWeights=True)
-
-        meanGV = self.meanGVinBin(binCenter=binPos, sUnit=sUnit, tUnit=tUnit, sBoundary=sBoundary, tBoundary=tBoundary, binShape=binRect, weightFunction=weightFunction)
-
-        sProfile[b] = meanGV
-
-    # Shift the sPositions by half a bin size so that they represent bin centers:
-    sPositions += 0.5*resolution
-
-    print(&#34;\rCalculating line profile... 100%   &#34;)
-    return sProfile, sPositions, sStepSize</code></pre>
-</details>
 <div class="desc"><p>Find line profile by adding weighted contributions of pixel grey values
 into bins of size (width x resolution).</p>
 <p>We always work in the 'shape coordinate system' with its origin
@@ -2980,63 +2034,6 @@ Center of pixel (0, 0) has shape CS coordinates (0.5, 0.5).</p>
 <span>def <span class="ident">map</span></span>(<span>self, gv_from, gv_to, bins=1000)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def map(self, gv_from, gv_to, bins=1000):
-    &#34;&#34;&#34; Applies a lookup table (LUT map) to convert image grey values
-        according to given assignment tables (two numpy lists).
-
-        gv_from: numpy array of given grey values (in current image)
-        gv_to:   numpy array of assigned grey values (for converted image)
-
-        Linear interpolation will take place for gaps in lookup table.
-    &#34;&#34;&#34;
-
-    if len(gv_from) == len(gv_to):
-        if len(gv_from) &gt; 1:
-            gvMin = self.min()
-            gvMax = self.max()
-
-            # Left position of each bin:
-            positions, gvStepsize = numpy.linspace(start=gvMin, stop=gvMax, num=bins+1, endpoint=True, dtype=numpy.float64, retstep=True)
-
-            # New grey value for each left position:
-            mappingFunction = numpy.vectorize(pyfunc=self.map_lookup, excluded={1, 2})
-            newGV = mappingFunction(positions, gv_from, gv_to)
-
-            # Differences in newGV:
-            deltaGV = numpy.diff(newGV, n=1)
-
-
-            # Prepare parameters m (slope) and n (offset) for linear
-            # interpolation functions of each bin:
-            slopes  = numpy.zeros(bins, dtype=numpy.float64)
-            offsets = numpy.zeros(bins, dtype=numpy.float64)
-
-            slopes  = deltaGV / gvStepsize
-
-            #print(&#34;newGV:     {}&#34;.format(numpy.shape(newGV)))
-            #print(&#34;slopes:    {}&#34;.format(numpy.shape(slopes)))
-            #print(&#34;positions: {}&#34;.format(numpy.shape(positions)))
-
-            offsets = newGV[1:] - slopes*positions[1:]
-
-            inverse_stepsize = 1.0 / gvStepsize
-
-            maxIndices = numpy.full(shape=numpy.shape(self.px), fill_value=bins-1, dtype=numpy.uint32)
-            bin_indices = numpy.minimum(maxIndices, numpy.floor((self.px - gvMin) * inverse_stepsize).astype(numpy.uint32))
-
-            m_px = slopes[bin_indices]
-            n_px = offsets[bin_indices]
-
-            self.px = m_px*self.px + n_px
-        else:
-            raise Exception(&#34;image.map(): At least two mappings are required in the grey value assignment lists.&#34;)
-    else:
-        raise Exception(&#34;image.map(): gv_from must have same length as gv_to.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Applies a lookup table (LUT map) to convert image grey values
 according to given assignment tables (two numpy lists).</p>
 <p>gv_from: numpy array of given grey values (in current image)
@@ -3048,141 +2045,24 @@ numpy array of assigned grey values (for converted image)</p>
 <span>def <span class="ident">map_lookup</span></span>(<span>self, gv, gv_from, gv_to)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def map_lookup(self, gv, gv_from, gv_to):
-    &#34;&#34;&#34; Return new grey value for given grey value &#39;gv&#39;. Helper function for self.map().&#34;&#34;&#34;
-
-    if gv in gv_from:
-        # Given grey value is defined in &#39;from&#39; list:
-        return gv_to[numpy.where(gv_from==gv)]
-    else:
-        # Linear interpolation:
-        a = 0  # left index of interpolation region
-        if len(gv_from) &gt; 2:
-            for i in range(len(gv_from)-2):
-                if gv_from[i+1] &gt; gv:
-                    break
-
-                a += 1
-
-        b = a + 1  # right index of interpolation region
-
-        xa = gv_from[a]
-        xb = gv_from[b]
-        ya = gv_to[a]
-        yb = gv_to[b]
-
-        # Slope of linear function:
-        m = (yb-ya) / (xb-xa)
-
-        # y axis intersection point (&#34;offset&#34;):
-        n = yb - m*xb
-
-        # newly assigned grey value:
-        return (m*gv + n)</code></pre>
-</details>
 <div class="desc"><p>Return new grey value for given grey value 'gv'. Helper function for self.map().</p></div>
 </dd>
 <dt id="ctsimu.image.Image.max"><code class="name flex">
 <span>def <span class="ident">max</span></span>(<span>self, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def max(self, ROI=None):
-    &#34;&#34;&#34; Return maximum intensity in image. &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        return numpy.amax(self.px)
-
-    return numpy.amax(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
-</details>
 <div class="desc"><p>Return maximum intensity in image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.mean"><code class="name flex">
 <span>def <span class="ident">mean</span></span>(<span>self, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def mean(self, ROI=None):
-    &#34;&#34;&#34; Return arithmetic mean of the image grey values. &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        return numpy.mean(self.px)
-
-    return numpy.mean(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
-</details>
 <div class="desc"><p>Return arithmetic mean of the image grey values.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.meanGVinBin"><code class="name flex">
 <span>def <span class="ident">meanGVinBin</span></span>(<span>self, binCenter, sUnit, tUnit, sBoundary, tBoundary, binShape, weightFunction)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def meanGVinBin(self, binCenter, sUnit, tUnit, sBoundary, tBoundary, binShape, weightFunction):
-    &#34;&#34;&#34; Returns all pixels in the bin on the given vector s.
-
-        binCenter:  center of bin in world CS
-        s:   unit vector along profile axis
-        t:   unit vector along width axis
-    &#34;&#34;&#34;
-
-    roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
-
-    # Create a map with pixels&#39; distances to the bin:
-    # (measured parallel to s vector):
-    roi_height = roi_y1 - roi_y0
-    roi_width  = roi_x1 - roi_x0
-
-    roi_xaxis = numpy.linspace(start=roi_x0, stop=roi_x1, num=roi_width+1, endpoint=True, dtype=numpy.dtype(&#39;float64&#39;))
-    roi_yaxis = numpy.linspace(start=roi_y0, stop=roi_y1, num=roi_height+1, endpoint=True, dtype=numpy.dtype(&#39;float64&#39;))
-
-    roi_gridx, roi_gridy = numpy.meshgrid(roi_xaxis, roi_yaxis)
-
-    # Shift by half a pixel, because they must represent
-    # pixel centers in shape coordinate system. Also,
-    # origin should be the bin center:
-    roi_gridx = roi_gridx + 0.5 - binCenter.x()
-    roi_gridy = roi_gridy + 0.5 - binCenter.y()
-
-    # Transform coordinates into bin coordinate system (s and t axes):
-    bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x() + roi_gridy*sUnit.y())
-    #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x() + roi_gridy*tUnit.y())
-
-    # Set those that are too far from bin center in s and t direction to zero:
-    #bin_grid_dist_s = numpy.where(bin_grid_dist_s &lt; sBoundary, bin_grid_dist_s, 0)
-    #bin_grid_dist_t = numpy.where(bin_grid_dist_t &lt; tBoundary, bin_grid_dist_t, 0)
-    #bin_grid_dist_mul = bin_grid_dist_s * bin_grid_dist_t
-    #pixel_indices = numpy.nonzero(bin_grid_dist_mul)
-
-    pixel_indices = numpy.nonzero(bin_grid_dist_s &lt; sBoundary)
-    weights = bin_grid_dist_s[pixel_indices]
-    pixels_x = pixel_indices[1] + roi_x0
-    pixels_y = pixel_indices[0] + roi_y0
-
-    weights = weightFunction(pixels_x, pixels_y, binShape)   # vectorized getPixelWeight()
-
-    gvWeighted = self.px[pixels_y,pixels_x] * weights
-    weightSum = numpy.sum(weights)
-    meanGV = 0
-    if weightSum &gt; 0:
-        meanGV = numpy.sum(gvWeighted) / weightSum
-
-    return meanGV</code></pre>
-</details>
 <div class="desc"><p>Returns all pixels in the bin on the given vector s.</p>
 <p>binCenter:
 center of bin in world CS
@@ -3195,59 +2075,6 @@ unit vector along width axis</p></div>
 <span>def <span class="ident">meanGVinBin_polygonClipping</span></span>(<span>self, binCenter, sUnit, tUnit, sBoundary, tBoundary, binShape, weightFunction)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def meanGVinBin_polygonClipping(self, binCenter, sUnit, tUnit, sBoundary, tBoundary, binShape, weightFunction):
-    &#34;&#34;&#34; Returns all pixels in the bin on the given vector s.
-
-        binCenter:  center of bin in world CS
-        s:   unit vector along profile axis
-        t:   unit vector along width axis
-    &#34;&#34;&#34;
-
-    roi_x0, roi_y0, roi_x1, roi_y1 = binShape.get_bounding_box()
-
-    # Create a map with pixels&#39; distances to the bin:
-    # (measured parallel to s vector):
-    roi_height = roi_y1 - roi_y0
-    roi_width  = roi_x1 - roi_x0
-
-    roi_xaxis = numpy.linspace(start=roi_x0, stop=roi_x1, num=roi_width+1, endpoint=True, dtype=numpy.dtype(&#39;float64&#39;))
-    roi_yaxis = numpy.linspace(start=roi_y0, stop=roi_y1, num=roi_height+1, endpoint=True, dtype=numpy.dtype(&#39;float64&#39;))
-
-    roi_gridx, roi_gridy = numpy.meshgrid(roi_xaxis, roi_yaxis)
-
-    # Shift by half a pixel, because they must represent
-    # pixel centers in shape coordinate system. Also,
-    # origin should be the bin center:
-    roi_gridx = roi_gridx + 0.5 - binCenter.x()
-    roi_gridy = roi_gridy + 0.5 - binCenter.y()
-
-    # Transform coordinates into bin coordinate system (s and t axes):
-    bin_grid_dist_s = numpy.abs(roi_gridx*sUnit.x() + roi_gridy*sUnit.y())
-    #bin_grid_dist_t = numpy.abs(roi_gridx*tUnit.x() + roi_gridy*tUnit.y())
-
-    # Set those that are too far from bin center in s and t direction to zero:
-    bin_grid_dist_s = numpy.where(bin_grid_dist_s &lt; sBoundary, bin_grid_dist_s, 0)
-    #bin_grid_dist_t = numpy.where(bin_grid_dist_t &lt; tBoundary, bin_grid_dist_t, 0)
-    #bin_grid_dist_mul = bin_grid_dist_s * bin_grid_dist_t
-    #pixel_indices = numpy.nonzero(bin_grid_dist_mul)
-    pixel_indices = numpy.nonzero(bin_grid_dist_s)
-    pixels_x = pixel_indices[1] + roi_x0
-    pixels_y = pixel_indices[0] + roi_y0
-
-    weights = weightFunction(pixels_x, pixels_y, binShape)   # vectorized getPixelWeight()
-
-    gvWeighted = self.px[pixels_y,pixels_x] * weights
-    weightSum = numpy.sum(weights)
-    meanGV = 0
-    if weightSum &gt; 0:
-        meanGV = numpy.sum(gvWeighted) / weightSum
-
-    return meanGV</code></pre>
-</details>
 <div class="desc"><p>Returns all pixels in the bin on the given vector s.</p>
 <p>binCenter:
 center of bin in world CS
@@ -3260,67 +2087,24 @@ unit vector along width axis</p></div>
 <span>def <span class="ident">min</span></span>(<span>self, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def min(self, ROI=None):
-    &#34;&#34;&#34; Return minimum intensity in image. &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        return numpy.amin(self.px)
-
-    return numpy.amin(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
-</details>
 <div class="desc"><p>Return minimum intensity in image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.multiply"><code class="name flex">
 <span>def <span class="ident">multiply</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def multiply(self, value):
-    self.px *= value</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.multiplyImage"><code class="name flex">
 <span>def <span class="ident">multiplyImage</span></span>(<span>self, other)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def multiplyImage(self, other):
-    &#34;&#34;&#34; Multiply pixel values from another image to this image. &#34;&#34;&#34;
-    if self.dimensionsMatch(other):
-        self.px = self.px * other.getPixelMap()</code></pre>
-</details>
 <div class="desc"><p>Multiply pixel values from another image to this image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.noise"><code class="name flex">
 <span>def <span class="ident">noise</span></span>(<span>self, sigma)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def noise(self, sigma):
-    &#34;&#34;&#34; Add noise to image.
-
-        Gaussian noise:
-        sigma: standard deviation (scalar or array that matches image size)
-    &#34;&#34;&#34;
-
-    rng = default_rng()
-    self.px += rng.normal(loc=0, scale=sigma, size=numpy.shape(self.px))</code></pre>
-</details>
 <div class="desc"><p>Add noise to image.</p>
 <p>Gaussian noise:
 sigma: standard deviation (scalar or array that matches image size)</p></div>
@@ -3329,109 +2113,6 @@ sigma: standard deviation (scalar or array that matches image size)</p></div>
 <span>def <span class="ident">pixelsInShape</span></span>(<span>self, shape, seedPoint=None, mode='center', calculateWeights=False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def pixelsInShape(self, shape, seedPoint=None, mode=&#39;center&#39;, calculateWeights=False):
-    &#34;&#34;&#34; Returns all pixels in the given shape (of class Polygon).
-
-        mode:
-          &#39;center&#39;   : a pixel&#39;s center must be within the shape to be accepted.
-          &#39;full&#39;     : all corner points of a pixel must be within the shape to be accepted.
-          &#39;partial&#39;  : only one corner point of a pixel must be within the shape to be accepted.
-
-         calculateWeights:
-           True      : includes weights in returned pixel coordinate tuples,
-           False     : does not include weights in returned pixel coordinate tuples.
-    &#34;&#34;&#34;
-
-    if seedPoint is not None:
-        seedX = int(round(seedPoint.x()))
-        seedY = int(round(seedPoint.y()))
-    else:
-        # Start at point p1 of shape:
-        seedX = int(shape.points[0].x())
-        seedY = int(shape.points[0].y())
-
-    # Make a map of visited pixels. A visited pixel will get value 1:
-    visited = numpy.zeros_like(a=self.px, dtype=numpy.dtype(&#39;uint8&#39;))
-
-    # Collect all points that belong to the shape in a list:
-    contributions = []
-
-    stack = [] # stack of pixels to visit
-    stack.append((seedX, seedY))
-
-    # Add seed&#39;s neighors to the stack as well:
-    for offsetX in [-1, 0, 1]:
-        for offsetY in [-1, 0, 1]:
-            if not (offsetX==0 and offsetY==0):
-                nx = seedX+offsetX
-                ny = seedY+offsetY
-                stack.append((nx, ny))
-
-    while len(stack) &gt; 0:
-        pixel = stack.pop()
-        x = pixel[0]
-        y = pixel[1]
-
-        if self.contains(x, y):
-            if visited[y][x] == 0:
-                visited[y][x] = 1
-
-                # The pixel coordinate system is shifted by -0.5px against the shape coordinate system. Upper left pixel corner is its coordinate in the shape coordinate system.
-                inside = False
-
-                # Reserve names but set them up later only when they are needed.
-                center     = None
-                upperLeft  = None
-                upperRight = None
-                lowerLeft  = None
-                lowerRight = None
-
-                center = Vector(x+0.5, y+0.5, 0)
-
-                if mode == &#39;center&#39;:
-                    inside = shape.is_inside_2D(center)
-                else:
-                    upperLeft  = Vector(x,     y,     0)
-                    upperRight = Vector(x+1,   y,     0)
-                    lowerLeft  = Vector(x,     y+1,   0)
-                    lowerRight = Vector(x+1,   y+1,   0)
-
-                    if mode == &#39;full&#39;:
-                        inside = shape.is_inside_2D(upperLeft) and shape.is_inside_2D(upperRight) and shape.is_inside_2D(lowerLeft) and shape.is_inside_2D(lowerRight)
-                    elif mode == &#39;partial&#39;:
-                        inside = True
-                        calculateWeights = True
-
-                if inside:
-                    if calculateWeights:
-                        # Calculate pixel weight from the area of the clipped pixel:
-                        pixelPolygon = Polygon(upperLeft, upperRight, lowerRight, lowerLeft)  # Clockwise order because pixel CS is y-flipped.
-
-                        clippedPixel = pixelPolygon.clip(shape)
-
-                        weight = clippedPixel.area()
-
-                        if weight &gt; 0:
-                            contributions.append((x, y, weight))
-                        else:
-                            continue
-                    else:
-                        contributions.append((x, y, 0))
-
-                    # Now add neighbors to the stack:
-                    for offsetX in [-1, 0, 1]:
-                        for offsetY in [-1, 0, 1]:
-                            if not (offsetX==0 and offsetY==0):
-                                nx = x+offsetX
-                                ny = y+offsetY
-                                stack.append((nx, ny))
-
-    return contributions</code></pre>
-</details>
 <div class="desc"><p>Returns all pixels in the given shape (of class Polygon).</p>
 <p>mode:
 'center'
@@ -3447,739 +2128,201 @@ False
 : does not include weights in returned pixel coordinate tuples.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.read"><code class="name flex">
-<span>def <span class="ident">read</span></span>(<span>self,<br>filename=None,<br>width=None,<br>height=None,<br>index=0,<br>dataType=None,<br>byteOrder=None,<br>fileHeaderSize=0,<br>imageHeaderSize=0)</span>
+<span>def <span class="ident">read</span></span>(<span>self, filename=None, width=None, height=None, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def read(self, filename=None, width=None, height=None, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0):
-    &#34;&#34;&#34; Read TIFF or RAW, decide by file name. &#34;&#34;&#34;
-    if filename is None:
-        filename = self.inputFile.getFilename()
-    else:
-        self.setInputFile(filename)
-
-    # If no internal file name is specified, do nothing.
-    if filename is None:
-        return
-
-    if isTIFF(self.inputFile.getFilename()):
-        self.readTIFF(self.inputFile.doFlipByteOrder())
-    else:
-        self.readRAW(width=width, height=height, index=index, dataType=dataType, byteOrder=byteOrder, fileHeaderSize=fileHeaderSize, imageHeaderSize=imageHeaderSize)</code></pre>
-</details>
 <div class="desc"><p>Read TIFF or RAW, decide by file name.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.readRAW"><code class="name flex">
-<span>def <span class="ident">readRAW</span></span>(<span>self,<br>width,<br>height,<br>index=0,<br>dataType=None,<br>byteOrder=None,<br>fileHeaderSize=0,<br>imageHeaderSize=0)</span>
+<span>def <span class="ident">readRAW</span></span>(<span>self, width, height, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def readRAW(self, width, height, index=0, dataType=None, byteOrder=None, fileHeaderSize=0, imageHeaderSize=0):
-    &#34;&#34;&#34; Import RAW image file. &#34;&#34;&#34;
-    if not isinstance(self.inputFile, ImageFile):
-        raise Exception(&#34;No valid input file defined.&#34;)
-
-    if dataType is None:
-        dataType = self.inputFile.getDataType()
-    else:
-        self.inputFile.setDataType(dataType)
-
-    if byteOrder is None:
-        byteOrder = self.inputFile.getByteOrder()
-        if byteOrder is None:
-            byteOrder = sys.byteorder
-
-    self.inputFile.setByteOrder(byteOrder)
-
-    if os.path.isfile(self.inputFile.getFilename()):
-        self.shape(width, height, index, self.inputFile.getDataType())
-
-        basename = self.inputFile.getFileBasename()
-        #log(&#34;Reading RAW file {}...&#34;.format(basename))
-
-        byteOffset = fileHeaderSize + (index+1)*imageHeaderSize + index*(self.getNPixels() * self.inputFile.getDataType().itemsize)
-
-        with open(self.inputFile.getFilename(), &#39;rb&#39;) as f:
-            f.seek(byteOffset)
-            self.px = numpy.fromfile(f, dtype=self.inputFile.getDataType(), count=self.getNPixels(), sep=&#34;&#34;)
-
-        if len(self.px) &gt; 0:
-            # Treat endianness. If the native byte order of the system is different
-            # than the given file byte order, the bytes are swapped in memory
-            # so that it matches the native byte order.
-            nativeEndian = sys.byteorder
-            if nativeEndian == &#39;little&#39;:
-                if byteOrder == &#39;big&#39;:
-                    self.px.byteswap(inplace=True)
-            elif nativeEndian == &#39;big&#39;:
-                if byteOrder == &#39;little&#39;:
-                    self.px.byteswap(inplace=True)
-
-            # Convert to internal data type:
-            self.px = self.px.astype(self.getInternalDataType())
-
-            # Reshape to 2D array:
-            self.px = numpy.reshape(self.px, (height, width))
-        else:
-            raise Exception(&#34;Error reading RAW file {f}.\nGot no data for index {idx}.&#34;.format(f=self.inputFile.getFilename(), idx=index))
-
-    else:
-        raise Exception(&#34;Can&#39;t find &#34; + self.inputFile.getFilename())</code></pre>
-</details>
 <div class="desc"><p>Import RAW image file.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.readTIFF"><code class="name flex">
 <span>def <span class="ident">readTIFF</span></span>(<span>self, flipByteOrder=False, obeyOrientation=True)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def readTIFF(self, flipByteOrder=False, obeyOrientation=True):
-    &#34;&#34;&#34; Import TIFF file. &#34;&#34;&#34;
-    if os.path.isfile(self.inputFile.getFilename()):
-        basename = self.inputFile.getFileBasename()
-
-        tiffimg = tiff()
-        tiffimg.read(self.inputFile.getFilename())
-        img = tiffimg.imageData(subfile=0, channel=0, obeyOrientation=obeyOrientation)  # get a greyscale image from TIFF subfile 0
-        width = tiffimg.getWidth(subfile=0)
-        height = tiffimg.getHeight(subfile=0)
-
-        self.inputFile.setDataType(img.dtype)
-
-        if flipByteOrder:
-            img.byteswap(inplace=True)
-
-        # Convert to internal data type for either int or float:
-        self.px = img.astype(self.getInternalDataType())
-
-        # Check if array in memory has the dimensions stated in the TIFF file:
-        if((height == len(self.px)) and (width == len(self.px[0]))):
-            self.setHeight(height)
-            self.setWidth(width)
-        else:
-            raise Exception(&#34;Width ({}px) and height ({}px) from the TIFF header do not match the data width ({}px) and height ({}px) that has been read.&#34;.format(width, height, len(self.px[0]), len(self.px)))
-    else:
-        raise Exception(&#34;Can&#39;t find &#34; + self.inputFile.getFilename())</code></pre>
-</details>
 <div class="desc"><p>Import TIFF file.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.renormalize"><code class="name flex">
 <span>def <span class="ident">renormalize</span></span>(<span>self, newMin=0, newMax=1, currentMin=None, currentMax=None, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def renormalize(self, newMin=0, newMax=1, currentMin=None, currentMax=None, ROI=None):
-    &#34;&#34;&#34;Renormalization of grey values from (currentMin, Max) to (newMin, Max) &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
-
-    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
-
-    if currentMin is None:
-        currentMin = slc.min()
-
-    if currentMax is None:
-        currentMax = slc.max()
-
-    if(currentMax != currentMin):
-        slc = (slc-currentMin)*(newMax-newMin)/(currentMax-currentMin)+newMin
-        self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
-    else:
-        slc = slc*0
-        self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = slc
-        #raise Exception(&#34;Division by zero upon renormalization: currentMax=currentMin={}&#34;.format(currentMax))</code></pre>
-</details>
 <div class="desc"><p>Renormalization of grey values from (currentMin, Max) to (newMin, Max)</p></div>
 </dd>
 <dt id="ctsimu.image.Image.renormalizeToMeanAndStdDev"><code class="name flex">
 <span>def <span class="ident">renormalizeToMeanAndStdDev</span></span>(<span>self, mean, stdDev, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def renormalizeToMeanAndStdDev(self, mean, stdDev, ROI=None):
-    &#34;&#34;&#34; Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000 &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
-
-    self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] = ((self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1] - mean)/stdDev)*30000 + 30000</code></pre>
-</details>
 <div class="desc"><p>Renormalize grey values such that mean=30000, (mean-stdDev)=0, (mean+stdDev)=60000</p></div>
 </dd>
 <dt id="ctsimu.image.Image.resetAccumulations"><code class="name flex">
 <span>def <span class="ident">resetAccumulations</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def resetAccumulations(self):
-    self.n_accumulations = 0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.rot180"><code class="name flex">
 <span>def <span class="ident">rot180</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rot180(self):
-    if self.isSet():
-        self.px = numpy.require(numpy.rot90(self.px, k=2), requirements=[&#39;C_CONTIGUOUS&#39;])</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.rot270"><code class="name flex">
 <span>def <span class="ident">rot270</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rot270(self):
-    if self.isSet():
-        self.px = numpy.require(numpy.rot90(self.px, k=-1), requirements=[&#39;C_CONTIGUOUS&#39;])
-        self.width, self.height = self.height, self.width</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.rot90"><code class="name flex">
 <span>def <span class="ident">rot90</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rot90(self):
-    if self.isSet():
-        self.px = numpy.require(numpy.rot90(self.px, k=1), requirements=[&#39;C_CONTIGUOUS&#39;])
-        self.width, self.height = self.height, self.width</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.rotate"><code class="name flex">
 <span>def <span class="ident">rotate</span></span>(<span>self, rotation)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rotate(self, rotation):
-    if rotation is None:
-        rotation = self.rotation
-    else:
-        self.setRotation(rotation)
-
-    if rotation == &#34;90&#34;:
-        self.rot90()
-    elif rotation == &#34;180&#34;:
-        self.rot180()
-    elif rotation == &#34;270&#34;:
-        self.rot270()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self,<br>filename=None,<br>dataType=None,<br>byteOrder=None,<br>appendChunk=False,<br>clipValues=True)</span>
+<span>def <span class="ident">save</span></span>(<span>self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def save(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True):
-    &#34;&#34;&#34; Save image as TIFF or RAW. &#34;&#34;&#34;
-    if not isinstance(self.outputFile, ImageFile):
-        self.outputFile = ImageFile()
-
-    if (filename is None) or (filename == &#34;&#34;):
-        filename = self.outputFile.getFilename()
-        if (filename is None) or (filename == &#34;&#34;):
-            raise Exception(&#34;No output file name specified.&#34;)
-    else:
-        self.outputFile.setFilename(filename)
-
-    if dataType is None:
-        dataType = self.outputFile.getDataType()
-        if dataType is None:
-            if isinstance(self.inputFile, ImageFile):
-                dataType = self.inputFile.getDataType()
-                if(dataType is not None):
-                    self.outputFile.setDataType(dataType)
-                else:
-                    raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
-            else:
-                raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
-    else:
-        self.outputFile.setDataType(dataType)
-
-    if byteOrder is None:
-        byteOrder = self.outputFile.getByteOrder()
-        if byteOrder is None:
-            if isinstance(self.inputFile, ImageFile):
-                byteOrder = self.inputFile.getByteOrder()
-                self.outputFile.setByteOrder(byteOrder)
-
-        if byteOrder is None:
-            byteOrder = &#34;little&#34;
-
-    self.outputFile.setByteOrder(byteOrder)
-
-    if isTIFF(filename):
-        self.saveTIFF(filename, dataType, clipValues)
-    else:
-        self.saveRAW(filename, dataType, byteOrder, appendChunk, clipValues, addInfo=False)</code></pre>
-</details>
 <div class="desc"><p>Save image as TIFF or RAW.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.saveRAW"><code class="name flex">
-<span>def <span class="ident">saveRAW</span></span>(<span>self,<br>filename=None,<br>dataType=None,<br>byteOrder=None,<br>appendChunk=False,<br>clipValues=True,<br>addInfo=False)</span>
+<span>def <span class="ident">saveRAW</span></span>(<span>self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def saveRAW(self, filename=None, dataType=None, byteOrder=None, appendChunk=False, clipValues=True, addInfo=False):
-    if (filename is not None) and (len(filename) &gt; 0):
-        fileBaseName = os.path.basename(filename)
-        if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
-            raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
-
-        if dataType is not None:
-            if byteOrder is None:
-                byteOrder = &#34;little&#34;
-
-            # Reshape to 1D array and convert to file data type (from internal 64bit data type)
-            outBytes = numpy.reshape(self.px, int(self.width)*int(self.height))
-
-            if clipValues:  # Clipping
-                clipMin, clipMax = self.getDataTypeClippingBoundaries(dataType)
-                outBytes = numpy.clip(outBytes, clipMin, clipMax)
-
-            outBytes = outBytes.astype(dataType)
-
-            # Treat endianness. If the native byte order of the system is different
-            # than the desired file byte order, the bytes are swapped in memory
-            # before writing to disk.
-            nativeEndian = sys.byteorder
-            if nativeEndian == &#39;little&#39;:
-                if byteOrder  == &#39;big&#39;:
-                    outBytes.byteswap(inplace=True)
-            elif nativeEndian == &#39;big&#39;:
-                if byteOrder == &#39;little&#39;:
-                    outBytes.byteswap(inplace=True)
-
-            if addInfo:
-                shortEndian = &#34;LE&#34;
-                if byteOrder == &#34;big&#34;:
-                    shortEndian = &#34;BE&#34;
-
-                infoString = &#34;_{width}x{height}_{dataType}_{endian}&#34;.format(width=self.width, height=self.height, dataType=dataType, endian=shortEndian)
-
-                basename, extension = os.path.splitext(filename)
-                filename = basename + infoString + extension
-
-            touch_directory(filename)
-            if not appendChunk:  # save as single raw file
-                with open(filename, &#39;w+b&#39;) as file:
-                    file.write(outBytes)
-                    file.close()
-                #outBytes.tofile(filename, sep=&#34;&#34;)
-            else: # append to the bytes of the chunk file
-                with open(filename, &#39;a+b&#39;) as file:
-                    file.write(outBytes)
-                    file.close()
-        else:
-            raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
-    else:
-        raise Exception(&#34;No output file name specified for the image to be saved.&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.saveTIFF"><code class="name flex">
 <span>def <span class="ident">saveTIFF</span></span>(<span>self, filename=None, dataType=None, clipValues=True)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def saveTIFF(self, filename=None, dataType=None, clipValues=True):
-    if (filename is not None) and (len(filename) &gt; 0):
-        fileBaseName = os.path.basename(filename)
-        if (fileBaseName == &#34;&#34;) or (fileBaseName is None):
-            raise Exception(&#34;No output file name specified for the image to be saved.&#34;)
-
-        if dataType is not None:
-            if not isTIFF(filename):
-                filename += &#34;.tif&#34;
-
-            touch_directory(filename)
-
-            tiffdata = None
-            if clipValues:  # Clipping
-                clipMin, clipMax = self.getDataTypeClippingBoundaries(dataType)
-                tiffdata = numpy.clip(self.px, clipMin, clipMax).astype(dataType)
-            else:  # No clipping or float
-                tiffdata = self.px.astype(dataType)
-
-            tiffimg = tiff()
-            tiffimg.set(tiffdata)
-            tiffimg.save(filename=filename, endian=&#39;little&#39;)
-        else:
-            raise Exception(&#34;Please specify a data type for the output file: {filename}&#34;.format(filename=filename))
-    else:
-        raise Exception(&#34;No output file name specified for the image to be saved.&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.setFlip"><code class="name flex">
 <span>def <span class="ident">setFlip</span></span>(<span>self, horz=False, vert=False)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFlip(self, horz=False, vert=False):
-    self.flipHorz = horz
-    self.flipVert = vert</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.setHeight"><code class="name flex">
 <span>def <span class="ident">setHeight</span></span>(<span>self, height)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setHeight(self, height):
-    &#34;&#34;&#34; Set image height in px. &#34;&#34;&#34;
-    self.height = height</code></pre>
-</details>
 <div class="desc"><p>Set image height in px.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.setIndex"><code class="name flex">
 <span>def <span class="ident">setIndex</span></span>(<span>self, index)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setIndex(self, index):
-    &#34;&#34;&#34; Set image index position in 3D stack (in px). &#34;&#34;&#34;
-    self.index = index</code></pre>
-</details>
 <div class="desc"><p>Set image index position in 3D stack (in px).</p></div>
 </dd>
 <dt id="ctsimu.image.Image.setInputFile"><code class="name flex">
 <span>def <span class="ident">setInputFile</span></span>(<span>self, inputFile)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setInputFile(self, inputFile):
-    &#34;&#34;&#34; Set input file properties from ImageFile object or string. &#34;&#34;&#34;
-    if isinstance(inputFile, ImageFile) or (inputFile is None):
-        self.inputFile = inputFile
-    elif isinstance(inputFile, str):  # string given
-        self.inputFile = ImageFile(inputFile)
-    else:
-        raise Exception(&#34;{} is not a valid file identifier.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Set input file properties from ImageFile object or string.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.setOutputFile"><code class="name flex">
 <span>def <span class="ident">setOutputFile</span></span>(<span>self, outputFile)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setOutputFile(self, outputFile):
-    &#34;&#34;&#34; Set output file properties from ImageFile object or string. &#34;&#34;&#34;
-    if isinstance(outputFile, ImageFile) or (outputFile is None):
-        self.outputFile = outputFile
-    elif isinstance(outputFile, str):  # string given
-        self.outputFile = ImageFile(outputFile)
-    else:
-        raise Exception(&#34;{} is not a valid file identifier.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Set output file properties from ImageFile object or string.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.setPixel"><code class="name flex">
 <span>def <span class="ident">setPixel</span></span>(<span>self, x, y, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setPixel(self, x, y, value):
-    self.px[y][x] = value</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.setPixelMap"><code class="name flex">
 <span>def <span class="ident">setPixelMap</span></span>(<span>self, px)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setPixelMap(self, px):
-    self.px = px</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.setRotation"><code class="name flex">
 <span>def <span class="ident">setRotation</span></span>(<span>self, rotation)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setRotation(self, rotation):
-    self.rotation = rotation</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.setWidth"><code class="name flex">
 <span>def <span class="ident">setWidth</span></span>(<span>self, width)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setWidth(self, width):
-    &#34;&#34;&#34; Set image width in px. &#34;&#34;&#34;
-    self.width = width</code></pre>
-</details>
 <div class="desc"><p>Set image width in px.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.shape"><code class="name flex">
 <span>def <span class="ident">shape</span></span>(<span>self, width, height, index=0, dataType=None, value=0)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def shape(self, width, height, index=0, dataType=None, value=0):
-    &#34;&#34;&#34; Re-format image to given dimensions and data type. &#34;&#34;&#34;
-    self.setWidth(width)
-    self.setHeight(height)
-    self.setIndex(index)
-
-    if dataType is None:
-        dataType = self.getInternalDataType()
-
-    self.erase(value=0, dataType=dataType)</code></pre>
-</details>
 <div class="desc"><p>Re-format image to given dimensions and data type.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.shapeLike"><code class="name flex">
 <span>def <span class="ident">shapeLike</span></span>(<span>self, otherImg, dataType=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def shapeLike(self, otherImg, dataType=None):
-    self.setWidth(otherImg.getWidth())
-    self.setHeight(otherImg.getHeight())
-    self.setIndex(otherImg.getIndex())
-
-    if dataType is None:
-        dataType = otherImg.getInternalDataType()
-
-    self.erase(value=0, dataType=dataType)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.smooth_gaussian"><code class="name flex">
 <span>def <span class="ident">smooth_gaussian</span></span>(<span>self, sigma)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def smooth_gaussian(self, sigma):
-    self.px = ndimage.gaussian_filter(input=self.px, sigma=sigma, order=0, )</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.sqrt"><code class="name flex">
 <span>def <span class="ident">sqrt</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def sqrt(self):
-    self.px = numpy.sqrt(self.px)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.square"><code class="name flex">
 <span>def <span class="ident">square</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def square(self):
-    self.px *= self.px</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.stats"><code class="name flex">
 <span>def <span class="ident">stats</span></span>(<span>self, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def stats(self, ROI=None):
-    &#34;&#34;&#34; Image or ROI statistics. Mean, Standard Deviation &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
-
-    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
-
-    mean  = numpy.mean(slc)
-    sigma = numpy.std(slc)
-    snr   = 0
-    if sigma &gt; 0:
-        snr = mean / sigma
-
-    return {&#34;mean&#34;: mean, &#34;stddev&#34;: sigma, &#34;snr&#34;: snr, &#34;width&#34;: ROI.width(), &#34;height&#34;: ROI.height(), &#34;area&#34;: ROI.area()}</code></pre>
-</details>
 <div class="desc"><p>Image or ROI statistics. Mean, Standard Deviation</p></div>
 </dd>
 <dt id="ctsimu.image.Image.stdDev"><code class="name flex">
 <span>def <span class="ident">stdDev</span></span>(<span>self, ROI=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def stdDev(self, ROI=None):
-    &#34;&#34;&#34; Return the standard deviation of the image grey values. &#34;&#34;&#34;
-
-    # Take full image if no ROI is given
-    if ROI is None:
-        return numpy.std(self.px)
-
-    return numpy.std(self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1])</code></pre>
-</details>
 <div class="desc"><p>Return the standard deviation of the image grey values.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.subtract"><code class="name flex">
 <span>def <span class="ident">subtract</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def subtract(self, value):
-    self.px -= value</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.subtractImage"><code class="name flex">
 <span>def <span class="ident">subtractImage</span></span>(<span>self, other)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def subtractImage(self, other):
-    &#34;&#34;&#34; Subtract pixel values of another image from this image. &#34;&#34;&#34;
-    if self.dimensionsMatch(other):
-        self.px = self.px - other.getPixelMap()</code></pre>
-</details>
 <div class="desc"><p>Subtract pixel values of another image from this image.</p></div>
 </dd>
 <dt id="ctsimu.image.Image.verticalProfile"><code class="name flex">
 <span>def <span class="ident">verticalProfile</span></span>(<span>self, xPos)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def verticalProfile(self, xPos):
-    if xPos &lt; self.getWidth():
-        return numpy.ravel(self.px[:,xPos])
-    else:
-        raise Exception(&#34;Requested position for vertical profile is out of bounds: x={} in an image that has {} rows.&#34;.format(xPos, self.getWidth()))</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.Image.verticalROIProfile"><code class="name flex">
 <span>def <span class="ident">verticalROIProfile</span></span>(<span>self, ROI)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def verticalROIProfile(self, ROI):
-    # Take full image if no ROI is given
-    if ROI is None:
-        ROI = ImageROI(0, 0, self.getWidth(), self.getHeight())
-
-    slc = self.px[ROI.y0:ROI.y1, ROI.x0:ROI.x1]
-
-    profile = slc.mean(axis=1)
-    return numpy.ravel(profile)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -4189,6 +2332,7 @@ False
 <span>(</span><span>filename=None, dataType=None, byteOrder=None, flipByteOrder=False)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Fundamental image file properties used for input and output.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4255,165 +2399,72 @@ False
         &#34;&#34;&#34; True if data type is supported float data type. &#34;&#34;&#34;
         return numpy.issubdtype(self.dataType, numpy.floating)</code></pre>
 </details>
-<div class="desc"><p>Fundamental image file properties used for input and output.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.image.ImageFile.doFlipByteOrder"><code class="name flex">
 <span>def <span class="ident">doFlipByteOrder</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def doFlipByteOrder(self) -&gt; bool:
-    return self.flipByteOrder</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.getByteOrder"><code class="name flex">
 <span>def <span class="ident">getByteOrder</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getByteOrder(self) -&gt; str:
-    return self.byteOrder</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.getDataType"><code class="name flex">
 <span>def <span class="ident">getDataType</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getDataType(self) -&gt; str:
-    return self.dataType</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.getFileBasename"><code class="name flex">
 <span>def <span class="ident">getFileBasename</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFileBasename(self) -&gt; str:
-    return os.path.basename(self.filename)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.getFilename"><code class="name flex">
 <span>def <span class="ident">getFilename</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFilename(self) -&gt; str:
-    return self.filename</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.isFloat"><code class="name flex">
 <span>def <span class="ident">isFloat</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isFloat(self) -&gt; bool:
-    &#34;&#34;&#34; True if data type is supported float data type. &#34;&#34;&#34;
-    return numpy.issubdtype(self.dataType, numpy.floating)</code></pre>
-</details>
 <div class="desc"><p>True if data type is supported float data type.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.isInt"><code class="name flex">
 <span>def <span class="ident">isInt</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isInt(self) -&gt; bool:
-    &#34;&#34;&#34; True if data type is supported int data type. &#34;&#34;&#34;
-    return numpy.issubdtype(self.dataType, numpy.integer)</code></pre>
-</details>
 <div class="desc"><p>True if data type is supported int data type.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.setByteOrder"><code class="name flex">
 <span>def <span class="ident">setByteOrder</span></span>(<span>self, byteOrder: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setByteOrder(self, byteOrder: str):
-    &#34;&#34;&#34; Set endianness, do sanity check before. &#34;&#34;&#34;
-    if byteOrder==&#39;little&#39; or byteOrder==&#39;big&#39; or byteOrder is None:
-        self.byteOrder = byteOrder
-    else:
-        raise Exception(&#34;{} is not a valid byte order. Must be &#39;little&#39; or &#39;big&#39;.&#34;.format(byteOrder))</code></pre>
-</details>
 <div class="desc"><p>Set endianness, do sanity check before.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.setDataType"><code class="name flex">
 <span>def <span class="ident">setDataType</span></span>(<span>self, dataType: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setDataType(self, dataType: str):
-    &#34;&#34;&#34; Set data type, either from numpy.dtype object or string. &#34;&#34;&#34;
-    if isinstance(dataType, numpy.dtype):
-        self.dataType = dataType
-    elif dataType is None:
-        self.dataType = None
-    elif isinstance(dataType, str):  # from string
-        dt = numpy.dtype(dataType)
-        self.setDataType(dt)
-    else:
-        raise Exception(&#34;{} is generally not a valid data type.&#34;.format(dataType))</code></pre>
-</details>
 <div class="desc"><p>Set data type, either from numpy.dtype object or string.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.setFilename"><code class="name flex">
 <span>def <span class="ident">setFilename</span></span>(<span>self, filename)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFilename(self, filename):
-    self.filename = filename</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageFile.setFlipByteOrder"><code class="name flex">
 <span>def <span class="ident">setFlipByteOrder</span></span>(<span>self, flipByteOrder: bool)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFlipByteOrder(self, flipByteOrder: bool):
-    self.flipByteOrder = flipByteOrder</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -4423,6 +2474,7 @@ False
 <span>(</span><span>x0, y0, x1, y1)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Defines a region of interest: upper left and lower right corner.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4465,91 +2517,92 @@ False
         amount = int(amount)
         self.set(self.x0-amount, self.y0-amount, self.x1+amount, self.y1+amount)</code></pre>
 </details>
-<div class="desc"><p>Defines a region of interest: upper left and lower right corner.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.image.ImageROI.area"><code class="name flex">
 <span>def <span class="ident">area</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def area(self):
-    return self.width()*self.height()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageROI.grow"><code class="name flex">
 <span>def <span class="ident">grow</span></span>(<span>self, amount)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def grow(self, amount):
-    amount = int(amount)
-    self.set(self.x0-amount, self.y0-amount, self.x1+amount, self.y1+amount)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageROI.height"><code class="name flex">
 <span>def <span class="ident">height</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def height(self):
-    return self.y1 - self.y0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageROI.set"><code class="name flex">
 <span>def <span class="ident">set</span></span>(<span>self, x0, y0, x1, y1)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set(self, x0, y0, x1, y1):
-    if x1 &lt; x0:
-        x0, x1 = x1, x0
-
-    if y1 &lt; y0:
-        y0, y1 = y1, y0
-
-    self.x0 = int(x0)
-    self.y0 = int(y0)
-    self.x1 = int(x1)
-    self.y1 = int(y1)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageROI.width"><code class="name flex">
 <span>def <span class="ident">width</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def width(self):
-    return self.x1 - self.x0</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
 </dd>
 <dt id="ctsimu.image.ImageStack"><code class="flex name class">
 <span>class <span class="ident">ImageStack</span></span>
-<span>(</span><span>filePattern: str = None,<br>width: int = None,<br>height: int = None,<br>dataType: str = None,<br>byteOrder: str = None,<br>rawFileHeaderSize: int = 0,<br>rawImageHeaderSize: int = 0,<br>slices: int = None,<br>startNumber: int = 0,<br>flipByteOrder: bool = False)</span>
+<span>(</span><span>filePattern: str = None, width: int = None, height: int = None, dataType: str = None, byteOrder: str = None, rawFileHeaderSize: int = 0, rawImageHeaderSize: int = 0, slices: int = None, startNumber: int = 0, flipByteOrder: bool = False)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>Specify an image stack from a single file (RAW chunk) or
+a collection of single 2D RAW or TIFF files. </p>
+<p>The constructor takes the following optional parameters.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filePattern</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of a single file or a numbered file stack.
+If file names end on <code>.tif</code> or <code>.tiff</code>, those are assumed to be TIFF files.</dd>
+<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
+<dd>Image width (in pixels) of a raw file or chunk.
+Required for RAW input.</dd>
+<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
+<dd>Image height (in pixels) of a raw file or chunk.
+Required for RAW input.</dd>
+<dt><strong><code>dataType</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Data type of the gray value representation.
+Required for RAW input and output and TIFF output.</p>
+<p>Options are: <code>"int8"</code>, <code>"int16"</code>, <code>"int32"</code>, <code>"int64"</code>,
+<code>"uint8"</code>, <code>"uint16"</code>, <code>"uint32"</code>, <code>"uint64"</code>, <code>"float32"</code>, and <code>"float64"</code>.</p>
+</dd>
+<dt><strong><code>byteOrder</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Byte order (endianness) of the raw data.</p>
+<p>Default value: system default.</p>
+<p>Options: <code>"little"</code>, <code>"big"</code>, <code>None</code> (system default)</p>
+</dd>
+<dt><strong><code>rawFileHeaderSize</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>File header size (in bytes) of an input RAW file.</p>
+<p>Default value: <code>0</code></p>
+</dd>
+<dt><strong><code>rawImageHeaderSize</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>Image header size (in bytes) for each image in an input RAW chunk that contains several image slices.</p>
+<p>Default value: <code>0</code></p>
+</dd>
+<dt><strong><code>slices</code></strong> :&ensp;<code>int</code></dt>
+<dd>
+<p>Number of image slices to be read from a given input RAW file, or number of image files to be read from a given image sequence.</p>
+<p>Default value: the number of slices will be determined automatically from the RAW chunk file size or from the number of images in the provided sequence.</p>
+</dd>
+<dt><strong><code>startNumber</code></strong> :&ensp;<code>int</code></dt>
+<dd>For image sequences. The index in the sequential number in the input filename where to start reading files for this stack.</dd>
+<dt><strong><code>flipByteOrder</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Only for TIFF input. The byte order (big or little endian) should be determined by the TIFF loader and be imported correctly. If not, you can use this parameter to flip the byte order after reading a TIFF file.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4899,490 +2952,108 @@ False
         else:
             return None</code></pre>
 </details>
-<div class="desc"><p>Specify an image stack from a single file (RAW chunk) or
-a collection of single 2D RAW or TIFF files. </p>
-<p>The constructor takes the following optional parameters.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>filePattern</code></strong> :&ensp;<code>str</code></dt>
-<dd>Name of a single file or a numbered file stack.
-If file names end on <code>.tif</code> or <code>.tiff</code>, those are assumed to be TIFF files.</dd>
-<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
-<dd>Image width (in pixels) of a raw file or chunk.
-Required for RAW input.</dd>
-<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
-<dd>Image height (in pixels) of a raw file or chunk.
-Required for RAW input.</dd>
-<dt><strong><code>dataType</code></strong> :&ensp;<code>str</code></dt>
-<dd>
-<p>Data type of the gray value representation.
-Required for RAW input and output and TIFF output.</p>
-<p>Options are: <code>"int8"</code>, <code>"int16"</code>, <code>"int32"</code>, <code>"int64"</code>,
-<code>"uint8"</code>, <code>"uint16"</code>, <code>"uint32"</code>, <code>"uint64"</code>, <code>"float32"</code>, and <code>"float64"</code>.</p>
-</dd>
-<dt><strong><code>byteOrder</code></strong> :&ensp;<code>str</code></dt>
-<dd>
-<p>Byte order (endianness) of the raw data.</p>
-<p>Default value: system default.</p>
-<p>Options: <code>"little"</code>, <code>"big"</code>, <code>None</code> (system default)</p>
-</dd>
-<dt><strong><code>rawFileHeaderSize</code></strong> :&ensp;<code>int</code></dt>
-<dd>
-<p>File header size (in bytes) of an input RAW file.</p>
-<p>Default value: <code>0</code></p>
-</dd>
-<dt><strong><code>rawImageHeaderSize</code></strong> :&ensp;<code>int</code></dt>
-<dd>
-<p>Image header size (in bytes) for each image in an input RAW chunk that contains several image slices.</p>
-<p>Default value: <code>0</code></p>
-</dd>
-<dt><strong><code>slices</code></strong> :&ensp;<code>int</code></dt>
-<dd>
-<p>Number of image slices to be read from a given input RAW file, or number of image files to be read from a given image sequence.</p>
-<p>Default value: the number of slices will be determined automatically from the RAW chunk file size or from the number of images in the provided sequence.</p>
-</dd>
-<dt><strong><code>startNumber</code></strong> :&ensp;<code>int</code></dt>
-<dd>For image sequences. The index in the sequential number in the input filename where to start reading files for this stack.</dd>
-<dt><strong><code>flipByteOrder</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Only for TIFF input. The byte order (big or little endian) should be determined by the TIFF loader and be imported correctly. If not, you can use this parameter to flip the byte order after reading a TIFF file.</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.image.ImageStack.addStack"><code class="name flex">
 <span>def <span class="ident">addStack</span></span>(<span>self, other)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def addStack(self, other):
-    if (self.width == other.width) and (self.height == other.height):
-        self.nSlices += other.nSlices
-        self.fileList.extend(other.fileList)
-        self.fileNumbers.extend(other.fileNumbers)
-    else:
-        raise Exception(&#34;Error adding stack: image dimensions don&#39;t match.&#34;)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.buildStack"><code class="name flex">
 <span>def <span class="ident">buildStack</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def buildStack(self):
-    &#34;&#34;&#34; Build list of files that match given file name pattern. &#34;&#34;&#34;
-    self.fileList = []
-    self.fileNumbers = []
-
-    # Treat projection files
-    inFilePattern = self.files.getFilename()
-    inputFolder  = os.path.dirname(inFilePattern)
-    projBasename = os.path.basename(inFilePattern)
-
-    if inputFolder == &#34;&#34; or inputFolder is None:
-        inputFolder = &#34;.&#34;
-
-    # Check if an image stack is provided:
-    if(&#39;%&#39; not in inFilePattern):
-        self.fileList.append(inFilePattern)
-
-        if(isTIFF(inFilePattern)):  # treat as single TIFF projection
-            self._isVolumeChunk = False
-            testImage = Image(inFilePattern)
-            testImage.read()
-            self.width    = testImage.getWidth()
-            self.height   = testImage.getHeight()
-            self.nSlices  = 1
-            self.files.setDataType(testImage.inputFile.getDataType())
-        else:  # treat as raw chunk
-            if (self.width is not None) and (self.height is not None):
-                if (self.files.getDataType() is not None):
-                    if os.path.isfile(inFilePattern):
-                        self._isVolumeChunk = True
-
-                        if (self.nSlices is None):
-                            # Determine number of slices.
-                            fileSizeInBytes = os.path.getsize(inFilePattern)
-                            dataSizeInBytes = fileSizeInBytes - self.rawFileHeaderSize
-                            bytesPerImage = self.rawImageHeaderSize + self.width * self.height * self.files.getDataType().itemsize
-
-                            if (dataSizeInBytes &gt;= bytesPerImage):
-                                if (dataSizeInBytes % bytesPerImage) == 0:
-                                    self.nSlices = int(dataSizeInBytes / bytesPerImage)
-                                    log(&#34;{} slices found in raw chunk.&#34;.format(self.nSlices))
-                                else:
-                                    raise Exception(&#34;The raw chunk data size ({} bytes, without general file header) is not divisible by the calculated size of a single image ({} bytes, including image header). Therefore, the number of slices cannot be determined. {}&#34;.format(dataSizeInBytes, bytesPerImage, inFilePattern))
-                            else:
-                                raise Exception(&#34;The raw chunk data size ({} bytes, without general file header) is smaller than the calculated size of a single image ({} bytes, including image header). {}&#34;.format(dataSizeInBytes, bytesPerImage, inFilePattern))
-                    else:
-                        raise Exception(&#34;File not found: {}&#34;.format(inFilePattern))
-                else:
-                    raise Exception(&#34;Please provide the data type of the raw chunk.&#34;)
-            else:
-                raise Exception(&#34;Please provide width and height (in pixels) of the raw chunk.&#34;)
-    else:
-        # A % sign in the provided file pattern indicates an image stack: e.g. %04d
-        leadText, trailText, nDigitsExpected = self.fileStackInfo(projBasename)
-
-        # Get list of files in input folder:
-        fileList = os.listdir(inputFolder)
-        fileList.sort()
-
-        nImported = 0
-
-        for f in fileList:
-            file = inputFolder + &#34;/&#34; + f
-            if os.path.isfile(file):
-                # Check if filename matches pattern:
-                if(f.startswith(leadText) and f.endswith(trailText)):
-                    digitText = f[len(leadText):-len(trailText)]
-                    if digitText.isdigit(): # and len(digitText)==nDigitsExpected:
-                        # Pattern matches.
-                        n = int(digitText)
-                        if n &gt;= self.startNumber:
-                            self.fileList.append(file)
-                            self.fileNumbers.append(n)
-
-                            nImported += 1
-                            if nImported == self.nSlices:
-                                break
-                    else:
-                        continue
-                else:
-                    continue
-
-        self.nSlices = len(self.fileList)
-
-        if self.nSlices &gt; 0:
-            if isTIFF(self.fileList[0]):
-                testImage = Image(self.fileList[0])
-                testImage.read()
-                self.width    = testImage.getWidth()
-                self.height   = testImage.getHeight()
-                self.files.setDataType(testImage.inputFile.getDataType())
-
-    self.built = True</code></pre>
-</details>
 <div class="desc"><p>Build list of files that match given file name pattern.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.doFlipByteOrder"><code class="name flex">
 <span>def <span class="ident">doFlipByteOrder</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def doFlipByteOrder(self):
-    return self.files.doFlipByteOrder()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.fileStackInfo"><code class="name flex">
 <span>def <span class="ident">fileStackInfo</span></span>(<span>self, filenameString)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def fileStackInfo(self, filenameString):
-    &#34;&#34;&#34; Split file pattern into lead &amp; trail text, number of expected digits. &#34;&#34;&#34;
-    if &#39;%&#39; in filenameString:
-        # A % sign in the provided file pattern indicates an image stack: e.g. %04d
-        percentagePosition = filenameString.find(&#34;%&#34;)
-
-        numberStart = percentagePosition + 1
-        numberStop  = filenameString.find(&#34;d&#34;, percentagePosition)
-
-        leadText  = &#34;&#34;
-        if(percentagePosition &gt; 0):
-            leadText = filenameString[:percentagePosition]
-
-        trailText = &#34;&#34;
-        if((numberStop+1) &lt; len(filenameString)):
-            trailText = filenameString[(numberStop+1):]
-
-        if(numberStop &gt; numberStart):
-            numberString = filenameString[numberStart:numberStop]
-            if(numberString.isdigit()):
-                nDigitsExpected = int(numberString)
-                return leadText, trailText, nDigitsExpected
-            else:
-                raise Exception(&#34;Image stack pattern is wrong. The wildcard for sequential digits in a filename must be %, followed by number of digits, followed by d, e.g. %04d&#34;)
-        else:
-            raise Exception(&#34;Image stack pattern is wrong. The wildcard for sequential digits in a filename must be %, followed by number of digits, followed by d, e.g. %04d&#34;)
-
-    return filenameString, &#34;&#34;, 0</code></pre>
-</details>
 <div class="desc"><p>Split file pattern into lead &amp; trail text, number of expected digits.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getFileBasename"><code class="name flex">
 <span>def <span class="ident">getFileBasename</span></span>(<span>self, index=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFileBasename(self, index=None):
-    if index is not None:
-        if self._isVolumeChunk:
-            if len(self.fileList) &gt; 0:
-                return os.path.basename(self.fileList[0])
-            else:
-                return None
-        else:
-            if len(self.fileList) &gt; index:
-                return os.path.basename(self.fileList[index])
-            else:
-                return None
-    else:
-        return self.files.getFileBasename()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getFileByteOrder"><code class="name flex">
 <span>def <span class="ident">getFileByteOrder</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFileByteOrder(self):
-    return self.files.getByteOrder()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getFileDataType"><code class="name flex">
 <span>def <span class="ident">getFileDataType</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFileDataType(self):
-    return self.files.getDataType()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getFilename"><code class="name flex">
 <span>def <span class="ident">getFilename</span></span>(<span>self, index=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getFilename(self, index=None):
-    if index is not None:
-        if self._isVolumeChunk:
-            if len(self.fileList) &gt; 0:
-                return self.fileList[0]
-            else:
-                return None
-        else:
-            if len(self.fileList) &gt; index:
-                return self.fileList[index]
-            else:
-                return None
-    else:
-        return self.files.getFilename()</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getImage"><code class="name flex">
 <span>def <span class="ident">getImage</span></span>(<span>self, index, outputFile=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getImage(self, index, outputFile=None):
-    &#34;&#34;&#34; Read and return image at position &#39;index&#39; within the stack. &#34;&#34;&#34;
-    if index &gt;= 0:
-        if not self._isVolumeChunk:  # read single image file from stack:
-            if len(self.fileList) &gt; index:
-                filename = self.fileList[index]
-                file = ImageFile(filename=filename, dataType=self.getFileDataType(), byteOrder=self.getFileByteOrder(), flipByteOrder=self.doFlipByteOrder())
-
-                img = Image(file, outputFile)
-                if isTIFF(filename):
-                    img.read()
-                else:
-                    img.readRAW(self.width, self.height, 0, self.getFileDataType(), self.getFileByteOrder(), self.rawFileHeaderSize, self.rawImageHeaderSize)
-                return img
-            else:
-                raise Exception(&#34;The requested slice nr. {} is out of bounds, because only {} image files were found.&#34;.format(index, len(self.fileList)))
-        else:  # read slice from volume chunk, obeying start number
-            if len(self.fileList) &gt; 0:
-                file = self.fileList[0]
-                img = Image(file, outputFile)
-                chunkIndex = index + self.startNumber
-                if isTIFF(file):
-                    raise Exception(&#34;Cannot treat 3D TIFFs.&#34;)
-                else:
-                    img.readRAW(self.width, self.height, chunkIndex, self.getFileDataType(), self.getFileByteOrder(), self.rawFileHeaderSize, self.rawImageHeaderSize)
-                    return img
-            else:
-                raise Exception(&#34;No image file specified to be loaded.&#34;)
-    else:
-        raise Exception(&#34;Negative slice numbers do not exists. {} requested.&#34;.format(index))</code></pre>
-</details>
 <div class="desc"><p>Read and return image at position 'index' within the stack.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getMeanImage"><code class="name flex">
 <span>def <span class="ident">getMeanImage</span></span>(<span>self, outputFile=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getMeanImage(self, outputFile=None):
-    &#34;&#34;&#34; Calculate the mean of all image files. &#34;&#34;&#34;
-    if self.nSlices &gt; 0:
-        if self.nSlices &gt; 1:
-            sumImg = self.getImage(0, outputFile)
-            for i in range(1, self.nSlices):
-                print(&#34;\rMean Image: summing up {i}/{n}&#34;.format(i=(i+1), n=self.nSlices), end=&#39;&#39;)
-                sumImg.addImage(self.getImage(i, outputFile))
-
-
-            print(&#34;&#34;)
-
-            sumImg.divide(self.nSlices)
-            return sumImg
-        else:
-            return self.getImage(0, outputFile)
-    else:
-        return None</code></pre>
-</details>
 <div class="desc"><p>Calculate the mean of all image files.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.getStdDevImage"><code class="name flex">
 <span>def <span class="ident">getStdDevImage</span></span>(<span>self, meanImg=None, outputFile=None)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def getStdDevImage(self, meanImg=None, outputFile=None):
-    &#34;&#34;&#34; Calculate the pixel-wise RMS of the image files. &#34;&#34;&#34;
-    if self.nSlices &gt; 0:
-        if self.nSlices &gt; 1:
-            if meanImg is None:
-                meanImg = self.getMeanImage(outputFile)
-
-            sumImg = Image()
-            sumImg.shapeLike(otherImg=meanImg)
-
-            for i in range(0, self.nSlices):
-                print(&#34;\rRMSD Image: component {i}/{n}&#34;.format(i=i+1, n=self.nSlices), end=&#39;&#39;)
-                sqDiffImg = self.getImage(i, outputFile)
-                sqDiffImg.subtractImage(meanImg)
-                sqDiffImg.square()
-
-                sumImg.addImage(sqDiffImg)
-
-            sumImg.divide(self.nSlices)
-            sumImg.sqrt()
-
-            print(&#34;&#34;)
-
-            return sumImg
-        else:
-            return self.getImage(0, outputFile)
-    else:
-        return None</code></pre>
-</details>
 <div class="desc"><p>Calculate the pixel-wise RMS of the image files.</p></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.isVolumeChunk"><code class="name flex">
 <span>def <span class="ident">isVolumeChunk</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def isVolumeChunk(self):
-    return self._isVolumeChunk</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.setFileByteOrder"><code class="name flex">
 <span>def <span class="ident">setFileByteOrder</span></span>(<span>self, byteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFileByteOrder(self, byteOrder):
-    self.files.setByteOrder(byteOrder)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.setFileDataType"><code class="name flex">
 <span>def <span class="ident">setFileDataType</span></span>(<span>self, dataType)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFileDataType(self, dataType):
-    self.files.setDataType(dataType)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.setFilename"><code class="name flex">
 <span>def <span class="ident">setFilename</span></span>(<span>self, filename)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFilename(self, filename):
-    self.files.setFilename(filename)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.setFlipByteOrder"><code class="name flex">
 <span>def <span class="ident">setFlipByteOrder</span></span>(<span>self, flipByteOrder)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setFlipByteOrder(self, flipByteOrder):
-    self.files.setFlipByteOrder(flipByteOrder)</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 <dt id="ctsimu.image.ImageStack.setVolumeChunk"><code class="name flex">
 <span>def <span class="ident">setVolumeChunk</span></span>(<span>self, isVolumeChunk)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def setVolumeChunk(self, isVolumeChunk):
-    self._isVolumeChunk = isVolumeChunk</code></pre>
-</details>
 <div class="desc"></div>
 </dd>
 </dl>
@@ -5573,7 +3244,7 @@ Required for RAW input and output and TIFF output.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

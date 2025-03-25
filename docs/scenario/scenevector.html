@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>ctsimu.scenario.scenevector API documentation</title>
 <meta name="description" content="A scene vector is a 3D vector that knows its reference coordinate system.
 It can be converted between these coordinate systems and handles drifts.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -19,17 +19,6 @@ It can be converted between these coordinate systems and handles drifts.">
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
-/* Collapse source docstrings */
-setTimeout(() => {
-[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
-.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
-.forEach(el => {
-let d = document.createElement('details');
-d.classList.add('hljs-string');
-d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
-el.replaceWith(d);
-});
-}, 100);
 })</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
@@ -73,6 +62,34 @@ It can be converted between these coordinate systems and handles drifts.</p>
 <span>(</span><span>native_unit: str = None)</span>
 </code></dt>
 <dd>
+<div class="desc"><p>A scene vector is a 3D vector that knows the type of its
+reference coordinate system, given as world, local or sample.
+It provides functions to convert between these coordinate systems
+and it can handle drifts. Therefore, all three vector components
+are stored as <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> objects.</p>
+<p>Useful for vectors that can change due to drifts,
+such as rotation axis and pivot point of a deviation,
+or, in general, the coordinate system vectors.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>reference</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identifies the reference coordinate system.
+Can be: <code>"world"</code>, <code>local"</code>, or <code>"sample"</code>.</dd>
+<dt><strong><code>c0</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Value of the first vector component.</dd>
+<dt><strong><code>c1</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Value of the second vector component.</dd>
+<dt><strong><code>c2</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Value of the third vector component.</dd>
+</dl>
+<p>For initialization, the native unit can be given.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The native unit of the vector's components. Standard is <code>None</code>,
+but <code>"mm"</code> would make sense for positions in space.
+Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -663,90 +680,12 @@ It can be converted between these coordinate systems and handles drifts.</p>
 
                 return jd</code></pre>
 </details>
-<div class="desc"><p>A scene vector is a 3D vector that knows the type of its
-reference coordinate system, given as world, local or sample.
-It provides functions to convert between these coordinate systems
-and it can handle drifts. Therefore, all three vector components
-are stored as <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> objects.</p>
-<p>Useful for vectors that can change due to drifts,
-such as rotation axis and pivot point of a deviation,
-or, in general, the coordinate system vectors.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>reference</code></strong> :&ensp;<code>str</code></dt>
-<dd>Identifies the reference coordinate system.
-Can be: <code>"world"</code>, <code>local"</code>, or <code>"sample"</code>.</dd>
-<dt><strong><code>c0</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
-<dd>Value of the first vector component.</dd>
-<dt><strong><code>c1</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
-<dd>Value of the second vector component.</dd>
-<dt><strong><code>c2</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
-<dd>Value of the third vector component.</dd>
-</dl>
-<p>For initialization, the native unit can be given.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>native_unit</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The native unit of the vector's components. Standard is <code>None</code>,
-but <code>"mm"</code> would make sense for positions in space.
-Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code>"deg"</code>, <code>"s"</code>, <code>"mA"</code>, <code>"kV"</code>, <code>"g/cm^3"</code>, <code>"lp/mm"</code>, <code>"deg/s"</code>, <code>"C"</code>, <code>"bool"</code>, <code>"string"</code>.</dd>
-</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.scenario.scenevector.Scenevector.direction_in_local"><code class="name flex">
-<span>def <span class="ident">direction_in_local</span></span>(<span>self,<br>local: CoordinateSystem,<br>sample: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">direction_in_local</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def direction_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the local
-        coordinate system for the given `frame` number, respecting all relevant drifts.
-
-        Parameters
-        ----------
-        local : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the object&#39;s local coordinate
-                system in terms of world coordinates.
-
-        sample : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the sample in terms of the
-                stage coordinate system. If you don&#39;t want to convert from a
-                sample vector, pass `None`.
-
-        frame : float
-                The number of the current frame.
-
-        n_frames : int
-                The total number of frames in the CT scan.
-
-        reconstruction : bool
-                Only handle drifts that are labeled as known to the reconstruction software?
-
-        Returns
-        -------
-        vec_local : ctsimu.primitives.Vector
-                A vector in terms of the local coordinate system.
-        &#34;&#34;&#34;
-
-        v = self.vector_for_frame(frame, n_frames, reconstruction)
-
-        if self.reference == &#34;world&#34;:
-                # Convert from world to local.
-                v_in_local = change_reference_frame_of_direction(v, ctsimu_world, local)
-                return v_in_local
-        elif self.reference == &#34;local&#34;:
-                # Already in local.
-                return v
-        elif self.reference == &#34;sample&#34;:
-                # The sample&#39;s &#34;world&#34; is the stage (here: local).
-                # To get the sample coordinates in stage coordinates,
-                # we therefore transform to the world.
-                v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
-                return v_in_stage</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for a direction in terms of the local
 coordinate system for the given <code>frame</code> number, respecting all relevant drifts.</p>
 <h2 id="parameters">Parameters</h2>
@@ -772,68 +711,9 @@ sample vector, pass <code>None</code>.</dd>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.scenevector.Scenevector.direction_in_sample"><code class="name flex">
-<span>def <span class="ident">direction_in_sample</span></span>(<span>self,<br>stage: CoordinateSystem,<br>sample: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">direction_in_sample</span></span>(<span>self, stage: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def direction_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the sample
-        coordinate system for the given `frame` number, respecting all relevant drifts.
-
-        The sample must be attached to the stage, otherwise use `in_local`
-        instead. Note that a direct conversion from one sample CS to another is
-        not possible with this function.
-
-        Parameters
-        ----------
-        stage : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the stage&#39;s local coordinate
-                system in terms of world coordinates.
-
-        sample : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the sample in terms of the
-                stage coordinate system. If you don&#39;t want to convert from a
-                sample vector, pass `None`.
-                This must be the same sample coordinate system to which this
-                scene vector refers.
-
-        frame : float
-                The number of the current frame.
-
-        n_frames : int
-                The total number of frames in the CT scan.
-
-        reconstruction : bool
-                Only handle drifts that are labeled as known to the reconstruction software?
-
-        Returns
-        -------
-        vec_sample : ctsimu.primitives.Vector
-                A vector in terms of the sample coordinate system.
-        &#34;&#34;&#34;
-
-        v = self.vector_for_frame(frame, n_frames, reconstruction)
-
-        if self.reference == &#34;world&#34;:
-                # From world to stage...
-                # ...and a second time from world to sample
-                # because the stage is the sample&#39;s &#34;world&#34;:
-                v_in_stage  = change_reference_frame_of_direction(v, ctsimu_world, stage)
-                v_in_sample = change_reference_frame_of_direction(v_in_stage, ctsimu_world, sample)
-                return v_in_sample
-        elif self.reference == &#34;local&#34;:
-                # Convert from stage to sample. Because
-                # the stage is the sample&#39;s world, we actually
-                # convert from world to sample.
-                v_in_sample = change_reference_frame_of_direction(v, ctsimu_world, sample)
-                return v_in_sample
-        elif self.reference == &#34;sample&#34;:
-                # Already in sample coordinate system:
-                return v</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for a direction in terms of the sample
 coordinate system for the given <code>frame</code> number, respecting all relevant drifts.</p>
 <p>The sample must be attached to the stage, otherwise use <code>in_local</code>
@@ -864,62 +744,9 @@ scene vector refers.</dd>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.scenevector.Scenevector.direction_in_world"><code class="name flex">
-<span>def <span class="ident">direction_in_world</span></span>(<span>self,<br>local: CoordinateSystem,<br>sample: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">direction_in_world</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def direction_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for a direction in terms of the world
-        coordinate system for the given `frame` number, respecting all relevant drifts.
-
-        Parameters
-        ----------
-        local : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the object&#39;s local coordinate
-                system in terms of world coordinates.
-
-        sample : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the sample in terms of the
-                stage coordinate system. If you don&#39;t want to convert from a
-                sample vector, pass `None`.
-
-        frame : float
-                The number of the current frame.
-
-        n_frames : int
-                The total number of frames in the CT scan.
-
-        reconstruction : bool
-                Only handle drifts that are labeled as known to the reconstruction software?
-
-        Returns
-        -------
-        vec_world : ctsimu.primitives.Vector
-                A vector in terms of the world coordinate system.
-        &#34;&#34;&#34;
-
-        v = self.vector_for_frame(frame, n_frames, reconstruction)
-
-        if self.reference == &#34;world&#34;:
-                # Already in world.
-                return v
-        elif self.reference == &#34;local&#34;:
-                # Convert from local to world.
-                v_in_world = change_reference_frame_of_direction(v, local, ctsimu_world)
-                return v_in_world
-        elif self.reference == &#34;sample&#34;:
-                # The sample&#39;s &#34;world&#34; is the stage (here: local).
-                # To get the sample coordinates in stage coordinates,
-                # we therefore transform to the world a first time...
-                # ...and a second time to transform it
-                # from the stage to the world:
-                v_in_stage = change_reference_frame_of_direction(v, sample, ctsimu_world)
-                v_in_world = change_reference_frame_of_direction(v_in_stage, local, ctsimu_world)
-                return v_in_world</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for a direction in terms of the world
 coordinate system for the given <code>frame</code> number, respecting all relevant drifts.</p>
 <h2 id="parameters">Parameters</h2>
@@ -948,41 +775,6 @@ sample vector, pass <code>None</code>.</dd>
 <span>def <span class="ident">drift_vector</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def drift_vector(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents
-        only the drift values for the given `frame` number.
-
-        Can later be added to the standard value to get
-        the resulting vector respecting all drifts.
-
-        Parameters
-        ----------
-        frame : float
-                Current frame number.
-
-        n_frames : int
-                Total number of frames in CT scan.
-
-        reconstruction : bool
-                Obey only those drifts that are labeled as known to the
-                reconstruction software?
-
-        Returns
-        -------
-        drift_vector : ctsimu.primitives.Vector
-                Vector that contains the drift values for the given `frame` number.
-        &#34;&#34;&#34;
-
-        return Vector(
-                x=self.c0.get_total_drift_for_frame(frame, n_frames, reconstruction),
-                y=self.c1.get_total_drift_for_frame(frame, n_frames, reconstruction),
-                z=self.c2.get_total_drift_for_frame(frame, n_frames, reconstruction)
-        )</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> that represents
 only the drift values for the given <code>frame</code> number.</p>
 <p>Can later be added to the standard value to get
@@ -1007,21 +799,6 @@ reconstruction software?</dd>
 <span>def <span class="ident">has_drifts</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def has_drifts(self) -&gt; bool:
-        &#34;&#34;&#34;Does the vector drift during the CT scan?
-
-        Returns
-        -------
-        has_drifts : bool
-                `True` if any vector component defines a drift,
-                `False` if none of the vector components defines any drift.
-        &#34;&#34;&#34;
-        return (self.c0.has_drifts()) or (self.c1.has_drifts()) or (self.c2.has_drifts())</code></pre>
-</details>
 <div class="desc"><p>Does the vector drift during the CT scan?</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1034,86 +811,12 @@ reconstruction software?</dd>
 <span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def json_dict(self) -&gt; dict:
-        &#34;&#34;&#34;Create a dictionary of this scenevector for a CTSimU JSON file.&#34;&#34;&#34;
-        jd = dict()
-
-        if self.reference == &#34;world&#34;:
-                jd[&#34;x&#34;] = self.c0.json_dict()
-                jd[&#34;y&#34;] = self.c1.json_dict()
-                jd[&#34;z&#34;] = self.c2.json_dict()
-        elif self.reference == &#34;local&#34;:
-                jd[&#34;u&#34;] = self.c0.json_dict()
-                jd[&#34;v&#34;] = self.c1.json_dict()
-                jd[&#34;w&#34;] = self.c2.json_dict()
-        elif self.reference == &#34;sample&#34;:
-                jd[&#34;r&#34;] = self.c0.json_dict()
-                jd[&#34;s&#34;] = self.c1.json_dict()
-                jd[&#34;t&#34;] = self.c2.json_dict()
-
-        return jd</code></pre>
-</details>
 <div class="desc"><p>Create a dictionary of this scenevector for a CTSimU JSON file.</p></div>
 </dd>
 <dt id="ctsimu.scenario.scenevector.Scenevector.point_in_local"><code class="name flex">
-<span>def <span class="ident">point_in_local</span></span>(<span>self,<br>local: CoordinateSystem,<br>sample: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">point_in_local</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def point_in_local(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
-        in terms of the local coordinate system for the given `frame` number,
-        respecting all relevant drifts.
-
-        Parameters
-        ----------
-        local : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the object&#39;s local coordinate
-                system in terms of world coordinates.
-
-        sample : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the sample in terms of the
-                stage coordinate system. If you don&#39;t want to convert from a
-                sample vector, pass `None`.
-
-        frame : float
-                The number of the current frame.
-
-        n_frames : int
-                The total number of frames in the CT scan.
-
-        reconstruction : bool
-                Only handle drifts that are labeled as known to the reconstruction software?
-
-        Returns
-        -------
-        vec_local : ctsimu.primitives.Vector
-                A vector in terms of the local coordinate system.
-        &#34;&#34;&#34;
-
-        v = self.vector_for_frame(frame, n_frames, reconstruction)
-
-        if self.reference == &#34;world&#34;:
-                # Convert from world to local.
-                v_in_local = change_reference_frame_of_point(v, ctsimu_world, local)
-                return v_in_local
-        elif self.reference == &#34;local&#34;:
-                # Already in local.
-                return v
-        elif self.reference == &#34;sample&#34;:
-                # The sample&#39;s &#34;world&#34; is the stage (here: local).
-                # To get the sample coordinates in stage coordinates,
-                # we therefore transform to the world.
-                v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
-                return v_in_stage</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for point coordinates
 in terms of the local coordinate system for the given <code>frame</code> number,
 respecting all relevant drifts.</p>
@@ -1140,69 +843,9 @@ sample vector, pass <code>None</code>.</dd>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.scenevector.Scenevector.point_in_sample"><code class="name flex">
-<span>def <span class="ident">point_in_sample</span></span>(<span>self,<br>stage: CoordinateSystem,<br>sample: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">point_in_sample</span></span>(<span>self, stage: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def point_in_sample(self, stage:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
-        in terms of the sample coordinate system for the given `frame` number,
-        respecting all relevant drifts.
-
-        The sample must be attached to the stage, otherwise use `in_local`
-        instead. Note that a direct conversion from one sample CS to another is
-        not possible with this function.
-
-        Parameters
-        ----------
-        stage : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the stage&#39;s local coordinate
-                system in terms of world coordinates.
-
-        sample : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the sample in terms of the
-                stage coordinate system. If you don&#39;t want to convert from a
-                sample vector, pass `None`.
-                This must be the same sample coordinate system to which this
-                scene vector refers.
-
-        frame : float
-                The number of the current frame.
-
-        n_frames : int
-                The total number of frames in the CT scan.
-
-        reconstruction : bool
-                Only handle drifts that are labeled as known to the reconstruction software?
-
-        Returns
-        -------
-        vec_sample : ctsimu.primitives.Vector
-                A vector in terms of the sample coordinate system.
-        &#34;&#34;&#34;
-
-        v = self.vector_for_frame(frame, n_frames, reconstruction)
-
-        if self.reference == &#34;world&#34;:
-                # From world to stage...
-                # ...and a second time from world to sample
-                # because the stage is the sample&#39;s &#34;world&#34;:
-                v_in_stage  = change_reference_frame_of_point(v, ctsimu_world, stage)
-                v_in_sample = change_reference_frame_of_point(v_in_stage, ctsimu_world, sample)
-                return v_in_sample
-        elif self.reference == &#34;local&#34;:
-                # Convert from stage to sample. Because
-                # the stage is the sample&#39;s world, we actually
-                # convert from world to sample.
-                v_in_sample = change_reference_frame_of_point(v, ctsimu_world, sample)
-                return v_in_sample
-        elif self.reference == &#34;sample&#34;:
-                # Already in sample coordinate system:
-                return v</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for point coordinates
 in terms of the sample coordinate system for the given <code>frame</code> number,
 respecting all relevant drifts.</p>
@@ -1234,63 +877,9 @@ scene vector refers.</dd>
 </dl></div>
 </dd>
 <dt id="ctsimu.scenario.scenevector.Scenevector.point_in_world"><code class="name flex">
-<span>def <span class="ident">point_in_world</span></span>(<span>self,<br>local: CoordinateSystem,<br>sample: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
+<span>def <span class="ident">point_in_world</span></span>(<span>self, local: CoordinateSystem, sample: CoordinateSystem, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def point_in_world(self, local:&#39;CoordinateSystem&#39;, sample:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for point coordinates
-        in terms of the world coordinate system for the given `frame` number,
-        respecting all relevant drifts.
-
-        Parameters
-        ----------
-        local : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the object&#39;s local coordinate
-                system in terms of world coordinates.
-
-        sample : ctsimu.geometry.CoordinateSystem
-                A coordinate system that represents the sample in terms of the
-                stage coordinate system. If you don&#39;t want to convert from a
-                sample vector, pass `None`.
-
-        frame : float
-                The number of the current frame.
-
-        n_frames : int
-                The total number of frames in the CT scan.
-
-        reconstruction : bool
-                Only handle drifts that are labeled as known to the reconstruction software?
-
-        Returns
-        -------
-        vec_world : ctsimu.primitives.Vector
-                A vector in terms of the world coordinate system.
-        &#34;&#34;&#34;
-
-        v = self.vector_for_frame(frame, n_frames, reconstruction)
-
-        if self.reference == &#34;world&#34;:
-                # Already in world.
-                return v
-        elif self.reference == &#34;local&#34;:
-                # Convert from local to world.
-                v_in_world = change_reference_frame_of_point(v, local, ctsimu_world)
-                return v_in_world
-        elif self.reference == &#34;sample&#34;:
-                # The sample&#39;s &#34;world&#34; is the stage (here: local).
-                # To get the sample coordinates in stage coordinates,
-                # we therefore transform to the world a first time...
-                # ...and a second time to transform it
-                # from the stage to the world:
-                v_in_stage = change_reference_frame_of_point(v, sample, ctsimu_world)
-                v_in_world = change_reference_frame_of_point(v_in_stage, local, ctsimu_world)
-                return v_in_world</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for point coordinates
 in terms of the world coordinate system for the given <code>frame</code> number,
 respecting all relevant drifts.</p>
@@ -1320,32 +909,6 @@ sample vector, pass <code>None</code>.</dd>
 <span>def <span class="ident">set_component</span></span>(<span>self, i: int, p: Parameter)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_component(self, i:int, p:&#39;Parameter&#39;):
-        &#34;&#34;&#34;Set the `i`th vector component to the given parameter `p`
-        (which must be a `ctsimu.scenario.parameter.Parameter` object).
-
-        Parameters
-        ----------
-        i : int
-                Index of the vector component (`0`, `1` or `2`).
-
-        p : ctsimu.scenario.parameter.Parameter
-                Parameter object for the given vector component.
-        &#34;&#34;&#34;
-        if isinstance(p, Parameter):
-                if i == 0:
-                        self.c0 = p
-                elif i == 1:
-                        self.c1 = p
-                elif i == 2:
-                        self.c2 = p
-        else:
-                raise Exception(f&#34;CTSimU Scenevector: set_component(): the given parameter is not an instance of class &#39;ctsimu.scenario.parameter.Parameter&#39;, but of type {type(p)}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Set the <code>i</code>th vector component to the given parameter <code>p</code>
 (which must be a <code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code> object).</p>
 <h2 id="parameters">Parameters</h2>
@@ -1360,53 +923,6 @@ sample vector, pass <code>None</code>.</dd>
 <span>def <span class="ident">set_from_json</span></span>(<span>self, json_vector_object: dict) ‑> bool</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_from_json(self, json_vector_object:dict) -&gt; bool:
-        &#34;&#34;&#34;Set up the scene vector from a CTSimU JSON object
-        that describes a three-component vector.
-
-        Parameters
-        ----------
-        json_vector_object : dict
-                CTSimU vector object, as imported from a JSON scenario description.
-
-        Returns
-        -------
-        success : bool
-                `True` on success, `False` when an error occurred.
-        &#34;&#34;&#34;
-
-        if json_exists_and_not_null(json_vector_object, keys=[&#34;x&#34;]) and \
-           json_exists_and_not_null(json_vector_object, keys=[&#34;y&#34;]) and \
-           json_exists_and_not_null(json_vector_object, keys=[&#34;z&#34;]):
-                self.set_reference(&#34;world&#34;)
-                if self.c0.set_parameter_from_key(json_vector_object, [&#34;x&#34;]) and \
-                   self.c1.set_parameter_from_key(json_vector_object, [&#34;y&#34;]) and \
-                   self.c2.set_parameter_from_key(json_vector_object, [&#34;z&#34;]):
-                        return True
-        elif json_exists_and_not_null(json_vector_object, keys=[&#34;u&#34;]) and \
-             json_exists_and_not_null(json_vector_object, keys=[&#34;v&#34;]) and \
-             json_exists_and_not_null(json_vector_object, keys=[&#34;w&#34;]):
-                self.set_reference(&#34;local&#34;)
-                if self.c0.set_parameter_from_key(json_vector_object, [&#34;u&#34;]) and \
-                   self.c1.set_parameter_from_key(json_vector_object, [&#34;v&#34;]) and \
-                   self.c2.set_parameter_from_key(json_vector_object, [&#34;w&#34;]):
-                        return True
-        elif json_exists_and_not_null(json_vector_object, keys=[&#34;r&#34;]) and \
-             json_exists_and_not_null(json_vector_object, keys=[&#34;s&#34;]) and \
-             json_exists_and_not_null(json_vector_object, keys=[&#34;t&#34;]):
-                self.set_reference(&#34;sample&#34;)
-                if self.c0.set_parameter_from_key(json_vector_object, [&#34;r&#34;]) and \
-                   self.c1.set_parameter_from_key(json_vector_object, [&#34;s&#34;]) and \
-                   self.c2.set_parameter_from_key(json_vector_object, [&#34;t&#34;]):
-                        return True
-
-        raise Exception(&#34;Unable to set scene vector from JSON file. A vector must be specified by the three components (x,y,z), (u,v,w) or (r,s,t).&#34;)
-        return False</code></pre>
-</details>
 <div class="desc"><p>Set up the scene vector from a CTSimU JSON object
 that describes a three-component vector.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1424,28 +940,6 @@ that describes a three-component vector.</p>
 <span>def <span class="ident">set_native_unit</span></span>(<span>self, native_unit: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_native_unit(self, native_unit:str):
-        &#34;&#34;&#34;Set native unit of vector components.
-        Necessary for the location of points such as
-        the center points of coordinate systems,
-        usually given in `&#34;mm&#34;` as native unit.
-
-        Parameters
-        ----------
-        native_unit : str
-                The native unit of the vector&#39;s components. Standard is `None`,
-                but `&#34;mm&#34;` would make sense for positions in space.
-                Possible values: `None`, `&#34;mm&#34;`, `&#34;rad&#34;`, `&#34;deg&#34;`, `&#34;s&#34;`, `&#34;mA&#34;`, `&#34;kV&#34;`, `&#34;g/cm^3&#34;`, `&#34;lp/mm&#34;`, `&#34;deg/s&#34;`, `&#34;C&#34;`, `&#34;bool&#34;`, `&#34;string&#34;`.
-        &#34;&#34;&#34;
-        if is_valid_native_unit(native_unit):
-                self.c0.set_native_unit(native_unit)
-                self.c1.set_native_unit(native_unit)
-                self.c2.set_native_unit(native_unit)</code></pre>
-</details>
 <div class="desc"><p>Set native unit of vector components.
 Necessary for the location of points such as
 the center points of coordinate systems,
@@ -1462,26 +956,6 @@ Possible values: <code>None</code>, <code>"mm"</code>, <code>"rad"</code>, <code
 <span>def <span class="ident">set_reference</span></span>(<span>self, reference: str)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_reference(self, reference:str):
-        &#34;&#34;&#34;Set the reference coordinate system.
-        Can be `&#34;world&#34;`, `&#34;local&#34;` or `&#34;sample&#34;`.
-
-        Parameters
-        ----------
-        reference : str
-                String that identifies the reference coordinate system
-                (see above for valid strings).
-        &#34;&#34;&#34;
-        valid_references = [&#34;world&#34;, &#34;local&#34;, &#34;sample&#34;]
-        if reference in valid_references:
-                self.reference = reference
-        else:
-                raise Exception(f&#34;Scenevector: set_reference(): not a valid reference coordinate system: &#39;{reference}&#39;. Valid reference coordinate systems are: {valid_references}.&#34;)</code></pre>
-</details>
 <div class="desc"><p>Set the reference coordinate system.
 Can be <code>"world"</code>, <code>"local"</code> or <code>"sample"</code>.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1495,34 +969,6 @@ Can be <code>"world"</code>, <code>"local"</code> or <code>"sample"</code>.</p>
 <span>def <span class="ident">set_simple</span></span>(<span>self, c0: float, c1: float, c2: float)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_simple(self, c0:float, c1:float, c2:float):
-        &#34;&#34;&#34;Set a simple scene vector from three numbers,
-        results in a scene vector without drifts.
-
-        Parameters
-        ----------
-        c0 : float
-                Value of the first vector component.
-
-        c1 : float
-                Value of the second vector component.
-
-        c2 : float
-                Value of the third vector component.
-        &#34;&#34;&#34;
-        self.c0.set_standard_value(c0)
-        self.c1.set_standard_value(c1)
-        self.c2.set_standard_value(c2)
-
-        # Delete all drifts and set current value to standard value:
-        self.c0.reset()
-        self.c1.reset()
-        self.c2.reset()</code></pre>
-</details>
 <div class="desc"><p>Set a simple scene vector from three numbers,
 results in a scene vector without drifts.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1539,26 +985,6 @@ results in a scene vector without drifts.</p>
 <span>def <span class="ident">standard_vector</span></span>(<span>self) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def standard_vector(self) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` that represents this
-        scene vector in its standard orientation
-        (i.e., without any drifts applied).
-
-        Returns
-        -------
-        v : ctsimu.primitives.Vector
-                Standard vector (without any drifts applied).
-        &#34;&#34;&#34;
-        return Vector(
-                x=self.c0.get_standard_value(),
-                y=self.c1.get_standard_value(),
-                z=self.c2.get_standard_value()
-        )</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> that represents this
 scene vector in its standard orientation
 (i.e., without any drifts applied).</p>
@@ -1572,37 +998,6 @@ scene vector in its standard orientation
 <span>def <span class="ident">vector_for_frame</span></span>(<span>self, frame: float, n_frames: int, reconstruction: bool = False) ‑> <a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vector_for_frame(self, frame:float, n_frames:int, reconstruction:bool=False) -&gt; &#39;Vector&#39;:
-        &#34;&#34;&#34;A `ctsimu.primitives.Vector` for the given `frame` number,
-        respecting all drifts.
-
-        Parameters
-        ----------
-        frame : float
-                Current frame number.
-
-        n_frames : int
-                Total number of frames in CT scan.
-
-        reconstruction : bool
-                Obey only those drifts that are labeled as known to the
-                reconstruction software?
-
-        Returns
-        -------
-        vec : ctsimu.primitives.Vector
-                Vector for the given `frame` number.
-        &#34;&#34;&#34;
-        return Vector(
-                x=self.c0.set_frame_and_get_value(frame, n_frames, reconstruction),
-                y=self.c1.set_frame_and_get_value(frame, n_frames, reconstruction),
-                z=self.c2.set_frame_and_get_value(frame, n_frames, reconstruction)
-        )</code></pre>
-</details>
 <div class="desc"><p>A <code><a title="ctsimu.primitives.Vector" href="../primitives.html#ctsimu.primitives.Vector">Vector</a></code> for the given <code>frame</code> number,
 respecting all drifts.</p>
 <h2 id="parameters">Parameters</h2>
@@ -1670,7 +1065,7 @@ reconstruction software?</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

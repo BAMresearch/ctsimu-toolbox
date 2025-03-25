@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>ctsimu.report API documentation</title>
+<meta name="description" content="PDF report generation …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.report</code></h1>
+</header>
+<section id="section-intro">
+<p>PDF report generation.</p>
+<p>Based on:
+<a href="https://medium.com/@parveengoyal198/mastering-pdf-report-generation-with-reportlab-a-comprehensive-tutorial-part-2-c970ccd15fb6">https://medium.com/@parveengoyal198/mastering-pdf-report-generation-with-reportlab-a-comprehensive-tutorial-part-2-c970ccd15fb6</a></p>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="ctsimu.report.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.report.NumberedCanvas"><code class="flex name class">
+<span>class <span class="ident">NumberedCanvas</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This class is the programmer's interface to the PDF file format.
+Methods
+are (or will be) provided here to do just about everything PDF can do.</p>
+<p>The underlying model to the canvas concept is that of a graphics state machine
+that at any given point in time has a current font, fill color (for figure
+interiors), stroke color (for figure borders), line width and geometric transform, among
+many other characteristics.</p>
+<p>Canvas methods generally either draw something (like canvas.line) using the
+current state of the canvas or change some component of the canvas
+state (like canvas.setFont).
+The current state can be saved and restored
+using the saveState/restoreState methods.</p>
+<p>Objects are "painted" in the order they are drawn so if, for example
+two rectangles overlap the last draw will appear "on top".
+PDF form
+objects (supported here) are used to draw complex drawings only once,
+for possible repeated use.</p>
+<p>There are other features of canvas which are not visible when printed,
+such as outlines and bookmarks which are used for navigating a document
+in a viewer.</p>
+<p>Here is a very silly example usage which generates a Hello World pdf document.</p>
+<p>Example:: </p>
+<p>from reportlab.pdfgen import canvas
+c = canvas.Canvas("hello.pdf")
+from reportlab.lib.units import inch
+# move the origin up and to the left
+c.translate(inch,inch)
+# define a large font
+c.setFont("Helvetica", 80)
+# choose some colors
+c.setStrokeColorRGB(0.2,0.5,0.3)
+c.setFillColorRGB(1,0,1)
+# draw a rectangle
+c.rect(inch,inch,6<em>inch,9</em>inch, fill=1)
+# make text go straight up
+c.rotate(90)
+# change color
+c.setFillColorRGB(0,0,0.77)
+# say hello (note after rotate the y coord needs to be negative!)
+c.drawString(3<em>inch, -3</em>inch, "Hello World")
+c.showPage()
+c.save()</p>
+<p>Create a canvas of a given size. etc.</p>
+<p>You may pass a file-like object to filename as an alternative to
+a string.
+For more information about the encrypt parameter refer to the setEncrypt method.</p>
+<p>Most of the attributes are private - we will use set/get methods
+as the preferred interface.
+Default page size is A4.
+cropMarks may be True/False or an object with parameters borderWidth, markColor, markWidth
+and markLength</p>
+<p>if enforceColorSpace is in ('cmyk', 'rgb', 'sep','sep_black','sep_cmyk') then one of
+the standard _PDFColorSetter callables will be used to enforce appropriate color settings.
+If it is a callable then that will be used.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NumberedCanvas(Canvas):
+    def __init__(self, *args, **kwargs):
+        Canvas.__init__(self, *args, **kwargs)
+
+        self._saved_page_states = []
+        #print(self.getAvailableFonts())
+
+        self.page_number_xpos = 190*mm
+        self.page_number_ypos = 14*mm
+        self.page_number_font = &#39;Helvetica&#39;
+        self.page_number_fsize = 9
+        self.page_number_text = &#39;Page %d of %d&#39;
+
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def save(self):
+        &#34;&#34;&#34;add page info to each page (page x of y)&#34;&#34;&#34;
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_number(num_pages)
+            Canvas.showPage(self)
+        Canvas.save(self)
+
+    def draw_page_number(self, page_count):
+        self.setFont(self.page_number_font, self.page_number_fsize)
+        self.drawRightString(self.page_number_xpos, self.page_number_ypos,
+            self.page_number_text % (self._pageNumber, page_count))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>reportlab.pdfgen.canvas.Canvas</li>
+<li>reportlab.pdfgen.textobject._PDFColorSetter</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.report.NumberedCanvas.draw_page_number"><code class="name flex">
+<span>def <span class="ident">draw_page_number</span></span>(<span>self, page_count)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.report.NumberedCanvas.save"><code class="name flex">
+<span>def <span class="ident">save</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add page info to each page (page x of y)</p></div>
+</dd>
+<dt id="ctsimu.report.NumberedCanvas.showPage"><code class="name flex">
+<span>def <span class="ident">showPage</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Close the current page and possibly start on a new page.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="ctsimu.report.Report"><code class="flex name class">
+<span>class <span class="ident">Report</span></span>
+<span>(</span><span>filename, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Template class for PDF report</p>
+<p>create a document template bound to a filename (see class documentation for keyword arguments)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Report(BaseDocTemplate):
+    &#34;&#34;&#34;Template class for PDF report&#34;&#34;&#34;
+
+    def __init__(self, filename, **kwargs):
+        super().__init__(filename, **kwargs)
+
+        self.bodyWidth = self.pagesize[0] - self.leftMargin - self.rightMargin
+        self.bodyXCenter = self.leftMargin + .5 * self.bodyWidth
+        self.headerPad = 6*mm
+        self.header_x1 = self.leftMargin
+        self.header_y1 = self.pagesize[1] - self.topMargin + self.headerPad
+        self.footer_x1 = self.leftMargin
+        self.footer_y2 = self.bottomMargin - self.headerPad
+
+        self.header_font = &#39;Courier&#39;
+        self.header_fsize = 9
+        h = pdfmetrics.TypeFace(self.header_font)
+        self.header_fheight = 2 + ((h.ascent - h.descent) * self.header_fsize) / 1000
+        self.headerLeft = &#39;&#39;
+        self.headerCenter = &#39;&#39;
+        self.headerRight = &#39;&#39;
+        self.footerLeft = &#39;&#39;
+        self.footerLeft2 = &#39;&#39;
+        self.footerCenter = &#39;&#39;
+        self.footerRight = &#39;&#39;
+    
+        # Define the page frames
+        self.frame = Frame(
+            self.leftMargin, self.bottomMargin, 
+            self.bodyWidth, self.pagesize[1] - self.topMargin - self.bottomMargin,
+            leftPadding=0, bottomPadding=0,
+            rightPadding=0, topPadding=0,
+            id=&#39;normal&#39;
+        )
+
+        # Define the PageTemplate
+        self.addPageTemplates([
+            PageTemplate(
+                id=&#39;normal&#39;,
+                frames=[self.frame],
+                onPage=self._header,
+                onPageEnd=self._footer
+            )
+        ])
+
+    def _header(self, canvas, doc):
+        # Draw the header
+        canvas.saveState() 
+        canvas.setFont(self.header_font, self.header_fsize)
+        yLine = self.header_y1
+        canvas.line(self.header_x1, yLine, self.header_x1 + self.bodyWidth, yLine)
+        yText = yLine + 2 * mm
+        canvas.drawString(self.leftMargin, yText, self.headerLeft)
+        if canvas._pageNumber &gt; 1:
+            canvas.drawCentredString(self.bodyXCenter, yText, self.headerCenter)
+        canvas.drawRightString(self.leftMargin + self.bodyWidth, yText, self.headerRight)
+        canvas.restoreState()
+
+    def _footer(self, canvas, doc):
+        # Draw the footer
+        canvas.saveState() 
+        canvas.setFont(self.header_font, self.header_fsize)
+        yLine = self.footer_y2
+        canvas.line(self.footer_x1, yLine, self.footer_x1 + self.bodyWidth, yLine)
+        yText = yLine - 2 * mm - self.header_fheight
+        canvas.drawString(self.footer_x1, yText, self.footerLeft)
+        canvas.drawCentredString(self.footer_x1 + 0.5 * self.bodyWidth, yText, self.footerCenter)
+        canvas.drawRightString(self.footer_x1 + self.bodyWidth, yText, self.footerRight)
+        if canvas._pageNumber == 1:
+            canvas.drawString(self.footer_x1, yText - self.header_fheight, self.footerLeft2)
+            canvas.drawString(self.footer_x1, yText - 2 * self.header_fheight, self.footerLeft3)
+        canvas.restoreState()
+        # Use the right-string position for the page number in NumberedCanvas
+        try:
+            canvas.page_number_xpos = self.footer_x1 + self.bodyWidth
+            canvas.page_number_ypos = yText
+            canvas.page_number_font = self.header_font
+            canvas.page_number_fsize = self.header_fsize
+            canvas.page_number_text = &#39;Page %d of %d&#39;
+        except:
+            pass
+
+    def setHeader(self, left = &#39;&#39;, center = &#39;&#39;, right = &#39;&#39;):
+        self.headerLeft = left
+        self.headerCenter = center
+        self.headerRight = right
+
+    def setFooter(self, left = &#39;&#39;, center = &#39;&#39;, right = &#39;&#39;, left2 = &#39;&#39;, left3 = &#39;&#39;):
+        self.footerLeft = left
+        self.footerLeft2 = left2
+        self.footerLeft3 = left3
+        self.footerCenter = center
+        self.footerRight = right
+
+    def df2table(self, df):
+        data = [df.columns.values.tolist()] + df.values.tolist()
+        return Table(data, [70, 48],
+            repeatRows=1,
+            style=[
+                (&#39;BACKGROUND&#39;, (0, 0), (-1, 0), colors.grey),
+                (&#39;TEXTCOLOR&#39;, (0, 0), (-1, 0), colors.whitesmoke),
+                (&#39;ALIGN&#39;, (0, 0), (-1, 0), &#39;CENTER&#39;),
+                (&#39;FONTNAME&#39;, (0, 0), (-1, 0), &#39;Helvetica-Bold&#39;),
+                (&#39;FONTSIZE&#39;, (0, 0), (-1, 0), 7),
+                (&#39;BOTTOMPADDING&#39;, (0, 0), (-1, 0), 4),
+                (&#39;BACKGROUND&#39;, (0, 1), (-1, -1), colors.beige),
+                (&#39;TEXTCOLOR&#39;, (0, 1), (-1, -1), colors.black),
+                (&#39;ALIGN&#39;, (0, 1), (-1, -1), &#39;CENTER&#39;),
+                (&#39;FONTNAME&#39;, (0, 1), (-1, -1), &#39;Helvetica&#39;),
+                (&#39;FONTSIZE&#39;, (0, 1), (-1, -1), 9),
+                (&#39;BOTTOMPADDING&#39;, (0, 1), (-1, -1), 6),
+                (&#39;GRID&#39;, (0, 0), (-1, -1), 1, colors.black)],
+            # hAlign = &#39;LEFT&#39;,
+            spaceBefore=10, spaceAfter=10)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>reportlab.platypus.doctemplate.BaseDocTemplate</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.report.Report.df2table"><code class="name flex">
+<span>def <span class="ident">df2table</span></span>(<span>self, df)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.report.Report.setFooter"><code class="name flex">
+<span>def <span class="ident">setFooter</span></span>(<span>self, left='', center='', right='', left2='', left3='')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.report.Report.setHeader"><code class="name flex">
+<span>def <span class="ident">setHeader</span></span>(<span>self, left='', center='', right='')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu" href="index.html">ctsimu</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="ctsimu.report.main" href="#ctsimu.report.main">main</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.report.NumberedCanvas" href="#ctsimu.report.NumberedCanvas">NumberedCanvas</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.report.NumberedCanvas.draw_page_number" href="#ctsimu.report.NumberedCanvas.draw_page_number">draw_page_number</a></code></li>
+<li><code><a title="ctsimu.report.NumberedCanvas.save" href="#ctsimu.report.NumberedCanvas.save">save</a></code></li>
+<li><code><a title="ctsimu.report.NumberedCanvas.showPage" href="#ctsimu.report.NumberedCanvas.showPage">showPage</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="ctsimu.report.Report" href="#ctsimu.report.Report">Report</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.report.Report.df2table" href="#ctsimu.report.Report.df2table">df2table</a></code></li>
+<li><code><a title="ctsimu.report.Report.setFooter" href="#ctsimu.report.Report.setFooter">setFooter</a></code></li>
+<li><code><a title="ctsimu.report.Report.setHeader" href="#ctsimu.report.Report.setHeader">setHeader</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>
