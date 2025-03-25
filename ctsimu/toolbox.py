@@ -24,6 +24,8 @@ from .evaluation.test2D_DW_1 import Test2D_DW_1
 from .evaluation.test2D_WE_1 import Test2D_WE_1
 from .evaluation.test2D_WE_2 import Test2D_WE_2
 from .evaluation.test2D_HS_1 import Test2D_HS_1
+from .evaluation.testTwin import testTwin
+from .responses.measurands import Measurands
 
 class Toolbox:
     """ Manages a test run, including preliminary flat field corrections, based on metadata JSON input files. """
@@ -41,6 +43,11 @@ class Toolbox:
         elif operation.startswith("2D-"):
             # Possibly a 2D test... try it!
             self.test_2D(operation, *args, **kwargs)
+        elif operation == "twin":
+            self.test_twin(*args, **kwargs)
+        else:
+            log(f"  Not a valid operation: {operation}")
+
 
     def info(self, *scenario_files:str) -> bool:
         """Print geometry information about given scenario files.
@@ -699,3 +706,36 @@ class Toolbox:
             evaluationStep.followUp()
 
         return True
+
+    def test_twin(self, *metadata, **kwargs):
+        """Run the digital twin test on dimensional measurements
+        defined in a metadata file.
+
+        Parameters
+        ----------
+        *metadata : str
+            One or more paths to metadata files.
+
+        **kwargs : str
+            Possible subtest identifiers (as keys) and
+            associated metadata files (as values).
+        """
+
+        for metadata_file in metadata:
+            try:
+                twin = testTwin(metadata_file)
+            except Exception as e:
+                log(f"   Error: {metadata_file}: {str(e)}")
+                return
+               
+            # self.RealValues = twin.read_and_filter_csv_files(twin.real_folder_path, "values-real")
+            # print(self.RealValues)
+                
+            # self.SimValues = twin.read_and_filter_csv_files(twin.sim_folder_path, "values-sim")
+            # #print(self.SimValues)
+            # twin.En_calc(self.RealValues, self.SimValues)
+            
+            # twin.plotResults()
+            # twin.TwinTest_report()
+
+            twin.run()

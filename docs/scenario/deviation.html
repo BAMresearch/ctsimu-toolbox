@@ -2,20 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>ctsimu.scenario.deviation API documentation</title>
 <meta name="description" content="Geometrical deviation of a coordinate system, i.e. a translation or a rotation
-with respect to an arbitrary axis." />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+with respect to an arbitrary axis.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
 <style>
@@ -43,403 +58,6 @@ tr:hover {background-color: #eee;}
 <section id="section-intro">
 <p>Geometrical deviation of a coordinate system, i.e. a translation or a rotation
 with respect to an arbitrary axis.</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python"># -*- coding: UTF-8 -*-
-&#34;&#34;&#34;
-Geometrical deviation of a coordinate system, i.e. a translation or a rotation
-with respect to an arbitrary axis.
-&#34;&#34;&#34;
-
-from ..helpers import *
-from ..primitives import Vector, Matrix
-from ..geometry import CoordinateSystem, ctsimu_world
-from .parameter import Parameter
-from .scenevector import Scenevector
-
-class Deviation:
-        &#34;&#34;&#34; Geometrical deviation of a coordinate system,
-        i.e. a translation or a rotation with respect to one of the
-        axes x, y, z (world), u, v, w (local), or r, s, t (sample)
-        or any other arbitrary vector.
-
-        Like any parameter, they can have drifts, which means they
-        can change over time.
-
-        Attributes
-        ----------
-        type : str
-                Transformation type. Can be `&#34;translation&#34;` or `&#34;rotation&#34;`.
-
-        amount : ctsimu.scenario.parameter.Parameter
-                Transformation amount: length for a translation, angle for a rotation.
-
-        axis : ctsimu.scenario.scenevector.Scenevector
-                Transformation axis: direction for a translation, rotation axis for
-                a rotation.
-
-        pivot : ctsimu.scenario.scenevector.Scenevector
-                For rotational deviations: position of the rotation&#39;s pivot point.
-
-        known_to_reconstruction : bool
-                Should this geometrical deviation be considered by the reconstruction software?
-                This attribute is obeyed when calculating projection matrices.
-        &#34;&#34;&#34;
-
-        def __init__(self, pivot_reference:str=&#34;sample&#34;, _root=None):
-                self._root = _root  # root scenario object
-
-                # The axis and pivot point are `Scenevector`
-                # objects that can handle vector drifts and
-                # conversion between coordinate systems:
-                self.axis  = Scenevector(native_unit=None, _root=self._root)
-                self.pivot = Scenevector(native_unit=&#34;mm&#34;, _root=self._root)
-
-                # Set a standard pivot which refers to the object&#39;s center:
-                self.pivot.set_simple(0, 0, 0)
-                # Set &#34;sample&#34; as the &#34;most local&#34; pivot reference.
-                # Will be converted to &#34;local&#34; if necessary:
-                self.pivot.set_reference(pivot_reference)
-
-                # The transformation amount is a
-                # `Parameter` that can handle drifts.
-                self.amount = Parameter(native_unit=None, standard_value=0, _root=self._root)
-
-                self.set_type(&#34;translation&#34;)
-                self.known_to_reconstruction = False
-
-        def has_drifts(self) -&gt; bool:
-                &#34;&#34;&#34;Does the deviation specify any drift?
-
-                Returns
-                -------
-                has_drifts : bool
-                        `True` if the deviation specifies any drift, otherwise `False`.
-                &#34;&#34;&#34;
-                return self.amount.has_drifts() or self.axis.has_drifts() or self.pivot.has_drifts()
-
-        def set_type(self, transformation_type):
-                &#34;&#34;&#34;Set the transformation type.
-
-                Parameters
-                ----------
-                transformation_type : str
-                        Transformation type. `&#34;translation&#34;` or `&#34;rotation&#34;`.
-                &#34;&#34;&#34;
-                if (transformation_type == &#34;rotation&#34;) or (transformation_type == &#34;translation&#34;):
-                        self.type = transformation_type
-
-                        # Set the correct native unit for the amount:
-                        if self.type == &#34;rotation&#34;:
-                                self.amount.set_native_unit(&#34;rad&#34;)
-                        elif self.type == &#34;translation&#34;:
-                                self.amount.set_native_unit(&#34;mm&#34;)
-                else:
-                        raise Exception(f&#34;CTSimU Deviation: set_type: Not a valid transformation type: &#39;{transformation_type}&#39;. Valid types are &#39;translation&#39; and &#39;rotation&#39;.&#34;)
-
-        def set_axis(self, axis):
-                &#34;&#34;&#34;Set the transformation axis.
-                Can be a string identifier: `&#34;x&#34;`, `&#34;y&#34;`, `&#34;z&#34;` (for world axes),
-                `&#34;u&#34;`, `&#34;v&#34;`, `&#34;w&#34;` (for local axes), `&#34;r&#34;`, `&#34;s&#34;`, `&#34;t&#34;` (for sample axes),
-                or an arbitrary `ctsimu.scenario.scenevector.Scenevector` object.
-
-                Parameters
-                ----------
-                axis : str or ctsimu.scenario.scenevector.Scenevector
-                        Transformation axis.
-                &#34;&#34;&#34;
-                if isinstance(axis, str):
-                        if axis in ctsimu_world_axis_designations:
-                                # Given axis is &#34;x&#34;, &#34;y&#34; or &#34;z&#34;
-                                # -&gt; vector in world coordinate system
-                                self.axis.set_reference(&#34;world&#34;)
-                                if axis == &#34;x&#34;: self.axis.set_simple(1, 0, 0)
-                                if axis == &#34;y&#34;: self.axis.set_simple(0, 1, 0)
-                                if axis == &#34;z&#34;: self.axis.set_simple(0, 0, 1)
-                        elif axis in ctsimu_local_axis_designations:
-                                # Given axis is &#34;u&#34;, &#34;v&#34; or &#34;w&#34;
-                                # -&gt; vector in local coordinate system
-                                self.axis.set_reference(&#34;local&#34;)
-                                if axis == &#34;u&#34;: self.axis.set_simple(1, 0, 0)
-                                if axis == &#34;v&#34;: self.axis.set_simple(0, 1, 0)
-                                if axis == &#34;w&#34;: self.axis.set_simple(0, 0, 1)
-                        elif axis in ctsimu_sample_axis_designations:
-                                # Given axis is &#34;r&#34;, &#34;s&#34; or &#34;t&#34;
-                                # -&gt; vector in sample coordinate system
-                                self.axis.set_reference(&#34;sample&#34;)
-                                if axis == &#34;r&#34;: self.axis.set_simple(1, 0, 0)
-                                if axis == &#34;s&#34;: self.axis.set_simple(0, 1, 0)
-                                if axis == &#34;t&#34;: self.axis.set_simple(0, 0, 1)
-                        else:
-                                raise Exception(f&#34;CTSimU Deviation: set_axis: Not a valid axis designation string: &#39;{axis}&#39;. Valid options are: {ctsimu_axis_strings}.&#34;)
-                elif isinstance(axis, Scenevector):
-                        self.axis = axis
-                else:
-                        raise Exception(f&#34;CTSimU Deviation: set_axis: Not a valid deviation axis type: &#39;{type(axis)}&#39;. Valid options are: str, Scenevector.&#34;)
-
-        def set_pivot(self, pivot:&#39;Scenevector&#39;):
-                &#34;&#34;&#34;Set the pivot point for rotations.
-
-                Parameters
-                ----------
-                pivot : Scenevector
-                &#34;&#34;&#34;
-                if isinstance(pivot, Scenevector):
-                        self.pivot = pivot
-                else:
-                        raise Exception(f&#34;CTSimU Deviation: set_pivot: expects an instance of &#39;Scenevector&#39;, but given pivot is of type {type(pivot)}.&#34;)
-
-        def set_known_to_reconstruction(self, known_to_reconstruction:bool):
-                &#34;&#34;&#34;Sets the `known_to_reconstruction` attribute.
-
-                Parameters
-                ----------
-                known_to_reconstruction : bool
-                        Should this geometrical deviation be considered by the reconstruction software?
-                        This attribute is obeyed when calculating projection matrices.
-                &#34;&#34;&#34;
-                if known_to_reconstruction == True:
-                        self.known_to_reconstruction = True
-                else:
-                        self.known_to_reconstruction = False
-
-        def set_amount_from_json(self, json_parameter_object:dict) -&gt; bool:
-                &#34;&#34;&#34;Set the deviation&#39;s amount from a JSON object, which
-                is a parameter with a value and potentially a drift.
-
-                This function is usually not called from the outside,
-                but used by `set_from_json`.
-
-                Parameters
-                ----------
-                json_parameter_object : dict
-                        A CTSimU parameter structure, as imported from a JSON scenario description.
-
-                Returns
-                -------
-                success : bool
-                        `True` on success, `False` if an error occurred.
-                &#34;&#34;&#34;
-                return self.amount.set_from_json(json_parameter_object)
-
-        def set_from_json(self, json_deviation_object:dict) -&gt; bool:
-                &#34;&#34;&#34;Set the deviation from a CTSimU JSON deviation structure.
-
-                Parameters
-                ----------
-                json_deviation_object : dict
-                        A CTSimU deviation structure, as imported from a JSON scenario description.
-
-                Returns
-                -------
-                success : bool
-                        `True` on success, `False` if an error occurred.
-
-                Raises
-                ------
-                Exception
-                        When an error occurred.
-                &#34;&#34;&#34;
-                if json_exists_and_not_null(json_deviation_object, [&#34;type&#34;]):
-                        self.set_type(get_value(json_deviation_object, [&#34;type&#34;]))
-                else:
-                        raise Exception(&#39;CTSimU Deviation: set_from_json: a geometrical deviation must provide a &#34;type&#34;: either &#34;rotation&#34; or &#34;translation&#34;.&#39;)
-                        return False
-
-                # Transformation axis:
-                if json_exists_and_not_null(json_deviation_object, [&#34;axis&#34;]):
-                        axis_obj = json_extract(json_deviation_object, [&#34;axis&#34;])
-                        if isinstance(axis_obj, str):
-                                # Axis is given as a single string.
-                                if axis_obj in ctsimu_axis_strings:
-                                        self.set_axis(axis_obj)
-                                else:
-                                        raise Exception(f&#39;CTSimU Deviation: set_from_json: The deviation &#34;axis&#34; string is incorrect: must be any of {ctsimu_axis_strings} or a free vector definition.&#39;)
-                                        return False
-                        elif isinstance(axis_obj, dict):
-                                # Free vector definition.
-                                if self.axis.set_from_json(axis_obj):
-                                        # Success.
-                                        pass
-                                else:
-                                        raise Exception(f&#39;CTSimU Deviation: set_from_json: Failed to set up deviation axis from JSON file. Vector definition seems to be incorrect.&#39;)
-                                        return False
-                        else:
-                                raise Exception(&#34;CTSimU Deviation: set_from_json: Failed to set up deviation axis from JSON structure.&#34;)
-
-                # Pivot point for rotations:
-                # Set a standard pivot which refers to the object&#39;s center:
-                self.pivot.set_simple(0, 0, 0)
-
-                # Set &#34;sample&#34; as the &#34;most local&#34; pivot reference.
-                # Will be converted to &#34;local&#34; if necessary:
-                self.pivot.set_reference(&#34;sample&#34;)
-
-                if json_exists_and_not_null(json_deviation_object, [&#34;pivot&#34;]):
-                        # If another pivot is defined in the
-                        # JSON file, take this one instead...
-                        if self.pivot.set_from_json(json_extract(json_deviation_object, [&#34;pivot&#34;])):
-                                # Success
-                                pass
-                        else:
-                                raise Exception(&#34;CTSimU Deviation: set_from_json: Failed to set up deviation&#39;s pivot point from JSON structure. Vector definition seems to be incorrect.&#34;)
-                                return False
-
-                self.set_amount_from_json(json_extract(json_deviation_object, [&#34;amount&#34;]))
-                self.set_known_to_reconstruction(get_value_in_native_unit(
-                        native_unit=&#34;bool&#34;,
-                        dictionary=json_deviation_object,
-                        keys=[&#34;known_to_reconstruction&#34;],
-                        fail_value=True
-                ))
-
-                return True
-
-        def json_dict(self) -&gt; dict:
-                &#34;&#34;&#34;Create a dictionary of this deviation for a CTSimU JSON file.&#34;&#34;&#34;
-                jd = dict()
-
-                jd[&#34;type&#34;] = self.type
-                jd[&#34;axis&#34;] = self.axis.json_dict()
-                if self.type == &#34;rotation&#34;:
-                        jd[&#34;pivot&#34;] = self.pivot.json_dict()
-
-                jd[&#34;amount&#34;] = self.amount.json_dict()
-                jd[&#34;known_to_reconstruction&#34;] = self.known_to_reconstruction
-
-                return jd
-
-        def deviate(self, coordinate_system:&#39;CoordinateSystem&#39;, frame:float, n_frames:int, reconstruction=False, attached_to_stage:bool=False, stage_coordinate_system:&#39;CoordinateSystem&#39;=None) -&gt; &#39;CoordinateSystem&#39;:
-                &#34;&#34;&#34;
-                Apply this deviation to the given coordinate system.
-
-                This function checks if the deviation&#39;s `known_to_reconstruction`
-                property applies to this case,
-
-                Parameters
-                ----------
-                coordinate_system : ctsimu.geometry.CoordinateSystem
-                        The coordinate system that will be deviated.
-
-                frame : float
-                        Frame number.
-
-                n_frames : int
-                        Total number of frames in scan.
-
-                reconstruction : bool
-                        If `True`, the deviation is only applied if it is
-                        known to the reconstruction software. The same applies
-                        to whether its drifts are considered or not.
-                        If `False`, the full deviation and all of its drifts will
-                        be applied to the coordinate system.
-
-                attached_to_stage : bool
-                        `True` if the coordinate system is attached to the sample stage,
-                        `False` if its reference coordinate system is a world coordinate system.
-
-                stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
-                        The stage coordinate system. Only necessary if the part is attached
-                        to the sample stage. Otherwise, `None` can be passed.
-
-                Returns
-                -------
-                deviated_cs : ctsimu.geometry.CoordinateSystem
-                        Coordinate system with the applied deviation. Note that the
-                        original `coordinate_system` passed as an argument will be
-                        altered equally.
-                &#34;&#34;&#34;
-
-                if (self.known_to_reconstruction is True) or (reconstruction is False):
-                        amount = self.amount.set_frame_and_get_value(
-                                frame=frame,
-                                n_frames=n_frames,
-                                reconstruction=reconstruction
-                        )
-
-                        if self.type == &#34;translation&#34;:
-                                if self.amount.native_unit == &#34;mm&#34;:
-                                        if attached_to_stage is False:
-                                                # Object in world coordinate system.
-                                                # --------------------------------------
-                                                # The deviation axis can undergo drifts and could
-                                                # be expressed in any coordinate system (world, local, sample).
-                                                # Therefore, the axis is a `Scenevector`, which can
-                                                # give us the translation vector for the current frame:
-                                                translation_axis = self.axis.direction_in_world(
-                                                        local=coordinate_system,
-                                                        sample=ctsimu_world,
-                                                        frame=frame,
-                                                        n_frames=n_frames,
-                                                        reconstruction=reconstruction
-                                                )
-
-                                                coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
-                                        else:
-                                                # Object is in stage coordinate system.
-                                                # --------------------------------------
-                                                translation_axis = self.axis.direction_in_local(
-                                                        local=stage_coordinate_system,
-                                                        sample=coordinate_system,
-                                                        frame=frame,
-                                                        n_frames=n_frames,
-                                                        reconstruction=reconstruction
-                                                )
-
-                                                coordinate_system.translate_in_direction(direction=translation_axis, distance=amount)
-                                else:
-                                        raise Exception(f&#34;CTSimU Deviation: deviate: Translational deviation must be given in a unit of length. The given unit &#39;{self.amount.native_unit}&#39; cannot be used for a translation.&#34;)
-                        elif self.type == &#34;rotation&#34;:
-                                if self.amount.native_unit == &#34;rad&#34;:
-                                        if attached_to_stage is False:
-                                                # Object in world coordinate system.
-                                                # --------------------------------------
-                                                rotation_axis = self.axis.direction_in_world(
-                                                        local=coordinate_system,
-                                                        sample=ctsimu_world,
-                                                        frame=frame,
-                                                        n_frames=n_frames,
-                                                        reconstruction=reconstruction
-                                                )
-                                                pivot_point = self.pivot.point_in_world(
-                                                        local=coordinate_system,
-                                                        sample=ctsimu_world,
-                                                        frame=frame,
-                                                        n_frames=n_frames,
-                                                        reconstruction=reconstruction
-                                                )
-
-                                                coordinate_system.rotate_around_pivot_point(
-                                                        axis=rotation_axis, angle=amount, pivot=pivot_point
-                                                )
-                                        else:
-                                                # Object is in stage coordinate system.
-                                                # --------------------------------------
-                                                rotation_axis = self.axis.direction_in_local(
-                                                        local=stage_coordinate_system,
-                                                        sample=coordinate_system,
-                                                        frame=frame,
-                                                        n_frames=n_frames,
-                                                        reconstruction=reconstruction
-                                                )
-                                                pivot_point = self.pivot.point_in_local(
-                                                        local=stage_coordinate_system,
-                                                        sample=coordinate_system,
-                                                        frame=frame,
-                                                        n_frames=n_frames,
-                                                        reconstruction=reconstruction
-                                                )
-
-                                                coordinate_system.rotate_around_pivot_point(
-                                                        axis=rotation_axis, angle=amount, pivot=pivot_point
-                                                )
-                                else:
-                                        raise Exception(f&#34;CTSimU Deviation: deviate: Rotational deviation must be given in an angular unit. The given unit &#39;{self.amount.native_unit}&#39; cannot be used for a rotation.&#34;)
-
-                return coordinate_system</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -455,27 +73,6 @@ class Deviation:
 <span>(</span><span>pivot_reference: str = 'sample')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Geometrical deviation of a coordinate system,
-i.e. a translation or a rotation with respect to one of the
-axes x, y, z (world), u, v, w (local), or r, s, t (sample)
-or any other arbitrary vector.</p>
-<p>Like any parameter, they can have drifts, which means they
-can change over time.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
-<dd>Transformation type. Can be <code>"translation"</code> or <code>"rotation"</code>.</dd>
-<dt><strong><code>amount</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
-<dd>Transformation amount: length for a translation, angle for a rotation.</dd>
-<dt><strong><code>axis</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
-<dd>Transformation axis: direction for a translation, rotation axis for
-a rotation.</dd>
-<dt><strong><code>pivot</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
-<dd>For rotational deviations: position of the rotation's pivot point.</dd>
-<dt><strong><code>known_to_reconstruction</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Should this geometrical deviation be considered by the reconstruction software?
-This attribute is obeyed when calculating projection matrices.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -861,43 +458,33 @@ This attribute is obeyed when calculating projection matrices.</dd>
 
                 return coordinate_system</code></pre>
 </details>
+<div class="desc"><p>Geometrical deviation of a coordinate system,
+i.e. a translation or a rotation with respect to one of the
+axes x, y, z (world), u, v, w (local), or r, s, t (sample)
+or any other arbitrary vector.</p>
+<p>Like any parameter, they can have drifts, which means they
+can change over time.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Transformation type. Can be <code>"translation"</code> or <code>"rotation"</code>.</dd>
+<dt><strong><code>amount</code></strong> :&ensp;<code><a title="ctsimu.scenario.parameter.Parameter" href="parameter.html#ctsimu.scenario.parameter.Parameter">Parameter</a></code></dt>
+<dd>Transformation amount: length for a translation, angle for a rotation.</dd>
+<dt><strong><code>axis</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
+<dd>Transformation axis: direction for a translation, rotation axis for
+a rotation.</dd>
+<dt><strong><code>pivot</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
+<dd>For rotational deviations: position of the rotation's pivot point.</dd>
+<dt><strong><code>known_to_reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Should this geometrical deviation be considered by the reconstruction software?
+This attribute is obeyed when calculating projection matrices.</dd>
+</dl></div>
 <h3>Methods</h3>
 <dl>
 <dt id="ctsimu.scenario.deviation.Deviation.deviate"><code class="name flex">
-<span>def <span class="ident">deviate</span></span>(<span>self, coordinate_system: CoordinateSystem, frame: float, n_frames: int, reconstruction=False, attached_to_stage: bool = False, stage_coordinate_system: CoordinateSystem = None) ‑> <a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></span>
+<span>def <span class="ident">deviate</span></span>(<span>self,<br>coordinate_system: CoordinateSystem,<br>frame: float,<br>n_frames: int,<br>reconstruction=False,<br>attached_to_stage: bool = False,<br>stage_coordinate_system: CoordinateSystem = None) ‑> <a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Apply this deviation to the given coordinate system.</p>
-<p>This function checks if the deviation's <code>known_to_reconstruction</code>
-property applies to this case,</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
-<dd>The coordinate system that will be deviated.</dd>
-<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
-<dd>Frame number.</dd>
-<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
-<dd>Total number of frames in scan.</dd>
-<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If <code>True</code>, the deviation is only applied if it is
-known to the reconstruction software. The same applies
-to whether its drifts are considered or not.
-If <code>False</code>, the full deviation and all of its drifts will
-be applied to the coordinate system.</dd>
-<dt><strong><code>attached_to_stage</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> if the coordinate system is attached to the sample stage,
-<code>False</code> if its reference coordinate system is a world coordinate system.</dd>
-<dt><strong><code>stage_coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>, optional</dt>
-<dd>The stage coordinate system. Only necessary if the part is attached
-to the sample stage. Otherwise, <code>None</code> can be passed.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>deviated_cs</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
-<dd>Coordinate system with the applied deviation. Note that the
-original <code>coordinate_system</code> passed as an argument will be
-altered equally.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1031,17 +618,42 @@ altered equally.</dd>
 
         return coordinate_system</code></pre>
 </details>
+<div class="desc"><p>Apply this deviation to the given coordinate system.</p>
+<p>This function checks if the deviation's <code>known_to_reconstruction</code>
+property applies to this case,</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>The coordinate system that will be deviated.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>Frame number.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total number of frames in scan.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If <code>True</code>, the deviation is only applied if it is
+known to the reconstruction software. The same applies
+to whether its drifts are considered or not.
+If <code>False</code>, the full deviation and all of its drifts will
+be applied to the coordinate system.</dd>
+<dt><strong><code>attached_to_stage</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if the coordinate system is attached to the sample stage,
+<code>False</code> if its reference coordinate system is a world coordinate system.</dd>
+<dt><strong><code>stage_coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>, optional</dt>
+<dd>The stage coordinate system. Only necessary if the part is attached
+to the sample stage. Otherwise, <code>None</code> can be passed.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>deviated_cs</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>Coordinate system with the applied deviation. Note that the
+original <code>coordinate_system</code> passed as an argument will be
+altered equally.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.has_drifts"><code class="name flex">
 <span>def <span class="ident">has_drifts</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Does the deviation specify any drift?</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>has_drifts</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> if the deviation specifies any drift, otherwise <code>False</code>.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1056,12 +668,17 @@ altered equally.</dd>
         &#34;&#34;&#34;
         return self.amount.has_drifts() or self.axis.has_drifts() or self.pivot.has_drifts()</code></pre>
 </details>
+<div class="desc"><p>Does the deviation specify any drift?</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>has_drifts</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if the deviation specifies any drift, otherwise <code>False</code>.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.json_dict"><code class="name flex">
 <span>def <span class="ident">json_dict</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a dictionary of this deviation for a CTSimU JSON file.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1080,25 +697,12 @@ altered equally.</dd>
 
         return jd</code></pre>
 </details>
+<div class="desc"><p>Create a dictionary of this deviation for a CTSimU JSON file.</p></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.set_amount_from_json"><code class="name flex">
 <span>def <span class="ident">set_amount_from_json</span></span>(<span>self, json_parameter_object: dict) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the deviation's amount from a JSON object, which
-is a parameter with a value and potentially a drift.</p>
-<p>This function is usually not called from the outside,
-but used by <code>set_from_json</code>.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>json_parameter_object</code></strong> :&ensp;<code>dict</code></dt>
-<dd>A CTSimU parameter structure, as imported from a JSON scenario description.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> on success, <code>False</code> if an error occurred.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1122,20 +726,25 @@ but used by <code>set_from_json</code>.</p>
         &#34;&#34;&#34;
         return self.amount.set_from_json(json_parameter_object)</code></pre>
 </details>
+<div class="desc"><p>Set the deviation's amount from a JSON object, which
+is a parameter with a value and potentially a drift.</p>
+<p>This function is usually not called from the outside,
+but used by <code>set_from_json</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_parameter_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A CTSimU parameter structure, as imported from a JSON scenario description.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> on success, <code>False</code> if an error occurred.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.set_axis"><code class="name flex">
 <span>def <span class="ident">set_axis</span></span>(<span>self, axis)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the transformation axis.
-Can be a string identifier: <code>"x"</code>, <code>"y"</code>, <code>"z"</code> (for world axes),
-<code>"u"</code>, <code>"v"</code>, <code>"w"</code> (for local axes), <code>"r"</code>, <code>"s"</code>, <code>"t"</code> (for sample axes),
-or an arbitrary <code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code> object.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>axis</code></strong> :&ensp;<code>str</code> or <code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
-<dd>Transformation axis.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1180,27 +789,20 @@ or an arbitrary <code><a title="ctsimu.scenario.scenevector.Scenevector" href="s
         else:
                 raise Exception(f&#34;CTSimU Deviation: set_axis: Not a valid deviation axis type: &#39;{type(axis)}&#39;. Valid options are: str, Scenevector.&#34;)</code></pre>
 </details>
+<div class="desc"><p>Set the transformation axis.
+Can be a string identifier: <code>"x"</code>, <code>"y"</code>, <code>"z"</code> (for world axes),
+<code>"u"</code>, <code>"v"</code>, <code>"w"</code> (for local axes), <code>"r"</code>, <code>"s"</code>, <code>"t"</code> (for sample axes),
+or an arbitrary <code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code> object.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>axis</code></strong> :&ensp;<code>str</code> or <code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
+<dd>Transformation axis.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.set_from_json"><code class="name flex">
 <span>def <span class="ident">set_from_json</span></span>(<span>self, json_deviation_object: dict) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the deviation from a CTSimU JSON deviation structure.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>json_deviation_object</code></strong> :&ensp;<code>dict</code></dt>
-<dd>A CTSimU deviation structure, as imported from a JSON scenario description.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> on success, <code>False</code> if an error occurred.</dd>
-</dl>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code>Exception</code></dt>
-<dd>When an error occurred.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1278,18 +880,27 @@ or an arbitrary <code><a title="ctsimu.scenario.scenevector.Scenevector" href="s
 
         return True</code></pre>
 </details>
+<div class="desc"><p>Set the deviation from a CTSimU JSON deviation structure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_deviation_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A CTSimU deviation structure, as imported from a JSON scenario description.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> on success, <code>False</code> if an error occurred.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>Exception</code></dt>
+<dd>When an error occurred.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.set_known_to_reconstruction"><code class="name flex">
 <span>def <span class="ident">set_known_to_reconstruction</span></span>(<span>self, known_to_reconstruction: bool)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sets the <code>known_to_reconstruction</code> attribute.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>known_to_reconstruction</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Should this geometrical deviation be considered by the reconstruction software?
-This attribute is obeyed when calculating projection matrices.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1308,17 +919,18 @@ This attribute is obeyed when calculating projection matrices.</dd>
         else:
                 self.known_to_reconstruction = False</code></pre>
 </details>
+<div class="desc"><p>Sets the <code>known_to_reconstruction</code> attribute.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>known_to_reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Should this geometrical deviation be considered by the reconstruction software?
+This attribute is obeyed when calculating projection matrices.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.set_pivot"><code class="name flex">
 <span>def <span class="ident">set_pivot</span></span>(<span>self, pivot: Scenevector)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the pivot point for rotations.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>pivot</code></strong> :&ensp;<code>Scenevector</code></dt>
-<dd>&nbsp;</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1335,17 +947,17 @@ This attribute is obeyed when calculating projection matrices.</dd>
         else:
                 raise Exception(f&#34;CTSimU Deviation: set_pivot: expects an instance of &#39;Scenevector&#39;, but given pivot is of type {type(pivot)}.&#34;)</code></pre>
 </details>
+<div class="desc"><p>Set the pivot point for rotations.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pivot</code></strong> :&ensp;<code>Scenevector</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.deviation.Deviation.set_type"><code class="name flex">
 <span>def <span class="ident">set_type</span></span>(<span>self, transformation_type)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the transformation type.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>transformation_type</code></strong> :&ensp;<code>str</code></dt>
-<dd>Transformation type. <code>"translation"</code> or <code>"rotation"</code>.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1369,6 +981,12 @@ This attribute is obeyed when calculating projection matrices.</dd>
         else:
                 raise Exception(f&#34;CTSimU Deviation: set_type: Not a valid transformation type: &#39;{transformation_type}&#39;. Valid types are &#39;translation&#39; and &#39;rotation&#39;.&#34;)</code></pre>
 </details>
+<div class="desc"><p>Set the transformation type.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>transformation_type</code></strong> :&ensp;<code>str</code></dt>
+<dd>Transformation type. <code>"translation"</code> or <code>"rotation"</code>.</dd>
+</dl></div>
 </dd>
 </dl>
 </dd>
@@ -1381,7 +999,6 @@ This attribute is obeyed when calculating projection matrices.</dd>
 <img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1413,7 +1030,7 @@ This attribute is obeyed when calculating projection matrices.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>ctsimu.scenario.part API documentation</title>
-<meta name="description" content="Parts are objects in the scene: detector, source, stage and samples." />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Parts are objects in the scene: detector, source, stage and samples.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 <style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
 <link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
 <style>
@@ -41,566 +56,6 @@ tr:hover {background-color: #eee;}
 </header>
 <section id="section-intro">
 <p>Parts are objects in the scene: detector, source, stage and samples.</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python"># -*- coding: UTF-8 -*-
-&#34;&#34;&#34;
-Parts are objects in the scene: detector, source, stage and samples.
-&#34;&#34;&#34;
-
-from ..helpers import *
-from ..geometry import *
-from .group import Group
-from .deviation import Deviation
-from .parameter import Parameter
-from .scenevector import Scenevector
-
-class Part(Group):
-        &#34;&#34;&#34;Parts are objects in the scene: detector, source, stage and samples.
-
-        They have a coordinate system and can define deviations from their
-        standard geometries (translations and rotations around given axes).
-        The center, vectors and deviations can all have drifts,
-        allowing for an evolution in time.
-
-        Attributes
-        ----------
-        name : str
-                Name of the object.
-
-        attached_to_stage : bool
-                Is the part attached to the sample stage?
-                If so, it will follow the stage&#39;s movements throughout the CT scan.
-
-        coordinate_system : ctsimu.geometry.CoordinateSystem
-                The current coordinate system. This variable is automatically
-                set up whenever the `set_frame` method is called.
-
-        center : ctsimu.scenario.scenevector.Scenevector
-                Coordinates of the center point.
-
-        u : ctsimu.scenario.scenevector.Scenevector
-                u vector of the part&#39;s coordinate system.
-
-        w : ctsimu.scenario.scenevector.Scenevector
-                w vector of the part&#39;s coordinate system.
-
-        deviations : list
-                All the geometric deviations for this part as
-                `ctsimu.scenario.deviation.Deviation` objects.
-
-        legacy_deviations : list
-                All the legacy deviations for this part as
-                `ctsimu.scenario.deviation.Deviation` objects.
-                Legacy deviations are geometric deviations from
-                CTSimU scenario descriptions prior to
-                file format version 1.0. In general, they are incompatible
-                with the new geometric deviation format and must be
-                treated differently.
-        &#34;&#34;&#34;
-        def __init__(self, name:str=&#34;Part&#34;, _root=None):
-                &#34;&#34;&#34;The part&#39;s name can be set upon initialization.
-
-                Parameters
-                ----------
-                name : str
-                        Name for the part.
-                &#34;&#34;&#34;
-                Group.__init__(self, _root=_root)
-                self.name = name
-
-                self.attached_to_stage = False
-                self.coordinate_system = CoordinateSystem()
-                self.center = Scenevector(native_unit=&#34;mm&#34;, _root=self._root)
-                self.u = Scenevector(native_unit=None, _root=self._root)
-                self.w = Scenevector(native_unit=None, _root=self._root)
-                self.deviations = list()
-                self.legacy_deviations = list() # for deviations prior to file format 1.0
-
-                # Internal parameters used for efficiency and
-                # to track current state.
-                self._static = False # non-drifting object if `True`.
-
-                # If certain geometry deviations or drifts are unknown to the
-                # reconstruction software, the part may be set up in two different ways:
-                self._cs_initialized_real = False  # initialized to real coordinate system?
-                self._cs_initialized_recon = False # initialized to recon coordinate system?
-
-
-        def reset(self):
-                &#34;&#34;&#34;Reset to standard conditions, delete all deviations, reset
-                coordinate system to standard world coordinates,
-                and reset all parameters to their standard values.&#34;&#34;&#34;
-                self.attached_to_stage = False
-                self._static = False
-                self._cs_initialized_real = False
-                self._cs_initialized_recon = False
-
-                self.coordinate_system.reset()
-
-                self.deviations = list()
-                self.legacy_deviations = list()
-
-                Group.reset(self)
-
-        def is_attached_to_stage(self) -&gt; bool:
-                &#34;&#34;&#34;Is the part attached to the sample stage?
-
-                Returns
-                -------
-                attached_to_stage : bool
-                        `True` is part is attached to sample stage, i.e., its reference
-                        coordinate system is the stage coordinate system.
-                        `False` if the part is not attached to the sample stage, i.e.,
-                        its reference coordinate system is the world coordinate system.
-                &#34;&#34;&#34;
-                return self.attached_to_stage
-
-        def set_name(self, name:str):
-                &#34;&#34;&#34;Set the part&#39;s name.
-
-                Parameters
-                ----------
-                name : str
-                        New name for the part.
-                &#34;&#34;&#34;
-                self.name = name
-
-        def set_center(self, center:&#39;Scenevector&#39;):
-                &#34;&#34;&#34;Set the part&#39;s center.
-
-                Parameters
-                ----------
-                center : Scenevector
-                        New center for the part.
-                &#34;&#34;&#34;
-                self.center = center
-
-        def set_u(self, u:&#39;Scenevector&#39;):
-                &#34;&#34;&#34;Set the part&#39;s `u` vector.
-
-                Parameters
-                ----------
-                u : Scenevector
-                        New `u` vector for the part.
-                &#34;&#34;&#34;
-                self.u = u
-
-        def set_w(self, w:&#39;Scenevector&#39;):
-                &#34;&#34;&#34;Set the part&#39;s `w` vector.
-
-                Parameters
-                ----------
-                w : Scenevector
-                        New `w` vector for the part.
-                &#34;&#34;&#34;
-                self.w = w
-
-        def attach_to_stage(self, attached:bool=True):
-                &#34;&#34;&#34;Set the part&#39;s `attached_to_stage` property.
-
-                Parameters
-                ----------
-                attached : bool
-                        `True` if part is attached to the sample stage,
-                        `False` if not.
-                &#34;&#34;&#34;
-                self.attached_to_stage = attached
-
-        def _set_static_if_no_drifts(self):
-                &#34;&#34;&#34;Set the object to &#39;static&#39; if it does not drift,
-                i.e., it is not moving.
-                In this case, its coordinate system does not need to
-                be re-assembled for each frame.
-                &#34;&#34;&#34;
-
-                self._static = False
-
-                if self.attached_to_stage is False:
-                        # Count drifts:
-                        if self.center.has_drifts() or self.u.has_drifts() or self.w.has_drifts():
-                                return
-
-                        for dev in self.deviations:
-                                if dev.has_drifts():
-                                        return
-
-                        for ldev in self.legacy_deviations:
-                                if ldev.has_drifts():
-                                        return
-
-                        self._static = True
-
-        def set_geometry(self, json_geometry_object:dict, stage_coordinate_system:&#39;CoordinateSystem&#39;=None, proper_cs:str=&#34;local&#34;) -&gt; bool:
-                &#34;&#34;&#34;
-                Set up the part from a CTSimU JSON geometry definition.
-                The `stage_coordinate_system` must only be provided if this
-                part is attached to the stage.
-
-                Parameters
-                ----------
-                json_geometry_object : dict
-                        A CTSimU geometry object, as imported from a JSON structure.
-
-                stage_coordinate_system : CoordinateSystem
-                        Stage coordinate system. Only necessary for samples attached
-                        to the stage.
-
-                proper_cs : str
-                        Which is the proper coordinate system of this object?
-                        Either `&#34;world&#34;` (x, y, z), `&#34;local&#34;` (u, v, w) or `&#34;sample&#34;` (r, s, t).
-
-                Returns
-                -------
-                success : bool
-                        `True` on success, `False` if an error occurred.
-                &#34;&#34;&#34;
-                if stage_coordinate_system is None:
-                        stage_coordinate_system = ctsimu_world
-
-                self.reset()
-
-                geo = json_geometry_object
-
-                # Try to set up the part from world coordinate notation (x, y, z).
-                # We also have to support legacy spelling of &#34;centre&#34; ;-)
-                if (json_exists_and_not_null(geo, [&#34;center&#34;, &#34;x&#34;]) or \
-                        json_exists_and_not_null(geo, [&#34;centre&#34;, &#34;x&#34;])) and \
-                   (json_exists_and_not_null(geo, [&#34;center&#34;, &#34;y&#34;]) or \
-                        json_exists_and_not_null(geo, [&#34;centre&#34;, &#34;y&#34;])) and \
-                   (json_exists_and_not_null(geo, [&#34;center&#34;, &#34;z&#34;]) or \
-                        json_exists_and_not_null(geo, [&#34;centre&#34;, &#34;z&#34;])):
-                        # *******************************
-                        #           Part is in
-                        #     WORLD COORDINATE SYSTEM
-                        # *******************************
-                        self.attach_to_stage(attached=False)
-
-                        # Center
-                        # ------
-                        if self.center.set_from_json(json_extract_from_possible_keys(geo, [[&#34;center&#34;], [&#34;centre&#34;]])):
-                                # success
-                                pass
-                        else:
-                                raise Exception(f&#34;Part &#39;{self.name}&#39;: failed setting the object center from the JSON dictionary.&#34;)
-                                return False
-
-                        # Orientation
-                        # -----------
-                        # Vectors can be either u, w (for source, stage, detector)
-                        # or r, t (for samples).
-                        if self.u.set_from_json(json_extract_from_possible_keys(geo, [[&#34;vector_u&#34;], [&#34;vector_r&#34;]])) and \
-                           self.w.set_from_json(json_extract_from_possible_keys(geo, [[&#34;vector_w&#34;], [&#34;vector_t&#34;]])):
-                                # success
-                                pass
-                        else:
-                                raise Exception(f&#34;Part {self.name} is placed in world coordinate system, but its vectors u and w (or r and t, for samples) are not properly defined (each with an x, y and z component).&#34;)
-                                return False
-
-                elif (json_exists_and_not_null(geo, [&#34;center&#34;, &#34;u&#34;]) or \
-                      json_exists_and_not_null(geo, [&#34;centre&#34;, &#34;u&#34;])) and \
-                     (json_exists_and_not_null(geo, [&#34;center&#34;, &#34;v&#34;]) or \
-                      json_exists_and_not_null(geo, [&#34;centre&#34;, &#34;v&#34;])) and \
-                     (json_exists_and_not_null(geo, [&#34;center&#34;, &#34;w&#34;]) or \
-                      json_exists_and_not_null(geo, [&#34;centre&#34;, &#34;w&#34;])):
-                        # *******************************
-                        #           Part is in
-                        #     STAGE COORDINATE SYSTEM
-                        # *******************************
-                        self.attach_to_stage(attached=True)
-
-                        # Center
-                        # ------
-                        if self.center.set_from_json(json_extract_from_possible_keys(geo, [[&#34;center&#34;], [&#34;centre&#34;]])):
-                                # success
-                                pass
-                        else:
-                                raise Exception(f&#34;Part &#39;{self.name}&#39;: failed setting the object center from the JSON dictionary.&#34;)
-                                return False
-
-                        # Orientation
-                        # -----------
-                        # Vectors can only be r, t
-                        # (because only samples can be attached to the stage).
-                        if self.u.set_from_json(json_extract(geo, [&#34;vector_r&#34;])) and \
-                           self.w.set_from_json(json_extract(geo, [&#34;vector_t&#34;])):
-                                # success
-                                pass
-                        else:
-                                raise Exception(f&#34;Part {self.name} is placed in stage system, but its vectors r and t are not properly defined (each with a u, v and w component).&#34;)
-                                return False
-
-                else:
-                        raise Exception(f&#34;Failed to set geometry for part &#39;{self.name}&#39;. Found no valid center definition in JSON file.&#34;)
-                        return False
-
-                # *******************************
-                #     DEVIATIONS
-                # *******************************
-                if json_exists_and_not_null(geo, [&#34;deviations&#34;]):
-                        devs = json_extract(geo, [&#34;deviations&#34;])
-                        if isinstance(devs, list):
-                                # Go through all elements in the deviations array
-                                # and add them to this part&#39;s list of deviations.
-                                for dev in devs:
-                                        new_deviation = Deviation(pivot_reference=proper_cs, _root=self._root)
-                                        if new_deviation.set_from_json(dev):
-                                                self.deviations.append(new_deviation)
-                                        else:
-                                                raise Exception(f&#34;An error occurred when setting a geometrical deviation (translation) for part &#39;{self.name}&#39;.&#34;)
-                                                return False
-                        elif isinstance(devs, dict):
-                                # Only one drift defined directly as a JSON object?
-                                # Actually not supported by file format,
-                                # but let&#39;s be generous and try...
-                                new_deviation = Deviation(pivot_reference=proper_cs, _root=self._root)
-                                if new_deviation.set_from_json(devs):
-                                        self.deviations.append(new_deviation)
-                                else:
-                                        raise Exception(f&#34;An error occurred when setting a geometrical deviation (rotation) for part &#39;{self.name}&#39;.&#34;)
-                                        return False
-                        else:
-                                raise Exception(f&#34;Error reading geometrical deviations for part &#39;{self.name}&#39;&#34;)
-
-                # Support for legacy deviations, prior to
-                # file format version 0.9:
-                # ------------------------------------------
-                if json_exists_and_not_null(geo, [&#34;deviation&#34;]):
-                        known_to_recon = True
-                        if json_exists_and_not_null(geo, [&#34;deviation&#34;, &#34;known_to_reconstruction&#34;]):
-                                known_to_recon = get_value_in_native_unit(&#34;bool&#34;, geo, [&#34;deviation&#34;, &#34;known_to_reconstruction&#34;])
-
-                        for axis in ctsimu_valid_axes:
-                                # Deviations in position
-                                # -------------------------------------
-                                # Positional deviations along sample axes r, s, t
-                                # have not been part of the legacy file formats
-                                # prior to version 0.9, but we still add them here
-                                # because now we easily can... ;-)
-                                if json_exists_and_not_null(geo, [&#34;deviation&#34;, &#34;position&#34;, axis]):
-                                        pos_dev = Deviation(pivot_reference=proper_cs, _root=self._root)
-                                        pos_dev.set_type(&#34;translation&#34;)
-                                        pos_dev.set_axis(axis)
-                                        pos_dev.set_known_to_reconstruction(known_to_recon)
-                                        if pos_dev.amount.set_from_json(json_extract(geo, [&#34;deviation&#34;, &#34;position&#34;, axis])):
-                                                # Legacy_deviations not necessary here
-                                                # because positional translations are fully
-                                                # compatible with the new file format:
-                                                if not pos_dev.amount.is_zero():
-                                                        self.deviations.append(pos_dev)
-                                        else:
-                                                raise Exception(f&#34;An error occurred when setting a geometrical deviation (translation) for part &#39;{self.name}&#39;.&#34;)
-                                                return False
-
-                        for axis in ctsimu_valid_axes:
-                                # Deviations in rotation
-                                # -------------------------------------
-                                # File formats prior to version 0.9 only supported
-                                # rotations around u, v and w, in the order wv&#39;u&#39;&#39;,
-                                # and ts&#39;r&#39;&#39; for samples. We need to take care
-                                # to keep this order here; it is ensured by the order
-                                # of elements in the `valid_axes` list. This means we
-                                # also add support for x, y, z (zy&#39;x&#39;&#39;),
-                                # just because we can.
-                                if json_exists_and_not_null(geo, [&#34;deviation&#34;, &#34;rotation&#34;, axis]):
-                                        rot_dev = Deviation(pivot_reference=proper_cs, _root=self._root)
-                                        rot_dev.set_type(&#34;rotation&#34;)
-
-                                        # Prior to 0.9, all deviations were meant to take place
-                                        # before the stage rotation. This means they need to be
-                                        # stored as scene vectors to designate a constant deviation axis.
-                                        rot_dev.set_axis(axis)
-                                        rot_dev.set_known_to_reconstruction(known_to_recon)
-                                        if rot_dev.amount.set_from_json(json_extract(geo, [&#34;deviation&#34;, &#34;rotation&#34;, axis])):
-                                                # success
-                                                if not rot_dev.amount.is_zero():
-                                                        self.legacy_deviations.append(rot_dev)
-                                        else:
-                                                raise Exception(f&#34;An error occurred when setting a geometrical deviation (rotation) for part &#39;{self.name}&#39;.&#34;)
-                                                return False
-
-                self.set_frame(frame=0, n_frames=1, w_rotation=0, stage_coordinate_system=stage_coordinate_system)
-                return True
-
-        def geometry_dict(self) -&gt; dict:
-                &#34;&#34;&#34;Create a dictionary of the geometry for a CTSimU scenario file.
-
-                Returns
-                -------
-                geometry_dict : dict
-                        Dictionary with the geometry of this part.
-                &#34;&#34;&#34;
-                jd = dict()
-                jd[&#34;center&#34;] = self.center.json_dict()
-
-                if self.u.reference == &#34;world&#34;:
-                        jd[&#34;vector_u&#34;] = self.u.json_dict()
-                elif self.u.reference == &#34;local&#34;:
-                        jd[&#34;vector_r&#34;] = self.u.json_dict()
-
-                if self.w.reference == &#34;world&#34;:
-                        jd[&#34;vector_w&#34;] = self.w.json_dict()
-                elif self.w.reference == &#34;local&#34;:
-                        jd[&#34;vector_t&#34;] = self.w.json_dict()
-
-                # Assemble deviations and legacy deviations:
-                devs = None
-                if isinstance(self.deviations, list) and isinstance(self.legacy_deviations, list):
-                        devs = self.deviations + self.legacy_deviations
-                elif isinstance(self.deviations, list):
-                        devs = self.deviations
-                elif isinstance(self.legacy_deviations, list):
-                        devs = self.legacy_deviations
-
-                if devs is not None:
-                        if len(devs) &gt; 0:
-                                jd[&#34;deviations&#34;] = list()
-                                for dev in devs:
-                                        jd[&#34;deviations&#34;].append(dev.json_dict())
-
-                return jd
-
-        def _set_frame_coordinate_system(self, frame:float, n_frames:int, reconstruction:bool=False, w_rotation:float=0, stage_coordinate_system:&#39;CoordinateSystem&#39;=None):
-                &#34;&#34;&#34;
-                Set up the part&#39;s current coordinate system such that
-                it complies with the `frame` number and all necessary
-                drifts and deviations (assuming a total number of `n_frames`).
-
-                This function is used by `set_frame` and `set_frame_for_reconstruction`
-                and is usually not called from outside the object.
-
-                Parameters
-                ----------
-                frame : float
-                        Current frame number.
-
-                n_frames : int
-                        Total number of frames in scan.
-
-                reconstruction : bool
-                        Set up the coordinate system as it
-                        would be presented to the reconstruction software.
-                        Ignores deviations and drifts that should not
-                        be considered during the reconstruction.
-
-                w_rotation : float
-                        An additional rotation around the part&#39;s w axis
-                        for this frame. Used for the sample stage, which
-                        rotates during a CT scan.
-
-                stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
-                        If this part is attached to the sample stage,
-                        the stage coordinate system for the given `frame`
-                        must be passed.
-                &#34;&#34;&#34;
-
-                # Set up standard coordinate system at frame zero:
-                center = self.center.standard_vector()
-                u      = self.u.standard_vector()
-                w      = self.w.standard_vector()
-
-                self.coordinate_system.make_from_vectors(center, u, w)
-                self.coordinate_system.make_unit_coordinate_system()
-
-                # Legacy rotational deviations (prior to file format 1.0)
-                # all took place before any stage rotation:
-                # ----------------------------------------------------------
-                for legacy_dev in self.legacy_deviations:
-                        self.coordinate_system = legacy_dev.deviate(
-                                coordinate_system=self.coordinate_system,
-                                frame=frame,
-                                n_frames=n_frames,
-                                reconstruction=reconstruction,
-                                attached_to_stage=self.attached_to_stage,
-                                stage_coordinate_system=stage_coordinate_system,
-                        )
-
-                # Potential stage rotation:
-                # ------------------------------------
-                # Potential rotation around the w axis (in rad).
-                if w_rotation != 0:
-                        self.coordinate_system.rotate_around_w(angle=w_rotation)
-
-                # Deviations:
-                # ------------------------------------
-                for dev in self.deviations:
-                        self.coordinate_system = dev.deviate(
-                                coordinate_system=self.coordinate_system,
-                                frame=frame,
-                                n_frames=n_frames,
-                                reconstruction=reconstruction,
-                                attached_to_stage=self.attached_to_stage,
-                                stage_coordinate_system=stage_coordinate_system,
-                        )
-
-                # Drifts (center and vector components):
-                # -----------------------------------------------
-                # Build a translation vector for the center point
-                # from the total drift for this frame and apply
-                # the translation:
-                if self.center.has_drifts():
-                         center_drift = self.center.drift_vector(
-                                frame=frame,
-                                n_frames=n_frames,
-                                reconstruction=reconstruction
-                         )
-                         self.coordinate_system.translate(translation_vector=center_drift)
-
-                if self.u.has_drifts() or self.w.has_drifts():
-                        new_u = self.u.vector_for_frame(frame, n_frames, reconstruction)
-                        new_w = self.w.vector_for_frame(frame, n_frames, reconstruction)
-
-                        self.coordinate_system.make_from_vectors(
-                                center=coordinate_system.center,
-                                u=new_u,
-                                w=new_w
-                        )
-                        self.coordinate_system.make_unit_coordinate_system()
-
-        def set_frame(self, frame:float, n_frames:int, w_rotation:float=0, stage_coordinate_system:&#39;CoordinateSystem&#39;=None, reconstruction:bool=False):
-                &#34;&#34;&#34;
-                Set up the part for the given `frame` number, obeying all
-                deviations and drifts.
-
-                Parameters
-                ----------
-                frame : float
-                        Current frame number.
-
-                n_frames : int
-                        Total number of frames in scan.
-
-                w_rotation : float
-                        An additional rotation (in rad) around the part&#39;s w axis
-                        for this frame. Used for the sample stage, which
-                        rotates during a CT scan.
-
-                stage_coordinate_system : ctsimu.geometry.CoordinateSystem, optional
-                        If this part is attached to the sample stage,
-                        the stage coordinate system for the given `frame`
-                        must be passed.
-
-                reconstruction : bool
-                        If `True`, set frame as seen by reconstruction software.
-                        Default: `False`.
-                &#34;&#34;&#34;
-
-                # Set up the current coordinate system obeying all drifts:
-                if (self._cs_initialized_real is False) or (self._static is False):
-                        self._set_frame_coordinate_system(
-                                frame=frame,
-                                n_frames=n_frames,
-                                reconstruction=reconstruction,
-                                w_rotation=w_rotation,
-                                stage_coordinate_system=stage_coordinate_system
-                        )
-                        self._cs_initialized_real  = not reconstruction
-                        self._cs_initialized_recon = reconstruction
-
-                Group.set_frame(self, frame, n_frames, reconstruction)</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -616,45 +71,6 @@ class Part(Group):
 <span>(</span><span>name: str = 'Part')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Parts are objects in the scene: detector, source, stage and samples.</p>
-<p>They have a coordinate system and can define deviations from their
-standard geometries (translations and rotations around given axes).
-The center, vectors and deviations can all have drifts,
-allowing for an evolution in time.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
-<dd>Name of the object.</dd>
-<dt><strong><code>attached_to_stage</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Is the part attached to the sample stage?
-If so, it will follow the stage's movements throughout the CT scan.</dd>
-<dt><strong><code>coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
-<dd>The current coordinate system. This variable is automatically
-set up whenever the <code>set_frame</code> method is called.</dd>
-<dt><strong><code>center</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
-<dd>Coordinates of the center point.</dd>
-<dt><strong><code>u</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
-<dd>u vector of the part's coordinate system.</dd>
-<dt><strong><code>w</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
-<dd>w vector of the part's coordinate system.</dd>
-<dt><strong><code>deviations</code></strong> :&ensp;<code>list</code></dt>
-<dd>All the geometric deviations for this part as
-<code><a title="ctsimu.scenario.deviation.Deviation" href="deviation.html#ctsimu.scenario.deviation.Deviation">Deviation</a></code> objects.</dd>
-<dt><strong><code>legacy_deviations</code></strong> :&ensp;<code>list</code></dt>
-<dd>All the legacy deviations for this part as
-<code><a title="ctsimu.scenario.deviation.Deviation" href="deviation.html#ctsimu.scenario.deviation.Deviation">Deviation</a></code> objects.
-Legacy deviations are geometric deviations from
-CTSimU scenario descriptions prior to
-file format version 1.0. In general, they are incompatible
-with the new geometric deviation format and must be
-treated differently.</dd>
-</dl>
-<p>The part's name can be set upon initialization.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
-<dd>Name for the part.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1203,6 +619,45 @@ treated differently.</dd>
 
                 Group.set_frame(self, frame, n_frames, reconstruction)</code></pre>
 </details>
+<div class="desc"><p>Parts are objects in the scene: detector, source, stage and samples.</p>
+<p>They have a coordinate system and can define deviations from their
+standard geometries (translations and rotations around given axes).
+The center, vectors and deviations can all have drifts,
+allowing for an evolution in time.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the object.</dd>
+<dt><strong><code>attached_to_stage</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Is the part attached to the sample stage?
+If so, it will follow the stage's movements throughout the CT scan.</dd>
+<dt><strong><code>coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code></dt>
+<dd>The current coordinate system. This variable is automatically
+set up whenever the <code>set_frame</code> method is called.</dd>
+<dt><strong><code>center</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
+<dd>Coordinates of the center point.</dd>
+<dt><strong><code>u</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
+<dd>u vector of the part's coordinate system.</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code><a title="ctsimu.scenario.scenevector.Scenevector" href="scenevector.html#ctsimu.scenario.scenevector.Scenevector">Scenevector</a></code></dt>
+<dd>w vector of the part's coordinate system.</dd>
+<dt><strong><code>deviations</code></strong> :&ensp;<code>list</code></dt>
+<dd>All the geometric deviations for this part as
+<code><a title="ctsimu.scenario.deviation.Deviation" href="deviation.html#ctsimu.scenario.deviation.Deviation">Deviation</a></code> objects.</dd>
+<dt><strong><code>legacy_deviations</code></strong> :&ensp;<code>list</code></dt>
+<dd>All the legacy deviations for this part as
+<code><a title="ctsimu.scenario.deviation.Deviation" href="deviation.html#ctsimu.scenario.deviation.Deviation">Deviation</a></code> objects.
+Legacy deviations are geometric deviations from
+CTSimU scenario descriptions prior to
+file format version 1.0. In general, they are incompatible
+with the new geometric deviation format and must be
+treated differently.</dd>
+</dl>
+<p>The part's name can be set upon initialization.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name for the part.</dd>
+</dl></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="ctsimu.scenario.group.Group" href="group.html#ctsimu.scenario.group.Group">Group</a></li>
@@ -1220,13 +675,6 @@ treated differently.</dd>
 <span>def <span class="ident">attach_to_stage</span></span>(<span>self, attached: bool = True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the part's <code>attached_to_stage</code> property.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>attached</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> if part is attached to the sample stage,
-<code>False</code> if not.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1242,17 +690,18 @@ treated differently.</dd>
         &#34;&#34;&#34;
         self.attached_to_stage = attached</code></pre>
 </details>
+<div class="desc"><p>Set the part's <code>attached_to_stage</code> property.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>attached</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> if part is attached to the sample stage,
+<code>False</code> if not.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.geometry_dict"><code class="name flex">
 <span>def <span class="ident">geometry_dict</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a dictionary of the geometry for a CTSimU scenario file.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>geometry_dict</code></strong> :&ensp;<code>dict</code></dt>
-<dd>Dictionary with the geometry of this part.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1295,20 +744,17 @@ treated differently.</dd>
 
         return jd</code></pre>
 </details>
+<div class="desc"><p>Create a dictionary of the geometry for a CTSimU scenario file.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>geometry_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionary with the geometry of this part.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.is_attached_to_stage"><code class="name flex">
 <span>def <span class="ident">is_attached_to_stage</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Is the part attached to the sample stage?</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>attached_to_stage</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> is part is attached to sample stage, i.e., its reference
-coordinate system is the stage coordinate system.
-<code>False</code> if the part is not attached to the sample stage, i.e.,
-its reference coordinate system is the world coordinate system.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1326,14 +772,20 @@ its reference coordinate system is the world coordinate system.</dd>
         &#34;&#34;&#34;
         return self.attached_to_stage</code></pre>
 </details>
+<div class="desc"><p>Is the part attached to the sample stage?</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>attached_to_stage</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> is part is attached to sample stage, i.e., its reference
+coordinate system is the stage coordinate system.
+<code>False</code> if the part is not attached to the sample stage, i.e.,
+its reference coordinate system is the world coordinate system.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.reset"><code class="name flex">
 <span>def <span class="ident">reset</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reset to standard conditions, delete all deviations, reset
-coordinate system to standard world coordinates,
-and reset all parameters to their standard values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1354,17 +806,14 @@ and reset all parameters to their standard values.</p></div>
 
         Group.reset(self)</code></pre>
 </details>
+<div class="desc"><p>Reset to standard conditions, delete all deviations, reset
+coordinate system to standard world coordinates,
+and reset all parameters to their standard values.</p></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.set_center"><code class="name flex">
 <span>def <span class="ident">set_center</span></span>(<span>self, center: Scenevector)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the part's center.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>center</code></strong> :&ensp;<code>Scenevector</code></dt>
-<dd>New center for the part.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1379,31 +828,17 @@ and reset all parameters to their standard values.</p></div>
         &#34;&#34;&#34;
         self.center = center</code></pre>
 </details>
-</dd>
-<dt id="ctsimu.scenario.part.Part.set_frame"><code class="name flex">
-<span>def <span class="ident">set_frame</span></span>(<span>self, frame: float, n_frames: int, w_rotation: float = 0, stage_coordinate_system: CoordinateSystem = None, reconstruction: bool = False)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set up the part for the given <code>frame</code> number, obeying all
-deviations and drifts.</p>
+<div class="desc"><p>Set the part's center.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
-<dd>Current frame number.</dd>
-<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
-<dd>Total number of frames in scan.</dd>
-<dt><strong><code>w_rotation</code></strong> :&ensp;<code>float</code></dt>
-<dd>An additional rotation (in rad) around the part's w axis
-for this frame. Used for the sample stage, which
-rotates during a CT scan.</dd>
-<dt><strong><code>stage_coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>, optional</dt>
-<dd>If this part is attached to the sample stage,
-the stage coordinate system for the given <code>frame</code>
-must be passed.</dd>
-<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
-<dd>If <code>True</code>, set frame as seen by reconstruction software.
-Default: <code>False</code>.</dd>
+<dt><strong><code>center</code></strong> :&ensp;<code>Scenevector</code></dt>
+<dd>New center for the part.</dd>
 </dl></div>
+</dd>
+<dt id="ctsimu.scenario.part.Part.set_frame"><code class="name flex">
+<span>def <span class="ident">set_frame</span></span>(<span>self,<br>frame: float,<br>n_frames: int,<br>w_rotation: float = 0,<br>stage_coordinate_system: CoordinateSystem = None,<br>reconstruction: bool = False)</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1450,30 +885,31 @@ Default: <code>False</code>.</dd>
 
         Group.set_frame(self, frame, n_frames, reconstruction)</code></pre>
 </details>
-</dd>
-<dt id="ctsimu.scenario.part.Part.set_geometry"><code class="name flex">
-<span>def <span class="ident">set_geometry</span></span>(<span>self, json_geometry_object: dict, stage_coordinate_system: CoordinateSystem = None, proper_cs: str = 'local') ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set up the part from a CTSimU JSON geometry definition.
-The <code>stage_coordinate_system</code> must only be provided if this
-part is attached to the stage.</p>
+<div class="desc"><p>Set up the part for the given <code>frame</code> number, obeying all
+deviations and drifts.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>json_geometry_object</code></strong> :&ensp;<code>dict</code></dt>
-<dd>A CTSimU geometry object, as imported from a JSON structure.</dd>
-<dt><strong><code>stage_coordinate_system</code></strong> :&ensp;<code>CoordinateSystem</code></dt>
-<dd>Stage coordinate system. Only necessary for samples attached
-to the stage.</dd>
-<dt><strong><code>proper_cs</code></strong> :&ensp;<code>str</code></dt>
-<dd>Which is the proper coordinate system of this object?
-Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"sample"</code> (r, s, t).</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
-<dd><code>True</code> on success, <code>False</code> if an error occurred.</dd>
+<dt><strong><code>frame</code></strong> :&ensp;<code>float</code></dt>
+<dd>Current frame number.</dd>
+<dt><strong><code>n_frames</code></strong> :&ensp;<code>int</code></dt>
+<dd>Total number of frames in scan.</dd>
+<dt><strong><code>w_rotation</code></strong> :&ensp;<code>float</code></dt>
+<dd>An additional rotation (in rad) around the part's w axis
+for this frame. Used for the sample stage, which
+rotates during a CT scan.</dd>
+<dt><strong><code>stage_coordinate_system</code></strong> :&ensp;<code><a title="ctsimu.geometry.CoordinateSystem" href="../geometry.html#ctsimu.geometry.CoordinateSystem">CoordinateSystem</a></code>, optional</dt>
+<dd>If this part is attached to the sample stage,
+the stage coordinate system for the given <code>frame</code>
+must be passed.</dd>
+<dt><strong><code>reconstruction</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If <code>True</code>, set frame as seen by reconstruction software.
+Default: <code>False</code>.</dd>
 </dl></div>
+</dd>
+<dt id="ctsimu.scenario.part.Part.set_geometry"><code class="name flex">
+<span>def <span class="ident">set_geometry</span></span>(<span>self,<br>json_geometry_object: dict,<br>stage_coordinate_system: CoordinateSystem = None,<br>proper_cs: str = 'local') ‑> bool</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1669,17 +1105,30 @@ Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"
         self.set_frame(frame=0, n_frames=1, w_rotation=0, stage_coordinate_system=stage_coordinate_system)
         return True</code></pre>
 </details>
+<div class="desc"><p>Set up the part from a CTSimU JSON geometry definition.
+The <code>stage_coordinate_system</code> must only be provided if this
+part is attached to the stage.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>json_geometry_object</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A CTSimU geometry object, as imported from a JSON structure.</dd>
+<dt><strong><code>stage_coordinate_system</code></strong> :&ensp;<code>CoordinateSystem</code></dt>
+<dd>Stage coordinate system. Only necessary for samples attached
+to the stage.</dd>
+<dt><strong><code>proper_cs</code></strong> :&ensp;<code>str</code></dt>
+<dd>Which is the proper coordinate system of this object?
+Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"sample"</code> (r, s, t).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>success</code></strong> :&ensp;<code>bool</code></dt>
+<dd><code>True</code> on success, <code>False</code> if an error occurred.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.set_name"><code class="name flex">
 <span>def <span class="ident">set_name</span></span>(<span>self, name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the part's name.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
-<dd>New name for the part.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1694,17 +1143,17 @@ Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"
         &#34;&#34;&#34;
         self.name = name</code></pre>
 </details>
+<div class="desc"><p>Set the part's name.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>New name for the part.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.set_u"><code class="name flex">
 <span>def <span class="ident">set_u</span></span>(<span>self, u: Scenevector)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the part's <code>u</code> vector.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>u</code></strong> :&ensp;<code>Scenevector</code></dt>
-<dd>New <code>u</code> vector for the part.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1719,17 +1168,17 @@ Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"
         &#34;&#34;&#34;
         self.u = u</code></pre>
 </details>
+<div class="desc"><p>Set the part's <code>u</code> vector.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>Scenevector</code></dt>
+<dd>New <code>u</code> vector for the part.</dd>
+</dl></div>
 </dd>
 <dt id="ctsimu.scenario.part.Part.set_w"><code class="name flex">
 <span>def <span class="ident">set_w</span></span>(<span>self, w: Scenevector)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the part's <code>w</code> vector.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>w</code></strong> :&ensp;<code>Scenevector</code></dt>
-<dd>New <code>w</code> vector for the part.</dd>
-</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1744,6 +1193,12 @@ Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"
         &#34;&#34;&#34;
         self.w = w</code></pre>
 </details>
+<div class="desc"><p>Set the part's <code>w</code> vector.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>Scenevector</code></dt>
+<dd>New <code>w</code> vector for the part.</dd>
+</dl></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1775,7 +1230,6 @@ Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"
 <img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
 </a>
 </header>
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1808,7 +1262,7 @@ Either <code>"world"</code> (x, y, z), <code>"local"</code> (u, v, w) or <code>"
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

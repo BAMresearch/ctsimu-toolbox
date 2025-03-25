@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
+<title>ctsimu.evaluation.testDigTwin API documentation</title>
+<meta name="description" content="Test of digital twin …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+<link rel="icon" href="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png">
+<style>
+thead {
+border-top: 2px solid #000;
+border-bottom:1px solid #000;
+}
+tbody {
+border-bottom: 2px solid #000;
+}
+th, td {
+padding: 0.1em;
+padding-right: 1em;
+white-space: nowrap;
+}
+tr:hover {background-color: #eee;}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>ctsimu.evaluation.testDigTwin</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="test-of-digital-twin">Test of digital twin</h1>
+<p>To run this test evaluation, you can simply pass the name of the test and the metadata file which describes the data files that you want to evaluate to the <code><a title="ctsimu.toolbox.Toolbox" href="../toolbox.html#ctsimu.toolbox.Toolbox">Toolbox</a></code>:</p>
+<pre><code class="language-python">from ctsimu.toolbox import Toolbox
+Toolbox(&quot;testDigitalTwin&quot;, &quot;Twin_metadata.json&quot;)
+</code></pre>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="ctsimu.evaluation.testDigTwin.TestDigTwin"><code class="flex name class">
+<span>class <span class="ident">TestDigTwin</span></span>
+<span>(</span><span>metadatafile)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TestDigTwin(generalTest):
+    &#34;&#34;&#34; CTSimU2 test of digital twin. &#34;&#34;&#34;
+
+    def __init__(self, metadatafile):
+        #empty declarations
+        self.Zusatz_krit_real = []
+        self.Zusatz_krit_sim = []
+        self.combined_df = []
+        self.df = pd.DataFrame()
+        #metadatfile --&gt; Json File
+        self.metadatafile = metadatafile
+        self.data = read_json_file(self.metadatafile)
+        print(self.data[&#39;real_ct&#39;][&#39;csv_path&#39;])
+
+        #general Information for the test
+        self.measurements_of_interest = self.data[&#39;general&#39;][&#39;measurements_of_interest&#39;]
+        self.csv_test_output_path = self.data[&#39;general&#39;][&#39;csv_test_output_path&#39;]
+
+        # Real CT Scan information
+        self.real_folder_path = self.data[&#39;real_ct&#39;][&#39;csv_path&#39;]
+        #print(self.real_folder_path)
+        self.output_path = self.data[&#39;real_ct&#39;][&#39;csv_output_path&#39;]
+        self.sep = self.data[&#39;real_ct&#39;][&#39;csv_sep&#39;]
+        self.decimal = self.data[&#39;real_ct&#39;][&#39;csv_decimal&#39;]
+        self.measurement_name_col = self.data[&#39;real_ct&#39;][&#39;name_column&#39;]
+        self.measurement_value_col = self.data[&#39;real_ct&#39;][&#39;value_column&#39;]
+        self.meas_name_col_nr = self.data[&#39;real_ct&#39;][&#39;name_column_nr&#39;]
+        self.meas_value_col_nr = self.data[&#39;real_ct&#39;][&#39;value_column_nr&#39;]
+        self.temperature = self.data[&#39;real_ct&#39;][&#39;temperature&#39;]
+        self.scaling_factor = self.data[&#39;real_ct&#39;][&#34;scaling_factor&#34;]
+        
+
+        #Simulation Scan information
+        self.sim_folder_path = self.data[&#39;simulation_ct&#39;][&#39;csv_path&#39;]
+        
+        self.sim_output_path = self.data[&#39;simulation_ct&#39;][&#39;csv_output_path&#39;]
+        print(self.sim_output_path)
+
+        #Calibration Information
+        self.CalPath = self.data[&#39;calibration&#39;][&#39;calibration_csv_path&#39;] #CalPath
+        self.cal_sep = self.data[&#39;calibration&#39;][&#39;csv_sep&#39;] #sep
+        self.cal_decimal = self.data[&#39;calibration&#39;][&#39;csv_decimal&#39;] #sep
+        self.alpha = self.data[&#39;calibration&#39;][&#39;material_alpha&#39;]
+        self.Tcal = self.data[&#39;calibration&#39;][&#39;temperature_calib&#39;]
+        self.CalValCol = self.data[&#39;calibration&#39;][&#39;values_column&#39;]
+        self.uncertaintyCol = self.data[&#39;calibration&#39;][&#39;uncertainty_columns&#39;]
+        self.STLvalCol = self.data[&#39;calibration&#39;][&#39;STL-value_columns_nr&#39;]
+        #self.calibration_values = self.data[&#39;calibration&#39;][&#39;calibration_csv_path&#39;]
+
+        self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
+
+        #Calibration Values
+        self.CalValues = self.data_RefWerte[self.CalValCol]  # muss an json angepasst werden!
+        self.CalUncertainty = self.data_RefWerte[self.uncertaintyCol] # muss an json angepasst werden!
+
+        self.fileName = &#39;sample.pdf&#39;
+        self.documentTitle = &#39;sample&#39;
+        self.title = &#39;Report Test Digital Twin&#39;
+        self.subTitle = &#39;CTSimU2&#39;
+        self.textLines = [ 
+            &#39;Text for the Report&#39;, 
+            &#39;Anything that matters&#39;, 
+            ] 
+        #self.image = &#39;image.jpg&#39;
+
+
+    def read_and_filter_csv_files(self, folder_paths, ct_type):
+    # Variables needed for the function
+        #self.real_folder_path = self.data[ct_type][&#39;csv_path&#39;]
+        self.real_output_path = self.data[ct_type][&#39;csv_output_path&#39;]
+        self.sep = self.data[ct_type][&#39;csv_sep&#39;]
+        self.decimal = self.data[ct_type][&#39;csv_decimal&#39;]
+        self.measurement_name_col = self.data[ct_type][&#39;name_column&#39;]
+        self.measurement_value_col = self.data[ct_type][&#39;value_column&#39;]
+        self.meas_name_col_nr = self.data[ct_type][&#39;name_column_nr&#39;]
+
+        self.output_path = self.data[ct_type][&#39;csv_output_path&#39;]
+
+        self.meas_value_col_nr = self.data[ct_type][&#39;value_column_nr&#39;]
+        if ct_type == &#34;simulation_ct&#34;:
+            self.temperature = 20
+            self.scaling_factor = 1
+            #self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
+            #Calibration Values
+            self.CalValues = self.data_RefWerte[self.STLvalCol]  # muss an json angepasst werden!
+            #self.CalUncertainty = self.data_RefWerte[&#39;Kalibrierunsicherheit&#39;] # muss an json angepasst werden!
+
+    # Open and read the JSON file
+        #with open(json_file, &#39;r&#39;) as file:
+        #    data = json.load(file)
+
+        # Extract the folder path, column names, and measurements of interest
+
+        #self.runNames =  self.data[&#39;calibration_info&#39;][&#39;material_alpha&#39;]
+
+         # Dictionary to store measurement values for each file
+        #measurements_dict = {measurement: [] for measurement in self.measurements_of_interest}
+        # List to store DataFrames
+        #dataframes = []
+        combined_df_test = pd.DataFrame()
+         # List to store file names
+        file_names = []
+        for folder_path in [folder_paths]:
+            for filename in os.listdir(folder_path):
+                if filename.endswith(&#39;.csv&#39;):
+                    file_path = os.path.join(folder_path, filename)
+                    df = pd.read_csv(file_path,sep=self.sep, decimal=self.decimal, usecols=[ int(self.meas_name_col_nr), int(self.meas_value_col_nr)])
+
+                    # Filter the DataFrame to include only the columns of interest
+                    df_filtered = df[[self.measurement_name_col, self.measurement_value_col]]
+
+                    #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].str[:-3].apply(convert_str_to_float)
+                    # Filter the DataFrame to include only the measurements of interest
+                    df_filtered = df_filtered[df_filtered[self.measurement_name_col].isin(self.measurements_of_interest)]
+
+                    df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(convert_str_to_float)
+                    #print(df_filtered)
+                    #if len(Tmeas) != len()
+                    #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                    df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                    # print(df_filtered)
+                    combined_df_test = pd.concat([combined_df_test, df_filtered[self.measurement_value_col]], axis=1)
+
+                    # Append the file name to the list
+                    file_names.append(filename)
+            #pd.set_option(&#39;display.max_rows&#39;, None)
+            #pd.set_option(&#39;display.max_columns&#39;, None)
+            #pd.set_option(&#39;display.width&#39;, None)
+            #pd.set_option(&#39;display.max_colwidth&#39;, -1)
+            #print(combined_df_test)
+
+            # Create a DataFrame from the dictionary
+
+            combined_df_test.index = self.measurements_of_interest
+            combined_df_test.columns = file_names
+
+            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(), axis=1)
+            #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(self.CalValues), axis=1)
+            combined_df_subtracted = combined_df_test.apply(lambda x: self.Diff_MW_KW(x, file_names, self.CalValues), axis=1)
+
+            print(combined_df_subtracted)
+            combined_df_test.to_csv(self.output_path, self.sep, decimal=self.decimal, index=True)
+            return combined_df_subtracted
+
+    def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
+        return Mvalue*(1-(alpha*(Tmeas-Tcal)))
+
+    def Diff_MW_KW(self, values, file_names, CalValues):
+        #print(values.name)
+        #print(CalValues)
+        #print(values-CalValues[values.name])
+        return values-CalValues[values.name]
+
+
+    def En_calc(self, RealValues, SimValues):
+
+        #self.RealValues = self.read_and_filter_csv_files(self, self.real_folder_path)
+        #self.SimValues = self.read_and_filter_csv_files(self, self.sim_folder_path)
+
+        #print(SimValues)
+        #print(RealValues)
+        #print(SimValues)
+        self.RealValues_avg = RealValues.mean(axis=1)
+        self.SimValues_avg = SimValues.mean(axis=1)
+
+        u_sim = SimValues.std(axis=1)
+        u_p = RealValues.std(axis=1)
+        u_drift = 0
+        u_b = 0
+        self.MU = 2*(RealValues.std(axis=1).pow(2) + self.CalUncertainty.pow(2)).pow(1/2)
+        self.MUSim = 2*u_sim
+
+        self.df[&#34;RealValues_avg&#34;] = RealValues.mean(axis=1)
+        self.df[&#34;RealValues_u&#34;] = RealValues.std(axis=1)
+        self.df[&#34;SimValues_avg&#34;] = SimValues.mean(axis=1)
+        self.df[&#34;SimValues_u&#34;] = SimValues.std(axis=1)
+
+        #print(self.SimValues_avg)
+        #Berechnung EN-Wert, noch zu verändern.
+        self.EN = ((self.SimValues_avg) - (self.RealValues_avg)) * ((self.MUSim.pow(2) + self.MU.pow(2)).pow(1/2)).pow(-1)
+        #print(((self.MUSim.pow(2) + self.MU.pow(2))).pow(1/2))
+        #print(self.EN)
+
+        self.Zusatz_krit_real = self.MU / self.CalUncertainty
+        self.Zusatz_krit_sim = self.MUSim / self.MU
+        self.df[&#34;EN-wert&#34;] = self.EN
+        self.df[&#34;Zusatz_krit_real&#34;] = self.MU / self.CalUncertainty
+        self.df[&#34;Zusatz_krit_sim&#34;] = self.MUSim / self.MU
+        self.df[&#34;Zusatz_krit_summe&#34;] = self.MUSim / self.MU + self.MU / self.CalUncertainty
+        self.df[&#34;Test_Result&#34;] = self.EN
+        #self.df[&#34;Test_Result&#34;] = np.where((self.df[&#34;EN-wert&#34;] &lt; 1) &amp; (self.df[&#34;EN-wert&#34;] &gt; 1) &amp; (self.df[&#34;Zusatz_krit_real&#34;] &lt; 1) &amp; (self.df[&#34;Zusatz_krit_sim&#34;] &lt; 1), True, False)
+        self.df[&#34;Test_Result&#34;] = np.where((abs(self.df[&#34;EN-wert&#34;])&lt; 1) &amp; (self.df[&#34;Zusatz_krit_real&#34;] &lt; 1) &amp; (self.df[&#34;Zusatz_krit_sim&#34;] &lt; 1), True, False)
+        print(self.df)
+
+        self.df.to_csv(self.csv_test_output_path, self.sep, decimal=self.decimal, index=True)
+
+        return
+
+
+    def plotResults(self):
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.df[&#39;EN-wert&#39;], marker=&#39;o&#39;)
+
+        # Add horizontal lines at -1 and +1
+        plt.axhline(y=-1, color=&#39;r&#39;, linestyle=&#39;--&#39;)
+        plt.axhline(y=1, color=&#39;g&#39;, linestyle=&#39;--&#39;)
+
+        # Label the x-axis with names from self.measurements_of_interest
+        plt.xticks(ticks=range(len(self.measurements_of_interest)), labels=self.measurements_of_interest, rotation=90)
+
+        # Add labels and title
+        plt.xlabel(&#39;Measurements&#39;)
+        plt.ylabel(&#39;EN-wert&#39;)
+        plt.title(&#39;EN-wert Series&#39;)
+
+        # Show the plot
+        plt.show()
+
+
+    def TwinTest_report(self):
+        # creating a pdf object
+        pdf = canvas.Canvas(self.fileName)
+        # setting the title of the document
+        pdf.setTitle(self.documentTitle)
+
+        # registering a external font in python 
+        #pdfmetrics.registerFont( 
+        #TTFont(&#39;abc&#39;, &#39;SakBunderan.ttf&#39;) 
+        #) 
+
+        # creating the title by setting it&#39;s font  
+        # and putting it on the canvas 
+        #pdf.setFont(&#39;abc&#39;, 36)
+        pdf.setFont(&#34;Courier-Bold&#34;, 36)
+        pdf.drawCentredString(300, 770, self.title)
+
+        # creating the subtitle by setting it&#39;s font,  
+        # colour and putting it on the canvas 
+        pdf.setFillColorRGB(0, 0, 255) 
+        pdf.setFont(&#34;Courier-Bold&#34;, 24) 
+        pdf.drawCentredString(290, 720, self.subTitle) 
+
+        # drawing a line
+        pdf.line(30, 710, 550, 710)
+        # creating a multiline text using
+        # textline and for loop 
+        text = pdf.beginText(40, 680)
+        text.setFont(&#34;Courier&#34;, 18)
+        text.setFillColor(colors.red)
+
+        for line in self.textLines:
+            text.textLine(line)
+        pdf.drawText(text)
+        # drawing a image at the  
+        # specified (x.y) position 
+        #pdf.drawInlineImage(image, 130, 400) 
+
+        # saving the pdf 
+        pdf.save()
+        return</code></pre>
+</details>
+<div class="desc"><p>CTSimU2 test of digital twin.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></li>
+<li><a title="ctsimu.processing.step.Step" href="../processing/step.html#ctsimu.processing.step.Step">Step</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="ctsimu.evaluation.testDigTwin.TestDigTwin.Diff_MW_KW"><code class="name flex">
+<span>def <span class="ident">Diff_MW_KW</span></span>(<span>self, values, file_names, CalValues)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Diff_MW_KW(self, values, file_names, CalValues):
+    #print(values.name)
+    #print(CalValues)
+    #print(values-CalValues[values.name])
+    return values-CalValues[values.name]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.evaluation.testDigTwin.TestDigTwin.En_calc"><code class="name flex">
+<span>def <span class="ident">En_calc</span></span>(<span>self, RealValues, SimValues)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def En_calc(self, RealValues, SimValues):
+
+    #self.RealValues = self.read_and_filter_csv_files(self, self.real_folder_path)
+    #self.SimValues = self.read_and_filter_csv_files(self, self.sim_folder_path)
+
+    #print(SimValues)
+    #print(RealValues)
+    #print(SimValues)
+    self.RealValues_avg = RealValues.mean(axis=1)
+    self.SimValues_avg = SimValues.mean(axis=1)
+
+    u_sim = SimValues.std(axis=1)
+    u_p = RealValues.std(axis=1)
+    u_drift = 0
+    u_b = 0
+    self.MU = 2*(RealValues.std(axis=1).pow(2) + self.CalUncertainty.pow(2)).pow(1/2)
+    self.MUSim = 2*u_sim
+
+    self.df[&#34;RealValues_avg&#34;] = RealValues.mean(axis=1)
+    self.df[&#34;RealValues_u&#34;] = RealValues.std(axis=1)
+    self.df[&#34;SimValues_avg&#34;] = SimValues.mean(axis=1)
+    self.df[&#34;SimValues_u&#34;] = SimValues.std(axis=1)
+
+    #print(self.SimValues_avg)
+    #Berechnung EN-Wert, noch zu verändern.
+    self.EN = ((self.SimValues_avg) - (self.RealValues_avg)) * ((self.MUSim.pow(2) + self.MU.pow(2)).pow(1/2)).pow(-1)
+    #print(((self.MUSim.pow(2) + self.MU.pow(2))).pow(1/2))
+    #print(self.EN)
+
+    self.Zusatz_krit_real = self.MU / self.CalUncertainty
+    self.Zusatz_krit_sim = self.MUSim / self.MU
+    self.df[&#34;EN-wert&#34;] = self.EN
+    self.df[&#34;Zusatz_krit_real&#34;] = self.MU / self.CalUncertainty
+    self.df[&#34;Zusatz_krit_sim&#34;] = self.MUSim / self.MU
+    self.df[&#34;Zusatz_krit_summe&#34;] = self.MUSim / self.MU + self.MU / self.CalUncertainty
+    self.df[&#34;Test_Result&#34;] = self.EN
+    #self.df[&#34;Test_Result&#34;] = np.where((self.df[&#34;EN-wert&#34;] &lt; 1) &amp; (self.df[&#34;EN-wert&#34;] &gt; 1) &amp; (self.df[&#34;Zusatz_krit_real&#34;] &lt; 1) &amp; (self.df[&#34;Zusatz_krit_sim&#34;] &lt; 1), True, False)
+    self.df[&#34;Test_Result&#34;] = np.where((abs(self.df[&#34;EN-wert&#34;])&lt; 1) &amp; (self.df[&#34;Zusatz_krit_real&#34;] &lt; 1) &amp; (self.df[&#34;Zusatz_krit_sim&#34;] &lt; 1), True, False)
+    print(self.df)
+
+    self.df.to_csv(self.csv_test_output_path, self.sep, decimal=self.decimal, index=True)
+
+    return</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.evaluation.testDigTwin.TestDigTwin.TempKorr"><code class="name flex">
+<span>def <span class="ident">TempKorr</span></span>(<span>self, Mvalue, Tmeas, Tcal, alpha)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def TempKorr(self, Mvalue, Tmeas, Tcal, alpha):
+    return Mvalue*(1-(alpha*(Tmeas-Tcal)))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.evaluation.testDigTwin.TestDigTwin.TwinTest_report"><code class="name flex">
+<span>def <span class="ident">TwinTest_report</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def TwinTest_report(self):
+    # creating a pdf object
+    pdf = canvas.Canvas(self.fileName)
+    # setting the title of the document
+    pdf.setTitle(self.documentTitle)
+
+    # registering a external font in python 
+    #pdfmetrics.registerFont( 
+    #TTFont(&#39;abc&#39;, &#39;SakBunderan.ttf&#39;) 
+    #) 
+
+    # creating the title by setting it&#39;s font  
+    # and putting it on the canvas 
+    #pdf.setFont(&#39;abc&#39;, 36)
+    pdf.setFont(&#34;Courier-Bold&#34;, 36)
+    pdf.drawCentredString(300, 770, self.title)
+
+    # creating the subtitle by setting it&#39;s font,  
+    # colour and putting it on the canvas 
+    pdf.setFillColorRGB(0, 0, 255) 
+    pdf.setFont(&#34;Courier-Bold&#34;, 24) 
+    pdf.drawCentredString(290, 720, self.subTitle) 
+
+    # drawing a line
+    pdf.line(30, 710, 550, 710)
+    # creating a multiline text using
+    # textline and for loop 
+    text = pdf.beginText(40, 680)
+    text.setFont(&#34;Courier&#34;, 18)
+    text.setFillColor(colors.red)
+
+    for line in self.textLines:
+        text.textLine(line)
+    pdf.drawText(text)
+    # drawing a image at the  
+    # specified (x.y) position 
+    #pdf.drawInlineImage(image, 130, 400) 
+
+    # saving the pdf 
+    pdf.save()
+    return</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="ctsimu.evaluation.testDigTwin.TestDigTwin.read_and_filter_csv_files"><code class="name flex">
+<span>def <span class="ident">read_and_filter_csv_files</span></span>(<span>self, folder_paths, ct_type)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_and_filter_csv_files(self, folder_paths, ct_type):
+# Variables needed for the function
+    #self.real_folder_path = self.data[ct_type][&#39;csv_path&#39;]
+    self.real_output_path = self.data[ct_type][&#39;csv_output_path&#39;]
+    self.sep = self.data[ct_type][&#39;csv_sep&#39;]
+    self.decimal = self.data[ct_type][&#39;csv_decimal&#39;]
+    self.measurement_name_col = self.data[ct_type][&#39;name_column&#39;]
+    self.measurement_value_col = self.data[ct_type][&#39;value_column&#39;]
+    self.meas_name_col_nr = self.data[ct_type][&#39;name_column_nr&#39;]
+
+    self.output_path = self.data[ct_type][&#39;csv_output_path&#39;]
+
+    self.meas_value_col_nr = self.data[ct_type][&#39;value_column_nr&#39;]
+    if ct_type == &#34;simulation_ct&#34;:
+        self.temperature = 20
+        self.scaling_factor = 1
+        #self.data_RefWerte = pd.read_csv(self.CalPath, sep = self.cal_sep, decimal = self.cal_decimal, header=0, index_col=0)
+        #Calibration Values
+        self.CalValues = self.data_RefWerte[self.STLvalCol]  # muss an json angepasst werden!
+        #self.CalUncertainty = self.data_RefWerte[&#39;Kalibrierunsicherheit&#39;] # muss an json angepasst werden!
+
+# Open and read the JSON file
+    #with open(json_file, &#39;r&#39;) as file:
+    #    data = json.load(file)
+
+    # Extract the folder path, column names, and measurements of interest
+
+    #self.runNames =  self.data[&#39;calibration_info&#39;][&#39;material_alpha&#39;]
+
+     # Dictionary to store measurement values for each file
+    #measurements_dict = {measurement: [] for measurement in self.measurements_of_interest}
+    # List to store DataFrames
+    #dataframes = []
+    combined_df_test = pd.DataFrame()
+     # List to store file names
+    file_names = []
+    for folder_path in [folder_paths]:
+        for filename in os.listdir(folder_path):
+            if filename.endswith(&#39;.csv&#39;):
+                file_path = os.path.join(folder_path, filename)
+                df = pd.read_csv(file_path,sep=self.sep, decimal=self.decimal, usecols=[ int(self.meas_name_col_nr), int(self.meas_value_col_nr)])
+
+                # Filter the DataFrame to include only the columns of interest
+                df_filtered = df[[self.measurement_name_col, self.measurement_value_col]]
+
+                #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].str[:-3].apply(convert_str_to_float)
+                # Filter the DataFrame to include only the measurements of interest
+                df_filtered = df_filtered[df_filtered[self.measurement_name_col].isin(self.measurements_of_interest)]
+
+                df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(convert_str_to_float)
+                #print(df_filtered)
+                #if len(Tmeas) != len()
+                #df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                df_filtered[self.measurement_value_col] = df_filtered[self.measurement_value_col].apply(run.TempKorr, args=(float(self.temperature), float(self.Tcal), float(self.alpha)))
+                # print(df_filtered)
+                combined_df_test = pd.concat([combined_df_test, df_filtered[self.measurement_value_col]], axis=1)
+
+                # Append the file name to the list
+                file_names.append(filename)
+        #pd.set_option(&#39;display.max_rows&#39;, None)
+        #pd.set_option(&#39;display.max_columns&#39;, None)
+        #pd.set_option(&#39;display.width&#39;, None)
+        #pd.set_option(&#39;display.max_colwidth&#39;, -1)
+        #print(combined_df_test)
+
+        # Create a DataFrame from the dictionary
+
+        combined_df_test.index = self.measurements_of_interest
+        combined_df_test.columns = file_names
+
+        #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(), axis=1)
+        #combined_df_subtracted = combined_df_test.apply(lambda x: Measurands(x, self.data, file_names).Diff_MW_KW(self.CalValues), axis=1)
+        combined_df_subtracted = combined_df_test.apply(lambda x: self.Diff_MW_KW(x, file_names, self.CalValues), axis=1)
+
+        print(combined_df_subtracted)
+        combined_df_test.to_csv(self.output_path, self.sep, decimal=self.decimal, index=True)
+        return combined_df_subtracted</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="ctsimu.test.generalTest" href="../test.html#ctsimu.test.generalTest">generalTest</a></b></code>:
+<ul class="hlist">
+<li><code><a title="ctsimu.test.generalTest.followUp" href="../processing/step.html#ctsimu.processing.step.Step.followUp">followUp</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.plotResults" href="../test.html#ctsimu.test.generalTest.plotResults">plotResults</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.prepare" href="../processing/step.html#ctsimu.processing.step.Step.prepare">prepare</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.run" href="../processing/step.html#ctsimu.processing.step.Step.run">run</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setName" href="../test.html#ctsimu.test.generalTest.setName">setName</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setRawOutput" href="../test.html#ctsimu.test.generalTest.setRawOutput">setRawOutput</a></code></li>
+<li><code><a title="ctsimu.test.generalTest.setResultFileDirectory" href="../test.html#ctsimu.test.generalTest.setResultFileDirectory">setResultFileDirectory</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<header>
+<a class="homelink" rel="home" title="pdoc Home" href="https://bamresearch.github.io/ctsimu-toolbox">
+<img src="https://bamresearch.github.io/ctsimu-toolbox/toolbox.png" alt=""> ctsimu
+</a>
+</header>
+<div class="toc">
+<ul>
+<li><a href="#test-of-digital-twin">Test of digital twin</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="ctsimu.evaluation" href="index.html">ctsimu.evaluation</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="ctsimu.evaluation.testDigTwin.TestDigTwin" href="#ctsimu.evaluation.testDigTwin.TestDigTwin">TestDigTwin</a></code></h4>
+<ul class="">
+<li><code><a title="ctsimu.evaluation.testDigTwin.TestDigTwin.Diff_MW_KW" href="#ctsimu.evaluation.testDigTwin.TestDigTwin.Diff_MW_KW">Diff_MW_KW</a></code></li>
+<li><code><a title="ctsimu.evaluation.testDigTwin.TestDigTwin.En_calc" href="#ctsimu.evaluation.testDigTwin.TestDigTwin.En_calc">En_calc</a></code></li>
+<li><code><a title="ctsimu.evaluation.testDigTwin.TestDigTwin.TempKorr" href="#ctsimu.evaluation.testDigTwin.TestDigTwin.TempKorr">TempKorr</a></code></li>
+<li><code><a title="ctsimu.evaluation.testDigTwin.TestDigTwin.TwinTest_report" href="#ctsimu.evaluation.testDigTwin.TestDigTwin.TwinTest_report">TwinTest_report</a></code></li>
+<li><code><a title="ctsimu.evaluation.testDigTwin.TestDigTwin.read_and_filter_csv_files" href="#ctsimu.evaluation.testDigTwin.TestDigTwin.read_and_filter_csv_files">read_and_filter_csv_files</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+</footer>
+</body>
+</html>
