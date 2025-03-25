@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(name='ctsimu',
-      version='1.6.1',
+      version='1.7.0',
       description='CTSimU Software Toolbox',
       url='https://github.com/BAMresearch/ctsimu-toolbox/',
       author='David Plotzki',
